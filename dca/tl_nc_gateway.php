@@ -36,7 +36,6 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         'ctable'                      => array('tl_nc_notification', 'tl_nc_language'),
         'dataContainer'               => 'Table',
-        'switchToEdit'                => true,
         'enableVersioning'            => true,
         'sql' => array
         (
