@@ -59,17 +59,18 @@ class Base
     protected $objGateway = null;
 
     /**
-     * Set notification bag type
+     * Set notification bag type and models
      * @param   BagTypeInterface
      * @param   Notification
-     * @param
+     * @param   Language
+     * @param   Gateway
      */
     public function __construct(
         BagTypeInterface $objBagType,
         Notification $objNotification,
         Language $objLanguage,
         Gateway $objGateway
-      )
+    )
     {
         $this->objBagType           = $objBagType;
         $this->objNotification      = $objNotification;
