@@ -25,28 +25,49 @@
  * @license    LGPL
  */
 
-/**
- * Back end modules
- */
-array_insert($GLOBALS['BE_MOD'], 3, array
-(
-    'notification_center' => array
-    (
-        'nc_bags' => array
-        (
-            'tables'        => array('tl_nc_bag', 'tl_nc_notification', 'tl_nc_language'),
-            'icon'          => 'system/modules/notification_center/assets/bag.png'
-        ),
-        'nc_gateways' => array
-        (
-            'tables'        => array('tl_nc_gateway'),
-            'icon'          => 'system/modules/notification_center/assets/gateway.png'
-        )
-    )
-));
+namespace NotificationCenter\Gateway;
+
+use NotificationCenter\BagType\BagTypeInterface;
+
+class Email implements GatewayInterface
+{
+    /**
+     * The notification bag type
+     * @var BagTypeInterface
+     */
+    protected $objBagType = null;
 
 
-/**
- * Notification Center Gateways
- */
-$GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gateway\Email';
+    /**
+     * Set notification bag type
+     * @param   BagTypeInterface
+     */
+    public function __construct(BagTypeInterface $objBagType)
+    {
+        $this->objBagType = $objBagType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validateToken($strToken, $varValue)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPalette()
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function send($arrTokens)
+    {
+
+    }
+}
