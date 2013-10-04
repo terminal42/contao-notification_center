@@ -39,14 +39,14 @@ interface GatewayInterface
     public function validateToken($strToken, $varValue);
 
     /**
-     * Returns the palette string for the language fields in this gateway
-     * @return  string
+     * Modifies the DCA to the gateway's needs
+     * @param   array
      */
-    public function getPalette();
+    public function modifyDca(&$arrDca);
 
     /**
      * Sends the notification bag
-     * @param  array The tokens in key => value format
+     * @param   array The tokens in key => value format
      */
     public function send($arrTokens);
 }

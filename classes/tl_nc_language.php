@@ -27,8 +27,34 @@
 
 namespace NotificationCenter;
 
+use NotificationCenter\Model\Language;
+
 class tl_nc_language extends \Backend
 {
+    /**
+     * Loads gateway specific DCA data
+     * @param \DataContainer
+     */
+    public function loadGatewayDca(\DataContainer $dc)
+    {
+        $objLanguageModel = Language::findByPk($dc->id);
+        if (($objNotificationModel = $objLanguageModel->getRelated('pid')) === null) {
+            return;
+        }
+        if (($objBagModel = $objNotificationModel->getRelated('pid')) === null) {
+            return;
+        }
+        if (($objGatewayModel = $objNotificationModel->getRelated('gateway')) === null) {
+            return;
+        }
+        if (($objBagType = $objBagModel->buildBagType()) === null) {
+            return;
+        }
+
+        $objGateway = $objGatewayModel->buildGateway($objBagType, $objNotificationModel, $objLanguageModel);
+        $objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
+    }
+
     /**
      * Generate a list for the dcaWizard displaying the languages
      * @param object

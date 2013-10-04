@@ -23,9 +23,9 @@ class Email extends Base implements GatewayInterface
     /**
      * {@inheritdoc}
      */
-    public function getPalette()
+    public function modifyDca(&$arrDca)
     {
-
+        $arrDca['palettes']['default'] .= 'text,html';
     }
 
     /**
