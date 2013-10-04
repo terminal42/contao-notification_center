@@ -91,6 +91,22 @@ class Bag
                     __METHOD__,
                     TL_ERROR);
                 $blnHasError = true;
+                break;
+            }
+
+            // Validate tokens
+            foreach ($arrTokens as $strToken => $varValue) {
+                if (!$objGateway->validateToken($strToken, $varValue)) {
+                    \System::log(sprintf(
+                            'Validation of token "%s" with value "%s" failed.',
+                            $strToken,
+                            $varValue
+                        ),
+                        __METHOD__,
+                        TL_ERROR);
+                    $blnHasError = true;
+                    break;
+                }
             }
 
             $objGateway->send($arrTokens);
