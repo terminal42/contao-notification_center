@@ -42,16 +42,34 @@ class Bag
     {
         // Check if this is a valid Bag model id
         if (($objBag = BagModel::findByPk($intBagId)) === null) {
+            \System::log(sprintf(
+                    'Could not find notification bag ID "%s".',
+                    $intBagId
+                    ),
+                __METHOD__,
+                TL_ERROR);
             return false;
         }
 
         // Check if there are valid notifications
         if (($objNotifications = $objBag->getNotifications()) === null) {
+            \System::log(sprintf(
+                    'Could not find any notifications for notification bag ID "%s".',
+                    $intBagId
+                ),
+                __METHOD__,
+                TL_ERROR);
             return false;
         }
 
         // Check if there is a valid bag type
         if (($objBagType = $objBag->buildBagType()) === null) {
+            \System::log(sprintf(
+                    'Could not build bag type for notification bag ID "%s".',
+                    $intBagId
+                ),
+                __METHOD__,
+                TL_ERROR);
             return false;
         }
 
@@ -66,6 +84,12 @@ class Bag
             $objNotification = $objNotifications->current();
 
             if (($objGateway = $objNotification->buildGateway($objBagType, $strLanguage)) == null) {
+                \System::log(sprintf(
+                        'Could not build gateway for notification ID "%s".',
+                        $objNotification->id
+                    ),
+                    __METHOD__,
+                    TL_ERROR);
                 $blnHasError = true;
             }
 
