@@ -72,6 +72,6 @@ class Bag
             $objGateway->send($arrTokens);
         }
 
-        return $blnHasError;
+        return !$blnHasError;
     }
 }
