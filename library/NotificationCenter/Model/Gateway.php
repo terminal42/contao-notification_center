@@ -53,6 +53,11 @@ class Gateway extends \Model
         // Find class
         $strClass = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$this->type];
         if (!class_exists($strClass)) {
+            \System::log(sprintf(
+                    'Could not find gateway class "%s".',
+                    $strClass),
+                __METHOD__,
+                TL_ERROR);
             return null;
         }
 
@@ -64,6 +69,11 @@ class Gateway extends \Model
                 $this
             );
         } catch (\Exception $e) {
+            \System::log(sprintf(
+                    'There was a general error building the gateway: "%s".',
+                    $e->getMessage()),
+                __METHOD__,
+                TL_ERROR);
             return null;
         }
     }

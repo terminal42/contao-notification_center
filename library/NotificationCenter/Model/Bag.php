@@ -54,12 +54,22 @@ class Bag extends \Model
         // Find class
         $strClass = $GLOBALS['NOTIFICATION_CENTER']['BAGTYPE'][$this->type];
         if (!class_exists($strClass)) {
+            \System::log(sprintf(
+                    'Could not find bag type class "%s".',
+                    $strClass),
+                __METHOD__,
+                TL_ERROR);
             return null;
         }
 
         try {
             return new $strClass($this);
         } catch (\Exception $e) {
+            \System::log(sprintf(
+                    'There was a general error building the bag type: "%s".',
+                    $e->getMessage()),
+                __METHOD__,
+                TL_ERROR);
             return null;
         }
     }
