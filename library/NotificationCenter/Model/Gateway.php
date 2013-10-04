@@ -28,6 +28,7 @@
 namespace NotificationCenter\Model;
 
 use NotificationCenter\BagType\BagTypeInterface;
+use NotificationCenter\Gateway\GatewayInterface;
 
 class Gateway extends \Model
 {
@@ -62,12 +63,23 @@ class Gateway extends \Model
         }
 
         try {
-            return new $strClass(
+            $objGateway = new $strClass(
                 $objBagType,
                 $objNotification,
                 $objLanguage,
                 $this
             );
+
+            if (!$objGateway instanceof GatewayInterface) {
+                \System::log(sprintf(
+                        'The gateway class "%s" must be an instance of GatewayInterface.',
+                        $strClass),
+                    __METHOD__,
+                    TL_ERROR);
+                return null;
+            }
+
+            return $objGateway;
         } catch (\Exception $e) {
             \System::log(sprintf(
                     'There was a general error building the gateway: "%s".',

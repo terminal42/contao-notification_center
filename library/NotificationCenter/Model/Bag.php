@@ -27,6 +27,8 @@
 
 namespace NotificationCenter\Model;
 
+use NotificationCenter\BagType\BagTypeInterface;
+
 class Bag extends \Model
 {
 
@@ -63,7 +65,18 @@ class Bag extends \Model
         }
 
         try {
-            return new $strClass($this);
+            $objBagType = new $strClass($this);
+
+            if (!$objBagType instanceof BagTypeInterface) {
+                \System::log(sprintf(
+                        'The bag type class "%s" must be an instance of BagTypeInterface.',
+                        $strClass),
+                    __METHOD__,
+                    TL_ERROR);
+                return null;
+            }
+
+            return $objBagType;
         } catch (\Exception $e) {
             \System::log(sprintf(
                     'There was a general error building the bag type: "%s".',
