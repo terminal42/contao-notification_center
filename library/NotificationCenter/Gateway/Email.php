@@ -17,7 +17,8 @@ class Email extends Base implements GatewayInterface
      */
     public function validateToken($strToken, $varValue)
     {
-
+        // @todo
+        return true;
     }
 
     /**
@@ -25,7 +26,13 @@ class Email extends Base implements GatewayInterface
      */
     public function modifyDca(&$arrDca)
     {
-        $arrDca['palettes']['default'] .= 'text,html';
+        $strPalette = 'email_subject,email_mode,email_text';
+
+        if ($this->objLanguage->email_mode == 'textAndHtml') {
+            $strPalette .= ',email_html';
+        }
+
+        $arrDca['palettes']['default'] .= $strPalette;
     }
 
     /**
@@ -33,6 +40,14 @@ class Email extends Base implements GatewayInterface
      */
     public function send($arrTokens)
     {
+        $objMail = new \Email();
+        $objMail->subject   = \String::parseSimpleTokens($this->objLanguage->email_subject, $arrTokens);
+        $objMail->text      = \String::parseSimpleTokens($this->objLanguage->email_text, $arrTokens);
 
+        if ($this->objLanguage->email_mode == 'textAndHtml') {
+            $objMail->html = \String::parseSimpleTokens($this->objLanguage->email_mode, $arrTokens);
+        }
+
+        $objMail->sendTo(\String::parseSimpleTokens($this->objLanguage->recipients, $arrTokens));
     }
 }

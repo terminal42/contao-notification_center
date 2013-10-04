@@ -31,6 +31,16 @@
 $GLOBALS['TL_LANG']['tl_nc_language']['language']                = array('Language', 'Please select a language.');
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']                = array('Fallback', 'Activate this checkbox if this language should be your fallback.');
 $GLOBALS['TL_LANG']['tl_nc_language']['recipients']              = array('Recipients', 'Please enter the recipients in this field. Use the help wizard to see the available simple tokens.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_subject']           = array('Subject', 'Please enter the subject for the e-mail.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']              = array('Mode', 'Choose the mode you would like to be used for this email.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_text']              = array('Raw text', 'Please enter the text.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_html']              = array('HTML', 'Please enter the HTML.');
+
+/**
+ * Reference
+ */
+$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textOnly']     = 'Text only';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textAndHtml']  = 'HTML and text';
 
 /**
  * Buttons
