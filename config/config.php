@@ -45,6 +45,14 @@ array_insert($GLOBALS['BE_MOD'], 3, array
     )
 ));
 
+/**
+ * Models
+ */
+$GLOBALS['TL_MODELS']['tl_nc_bag']                      = 'NotificationCenter\Model\Bag';
+$GLOBALS['TL_MODELS']['tl_nc_gateway']                  = 'NotificationCenter\Model\Gateway';
+$GLOBALS['TL_MODELS']['tl_nc_language']                 = 'NotificationCenter\Model\Language';
+$GLOBALS['TL_MODELS']['tl_nc_notification']             = 'NotificationCenter\Model\Notification';
+
 
 /**
  * Notification Center Gateways
