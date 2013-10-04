@@ -28,7 +28,6 @@
 namespace NotificationCenter;
 
 use NotificationCenter\Model\Bag as BagModel;
-use NotificationCenter\Model\Notification;
 
 class Bag
 {
