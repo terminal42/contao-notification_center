@@ -129,7 +129,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'exclude'                 => true,
             'inputType'               => 'select',
             'options'                 => \System::getLanguages(),
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50', 'unique'=>true),
+            'eval'                    => array('mandatory'=>true, 'unique'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(5) NOT NULL default ''"
         ),
         'fallback' => array
@@ -137,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['fallback'],
             'exclude'                 => true,
             'inputType'               => 'checkbox',
-            'eval'                    => array('tl_class'=>'w50 m12', 'fallback'=>true),
+            'eval'                    => array('fallback'=>true, 'tl_class'=>'w50 m12'),
             'sql'                     => "char(1) NOT NULL default ''"
         ),
         'recipients' => array
