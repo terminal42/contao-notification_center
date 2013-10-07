@@ -54,7 +54,7 @@ class Notification extends \Model
     public function buildNotificationType()
     {
         // Find class
-        $strClass = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'][$this->type];
+        $strClass = static::findClass($this->type);
         if (!class_exists($strClass)) {
             \System::log(sprintf(
                     'Could not find notification type class "%s".',
@@ -85,5 +85,23 @@ class Notification extends \Model
                 TL_ERROR);
             return null;
         }
+    }
+
+    /**
+     * Find notification class
+     * @param   string Type
+     * @return  string Class
+     */
+    public static function findClass($strType)
+    {
+        foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $arrGroup) {
+            foreach ($arrGroup as $strClass) {
+                if ($strClass == $strType) {
+                    return $strClass;
+                }
+            }
+        }
+
+        return '';
     }
 }

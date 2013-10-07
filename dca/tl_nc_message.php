@@ -135,7 +135,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             'exclude'                 => true,
             'search'                  => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
+            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'gateway' => array

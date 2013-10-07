@@ -58,8 +58,8 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
         ),
         'label' => array
         (
-            'fields'                  => array('title', 'type'),
-            'format'                  => '%s <span style="color:#ccc;">[%s]</span>'
+            'fields'                  => array('title'),
+            'label_callback'          => array('NotificationCenter\tl_nc_notification', 'getLabel')
         ),
         'global_operations' => array
         (

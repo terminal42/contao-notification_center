@@ -37,12 +37,45 @@ class tl_nc_notification extends \Backend
     {
         $arrNotificationTypes = array();
 
-        if (is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']) && !empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION'])) {
-            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $strGroup => $arrType) {
-                $arrNotificationTypes[$strGroup] = array_keys($arrType);
+        if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'])) {
+            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $k=>$v) {
+                foreach (array_keys($v) as $kk) {
+                    $arrNotificationTypes[$k][] = $kk;
+                }
             }
         }
 
         return $arrNotificationTypes;
     }
+
+    /**
+     * Label callback
+     * @param   array
+     * @param   string
+     * @return  string
+     */
+    public function getLabel($arrRow, $strLabel)
+    {
+        $strGroup = '';
+        $strType = '';
+
+        if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'])) {
+            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $k=>$v) {
+                foreach (array_keys($v) as $kk) {
+
+                    if ($kk == $arrRow['type']) {
+                        $strGroup = $GLOBALS['TL_LANG']['tl_nc_notification']['type'][$k];
+                        $strType  = $GLOBALS['TL_LANG']['tl_nc_notification']['type'][$kk][0];
+                    }
+                }
+            }
+        }
+
+        if ($strGroup && $strType) {
+            $strLabel .= ' <span style="color:#ccc;">(' . $strGroup . ': ' . $strType . ')';
+        }
+
+        return $strLabel;
+    }
+
 }
