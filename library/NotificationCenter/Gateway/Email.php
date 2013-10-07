@@ -48,6 +48,14 @@ class Email extends Base implements GatewayInterface
             $objMail->html = \String::parseSimpleTokens($this->objLanguage->email_mode, $arrTokens);
         }
 
+        $arrAttachments = $this->getAttachments($arrTokens);
+
+        if (!empty($arrAttachments)) {
+            foreach ($arrAttachments as $strFile) {
+                $objMail->attachFile($strFile);
+            }
+        }
+
         $objMail->sendTo(\String::parseSimpleTokens($this->objLanguage->recipients, $arrTokens));
     }
 }
