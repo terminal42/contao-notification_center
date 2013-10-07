@@ -79,6 +79,42 @@ class Base
     }
 
     /**
+     * Gets the bag type
+     * @return  BagTypeInterface
+     */
+    public function getBagType()
+    {
+        return $this->objBagType;
+    }
+
+    /**
+     * Gets the notification
+     * @return  BagTypeInterface
+     */
+    public function getNotification()
+    {
+        return $this->objNotification;
+    }
+
+    /**
+     * Gets the language
+     * @return  Language
+     */
+    public function getLanguage()
+    {
+        return $this->objLanguage;
+    }
+
+    /**
+     * Gets the gateway
+     * @return  Gateway
+     */
+    public function getGateway()
+    {
+        return $this->objGateway;
+    }
+
+    /**
      * Gets an array of valid attachments
      * @param   array Tokens
      * @return  array
