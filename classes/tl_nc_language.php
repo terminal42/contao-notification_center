@@ -137,4 +137,60 @@ window.addEvent('domready', function() {
 
         return '';
     }
+
+    /**
+     * Initialize the auto suggester for attachments
+     * @param   \DataContainer
+     * @return  string
+     */
+    public function initAutoSuggesterForAttachments(\DataContainer $dc)
+    {
+        $arrTokens = array();
+
+        foreach ($this->objGateway->getBagType()->getFileTokens() as $strToken) {
+            $arrTokens[] = array
+            (
+                'value'     => $strToken,
+                'content'   => $this->objGateway->getBagType()->getTokenDescription($strToken)
+            );
+        }
+
+
+        $GLOBALS['TL_MOOTOOLS'][] = "
+<script>
+window.addEvent('domready', function() {
+	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrTokens) . ");
+});
+</script>";
+
+        return '';
+    }
+
+    /**
+     * Initialize the auto suggester for text
+     * @param   \DataContainer
+     * @return  string
+     */
+    public function initAutoSuggesterForText(\DataContainer $dc)
+    {
+        $arrTokens = array();
+
+        foreach ($this->objGateway->getBagType()->getTextTokens() as $strToken) {
+            $arrTokens[] = array
+            (
+                'value'     => $strToken,
+                'content'   => $this->objGateway->getBagType()->getTokenDescription($strToken)
+            );
+        }
+
+
+        $GLOBALS['TL_MOOTOOLS'][] = "
+<script>
+window.addEvent('domready', function() {
+	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrTokens) . ");
+});
+</script>";
+
+        return '';
+    }
 }
