@@ -36,7 +36,7 @@ class Notification extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_nc_notification';
+    protected static $strTable = 'tl_nc_message';
 
     /**
      * Constructs the gateway

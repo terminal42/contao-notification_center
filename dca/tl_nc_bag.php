@@ -76,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_nc_bag'] = array
             'edit' => array
             (
                 'label'               => &$GLOBALS['TL_LANG']['tl_nc_bag']['edit'],
-                'href'                => 'table=tl_nc_notification',
+                'href'                => 'table=tl_nc_message',
                 'icon'                => 'edit.gif'
             ),
             'editheader' => array

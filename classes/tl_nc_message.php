@@ -27,7 +27,7 @@
 
 namespace NotificationCenter;
 
-class tl_nc_notification extends \Backend
+class tl_nc_message extends \Backend
 {
     /**
      * Available languages
