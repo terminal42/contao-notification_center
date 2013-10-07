@@ -64,7 +64,8 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'label' => array
         (
             'fields'                  => array('language'),
-            'format'                  => '%s'
+            'format'                  => '%s',
+            'label_callback'          => array('NotificationCenter\tl_nc_language', 'getLabel')
         ),
         'global_operations' => array
         (
