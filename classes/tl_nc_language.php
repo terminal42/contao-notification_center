@@ -47,20 +47,20 @@ class tl_nc_language extends \Backend
             return;
         }
 
-        if (($objNotificationModel = $objLanguageModel->getRelated('pid')) === null) {
+        if (($objMessageModel = $objLanguageModel->getRelated('pid')) === null) {
             return;
         }
-        if (($objBagModel = $objNotificationModel->getRelated('pid')) === null) {
+        if (($objNotificationModel = $objMessageModel->getRelated('pid')) === null) {
             return;
         }
         if (($objGatewayModel = $objNotificationModel->getRelated('gateway')) === null) {
             return;
         }
-        if (($objBagType = $objBagModel->buildBagType()) === null) {
+        if (($objNotificationType = $objNotificationModel->buildNotificationType()) === null) {
             return;
         }
 
-        $this->objGateway = $objGatewayModel->buildGateway($objBagType, $objNotificationModel, $objLanguageModel);
+        $this->objGateway = $objGatewayModel->buildGateway($objNotificationType, $objMessageModel, $objLanguageModel);
         $this->objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
     }
 
@@ -122,11 +122,11 @@ class tl_nc_language extends \Backend
     {
         $arrTokens = array();
 
-        foreach ($this->objGateway->getBagType()->getRecipientTokens() as $strToken) {
+        foreach ($this->objGateway->getNotificationType()->getRecipientTokens() as $strToken) {
             $arrTokens[] = array
             (
                 'value'     => $strToken,
-                'content'   => $this->objGateway->getBagType()->getTokenDescription($strToken)
+                'content'   => $this->objGateway->getNotificationType()->getTokenDescription($strToken)
             );
         }
 
@@ -150,11 +150,11 @@ window.addEvent('domready', function() {
     {
         $arrTokens = array();
 
-        foreach ($this->objGateway->getBagType()->getFileTokens() as $strToken) {
+        foreach ($this->objGateway->getNotificationType()->getFileTokens() as $strToken) {
             $arrTokens[] = array
             (
                 'value'     => $strToken,
-                'content'   => $this->objGateway->getBagType()->getTokenDescription($strToken)
+                'content'   => $this->objGateway->getNotificationType()->getTokenDescription($strToken)
             );
         }
 
@@ -178,11 +178,11 @@ window.addEvent('domready', function() {
     {
         $arrTokens = array();
 
-        foreach ($this->objGateway->getBagType()->getTextTokens() as $strToken) {
+        foreach ($this->objGateway->getNotificationType()->getTextTokens() as $strToken) {
             $arrTokens[] = array
             (
                 'value'     => $strToken,
-                'content'   => $this->objGateway->getBagType()->getTokenDescription($strToken)
+                'content'   => $this->objGateway->getNotificationType()->getTokenDescription($strToken)
             );
         }
 

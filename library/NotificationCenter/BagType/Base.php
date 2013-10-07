@@ -25,26 +25,26 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\BagType;
+namespace NotificationCenter\NotificationType;
 
 
-use NotificationCenter\Model\Bag;
+use NotificationCenter\Model\Notification;
 
 class Base
 {
     /**
-     * The bag model
-     * @var Bag
+     * The notification model
+     * @var Notification
      */
-    protected $objBag = null;
+    protected $objNotification = null;
 
     /**
-     * Set the bag model
-     * @param   Bag
+     * Set the notification model
+     * @param   Notification
      */
-    public function __construct(Bag $objBag)
+    public function __construct(Notification $objNotification)
     {
-        $this->objBag = $objBag;
+        $this->objNotification = $objNotification;
         \System::loadLanguageFile('tokens');
     }
 
@@ -53,6 +53,6 @@ class Base
      */
     public function getTokenDescription($strToken)
     {
-        return $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][$this->objBag->type][$strToken] ?: '';
+        return $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][$this->objNotification->type][$strToken] ?: '';
     }
 }

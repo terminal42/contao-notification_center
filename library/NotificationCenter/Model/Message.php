@@ -27,7 +27,7 @@
 
 namespace NotificationCenter\Model;
 
-use NotificationCenter\BagType\BagTypeInterface;
+use NotificationCenter\NotificationType\NotificationTypeInterface;
 
 class Message extends \Model
 {
@@ -40,11 +40,11 @@ class Message extends \Model
 
     /**
      * Constructs the gateway
-     * @param   BagTypeInterface
+     * @param   NotificationTypeInterface
      * @param   string Language
      * @return  GatewayInterface|null
      */
-    public function buildGateway(BagTypeInterface $objBagType, $strLanguage)
+    public function buildGateway(NotificationTypeInterface $objNotificationType, $strLanguage)
     {
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
             \System::log(sprintf(
@@ -65,16 +65,16 @@ class Message extends \Model
             return null;
         }
 
-        return $objGatewayModel->buildGateway($objBagType, $this, $objLanguage);
+        return $objGatewayModel->buildGateway($objNotificationType, $this, $objLanguage);
     }
 
     /**
-     * Find by Bag
-     * @param   Bag
+     * Find by notification
+     * @param   Notification
      * @return  Message|null
      */
-    public static function findByBag(Bag $objBag, array $arrOptions=array())
+    public static function findByNotification(Notification $objNotification, array $arrOptions=array())
     {
-        return static::findByPid($objBag->id);
+        return static::findByPid($objNotification->id);
     }
 }

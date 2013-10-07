@@ -25,10 +25,10 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\BagType;
+namespace NotificationCenter\NotificationType;
 
 
-interface BagTypeInterface
+interface NotificationTypeInterface
 {
     /**
      * Returns the tokens that contain valid recipient data (e.g. an email or a phone number)

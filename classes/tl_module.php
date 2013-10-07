@@ -30,26 +30,26 @@ namespace NotificationCenter;
 class tl_module extends \Backend
 {
     /**
-     * Get bag choices
+     * Get notification choices
      * @param   \DataContainer
      * @return  array
      */
-    public function getBagChoices(\DataContainer $dc)
+    public function getNotificationChoices(\DataContainer $dc)
     {
         $strWhere = '';
         $arrValues = array();
-        $arrTypesToLimit = $GLOBALS['TL_DCA']['tl_module']['fields'][$dc->field]['eval']['ncBagChoices'][$dc->activeRecord->type];
+        $arrTypesToLimit = $GLOBALS['TL_DCA']['tl_module']['fields'][$dc->field]['eval']['ncNotificationChoices'][$dc->activeRecord->type];
         if (is_array($arrTypesToLimit) && empty($arrTypesToLimit)) {
             $strWhere .= substr(str_repeat('type=? OR ', count($arrTypesToLimit)), 0, -4);
             $arrValues = $arrTypesToLimit;
         }
 
         $arrChoices = array();
-        $objBags = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')
+        $objNotifications = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')
                                            ->execute($arrValues);
 
-        while ($objBags->next()) {
-            $arrChoices[$objBags->id] = $objBags->title;
+        while ($objNotifications->next()) {
+            $arrChoices[$objNotifications->id] = $objNotifications->title;
         }
 
         return $arrChoices;

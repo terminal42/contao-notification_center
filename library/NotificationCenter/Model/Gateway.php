@@ -27,7 +27,7 @@
 
 namespace NotificationCenter\Model;
 
-use NotificationCenter\BagType\BagTypeInterface;
+use NotificationCenter\NotificationType\NotificationTypeInterface;
 use NotificationCenter\Gateway\GatewayInterface;
 
 class Gateway extends \Model
@@ -41,13 +41,13 @@ class Gateway extends \Model
 
     /**
      * Builds the gateway
-     * @param   BagTypeInterface
+     * @param   NotificationTypeInterface
      * @param   Message
      * @param   Language
      * @return  GatewayInterface|null
      */
     public function buildGateway(
-        BagTypeInterface $objBagType,
+        NotificationTypeInterface $objNotificationType,
         Message $objMessage,
         Language $objLanguage)
     {
@@ -64,7 +64,7 @@ class Gateway extends \Model
 
         try {
             $objGateway = new $strClass(
-                $objBagType,
+                $objNotificationType,
                 $objMessage,
                 $objLanguage,
                 $this

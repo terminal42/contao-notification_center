@@ -45,7 +45,7 @@ interface GatewayInterface
     public function modifyDca(&$arrDca);
 
     /**
-     * Sends the notification bag
+     * Sends the notification notification
      * @param   array The tokens in key => value format
      */
     public function send($arrTokens);

@@ -7,20 +7,20 @@ Contao developers to send notifications via their extensions.
 If we can get this extension to be widely used, users will quickly get used
 to the way one can configure the notification center.
 
-## Adding your own bag type
+## Adding your own notification type
 
 ```
 // config.php
-$GLOBALS['NOTIFICATION_CENTER']['BAGTYPE']['iso_order_confirmation'] = 'Isotope\NotificationCenter\BagType\OrderConfirmation';
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']['iso_order_confirmation'] = 'Isotope\NotificationCenter\NotificationType\OrderConfirmation';
 
 // OrderConfirmation.php
-namespace Isotope\NotificationCenter\BagType;
+namespace Isotope\NotificationCenter\NotificationType;
 
-use NotificationCenter\BagType\BagTypeInterface;
-use NotificationCenter\BagType\Base;
+use NotificationCenter\NotificationType\NotificationTypeInterface;
+use NotificationCenter\NotificationType\Base;
 
 
-class OrderConfirmation extends Base implements BagTypeInterface
+class OrderConfirmation extends Base implements NotificationTypeInterface
 {
     /**
      * {@inheritdoc}
@@ -57,7 +57,7 @@ class OrderConfirmation extends Base implements BagTypeInterface
 ```
 
 
-## Sending a notification bag
+## Sending a notification
 
 ```
-NotificationCenter\Bag::send($intNotificationBagId, $arrTokens);
+NotificationCenter\Notification::send($intNotificationId, $arrTokens);

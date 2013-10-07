@@ -28,8 +28,8 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_nc_notification']['title']                   = array('Title', 'Please enter a title for this notification bag.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Type', 'Please select a bag type for this notification bag.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['title']                   = array('Title', 'Please enter a title for this notification.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Type', 'Please select a type for this notification.');
 
 /**
  * Reference
@@ -39,12 +39,12 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']           = 'Standard
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_nc_notification']['new']                     = array('New notification bag', 'Create a new notification bag.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['edit']                    = array('Manage notifications', 'Manage notifications for notification bag ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['editheader']              = array('Edit notification bag', 'Edit notification bag ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['copy']                    = array('Copy notification bag', 'Copy notification bag ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['delete']                  = array('Delete notification bag', 'Delete notification bag ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('Notification bag details', 'Show details for notification bag ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['new']                     = array('New notification', 'Create a new notification.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['edit']                    = array('Manage notifications', 'Manage notifications for notification ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['editheader']              = array('Edit notification', 'Edit notification ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['copy']                    = array('Copy notification', 'Copy notification ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['delete']                  = array('Delete notification', 'Delete notification ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('Notification details', 'Show details for notification ID %s.');
 
 /**
  * Legends

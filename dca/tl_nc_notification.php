@@ -139,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
-            'options_callback'        => array('NotificationCenter\tl_nc_notification', 'getBagTypes'),
+            'options_callback'        => array('NotificationCenter\tl_nc_notification', 'getNotificationTypes'),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
             'eval'                    => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"

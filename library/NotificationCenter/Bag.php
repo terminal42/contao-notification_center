@@ -27,24 +27,24 @@
 
 namespace NotificationCenter;
 
-use NotificationCenter\Model\Bag as BagModel;
+use NotificationCenter\Model\Notification as NotificationModel;
 
-class Bag
+class Notification
 {
     /**
-     * Sends a notification bag
-     * @param   int The notification bag ID
+     * Sends a notification
+     * @param   int The notification ID
      * @param   array The tokens
      * @param   string The language (optional)
      * @return  boolean
      */
-    public static function send($intBagId, $arrTokens, $strLanguage='')
+    public static function send($intNotificationId, $arrTokens, $strLanguage='')
     {
-        // Check if this is a valid Bag model id
-        if (($objBag = BagModel::findByPk($intBagId)) === null) {
+        // Check if this is a valid Notification model id
+        if (($objNotification = NotificationModel::findByPk($intNotificationId)) === null) {
             \System::log(sprintf(
-                    'Could not find notification bag ID "%s".',
-                    $intBagId
+                    'Could not find notification notification ID "%s".',
+                    $intNotificationId
                     ),
                 __METHOD__,
                 TL_ERROR);
@@ -52,21 +52,21 @@ class Bag
         }
 
         // Check if there are valid notifications
-        if (($objNotifications = $objBag->getNotifications()) === null) {
+        if (($objNotifications = $objNotification->getNotifications()) === null) {
             \System::log(sprintf(
-                    'Could not find any notifications for notification bag ID "%s".',
-                    $intBagId
+                    'Could not find any notifications for notification notification ID "%s".',
+                    $intNotificationId
                 ),
                 __METHOD__,
                 TL_ERROR);
             return false;
         }
 
-        // Check if there is a valid bag type
-        if (($objBagType = $objBag->buildBagType()) === null) {
+        // Check if there is a valid notification type
+        if (($objNotificationType = $objNotification->buildNotificationType()) === null) {
             \System::log(sprintf(
-                    'Could not build bag type for notification bag ID "%s".',
-                    $intBagId
+                    'Could not build type for notification ID "%s".',
+                    $intNotificationId
                 ),
                 __METHOD__,
                 TL_ERROR);
@@ -83,7 +83,7 @@ class Bag
         while ($objNotifications->next()) {
             $objNotification = $objNotifications->current();
 
-            if (($objGateway = $objNotification->buildGateway($objBagType, $strLanguage)) == null) {
+            if (($objGateway = $objNotification->buildGateway($objNotificationType, $strLanguage)) == null) {
                 \System::log(sprintf(
                         'Could not build gateway for notification ID "%s".',
                         $objNotification->id

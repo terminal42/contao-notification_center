@@ -30,19 +30,19 @@ namespace NotificationCenter;
 class tl_nc_notification extends \Backend
 {
     /**
-     * Get all registered bag types
+     * Get all registered notification types
      * @return  array
      */
-    public function getBagTypes()
+    public function getNotificationTypes()
     {
-        $arrBagTypes = array();
+        $arrNotificationTypes = array();
 
-        if (is_array($GLOBALS['NOTIFICATION_CENTER']['BAGTYPE']) && !empty($GLOBALS['NOTIFICATION_CENTER']['BAGTYPE'])) {
-            foreach ($GLOBALS['NOTIFICATION_CENTER']['BAGTYPE'] as $strGroup => $arrType) {
-                $arrBagTypes[$strGroup] = array_keys($arrType);
+        if (is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']) && !empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION'])) {
+            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $strGroup => $arrType) {
+                $arrNotificationTypes[$strGroup] = array_keys($arrType);
             }
         }
 
-        return $arrBagTypes;
+        return $arrNotificationTypes;
     }
 }

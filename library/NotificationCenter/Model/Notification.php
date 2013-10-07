@@ -27,9 +27,9 @@
 
 namespace NotificationCenter\Model;
 
-use NotificationCenter\BagType\BagTypeInterface;
+use NotificationCenter\NotificationType\NotificationTypeInterface;
 
-class Bag extends \Model
+class Notification extends \Model
 {
 
     /**
@@ -44,20 +44,20 @@ class Bag extends \Model
      */
     public function getMessages()
     {
-        return Message::findByBag($this);
+        return Message::findByNotification($this);
     }
 
     /**
-     * Constructs the bag type
-     * @return  BagTypeInterface|null
+     * Constructs the notification type
+     * @return  NotificationTypeInterface|null
      */
-    public function buildBagType()
+    public function buildNotificationType()
     {
         // Find class
-        $strClass = $GLOBALS['NOTIFICATION_CENTER']['BAGTYPE'][$this->type];
+        $strClass = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'][$this->type];
         if (!class_exists($strClass)) {
             \System::log(sprintf(
-                    'Could not find bag type class "%s".',
+                    'Could not find notification type class "%s".',
                     $strClass),
                 __METHOD__,
                 TL_ERROR);
@@ -65,21 +65,21 @@ class Bag extends \Model
         }
 
         try {
-            $objBagType = new $strClass($this);
+            $objNotificationType = new $strClass($this);
 
-            if (!$objBagType instanceof BagTypeInterface) {
+            if (!$objNotificationType instanceof NotificationTypeInterface) {
                 \System::log(sprintf(
-                        'The bag type class "%s" must be an instance of BagTypeInterface.',
+                        'The notification type class "%s" must be an instance of NotificationTypeInterface.',
                         $strClass),
                     __METHOD__,
                     TL_ERROR);
                 return null;
             }
 
-            return $objBagType;
+            return $objNotificationType;
         } catch (\Exception $e) {
             \System::log(sprintf(
-                    'There was a general error building the bag type: "%s".',
+                    'There was a general error building the notification type: "%s".',
                     $e->getMessage()),
                 __METHOD__,
                 TL_ERROR);

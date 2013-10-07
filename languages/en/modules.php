@@ -29,5 +29,5 @@
  * Backend Modules
  */
 $GLOBALS['TL_LANG']['MOD']['notification_center']       = 'Notification Center';
-$GLOBALS['TL_LANG']['MOD']['nc_bags']                   = array('Notification bags', 'Manage notification bags.');
+$GLOBALS['TL_LANG']['MOD']['nc_notifications']          = array('Notifications', 'Manage notifications.');
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']               = array('Gateways', 'Manage gateways');

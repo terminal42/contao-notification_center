@@ -27,7 +27,7 @@
 
 namespace NotificationCenter\Gateway;
 
-use NotificationCenter\BagType\BagTypeInterface;
+use NotificationCenter\NotificationType\NotificationTypeInterface;
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
@@ -35,10 +35,10 @@ use NotificationCenter\Model\Message;
 class Base
 {
     /**
-     * The notification bag type
-     * @var BagTypeInterface
+     * The notification type
+     * @var NotificationTypeInterface
      */
-    protected $objBagType = null;
+    protected $objNotificationType = null;
 
     /**
      * The notification message
@@ -59,37 +59,37 @@ class Base
     protected $objGateway = null;
 
     /**
-     * Set notification bag type and models
-     * @param   BagTypeInterface
+     * Set notification type and models
+     * @param   NotificationTypeInterface
      * @param   Notification
      * @param   Language
      * @param   Gateway
      */
     public function __construct(
-        BagTypeInterface $objBagType,
+        NotificationTypeInterface $objNotificationType,
         Message $objMessage,
         Language $objLanguage,
         Gateway $objGateway
     )
     {
-        $this->objBagType           = $objBagType;
+        $this->objNotificationType  = $objNotificationType;
         $this->objMessage           = $objMessage;
         $this->objLanguage          = $objLanguage;
         $this->objGateway           = $objGateway;
     }
 
     /**
-     * Gets the bag type
-     * @return  BagTypeInterface
+     * Gets the notification type
+     * @return  NotificationTypeInterface
      */
-    public function getBagType()
+    public function getNotificationType()
     {
-        return $this->objBagType;
+        return $this->objNotificationType;
     }
 
     /**
      * Gets the Message
-     * @return  BagTypeInterface
+     * @return  NotificationTypeInterface
      */
     public function getMessage()
     {

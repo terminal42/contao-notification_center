@@ -29,12 +29,12 @@
  * Fields
  */
 
-$GLOBALS['TL_DCA']['tl_module']['fields']['nc_bag'] = array
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'] = array
 (
-    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['nc_bag'],
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['nc_notification'],
     'exclude'                   => true,
     'inputType'                 => 'select',
-    'options_callback'          => array('NotificationCenter\tl_module', 'getBagChoices'),
+    'options_callback'          => array('NotificationCenter\tl_module', 'getNotificationChoices'),
     'eval'                      => array('chosen'=>true, 'tl_class'=>'w50', 'mandatory'=>true),
     'sql'                       => "int(10) unsigned NOT NULL default '0'"
 );
