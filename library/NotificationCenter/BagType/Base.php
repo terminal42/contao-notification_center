@@ -45,5 +45,14 @@ class Base
     public function __construct(Bag $objBag)
     {
         $this->objBag = $objBag;
+        \System::loadLanguageFile('tokens');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTokenDescription($strToken)
+    {
+        return $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][$this->objBag->type][$strToken] ?: '';
     }
 }
