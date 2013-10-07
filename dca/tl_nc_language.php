@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                     => '{general_legend},language,fallback,recipients;{gateway_legend},',
+        'default'                     => '{general_legend},language,fallback,recipients;{attachments_legend},attachments;{gateway_legend},',
     ),
 
     // Fields
@@ -150,6 +150,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'recipients' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['recipients'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'attachments' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['attachments'],
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true),
