@@ -57,7 +57,7 @@ class tl_nc_language extends \Backend
 
     /**
      * Generate a list for the dcaWizard displaying the languages
-     * @param object
+     * @param   \Database_Result
      * @param string
      * @return string
      */
