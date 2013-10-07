@@ -32,10 +32,16 @@ use NotificationCenter\Model\Language;
 class tl_nc_language extends \Backend
 {
     /**
-     * Loads gateway specific DCA data
+     * Gateway
+     * @var GatewayInterface
+     */
+    protected $objGateway = null;
+
+    /**
+     * Loads gateway
      * @param   \DataContainer
      */
-    public function loadGatewayDca(\DataContainer $dc)
+    public function loadGateway(\DataContainer $dc)
     {
         $objLanguageModel = Language::findByPk($dc->id);
         if (($objNotificationModel = $objLanguageModel->getRelated('pid')) === null) {
@@ -51,8 +57,8 @@ class tl_nc_language extends \Backend
             return;
         }
 
-        $objGateway = $objGatewayModel->buildGateway($objBagType, $objNotificationModel, $objLanguageModel);
-        $objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
+        $this->objGateway = $objGatewayModel->buildGateway($objBagType, $objNotificationModel, $objLanguageModel);
+        $this->objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
     }
 
     /**

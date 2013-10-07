@@ -39,7 +39,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'enableVersioning'            => true,
         'onload_callback'             => array
         (
-            array('NotificationCenter\tl_nc_language', 'loadGatewayDca')
+            array('NotificationCenter\tl_nc_language', 'loadGateway')
         ),
         'sql' => array
         (
