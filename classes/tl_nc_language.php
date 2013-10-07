@@ -120,6 +120,10 @@ class tl_nc_language extends \Backend
      */
     public function initAutoSuggesterForRecipients(\DataContainer $dc)
     {
+        if (!$this->objGateway) {
+            return '';
+        }
+
         $arrTokens = array();
 
         foreach ($this->objGateway->getNotificationType()->getRecipientTokens() as $strToken) {
@@ -148,6 +152,10 @@ window.addEvent('domready', function() {
      */
     public function initAutoSuggesterForAttachments(\DataContainer $dc)
     {
+        if (!$this->objGateway) {
+            return '';
+        }
+
         $arrTokens = array();
 
         foreach ($this->objGateway->getNotificationType()->getFileTokens() as $strToken) {
@@ -176,6 +184,10 @@ window.addEvent('domready', function() {
      */
     public function initAutoSuggesterForText(\DataContainer $dc)
     {
+        if (!$this->objGateway) {
+            return '';
+        }
+
         $arrTokens = array();
 
         foreach ($this->objGateway->getNotificationType()->getTextTokens() as $strToken) {
