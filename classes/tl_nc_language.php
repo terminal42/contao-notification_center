@@ -109,4 +109,32 @@ class tl_nc_language extends \Backend
 
         return $strReturn;
     }
+
+    /**
+     * Initialize the auto suggester for recipients
+     * @param   \DataContainer
+     * @return  string
+     */
+    public function initAutoSuggesterForRecipients(\DataContainer $dc)
+    {
+        $arrTokens = array();
+
+        foreach ($this->objGateway->getBagType()->getRecipientTokens() as $strToken) {
+            $arrTokens[] = array
+            (
+                'value'     => $strToken,
+                'content'   => $this->objGateway->getBagType()->getTokenDescription($strToken)
+            );
+        }
+
+
+        $GLOBALS['TL_MOOTOOLS'][] = "
+<script>
+window.addEvent('domready', function() {
+	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrTokens) . ");
+});
+</script>";
+
+        return '';
+    }
 }

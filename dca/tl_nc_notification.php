@@ -136,10 +136,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'search'                  => true,
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'clr'),
-            'wizard' => array
-            (
-            	array('tl_nc_notification', 'initAutoSuggester')
-            ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'gateway' => array
@@ -168,45 +164,3 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
         )
     )
 );
-
-
-
-class tl_nc_notification extends Backend
-{
-
-	public function initAutoSuggester(DataContainer $dc)
-	{
-		$arrTokens = array(
-			array(
-				'value' => 'cart_html',
-				'content' => 'Adds the HTML cart.'
-			),
-			array(
-				'value' => 'cart_text',
-				'content' => 'Adds the <em>plain text</em> cart.'
-			),
-			array(
-				'value' => 'total_products',
-				'content' => 'Adds the number of <strong>total</strong> products.'
-			),
-			array(
-				'value' => 'foobar',
-				'content' => 'Inserts the "foobar" text.'
-			),
-			array(
-				'value' => 'foobaz',
-				'content' => 'Provides a link to the foobaz page.'
-			)
-		);
-
-
-		$GLOBALS['TL_MOOTOOLS'][] = "
-<script>
-window.addEvent('domready', function() {
-	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrTokens) . ");
-});
-</script>";
-
-		return '';
-	}
-}

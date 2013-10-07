@@ -153,6 +153,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true),
+            'wizard' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForRecipients')
+            ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'attachments' => array
