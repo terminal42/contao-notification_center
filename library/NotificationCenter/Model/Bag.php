@@ -36,7 +36,7 @@ class Bag extends \Model
      * Name of the current table
      * @var string
      */
-    protected static $strTable = 'tl_nc_bag';
+    protected static $strTable = 'tl_nc_notification';
 
     /**
      * Gets the notifications collection

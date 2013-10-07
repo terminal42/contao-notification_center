@@ -34,7 +34,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
     (
         'nc_bags' => array
         (
-            'tables'        => array('tl_nc_bag', 'tl_nc_message', 'tl_nc_language'),
+            'tables'        => array('tl_nc_notification', 'tl_nc_message', 'tl_nc_language'),
             'icon'          => 'system/modules/notification_center/assets/bag.png',
             'stylesheet'    => 'system/modules/notification_center/assets/autosuggester.css',
             'javascript'    => 'system/modules/notification_center/assets/autosuggester.js',
@@ -50,7 +50,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 /**
  * Models
  */
-$GLOBALS['TL_MODELS']['tl_nc_bag']                      = 'NotificationCenter\Model\Bag';
+$GLOBALS['TL_MODELS']['tl_nc_notification']             = 'NotificationCenter\Model\Bag';
 $GLOBALS['TL_MODELS']['tl_nc_gateway']                  = 'NotificationCenter\Model\Gateway';
 $GLOBALS['TL_MODELS']['tl_nc_language']                 = 'NotificationCenter\Model\Language';
 $GLOBALS['TL_MODELS']['tl_nc_message']                  = 'NotificationCenter\Model\Message';

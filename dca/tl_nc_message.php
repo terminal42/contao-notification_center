@@ -34,7 +34,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
     // Config
     'config' => array
     (
-        'ptable'                      => 'tl_nc_bag',
+        'ptable'                      => 'tl_nc_notification',
         'ctable'                      => array('tl_nc_language'),
         'dataContainer'               => 'Table',
         'switchToEdit'                => true,
@@ -121,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
         ),
         'pid' => array
         (
-            'foreignKey'              => 'tl_nc_bag.title',
+            'foreignKey'              => 'tl_nc_notification.title',
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
             'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
         ),

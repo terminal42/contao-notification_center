@@ -27,7 +27,7 @@
 
 namespace NotificationCenter;
 
-class tl_nc_bag extends \Backend
+class tl_nc_notification extends \Backend
 {
     /**
      * Get all registered bag types

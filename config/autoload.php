@@ -38,7 +38,7 @@ NamespaceClassLoader::addClassMap(array
 (
     // DCA Helpers
     'NotificationCenter\tl_module'              => 'system/modules/notification_center/classes/tl_module.php',
-    'NotificationCenter\tl_nc_bag'              => 'system/modules/notification_center/classes/tl_nc_bag.php',
+    'NotificationCenter\tl_nc_notification'     => 'system/modules/notification_center/classes/tl_nc_notification.php',
     'NotificationCenter\tl_nc_language'         => 'system/modules/notification_center/classes/tl_nc_language.php',
     'NotificationCenter\tl_nc_message'          => 'system/modules/notification_center/classes/tl_nc_message.php'
 ));

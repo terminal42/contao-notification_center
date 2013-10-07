@@ -45,7 +45,7 @@ class tl_module extends \Backend
         }
 
         $arrChoices = array();
-        $objBags = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_bag' . $strWhere . ' ORDER BY title')
+        $objBags = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')
                                            ->execute($arrValues);
 
         while ($objBags->next()) {
