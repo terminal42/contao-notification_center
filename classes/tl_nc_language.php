@@ -53,7 +53,7 @@ class tl_nc_language extends \Backend
         if (($objNotificationModel = $objMessageModel->getRelated('pid')) === null) {
             return;
         }
-        if (($objGatewayModel = $objNotificationModel->getRelated('gateway')) === null) {
+        if (($objGatewayModel = $objMessageModel->getRelated('gateway')) === null) {
             return;
         }
         if (($objNotificationType = $objNotificationModel->buildNotificationType()) === null) {
