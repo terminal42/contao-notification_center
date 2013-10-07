@@ -26,7 +26,7 @@ class Email extends Base implements GatewayInterface
      */
     public function modifyDca(&$arrDca)
     {
-        $strPalette = 'email_subject,email_mode,email_text';
+        $strPalette = '{attachments_legend},attachments;{gateway_legend},email_subject,email_mode,email_text';
 
         if ($this->objLanguage->email_mode == 'textAndHtml') {
             $strPalette .= ',email_html';
