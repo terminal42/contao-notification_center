@@ -77,4 +77,29 @@ class Base
         $this->objLanguage          = $objLanguage;
         $this->objGateway           = $objGateway;
     }
+
+    /**
+     * Gets an array of valid attachments
+     * @param   array Tokens
+     * @return  array
+     */
+    protected function getAttachments($arrTokens)
+    {
+        $arrAttachments = array();
+
+        if (!$this->objLanguage->attachments) {
+            return $arrAttachments;
+        }
+
+        $arrAttachmentTokens = trimsplit(',', $this->objLanguage->attachments);
+        foreach ($arrAttachmentTokens as $strToken) {
+            $strFile = \String::parseSimpleTokens($strToken, $arrTokens);
+
+            if (is_file($strFile)) {
+                $arrAttachments[$strToken] = $strFile;
+            }
+        }
+
+        return $arrAttachments;
+    }
 }
