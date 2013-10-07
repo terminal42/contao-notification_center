@@ -43,7 +43,10 @@ class tl_nc_language extends \Backend
      */
     public function loadGateway(\DataContainer $dc)
     {
-        $objLanguageModel = Language::findByPk($dc->id);
+        if (($objLanguageModel = Language::findByPk($dc->id)) === null) {
+            return;
+        }
+
         if (($objNotificationModel = $objLanguageModel->getRelated('pid')) === null) {
             return;
         }
