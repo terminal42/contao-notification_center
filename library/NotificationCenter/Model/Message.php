@@ -29,7 +29,7 @@ namespace NotificationCenter\Model;
 
 use NotificationCenter\BagType\BagTypeInterface;
 
-class Notification extends \Model
+class Message extends \Model
 {
 
     /**
@@ -55,9 +55,9 @@ class Notification extends \Model
             return null;
         }
 
-        if (($objLanguage = Language::findByNotificationAndLanguageOrFallback($this, $strLanguage)) === null) {
+        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $strLanguage)) === null) {
             \System::log(sprintf(
-                    'Could not find matching language or fallback for notification ID "%s" and language "%s".',
+                    'Could not find matching language or fallback for message ID "%s" and language "%s".',
                     $this->id,
                     $strLanguage),
                 __METHOD__,
@@ -71,7 +71,7 @@ class Notification extends \Model
     /**
      * Find by Bag
      * @param   Bag
-     * @return  Notification|null
+     * @return  Message|null
      */
     public static function findByBag(Bag $objBag, array $arrOptions=array())
     {

@@ -42,9 +42,9 @@ class Bag extends \Model
      * Gets the notifications collection
      * @return \Model\Collection
      */
-    public function getNotifications()
+    public function getMessages()
     {
-        return Notification::findByBag($this);
+        return Message::findByBag($this);
     }
 
     /**

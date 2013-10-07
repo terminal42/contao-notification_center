@@ -42,13 +42,13 @@ class Gateway extends \Model
     /**
      * Builds the gateway
      * @param   BagTypeInterface
-     * @param   Notification
+     * @param   Message
      * @param   Language
      * @return  GatewayInterface|null
      */
     public function buildGateway(
         BagTypeInterface $objBagType,
-        Notification $objNotification,
+        Message $objMessage,
         Language $objLanguage)
     {
         // Find class
@@ -65,7 +65,7 @@ class Gateway extends \Model
         try {
             $objGateway = new $strClass(
                 $objBagType,
-                $objNotification,
+                $objMessage,
                 $objLanguage,
                 $this
             );

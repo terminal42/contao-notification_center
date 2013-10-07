@@ -37,19 +37,19 @@ class Language extends \Model
     protected static $strTable = 'tl_nc_language';
 
     /**
-     * Find by notification and language or fallback
-     * @param   Notification
+     * Find by message and language or fallback
+     * @param   Message
      * @param   string Language
      */
-    public static function findByNotificationAndLanguageOrFallback(
-        Notification $objNotification,
+    public static function findByMessageAndLanguageOrFallback(
+        Message $objMessage,
         $strLanguage
     )
     {
         $t = static::$strTable;
 
         $arrColumns = array("$t.pid=? AND ($t.language=? OR $t.fallback=1)");
-        $arrValues = array($objNotification->id, $strLanguage);
+        $arrValues = array($objMessage->id, $strLanguage);
 
         return static::findOneBy($arrColumns, $arrValues);
     }

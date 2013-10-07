@@ -28,18 +28,18 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_nc_message']['title']                   = array('Title', 'Please enter a title for this notification.');
-$GLOBALS['TL_LANG']['tl_nc_message']['gateway']                 = array('Gateway', 'Please select a gateway for this notification.');
+$GLOBALS['TL_LANG']['tl_nc_message']['title']                   = array('Title', 'Please enter a title for this message.');
+$GLOBALS['TL_LANG']['tl_nc_message']['gateway']                 = array('Gateway', 'Please select a gateway for this message.');
 $GLOBALS['TL_LANG']['tl_nc_message']['languages']               = array('Languages', 'Here you can manage the different languages.', 'Manage languages', 'Close');
 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_nc_message']['new']                     = array('New notification', 'Create a new notification.');
-$GLOBALS['TL_LANG']['tl_nc_message']['edit']                    = array('Edit notification', 'Edit notification ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']                    = array('Copy notification', 'Copy notification ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_message']['delete']                  = array('Delete notification', 'Delete notification ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_message']['show']                    = array('Gateway notification', 'Show details for notification ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_message']['new']                     = array('New message', 'Create a new message.');
+$GLOBALS['TL_LANG']['tl_nc_message']['edit']                    = array('Edit message', 'Edit message ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']                    = array('Copy message', 'Copy message ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_message']['delete']                  = array('Delete message', 'Delete message ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_message']['show']                    = array('Gateway message', 'Show details for message ID %s.');
 
 /**
  * Legends
