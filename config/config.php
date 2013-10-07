@@ -35,7 +35,9 @@ array_insert($GLOBALS['BE_MOD'], 3, array
         'nc_bags' => array
         (
             'tables'        => array('tl_nc_bag', 'tl_nc_notification', 'tl_nc_language'),
-            'icon'          => 'system/modules/notification_center/assets/bag.png'
+            'icon'          => 'system/modules/notification_center/assets/bag.png',
+            'stylesheet'    => 'system/modules/notification_center/assets/autosuggester.css',
+            'javascript'    => 'system/modules/notification_center/assets/autosuggester.js',
         ),
         'nc_gateways' => array
         (
