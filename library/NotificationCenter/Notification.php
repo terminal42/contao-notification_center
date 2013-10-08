@@ -51,10 +51,10 @@ class Notification
             return false;
         }
 
-        // Check if there are valid notifications
-        if (($objNotifications = $objNotification->getNotifications()) === null) {
+        // Check if there are valid messages
+        if (($objMessages = $objNotification->getMessages()) === null) {
             \System::log(sprintf(
-                    'Could not find any notifications for notification notification ID "%s".',
+                    'Could not find any notifications for notification message ID "%s".',
                     $intNotificationId
                 ),
                 __METHOD__,
@@ -80,10 +80,10 @@ class Notification
 
         $blnHasError = false;
 
-        while ($objNotifications->next()) {
-            $objNotification = $objNotifications->current();
+        while ($objMessages->next()) {
+            $objMessage = $objMessages->current();
 
-            if (($objGateway = $objNotification->buildGateway($objNotificationType, $strLanguage)) == null) {
+            if (($objGateway = $objMessage->buildGateway($objNotificationType, $strLanguage)) == null) {
                 \System::log(sprintf(
                         'Could not build gateway for notification ID "%s".',
                         $objNotification->id
@@ -92,21 +92,6 @@ class Notification
                     TL_ERROR);
                 $blnHasError = true;
                 break;
-            }
-
-            // Validate tokens
-            foreach ($arrTokens as $strToken => $varValue) {
-                if (!$objGateway->validateToken($strToken, $varValue)) {
-                    \System::log(sprintf(
-                            'Validation of token "%s" with value "%s" failed.',
-                            $strToken,
-                            $varValue
-                        ),
-                        __METHOD__,
-                        TL_ERROR);
-                    $blnHasError = true;
-                    break;
-                }
             }
 
             $objGateway->send($arrTokens);
