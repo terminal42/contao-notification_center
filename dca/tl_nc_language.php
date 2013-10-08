@@ -152,7 +152,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['recipients'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true),
+            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'wizard' => array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForRecipients')
@@ -184,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_subject'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true),
+            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'wizard' => array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
@@ -210,7 +210,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_text'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('tl_class'=>'clr', 'decodeEntities'=>true),
+            'eval'                    => array('tl_class'=>'clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'wizard' => array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
@@ -226,7 +226,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_html'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true),
+            'eval'                    => array('tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true, 'mandatory'=>true),
             'wizard' => array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
