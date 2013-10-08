@@ -58,3 +58,8 @@ $GLOBALS['TL_LANG']['tl_nc_language']['show']                    = array('Langua
 $GLOBALS['TL_LANG']['tl_nc_language']['general_legend']          = 'General language settings';
 $GLOBALS['TL_LANG']['tl_nc_language']['attachments_legend']      = 'Attachments';
 $GLOBALS['TL_LANG']['tl_nc_language']['gateway_legend']          = 'Gateway settings';
+
+/**
+ * Errors
+ */
+$GLOBALS['TL_LANG']['tl_nc_language']['token_error']             = 'The following tokens you have used are not supported by this notification type: %s.';

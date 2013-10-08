@@ -156,6 +156,54 @@ class tl_nc_language extends \Backend
     }
 
     /**
+     * Verifiy recipient tokens
+     * @param   string Text
+     * @param   \DataContainer
+     */
+    public function verifyRecipientTokens($strText, \DataContainer $dc)
+    {
+        if (!$this->objGateway) {
+            return $strText;
+        }
+
+        $this->verifyTokens($this->objGateway->getNotificationType()->getRecipientTokens(), $strText);
+
+        return $strText;
+    }
+
+    /**
+     * Verifiy attachment tokens
+     * @param   string Text
+     * @param   \DataContainer
+     */
+    public function verifyAttachmentTokens($strText, \DataContainer $dc)
+    {
+        if (!$this->objGateway) {
+            return $strText;
+        }
+
+        $this->verifyTokens($this->objGateway->getNotificationType()->getAttachmentTokens(), $strText);
+
+        return $strText;
+    }
+
+    /**
+     * Verifiy text tokens
+     * @param   string Text
+     * @param   \DataContainer
+     */
+    public function verifyTextTokens($strText, \DataContainer $dc)
+    {
+        if (!$this->objGateway) {
+            return $strText;
+        }
+
+        $this->verifyTokens($this->objGateway->getNotificationType()->getTextTokens(), $strText);
+
+        return $strText;
+    }
+
+    /**
      * Init auto suggester
      * @param   array Tokens
      * @param   string Field name
@@ -181,5 +229,27 @@ window.addEvent('domready', function() {
 </script>";
 
         return '';
+    }
+
+    /**
+     * Verify tokens
+     * @param   array Valid tokens
+     * @param   string Text
+     */
+    private function verifyTokens($arrValidTokens, $strText)
+    {
+        // Build regex pattern
+        $strPattern = '/##(' . implode('|', $arrValidTokens) . ')##/i';
+        $strPattern = str_replace('*', '[^##]*', $strPattern);
+
+        preg_match_all($strPattern, $strText, $arrValidMatches);
+        preg_match_all('/##([A-Za-z0-9_]+)##/i', $strText, $arrAllMatches);
+
+        $arrInvalidTokens = array_diff($arrAllMatches[1], $arrValidMatches[1]);
+
+        if (count($arrInvalidTokens)) {
+            $strInvalidTokens = '##' . implode('##, ##', $arrInvalidTokens) . '##';
+            throw new \Exception(sprintf($GLOBALS['TL_LANG']['tl_nc_language']['token_error'], $strInvalidTokens));
+        }
     }
 }

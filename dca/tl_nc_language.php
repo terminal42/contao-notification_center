@@ -157,6 +157,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForRecipients')
             ),
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'verifyRecipientTokens')
+            ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'attachments' => array
@@ -169,6 +173,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForAttachments')
             ),
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'verifyAttachmentTokens')
+            ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'email_subject' => array
@@ -180,6 +188,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'wizard' => array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
+            ),
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'verifyTextTokens')
             ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
@@ -203,6 +215,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
             ),
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'verifyTextTokens')
+            ),
             'sql'                     => "text NULL"
         ),
         'email_html' => array
@@ -214,6 +230,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'wizard' => array
             (
                 array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
+            ),
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'verifyTextTokens')
             ),
             'sql'                     => "text NULL"
         )
