@@ -108,6 +108,9 @@ var AutoSuggester = new Class({
                    this.eventKeyUp.call(this, event);
                 }).bind(this));
 
+				// Fix an issue with the "enter" key (see #2)
+				this.tinyMCE.onKeyDown.listeners = [];
+
                 this.tinyMCE.onKeyDown.add((function(editor, event) {
                     this.eventKeyDown.call(this, event);
                 }).bind(this));
@@ -217,7 +220,7 @@ var AutoSuggester = new Class({
                 if (this.current_list_item === null) {
                     return;
                 }
-
+console.log(this.tinyMCE.onKeyDown.listeners);
                 event.preventDefault();
 // @todo find a better way to fix the new line problem in tinymce
 //this.tinyMCE.execCommand('Delete');
