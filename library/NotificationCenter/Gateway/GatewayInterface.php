@@ -31,14 +31,6 @@ namespace NotificationCenter\Gateway;
 interface GatewayInterface
 {
     /**
-     * Validates a certain token
-     * @param   string The token
-     * @param   string The token value
-     * @return  boolean
-     */
-    public function validateToken($strToken, $varValue);
-
-    /**
      * Modifies the DCA to the gateway's needs
      * @param   array
      */

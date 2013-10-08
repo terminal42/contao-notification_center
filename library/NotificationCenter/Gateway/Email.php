@@ -33,15 +33,6 @@ class Email extends Base implements GatewayInterface
     /**
      * {@inheritdoc}
      */
-    public function validateToken($strToken, $varValue)
-    {
-        // @todo
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function modifyDca(&$arrDca)
     {
         $strPalette = '{attachments_legend},attachments;{gateway_legend},email_subject,email_mode,email_text';
