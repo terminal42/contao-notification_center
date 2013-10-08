@@ -35,7 +35,7 @@ class Email extends Base implements GatewayInterface
      */
     public function modifyDca(&$arrDca)
     {
-        $strPalette = '{attachments_legend},attachments;{gateway_legend},email_subject,email_mode,email_text';
+        $strPalette = '{attachments_legend},attachments;{gateway_legend},email_sender,email_subject,email_mode,email_text';
 
         if ($this->objLanguage->email_mode == 'textAndHtml') {
             $strPalette .= ',email_html';
@@ -50,6 +50,16 @@ class Email extends Base implements GatewayInterface
     public function send($arrTokens)
     {
         $objMail = new \Email();
+
+        list($strSenderName, $strSender) = \String::splitFriendlyEmail($this->objLanguage->email_sender);
+
+        // Sender
+        if ($strSenderName != '') {
+            $objMail->setFrom(array($strSenderName=>$strSenderName));
+        } else {
+            $objMail->setFrom($strSender);
+        }
+
         $objMail->subject   = \String::parseSimpleTokens($this->objLanguage->email_subject, $arrTokens);
         $objMail->text      = \String::parseSimpleTokens($this->objLanguage->email_text, $arrTokens);
 

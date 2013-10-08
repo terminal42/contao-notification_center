@@ -179,6 +179,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
+        'email_sender' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('tl_class'=>'long clr', 'rgxp'=>'friendly', 'mandatory'=>true),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
         'email_subject' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_subject'],
