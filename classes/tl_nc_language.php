@@ -124,25 +124,7 @@ class tl_nc_language extends \Backend
             return '';
         }
 
-        $arrTokens = array();
-
-        foreach ($this->objGateway->getNotificationType()->getRecipientTokens() as $strToken) {
-            $arrTokens[] = array
-            (
-                'value'     => $strToken,
-                'content'   => $this->objGateway->getNotificationType()->getTokenDescription($strToken)
-            );
-        }
-
-
-        $GLOBALS['TL_MOOTOOLS'][] = "
-<script>
-window.addEvent('domready', function() {
-	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrTokens) . ");
-});
-</script>";
-
-        return '';
+        return $this->initAutoSuggester($this->objGateway->getNotificationType()->getRecipientTokens(), $dc->field);
     }
 
     /**
@@ -156,25 +138,7 @@ window.addEvent('domready', function() {
             return '';
         }
 
-        $arrTokens = array();
-
-        foreach ($this->objGateway->getNotificationType()->getAttachmentTokens() as $strToken) {
-            $arrTokens[] = array
-            (
-                'value'     => $strToken,
-                'content'   => $this->objGateway->getNotificationType()->getTokenDescription($strToken)
-            );
-        }
-
-
-        $GLOBALS['TL_MOOTOOLS'][] = "
-<script>
-window.addEvent('domready', function() {
-	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrTokens) . ");
-});
-</script>";
-
-        return '';
+        return $this->initAutoSuggester($this->objGateway->getNotificationType()->getAttachmentTokens(), $dc->field);
     }
 
     /**
@@ -188,10 +152,20 @@ window.addEvent('domready', function() {
             return '';
         }
 
-        $arrTokens = array();
+        return $this->initAutoSuggester($this->objGateway->getNotificationType()->getTextTokens(), $dc->field);
+    }
 
-        foreach ($this->objGateway->getNotificationType()->getTextTokens() as $strToken) {
-            $arrTokens[] = array
+    /**
+     * Init auto suggester
+     * @param   array Tokens
+     * @param   string Field name
+     */
+    private function initAutoSuggester($arrTokens, $strField)
+    {
+        $arrParsedTokens = array();
+
+        foreach ($arrTokens as $strToken) {
+            $arrParsedTokens[] = array
             (
                 'value'     => $strToken,
                 'content'   => $this->objGateway->getNotificationType()->getTokenDescription($strToken)
@@ -202,7 +176,7 @@ window.addEvent('domready', function() {
         $GLOBALS['TL_MOOTOOLS'][] = "
 <script>
 window.addEvent('domready', function() {
-	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrTokens) . ");
+	new AutoSuggester($('ctrl_" . $strField . "'), " . json_encode($arrParsedTokens) . ");
 });
 </script>";
 
