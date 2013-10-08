@@ -34,6 +34,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     // Config
     'config' => array
     (
+        'ctable'                      => array('tl_nc_message'),
         'dataContainer'               => 'Table',
         'switchToEdit'                => true,
         'enableVersioning'            => true,
