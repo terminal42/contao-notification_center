@@ -60,4 +60,5 @@ class OrderConfirmation extends Base implements NotificationTypeInterface
 ## Sending a notification
 
 ```
-NotificationCenter\Notification::send($intNotificationId, $arrTokens);
+NotificationCenter\Notification::send($intNotificationId, $arrTokens, $strLanguage); // Language is optional
+```
