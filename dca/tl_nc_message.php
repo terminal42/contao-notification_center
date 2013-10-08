@@ -145,7 +145,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             'filter'                  => true,
             'inputType'               => 'select',
             'foreignKey'              => 'tl_nc_gateway.title',
-            'eval'                    => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array('includeBlankOption'=>true, 'mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
             'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
         ),
