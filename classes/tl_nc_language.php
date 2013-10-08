@@ -158,7 +158,7 @@ window.addEvent('domready', function() {
 
         $arrTokens = array();
 
-        foreach ($this->objGateway->getNotificationType()->getFileTokens() as $strToken) {
+        foreach ($this->objGateway->getNotificationType()->getAttachmentTokens() as $strToken) {
             $arrTokens[] = array
             (
                 'value'     => $strToken,

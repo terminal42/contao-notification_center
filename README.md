@@ -41,7 +41,7 @@ class OrderConfirmation extends Base implements NotificationTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function getFileTokens()
+    public function getAttachmentTokens()
     {
         return array('file');
     }

@@ -43,10 +43,10 @@ interface NotificationTypeInterface
     public function getTextTokens();
 
     /**
-     * Returns the tokens that contain valid file data
+     * Returns the tokens that contain valid attachment data
      * @return  array
      */
-    public function getFileTokens();
+    public function getAttachmentTokens();
 
     /**
      * Returns the description for a specific token
