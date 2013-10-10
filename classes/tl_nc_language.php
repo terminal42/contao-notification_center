@@ -28,14 +28,15 @@
 namespace NotificationCenter;
 
 use NotificationCenter\Model\Language;
+use NotificationCenter\Model\Notification;
 
 class tl_nc_language extends \Backend
 {
     /**
-     * Gateway
-     * @var GatewayInterface
+     * Notification moel
+     * @var Notification
      */
-    protected $objGateway = null;
+    protected $objNotificationModel = null;
 
     /**
      * Loads gateway
@@ -50,15 +51,15 @@ class tl_nc_language extends \Backend
         if (($objMessageModel = $objLanguageModel->getRelated('pid')) === null) {
             return;
         }
-        if (($objNotificationModel = $objMessageModel->getRelated('pid')) === null) {
+        if (($this->objNotificationModel = $objMessageModel->getRelated('pid')) === null) {
             return;
         }
         if (($objGatewayModel = $objMessageModel->getRelated('gateway')) === null) {
             return;
         }
 
-        $this->objGateway = $objGatewayModel->buildGateway($objMessageModel, $objLanguageModel);
-        $this->objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
+        $objGateway = $objGatewayModel->buildGateway($objMessageModel, $objLanguageModel);
+        $objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
     }
 
     /**
@@ -117,13 +118,9 @@ class tl_nc_language extends \Backend
      */
     public function initAutoSuggester(\DataContainer $dc)
     {
-        if (!$this->objGateway) {
-            return '';
-        }
-
-        // @todo
-        $strGroup = '';
-        $strType = '';
+        \System::loadLanguageFile('tokens');
+        $strType = $this->objNotificationModel->type;
+        $strGroup = Notification::findGroupForType($strType);
         $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][$strType][$dc->field];
 
         $arrParsedTokens = array();
@@ -153,13 +150,8 @@ window.addEvent('domready', function() {
      */
     public function verifyTokens($strText, \DataContainer $dc)
     {
-        if (!$this->objGateway) {
-            return $strText;
-        }
-
-        // @todo
-        $strGroup = '';
-        $strType = '';
+        $strType = $this->objNotificationModel->type;
+        $strGroup = Notification::findGroupForType($strType);
         $arrValidTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][$strType][$dc->field];
 
         // Build regex pattern

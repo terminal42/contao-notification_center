@@ -46,17 +46,16 @@ class Notification extends \Model
     }
 
     /**
-     * Find notification class
+     * Find notification group for type
      * @param   string Type
      * @return  string Class
      */
-    public static function findClass($strType)
+    public static function findGroupForType($strType)
     {
-        foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $v) {
-            foreach ($v as $kk=>$vv) {
-                if ($kk == $strType) {
-                    return $vv;
-                }
+        foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $strGroup => $arrType) {
+            $strKey = key($arrType);
+            if ($strKey == $strType) {
+                return $strGroup;
             }
         }
 
