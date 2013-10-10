@@ -30,9 +30,9 @@
  */
 $GLOBALS['TL_LANG']['tl_nc_language']['language']                = array('Language', 'Please select a language.');
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']                = array('Fallback', 'Activate this checkbox if this language should be your fallback.');
-$GLOBALS['TL_LANG']['tl_nc_language']['recipients']              = array('Recipients', 'Please enter the recipients in this field. Use the help wizard to see the available simple tokens.');
+$GLOBALS['TL_LANG']['tl_nc_language']['recipients']              = array('Recipients', 'Please enter a <strong>comma-separated</strong> list of recipients in this field. Use the help wizard to see the available simple tokens.');
 $GLOBALS['TL_LANG']['tl_nc_language']['attachments']             = array('Attachments', 'Please enter a <strong>comma-separated</strong> list of attachment tokens in this field. Use the help wizard to see the available simple tokens.');
-$GLOBALS['TL_LANG']['tl_nc_language']['email_sender']            = array('Sender', 'Please enter the sender of the e-mail.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_sender']            = array('Sender', 'Please enter a <strong>comma-separated</strong> list of senders of the e-mail.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_subject']           = array('Subject', 'Please enter the subject for the e-mail.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']              = array('Mode', 'Choose the mode you would like to be used for this email.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']              = array('Raw text', 'Please enter the text.');
