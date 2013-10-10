@@ -9,56 +9,31 @@ to the way one can configure the notification center.
 
 ## Adding your own notification type
 
-```
+```php
 // config.php
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['iso_order_confirmation'] = 'Isotope\NotificationCenter\NotificationType\OrderConfirmation';
-
-// OrderConfirmation.php
-namespace Isotope\NotificationCenter\NotificationType;
-
-use NotificationCenter\NotificationType\NotificationTypeInterface;
-use NotificationCenter\NotificationType\Base;
-
-
-class OrderConfirmation extends Base implements NotificationTypeInterface
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getRecipientTokens()
-    {
-        return array('recipient_email');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTextTokens()
-    {
-        return array('cart_text');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttachmentTokens()
-    {
-        return array('file');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTokenDescription($strToken)
-    {
-        return 'Description for $strToken';
-    }
-}
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
+(
+    // Type
+    'iso_order_status_change'   => array
+     (
+        // Field in tl_nc_language
+        'recipients'    => array
+        (
+            // Valid tokens
+            'recipient_email' // The email address of the recipient
+        ),
+        'attachments'    => array
+        (
+            'form_*', // All the order condition form fields
+            'document' // The document that should be attached (e.g. an invoice)
+        )
+    )
+);
 ```
 
 
 ## Sending a notification
 
-```
+```php
 NotificationCenter\Notification::send($intNotificationId, $arrTokens, $strLanguage); // Language is optional
 ```
