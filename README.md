@@ -11,7 +11,7 @@ to the way one can configure the notification center.
 
 ```
 // config.php
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']['iso_order_confirmation'] = 'Isotope\NotificationCenter\NotificationType\OrderConfirmation';
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['iso_order_confirmation'] = 'Isotope\NotificationCenter\NotificationType\OrderConfirmation';
 
 // OrderConfirmation.php
 namespace Isotope\NotificationCenter\NotificationType;

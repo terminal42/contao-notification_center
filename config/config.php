@@ -59,4 +59,10 @@ $GLOBALS['TL_MODELS']['tl_nc_message']                  = 'NotificationCenter\Mo
 /**
  * Notification Center Gateways
  */
+$GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array();
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gateway\Email';
+
+/**
+ * Notification Center Notification Types
+ */
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array();

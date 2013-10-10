@@ -94,7 +94,7 @@ class Notification extends \Model
      */
     public static function findClass($strType)
     {
-        foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $v) {
+        foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $v) {
             foreach ($v as $kk=>$vv) {
                 if ($kk == $strType) {
                     return $vv;

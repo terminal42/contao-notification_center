@@ -37,8 +37,8 @@ class tl_nc_notification extends \Backend
     {
         $arrNotificationTypes = array();
 
-        if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'])) {
-            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $k=>$v) {
+        if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'])) {
+            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $k=>$v) {
                 foreach (array_keys($v) as $kk) {
                     $arrNotificationTypes[$k][] = $kk;
                 }
@@ -59,8 +59,8 @@ class tl_nc_notification extends \Backend
         $strGroup = '';
         $strType = '';
 
-        if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'])) {
-            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATIONTYPE'] as $k=>$v) {
+        if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'])) {
+            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $k=>$v) {
                 foreach (array_keys($v) as $kk) {
 
                     if ($kk == $arrRow['type']) {
