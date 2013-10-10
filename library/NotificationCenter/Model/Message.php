@@ -27,8 +27,6 @@
 
 namespace NotificationCenter\Model;
 
-use NotificationCenter\NotificationType\NotificationTypeInterface;
-
 class Message extends \Model
 {
 
@@ -40,11 +38,10 @@ class Message extends \Model
 
     /**
      * Constructs the gateway
-     * @param   NotificationTypeInterface
      * @param   string Language
      * @return  GatewayInterface|null
      */
-    public function buildGateway(NotificationTypeInterface $objNotificationType, $strLanguage)
+    public function buildGateway($strLanguage)
     {
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
             \System::log(sprintf(
@@ -65,7 +62,7 @@ class Message extends \Model
             return null;
         }
 
-        return $objGatewayModel->buildGateway($objNotificationType, $this, $objLanguage);
+        return $objGatewayModel->buildGateway($this, $objLanguage);
     }
 
     /**

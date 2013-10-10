@@ -27,8 +27,6 @@
 
 namespace NotificationCenter\Model;
 
-use NotificationCenter\NotificationType\NotificationTypeInterface;
-
 class Notification extends \Model
 {
 
@@ -45,46 +43,6 @@ class Notification extends \Model
     public function getMessages()
     {
         return Message::findByNotification($this);
-    }
-
-    /**
-     * Constructs the notification type
-     * @return  NotificationTypeInterface|null
-     */
-    public function buildNotificationType()
-    {
-        // Find class
-        $strClass = static::findClass($this->type);
-        if (!class_exists($strClass)) {
-            \System::log(sprintf(
-                    'Could not find notification type class "%s".',
-                    $strClass),
-                __METHOD__,
-                TL_ERROR);
-            return null;
-        }
-
-        try {
-            $objNotificationType = new $strClass($this);
-
-            if (!$objNotificationType instanceof NotificationTypeInterface) {
-                \System::log(sprintf(
-                        'The notification type class "%s" must be an instance of NotificationTypeInterface.',
-                        $strClass),
-                    __METHOD__,
-                    TL_ERROR);
-                return null;
-            }
-
-            return $objNotificationType;
-        } catch (\Exception $e) {
-            \System::log(sprintf(
-                    'There was a general error building the notification type: "%s".',
-                    $e->getMessage()),
-                __METHOD__,
-                TL_ERROR);
-            return null;
-        }
     }
 
     /**

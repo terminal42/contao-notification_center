@@ -62,17 +62,6 @@ class Notification
             return false;
         }
 
-        // Check if there is a valid notification type
-        if (($objNotificationType = $objNotification->buildNotificationType()) === null) {
-            \System::log(sprintf(
-                    'Could not build type for notification ID "%s".',
-                    $intNotificationId
-                ),
-                __METHOD__,
-                TL_ERROR);
-            return false;
-        }
-
         // Set default language
         if ($strLanguage === '') {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
@@ -83,7 +72,7 @@ class Notification
         while ($objMessages->next()) {
             $objMessage = $objMessages->current();
 
-            if (($objGateway = $objMessage->buildGateway($objNotificationType, $strLanguage)) == null) {
+            if (($objGateway = $objMessage->buildGateway($strLanguage)) == null) {
                 \System::log(sprintf(
                         'Could not build gateway for notification ID "%s".',
                         $objNotification->id

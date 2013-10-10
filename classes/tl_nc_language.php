@@ -56,11 +56,8 @@ class tl_nc_language extends \Backend
         if (($objGatewayModel = $objMessageModel->getRelated('gateway')) === null) {
             return;
         }
-        if (($objNotificationType = $objNotificationModel->buildNotificationType()) === null) {
-            return;
-        }
 
-        $this->objGateway = $objGatewayModel->buildGateway($objNotificationType, $objMessageModel, $objLanguageModel);
+        $this->objGateway = $objGatewayModel->buildGateway($objMessageModel, $objLanguageModel);
         $this->objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
     }
 
