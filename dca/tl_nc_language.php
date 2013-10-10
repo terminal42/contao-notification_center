@@ -155,11 +155,11 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'wizard' => array
             (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForRecipients')
+                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
             ),
             'save_callback' => array
             (
-                array('NotificationCenter\tl_nc_language', 'verifyRecipientTokens')
+                array('NotificationCenter\tl_nc_language', 'verifyTokens')
             ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
@@ -171,11 +171,11 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true),
             'wizard' => array
             (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForAttachments')
+                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
             ),
             'save_callback' => array
             (
-                array('NotificationCenter\tl_nc_language', 'verifyAttachmentTokens')
+                array('NotificationCenter\tl_nc_language', 'verifyTokens')
             ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
@@ -195,11 +195,11 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'wizard' => array
             (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
+                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
             ),
             'save_callback' => array
             (
-                array('NotificationCenter\tl_nc_language', 'verifyTextTokens')
+                array('NotificationCenter\tl_nc_language', 'verifyTokens')
             ),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
@@ -221,11 +221,11 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('tl_class'=>'clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'wizard' => array
             (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
+                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
             ),
             'save_callback' => array
             (
-                array('NotificationCenter\tl_nc_language', 'verifyTextTokens')
+                array('NotificationCenter\tl_nc_language', 'verifyTokens')
             ),
             'sql'                     => "text NULL"
         ),
@@ -237,11 +237,11 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true, 'mandatory'=>true),
             'wizard' => array
             (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggesterForText')
+                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
             ),
             'save_callback' => array
             (
-                array('NotificationCenter\tl_nc_language', 'verifyTextTokens')
+                array('NotificationCenter\tl_nc_language', 'verifyTokens')
             ),
             'sql'                     => "text NULL"
         )

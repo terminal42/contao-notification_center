@@ -114,109 +114,27 @@ class tl_nc_language extends \Backend
     }
 
     /**
-     * Initialize the auto suggester for recipients
+     * Initialize the auto suggester
      * @param   \DataContainer
      * @return  string
      */
-    public function initAutoSuggesterForRecipients(\DataContainer $dc)
+    public function initAutoSuggester(\DataContainer $dc)
     {
         if (!$this->objGateway) {
             return '';
         }
 
-        return $this->initAutoSuggester($this->objGateway->getNotificationType()->getRecipientTokens(), $dc->field);
-    }
+        // @todo
+        $strGroup = '';
+        $strType = '';
+        $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][$strType][$dc->field];
 
-    /**
-     * Initialize the auto suggester for attachments
-     * @param   \DataContainer
-     * @return  string
-     */
-    public function initAutoSuggesterForAttachments(\DataContainer $dc)
-    {
-        if (!$this->objGateway) {
-            return '';
-        }
-
-        return $this->initAutoSuggester($this->objGateway->getNotificationType()->getAttachmentTokens(), $dc->field);
-    }
-
-    /**
-     * Initialize the auto suggester for text
-     * @param   \DataContainer
-     * @return  string
-     */
-    public function initAutoSuggesterForText(\DataContainer $dc)
-    {
-        if (!$this->objGateway) {
-            return '';
-        }
-
-        return $this->initAutoSuggester($this->objGateway->getNotificationType()->getTextTokens(), $dc->field);
-    }
-
-    /**
-     * Verifiy recipient tokens
-     * @param   string Text
-     * @param   \DataContainer
-     */
-    public function verifyRecipientTokens($strText, \DataContainer $dc)
-    {
-        if (!$this->objGateway) {
-            return $strText;
-        }
-
-        $this->verifyTokens($this->objGateway->getNotificationType()->getRecipientTokens(), $strText);
-
-        return $strText;
-    }
-
-    /**
-     * Verifiy attachment tokens
-     * @param   string Text
-     * @param   \DataContainer
-     */
-    public function verifyAttachmentTokens($strText, \DataContainer $dc)
-    {
-        if (!$this->objGateway) {
-            return $strText;
-        }
-
-        $this->verifyTokens($this->objGateway->getNotificationType()->getAttachmentTokens(), $strText);
-
-        return $strText;
-    }
-
-    /**
-     * Verifiy text tokens
-     * @param   string Text
-     * @param   \DataContainer
-     */
-    public function verifyTextTokens($strText, \DataContainer $dc)
-    {
-        if (!$this->objGateway) {
-            return $strText;
-        }
-
-        $this->verifyTokens($this->objGateway->getNotificationType()->getTextTokens(), $strText);
-
-        return $strText;
-    }
-
-    /**
-     * Init auto suggester
-     * @param   array Tokens
-     * @param   string Field name
-     */
-    private function initAutoSuggester($arrTokens, $strField)
-    {
         $arrParsedTokens = array();
-
         foreach ($arrTokens as $strToken) {
             $arrParsedTokens[] = array
             (
                 'value'     => $strToken,
-                'content'   => $this->objGateway->getNotificationType()->getTokenDescription($strToken)
+                'content'   => $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][$strType][$strToken] ?: ''
             );
         }
 
@@ -224,7 +142,7 @@ class tl_nc_language extends \Backend
         $GLOBALS['TL_MOOTOOLS'][] = "
 <script>
 window.addEvent('domready', function() {
-	new AutoSuggester($('ctrl_" . $strField . "'), " . json_encode($arrParsedTokens) . ");
+	new AutoSuggester($('ctrl_" . $dc->field . "'), " . json_encode($arrParsedTokens) . ");
 });
 </script>";
 
@@ -233,11 +151,20 @@ window.addEvent('domready', function() {
 
     /**
      * Verify tokens
-     * @param   array Valid tokens
      * @param   string Text
+     * @param   \DataContainer
      */
-    private function verifyTokens($arrValidTokens, $strText)
+    public function verifyTokens($strText, \DataContainer $dc)
     {
+        if (!$this->objGateway) {
+            return $strText;
+        }
+
+        // @todo
+        $strGroup = '';
+        $strType = '';
+        $arrValidTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][$strType][$dc->field];
+
         // Build regex pattern
         $strPattern = '/##(' . implode('|', $arrValidTokens) . ')##/i';
         $strPattern = str_replace('*', '[^##]*', $strPattern);
@@ -251,5 +178,7 @@ window.addEvent('domready', function() {
             $strInvalidTokens = '##' . implode('##, ##', $arrInvalidTokens) . '##';
             throw new \Exception(sprintf($GLOBALS['TL_LANG']['tl_nc_language']['token_error'], $strInvalidTokens));
         }
+
+        return $strText;
     }
 }
