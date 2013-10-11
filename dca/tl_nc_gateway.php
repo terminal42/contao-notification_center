@@ -102,7 +102,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                     => '{title_legend},title,type;',
+        'default'                     => '{title_legend},title,type',
         'email'                       => '{title_legend},title,type;{gateway_legend},',
     ),
 

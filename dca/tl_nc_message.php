@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                     => '{title_legend},title,gateway;{languages_legend},languages;',
+        'default'                     => '{title_legend},title,gateway;{languages_legend},languages',
     ),
 
     // Fields

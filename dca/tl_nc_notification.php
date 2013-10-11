@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                     => '{title_legend},title,type;',
+        'default'                     => '{title_legend},title,type',
     ),
 
     // Fields

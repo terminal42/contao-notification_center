@@ -34,7 +34,7 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['type']                    = array('Type', 
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']           = 'Standard eMail gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']           = 'Standard email gateway';
 
 /**
  * Buttons
