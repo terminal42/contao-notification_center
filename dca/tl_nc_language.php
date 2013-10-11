@@ -25,6 +25,8 @@
  * @license    LGPL
  */
 
+$this->loadDataContainer('tl_nc_gateway');
+
 /**
  * Table tl_nc_language
  */
@@ -37,6 +39,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'ptable'                      => 'tl_nc_message',
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
+        'oncreate_callback' => array
+        (
+            array('NotificationCenter\tl_nc_language', 'insertGatewayType'),
+        ),
         'onload_callback'             => array
         (
             array('NotificationCenter\tl_nc_language', 'loadGateway')
@@ -128,6 +134,12 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'tstamp' => array
         (
             'sql'                     => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'gateway_type' => array
+        (
+            // This is only to select the palette
+            'eval'                    => array('doNotShow'=>true),
+            'sql'                     => &$GLOBALS['TL_DCA']['tl_nc_gateway']['fields']['type']['sql'],
         ),
         'language' => array
         (

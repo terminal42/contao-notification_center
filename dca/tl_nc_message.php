@@ -25,6 +25,8 @@
  * @license    LGPL
  */
 
+$this->loadDataContainer('tl_nc_gateway');
+
 /**
  * Table tl_nc_message
  */
@@ -148,7 +150,23 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             'foreignKey'              => 'tl_nc_gateway.title',
             'eval'                    => array('mandatory'=>true, 'submitOnChange'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-            'relation'                => array('type'=>'hasOne', 'load'=>'lazy')
+            'relation'                => array('type'=>'hasOne', 'load'=>'lazy'),
+            'save_callback' => array
+            (
+                // Save gateway_type
+                function($varValue, $dc) {
+                    \Database::getInstance()->prepare("UPDATE tl_nc_message SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=?)")->execute($varValue);
+                    \Database::getInstance()->prepare("UPDATE tl_nc_language SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=?)")->execute($varValue);
+
+                    return $varValue;
+                }
+            ),
+        ),
+        'gateway_type' => array
+        (
+            // This is only to select the palette
+            'eval'                    => array('doNotShow'=>true),
+            'sql'                     => &$GLOBALS['TL_DCA']['tl_nc_gateway']['fields']['type']['sql'],
         ),
         'languages' => array
         (

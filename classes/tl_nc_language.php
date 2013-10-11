@@ -39,6 +39,22 @@ class tl_nc_language extends \Backend
     protected $objNotificationModel = null;
 
     /**
+     * Save gateway type in language when creating new record
+     * @param   string
+     * @param   int
+     * @param   array
+     * @param   DataContainer
+     */
+    public function insertGatewayType($strTable, $insertID, $arrSet, $dc)
+    {
+        if ($strTable == 'tl_nc_language') {
+            \Database::getInstance()->prepare("
+                UPDATE tl_nc_language SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=(SELECT gateway FROM tl_nc_message WHERE id=?)) WHERE id=?
+            ")->execute($arrSet['pid'], $insertID);
+        }
+    }
+
+    /**
      * Loads gateway
      * @param   \DataContainer
      */
