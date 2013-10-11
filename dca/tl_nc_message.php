@@ -59,6 +59,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             'flag'                    => 1,
             'panelLayout'             => 'filter;search,limit',
             'headerFields'            => array('title', 'type'),
+            'disableGrouping'         => true,
             'child_record_callback'   => array('NotificationCenter\tl_nc_message', 'listRows'),
         ),
         'label' => array
