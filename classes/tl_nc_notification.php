@@ -50,11 +50,14 @@ class tl_nc_notification extends \Backend
 
     /**
      * Label callback
-     * @param   array
      * @param   string
+     * @param   int
+     * @param   string
+     * @param   array
+     * @param   DataContainer
      * @return  string
      */
-    public function getLabel($arrRow, $strLabel)
+    public function getGroupLabel($strLabel, $intMode, $strField, $arrRow, $dc)
     {
         $strGroup = '';
         $strType = '';
@@ -72,7 +75,7 @@ class tl_nc_notification extends \Backend
         }
 
         if ($strGroup && $strType) {
-            $strLabel .= ' <span style="color:#ccc;">(' . $strGroup . ': ' . $strType . ')';
+            $strLabel = $strGroup . ': ' . $strType;
         }
 
         return $strLabel;

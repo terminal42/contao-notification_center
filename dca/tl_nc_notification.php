@@ -53,14 +53,14 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
         'sorting' => array
         (
             'mode'                    => 1,
-            'fields'                  => array('title'),
+            'fields'                  => array('type', 'title'),
             'flag'                    => 1,
             'panelLayout'             => 'filter;search,limit'
         ),
         'label' => array
         (
             'fields'                  => array('title'),
-            'label_callback'          => array('NotificationCenter\tl_nc_notification', 'getLabel')
+            'group_callback'          => array('NotificationCenter\tl_nc_notification', 'getGroupLabel')
         ),
         'global_operations' => array
         (
