@@ -63,21 +63,6 @@ class tl_nc_language extends \Backend
     }
 
     /**
-     * Label callback
-     * @param   array
-     * @param   string
-     * @return  string
-     */
-    public function getLabel($arrRow, $strLabel)
-    {
-        if ($arrRow['fallback']) {
-            $strLabel .= ' <span style="color:#ccc;">(' . $GLOBALS['TL_LANG']['tl_nc_language']['fallback'][0] . ')';
-        }
-
-        return $strLabel;
-    }
-
-    /**
      * Generate a list for the dcaWizard displaying the languages
      * @param   \Database_Result
      * @param   string
