@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'inputType'               => 'select',
             'options'                 => array_keys($GLOBALS['NOTIFICATION_CENTER']['GATEWAY']),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['type'],
-            'eval'                    => array('mandatory'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
         )
     )
