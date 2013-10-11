@@ -32,11 +32,6 @@ use NotificationCenter\Model\Notification;
 
 class tl_nc_language extends \Backend
 {
-    /**
-     * Notification moel
-     * @var Notification
-     */
-    protected $objNotificationModel = null;
 
     /**
      * Save gateway type in language when creating new record
@@ -52,30 +47,6 @@ class tl_nc_language extends \Backend
                 UPDATE tl_nc_language SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=(SELECT gateway FROM tl_nc_message WHERE id=?)) WHERE id=?
             ")->execute($arrSet['pid'], $insertID);
         }
-    }
-
-    /**
-     * Loads gateway
-     * @param   \DataContainer
-     */
-    public function loadGateway(\DataContainer $dc)
-    {
-        if (($objLanguageModel = Language::findByPk($dc->id)) === null) {
-            return;
-        }
-
-        if (($objMessageModel = $objLanguageModel->getRelated('pid')) === null) {
-            return;
-        }
-        if (($this->objNotificationModel = $objMessageModel->getRelated('pid')) === null) {
-            return;
-        }
-        if (($objGatewayModel = $objMessageModel->getRelated('gateway')) === null) {
-            return;
-        }
-
-        $objGateway = $objGatewayModel->buildGateway($objMessageModel, $objLanguageModel);
-        $objGateway->modifyDca($GLOBALS['TL_DCA'][$dc->table]);
     }
 
     /**

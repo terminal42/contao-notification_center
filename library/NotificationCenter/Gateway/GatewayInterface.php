@@ -30,11 +30,6 @@ namespace NotificationCenter\Gateway;
 
 interface GatewayInterface
 {
-    /**
-     * Modifies the DCA to the gateway's needs
-     * @param   array
-     */
-    public function modifyDca(&$arrDca);
 
     /**
      * Sends the notification notification

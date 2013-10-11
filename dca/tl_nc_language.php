@@ -116,7 +116,15 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     // Palettes
     'palettes' => array
     (
-        'default'                     => '{general_legend},language,fallback,recipients',
+        '__selector__'                => array('gateway_type', 'email_mode'),
+        'default'                     => '{general_legend},language,fallback',
+        'email'                       => '{general_legend},language,fallback,recipients;{attachments_legend},attachments;{gateway_legend},email_sender,email_subject,email_mode',
+    ),
+
+    'subpalettes' => array
+    (
+        'email_mode_textOnly'         => 'email_text',
+        'email_mode_textAndHtml'      => 'email_text,email_html',
     ),
 
     // Fields
@@ -196,6 +204,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_mode'],
             'exclude'                 => true,
+            'default'                 => 'textOnly',
             'inputType'               => 'radio',
             'options'                 => array('textOnly', 'textAndHtml'),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_language']['email_mode'],

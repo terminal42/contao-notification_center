@@ -30,19 +30,6 @@ namespace NotificationCenter\Gateway;
 
 class Email extends Base implements GatewayInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function modifyDca(&$arrDca)
-    {
-        $strPalette = '{attachments_legend},attachments;{gateway_legend},email_sender,email_subject,email_mode,email_text';
-
-        if ($this->objLanguage->email_mode == 'textAndHtml') {
-            $strPalette .= ',email_html';
-        }
-
-        $arrDca['palettes']['default'] .= $strPalette;
-    }
 
     /**
      * {@inheritdoc}
