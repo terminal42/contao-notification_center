@@ -145,6 +145,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['language'],
             'exclude'                 => true,
+            'default'                 => $GLOBALS['TL_LANGUAGE'],
             'inputType'               => 'select',
             'options'                 => \System::getLanguages(),
             'eval'                    => array('mandatory'=>true, 'unique'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
