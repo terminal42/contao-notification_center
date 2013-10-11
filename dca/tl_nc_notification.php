@@ -113,7 +113,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     (
         '__selector__'                => array('type'),
         'default'                     => '{title_legend},title,type',
-        'iso_order_status_change'     => '{title_legend},title,type',
     ),
 
     // Fields

@@ -50,3 +50,4 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('No
  * Legends
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']            = 'Title & type';
+$GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']           = 'Configuration';
