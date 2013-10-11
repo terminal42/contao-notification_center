@@ -51,14 +51,13 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         'sorting' => array
         (
             'mode'                    => 1,
-            'fields'                  => array('title'),
+            'fields'                  => array('type', 'title'),
             'flag'                    => 1,
             'panelLayout'             => 'filter;search,limit'
         ),
         'label' => array
         (
-            'fields'                  => array('title', 'type'),
-            'format'                  => '%s <span style="color:#ccc;">[%s]</span>'
+            'fields'                  => array('title'),
         ),
         'global_operations' => array
         (
