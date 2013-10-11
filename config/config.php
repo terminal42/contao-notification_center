@@ -36,8 +36,6 @@ array_insert($GLOBALS['BE_MOD'], 1, array
         (
             'tables'        => array('tl_nc_notification', 'tl_nc_message', 'tl_nc_language'),
             'icon'          => 'system/modules/notification_center/assets/notification.png',
-            'stylesheet'    => 'system/modules/notification_center/assets/autosuggester.css',
-            'javascript'    => 'system/modules/notification_center/assets/autosuggester.js',
         ),
         'nc_gateways' => array
         (
@@ -55,6 +53,10 @@ $GLOBALS['TL_MODELS']['tl_nc_gateway']                  = 'NotificationCenter\Mo
 $GLOBALS['TL_MODELS']['tl_nc_language']                 = 'NotificationCenter\Model\Language';
 $GLOBALS['TL_MODELS']['tl_nc_message']                  = 'NotificationCenter\Model\Message';
 
+/**
+ * Hooks
+ */
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('NotificationCenter\AutoSuggester', 'verifyTokens');
 
 /**
  * Notification Center Gateways

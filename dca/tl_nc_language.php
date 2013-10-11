@@ -39,13 +39,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'ptable'                      => 'tl_nc_message',
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
+        'nc_type_query'               => "SELECT type FROM tl_nc_notification WHERE id=(SELECT pid FROM tl_nc_message WHERE id=(SELECT pid FROM tl_nc_language WHERE id=?))",
         'oncreate_callback' => array
         (
             array('NotificationCenter\tl_nc_language', 'insertGatewayType'),
         ),
         'onload_callback'             => array
         (
-            array('NotificationCenter\tl_nc_language', 'loadGateway')
+            array('NotificationCenter\AutoSuggester', 'load')
         ),
         'sql' => array
         (
@@ -55,7 +56,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
                 'pid'        => 'index',
                 'language'   => 'index'
             )
-        )
+        ),
     ),
 
     // List
@@ -164,15 +165,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['recipients'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
-            'wizard' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
-            ),
-            'save_callback' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'verifyTokens')
-            ),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'attachments' => array
@@ -180,15 +173,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['attachments'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true),
-            'wizard' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
-            ),
-            'save_callback' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'verifyTokens')
-            ),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'email_sender' => array
@@ -204,15 +189,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_subject'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
-            'wizard' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
-            ),
-            'save_callback' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'verifyTokens')
-            ),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'email_mode' => array
@@ -230,15 +207,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_text'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('tl_class'=>'clr', 'decodeEntities'=>true, 'mandatory'=>true),
-            'wizard' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
-            ),
-            'save_callback' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'verifyTokens')
-            ),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'sql'                     => "text NULL"
         ),
         'email_html' => array
@@ -246,15 +215,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_html'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true, 'mandatory'=>true),
-            'wizard' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'initAutoSuggester')
-            ),
-            'save_callback' => array
-            (
-                array('NotificationCenter\tl_nc_language', 'verifyTokens')
-            ),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true, 'mandatory'=>true),
             'sql'                     => "text NULL"
         )
     )
