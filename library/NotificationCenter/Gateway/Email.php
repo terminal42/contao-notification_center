@@ -60,7 +60,7 @@ class Email extends Base implements GatewayInterface
         $objMail->text      = \String::parseSimpleTokens($objLanguage->email_text, $arrTokens);
 
         if ($objLanguage->email_mode == 'textAndHtml') {
-            $objMail->html = \String::parseSimpleTokens($objLanguage->email_mode, $arrTokens);
+            $objMail->html = \String::parseSimpleTokens($objLanguage->email_html, $arrTokens);
         }
 
         $arrAttachments = $this->getAttachments($objLanguage->attachments, $arrTokens);
