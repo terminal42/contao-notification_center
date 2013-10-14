@@ -38,7 +38,8 @@ class Email extends Base implements GatewayInterface
     {
         $objMail = new \Email();
 
-        $objMail->from      = $this->objLanguage->email_sender;
+        list($objMail->fromName, $objMail->from) = \String::splitFriendlyEmail($this->objLanguage->email_sender);
+
         $objMail->subject   = \String::parseSimpleTokens($this->objLanguage->email_subject, $arrTokens);
         $objMail->text      = \String::parseSimpleTokens($this->objLanguage->email_text, $arrTokens);
 
