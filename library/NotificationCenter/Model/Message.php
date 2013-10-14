@@ -63,6 +63,6 @@ class Message extends \Model
      */
     public static function findByNotification(Notification $objNotification, array $arrOptions=array())
     {
-        return static::findByPid($objNotification->id, $arrOptions);
+        return static::findBy('pid', $objNotification->id, $arrOptions);
     }
 }

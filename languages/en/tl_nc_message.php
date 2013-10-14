@@ -44,5 +44,5 @@ $GLOBALS['TL_LANG']['tl_nc_message']['show']                    = array('Gateway
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_nc_message']['title_legend']            = 'Title & gateway';
+$GLOBALS['TL_LANG']['tl_nc_message']['title_legend']            = 'Title & Gateway';
 $GLOBALS['TL_LANG']['tl_nc_message']['languages_legend']        = 'Languages';

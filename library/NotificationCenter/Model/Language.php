@@ -45,7 +45,7 @@ class Language extends \Model
     {
         $t = static::$strTable;
 
-        $arrColumns = array("$t.pid=? AND ($t.language=? OR $t.fallback=1)");
+        $arrColumns = array("$t.pid=?", "($t.language=? OR $t.fallback=1)");
         $arrValues = array($objMessage->id, $strLanguage);
 
         return static::findOneBy($arrColumns, $arrValues);
