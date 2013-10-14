@@ -27,6 +27,8 @@
 
 namespace NotificationCenter\Gateway;
 
+use NotificationCenter\Model\Message;
+
 
 interface GatewayInterface
 {
@@ -38,5 +40,5 @@ interface GatewayInterface
      * @param   string
      * @return  bool
      */
-    public function send($objMessage, array $arrTokens, $strLanguage='');
+    public function send(Message $objMessage, array $arrTokens, $strLanguage='');
 }
