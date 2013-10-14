@@ -44,44 +44,26 @@ class Gateway extends \Model
      * @param   Language
      * @return  GatewayInterface|null
      */
-    public function buildGateway(
-        Message $objMessage,
-        Language $objLanguage)
+    public function buildGateway(Message $objMessage, Language $objLanguage)
     {
         // Find class
         $strClass = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$this->type];
         if (!class_exists($strClass)) {
-            \System::log(sprintf(
-                    'Could not find gateway class "%s".',
-                    $strClass),
-                __METHOD__,
-                TL_ERROR);
+            \System::log(sprintf('Could not find gateway class "%s".', $strClass), __METHOD__, TL_ERROR);
             return null;
         }
 
         try {
-            $objGateway = new $strClass(
-                $objMessage,
-                $objLanguage,
-                $this
-            );
+            $objGateway = new $strClass($objMessage, $objLanguage, $this);
 
             if (!$objGateway instanceof GatewayInterface) {
-                \System::log(sprintf(
-                        'The gateway class "%s" must be an instance of GatewayInterface.',
-                        $strClass),
-                    __METHOD__,
-                    TL_ERROR);
+                \System::log(sprintf('The gateway class "%s" must be an instance of GatewayInterface.', $strClass), __METHOD__, TL_ERROR);
                 return null;
             }
 
             return $objGateway;
         } catch (\Exception $e) {
-            \System::log(sprintf(
-                    'There was a general error building the gateway: "%s".',
-                    $e->getMessage()),
-                __METHOD__,
-                TL_ERROR);
+            \System::log(sprintf('There was a general error building the gateway: "%s".', $e->getMessage()), __METHOD__, TL_ERROR);
             return null;
         }
     }

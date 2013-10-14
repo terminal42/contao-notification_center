@@ -44,21 +44,12 @@ class Message extends \Model
     public function buildGateway($strLanguage)
     {
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
-            \System::log(sprintf(
-                'Could not find gateway ID "%s".',
-                $this->gateway),
-                __METHOD__,
-                TL_ERROR);
+            \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
             return null;
         }
 
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $strLanguage)) === null) {
-            \System::log(sprintf(
-                    'Could not find matching language or fallback for message ID "%s" and language "%s".',
-                    $this->id,
-                    $strLanguage),
-                __METHOD__,
-                TL_ERROR);
+            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $this->id, $strLanguage), __METHOD__, TL_ERROR);
             return null;
         }
 

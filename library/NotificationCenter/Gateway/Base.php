@@ -57,11 +57,7 @@ class Base
      * @param   Language
      * @param   Gateway
      */
-    public function __construct(
-        Message $objMessage,
-        Language $objLanguage,
-        Gateway $objGateway
-    )
+    public function __construct(Message $objMessage, Language $objLanguage, Gateway $objGateway )
     {
         $this->objMessage           = $objMessage;
         $this->objLanguage          = $objLanguage;

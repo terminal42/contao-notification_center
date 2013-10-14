@@ -41,10 +41,7 @@ class Language extends \Model
      * @param   Message
      * @param   string Language
      */
-    public static function findByMessageAndLanguageOrFallback(
-        Message $objMessage,
-        $strLanguage
-    )
+    public static function findByMessageAndLanguageOrFallback(Message $objMessage, $strLanguage)
     {
         $t = static::$strTable;
 

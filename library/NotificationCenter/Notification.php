@@ -42,23 +42,13 @@ class Notification
     {
         // Check if this is a valid Notification model id
         if (($objNotification = NotificationModel::findByPk($intNotificationId)) === null) {
-            \System::log(sprintf(
-                    'Could not find notification notification ID "%s".',
-                    $intNotificationId
-                    ),
-                __METHOD__,
-                TL_ERROR);
+            \System::log(sprintf('Could not find notification notification ID "%s".', $intNotificationId), __METHOD__, TL_ERROR);
             return false;
         }
 
         // Check if there are valid messages
         if (($objMessages = $objNotification->getMessages()) === null) {
-            \System::log(sprintf(
-                    'Could not find any notifications for notification message ID "%s".',
-                    $intNotificationId
-                ),
-                __METHOD__,
-                TL_ERROR);
+            \System::log(sprintf('Could not find any notifications for notification message ID "%s".', $intNotificationId), __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -73,12 +63,7 @@ class Notification
             $objMessage = $objMessages->current();
 
             if (($objGateway = $objMessage->buildGateway($strLanguage)) == null) {
-                \System::log(sprintf(
-                        'Could not build gateway for notification ID "%s".',
-                        $objNotification->id
-                    ),
-                    __METHOD__,
-                    TL_ERROR);
+                \System::log(sprintf('Could not build gateway for notification ID "%s".', $objNotification->id), __METHOD__, TL_ERROR);
                 $blnHasError = true;
                 break;
             }
