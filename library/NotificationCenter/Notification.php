@@ -65,7 +65,7 @@ class Notification
             if (($objGateway = $objMessage->buildGateway($strLanguage)) == null) {
                 \System::log(sprintf('Could not build gateway for notification ID "%s".', $objNotification->id), __METHOD__, TL_ERROR);
                 $blnHasError = true;
-                break;
+                continue;
             }
 
             $objGateway->send($arrTokens);
