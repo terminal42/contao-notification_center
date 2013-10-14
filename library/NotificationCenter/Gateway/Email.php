@@ -74,7 +74,7 @@ class Email extends Base implements GatewayInterface
         try {
             return $objMail->sendTo(\String::parseSimpleTokens($objLanguage->recipients, $arrTokens));
         } catch(\Exception $e) {
-            \System::log(sprintf('Could not send email for message ID "%s".', $objMessage->id), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }
 
         return false;
