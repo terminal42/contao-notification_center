@@ -107,7 +107,7 @@ class Base
 
         $arrAttachmentTokens = trimsplit(',', $strAttachments);
         foreach ($arrAttachmentTokens as $strToken) {
-            $strFile = \String::parseSimpleTokens($strToken, $arrTokens);
+            $strFile = TL_ROOT . '/' . \String::parseSimpleTokens($strToken, $arrTokens);
 
             if (is_file($strFile)) {
                 $arrAttachments[$strToken] = $strFile;
