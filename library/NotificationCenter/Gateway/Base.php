@@ -93,18 +93,19 @@ class Base
 
     /**
      * Gets an array of valid attachments
+     * @param   string
      * @param   array Tokens
      * @return  array
      */
-    protected function getAttachments($arrTokens)
+    protected function getAttachments($strAttachments, $arrTokens)
     {
         $arrAttachments = array();
 
-        if (!$this->objLanguage->attachments) {
+        if ($strAttachments == '') {
             return $arrAttachments;
         }
 
-        $arrAttachmentTokens = trimsplit(',', $this->objLanguage->attachments);
+        $arrAttachmentTokens = trimsplit(',', $strAttachments);
         foreach ($arrAttachmentTokens as $strToken) {
             $strFile = \String::parseSimpleTokens($strToken, $arrTokens);
 
