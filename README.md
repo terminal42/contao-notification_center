@@ -35,5 +35,8 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
 ## Sending a notification
 
 ```php
-NotificationCenter\Notification::send($intNotificationId, $arrTokens, $strLanguage); // Language is optional
+$objNotification = NotificationCenter\Model\Notification::findByPk($intNotificationId);
+if (null !== $objNotification) {
+    $objNotification->send($arrTokens, $strLanguage); // Language is optional
+}
 ```

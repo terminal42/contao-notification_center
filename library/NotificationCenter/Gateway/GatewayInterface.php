@@ -33,7 +33,10 @@ interface GatewayInterface
 
     /**
      * Sends the notification notification
-     * @param   array The tokens in key => value format
+     * @param   Message
+     * @param   array       The tokens in key => value format
+     * @param   string
+     * @return  bool
      */
-    public function send($arrTokens);
+    public function send($objMessage, array $arrTokens, $strLanguage='');
 }

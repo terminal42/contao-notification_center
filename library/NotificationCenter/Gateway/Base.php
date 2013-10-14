@@ -31,64 +31,32 @@ use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 
-class Base
+abstract class Base
 {
-    /**
-     * The notification message
-     * @var Message
-     */
-    protected $objMessage = null;
-
-    /**
-     * The language model
-     * @var Language
-     */
-    protected $objLanguage = null;
 
     /**
      * The gateway model
      * @var Gateway
      */
-    protected $objGateway = null;
+    protected $objModel = null;
 
     /**
      * Set notification type and models
      * @param   Notification
-     * @param   Language
      * @param   Gateway
      */
-    public function __construct(Message $objMessage, Language $objLanguage, Gateway $objGateway )
+    public function __construct(Gateway $objModel)
     {
-        $this->objMessage           = $objMessage;
-        $this->objLanguage          = $objLanguage;
-        $this->objGateway           = $objGateway;
+        $this->objModel = $objModel;
     }
 
     /**
-     * Gets the Message
-     * @return  Message
+     * Gets the gateway model
+     * @return  NotificationCenter\Model\Gateway
      */
-    public function getMessage()
+    public function getModel()
     {
-        return $this->objMessage;
-    }
-
-    /**
-     * Gets the language
-     * @return  Language
-     */
-    public function getLanguage()
-    {
-        return $this->objLanguage;
-    }
-
-    /**
-     * Gets the gateway
-     * @return  Gateway
-     */
-    public function getGateway()
-    {
-        return $this->objGateway;
+        return $this->objModel;
     }
 
     /**
@@ -97,7 +65,7 @@ class Base
      * @param   array Tokens
      * @return  array
      */
-    protected function getAttachments($strAttachments, $arrTokens)
+    protected function getAttachments($strAttachments, array $arrTokens)
     {
         $arrAttachments = array();
 
@@ -105,8 +73,7 @@ class Base
             return $arrAttachments;
         }
 
-        $arrAttachmentTokens = trimsplit(',', $strAttachments);
-        foreach ($arrAttachmentTokens as $strToken) {
+        foreach (trimsplit(',', $strAttachments) as $strToken) {
             $strFile = TL_ROOT . '/' . \String::parseSimpleTokens($strToken, $arrTokens);
 
             if (is_file($strFile)) {

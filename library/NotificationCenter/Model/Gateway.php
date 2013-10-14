@@ -39,32 +39,42 @@ class Gateway extends \Model
     protected static $strTable = 'tl_nc_gateway';
 
     /**
-     * Builds the gateway
-     * @param   Message
-     * @param   Language
+     * Gateway instance
+     * @var GatewayInterface
+     */
+    protected $objGateway;
+
+
+    /**
+     * Get gateway instance
      * @return  GatewayInterface|null
      */
-    public function buildGateway(Message $objMessage, Language $objLanguage)
+    public function getGateway()
     {
-        // Find class
-        $strClass = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$this->type];
-        if (!class_exists($strClass)) {
-            \System::log(sprintf('Could not find gateway class "%s".', $strClass), __METHOD__, TL_ERROR);
-            return null;
-        }
-
-        try {
-            $objGateway = new $strClass($objMessage, $objLanguage, $this);
-
-            if (!$objGateway instanceof GatewayInterface) {
-                \System::log(sprintf('The gateway class "%s" must be an instance of GatewayInterface.', $strClass), __METHOD__, TL_ERROR);
+        // We only need to build the gateway once, Model is cached by registry and Gateway does not change between messages
+        if (null === $this->objGateway) {
+            $strClass = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$this->type];
+            if (!class_exists($strClass)) {
+                \System::log(sprintf('Could not find gateway class "%s".', $strClass), __METHOD__, TL_ERROR);
                 return null;
             }
 
-            return $objGateway;
-        } catch (\Exception $e) {
-            \System::log(sprintf('There was a general error building the gateway: "%s".', $e->getMessage()), __METHOD__, TL_ERROR);
-            return null;
+            try {
+                $objGateway = new $strClass($this);
+
+                if (!$objGateway instanceof GatewayInterface) {
+                    \System::log(sprintf('The gateway class "%s" must be an instance of GatewayInterface.', $strClass), __METHOD__, TL_ERROR);
+                    return null;
+                }
+
+                $this->objGateway = $objGateway;
+
+            } catch (\Exception $e) {
+                \System::log(sprintf('There was a general error building the gateway: "%s".', $e->getMessage()), __METHOD__, TL_ERROR);
+                return null;
+            }
         }
+
+        return $this->objGateway;
     }
 }

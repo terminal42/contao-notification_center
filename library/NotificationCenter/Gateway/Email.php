@@ -27,27 +27,43 @@
 
 namespace NotificationCenter\Gateway;
 
+use NotificationCenter\Model\Message;
+use NotificationCenter\Model\Language;
+
 
 class Email extends Base implements GatewayInterface
 {
 
     /**
-     * {@inheritdoc}
+     * Send email message
+     * @param   Message
+     * @param   array
+     * @param   string
+     * @return  bool
      */
-    public function send($arrTokens)
+    public function send(Message $objMessage, array $arrTokens, $strLanguage='')
     {
-        $objMail = new \Email();
-
-        list($objMail->fromName, $objMail->from) = \String::splitFriendlyEmail($this->objLanguage->email_sender);
-
-        $objMail->subject   = \String::parseSimpleTokens($this->objLanguage->email_subject, $arrTokens);
-        $objMail->text      = \String::parseSimpleTokens($this->objLanguage->email_text, $arrTokens);
-
-        if ($this->objLanguage->email_mode == 'textAndHtml') {
-            $objMail->html = \String::parseSimpleTokens($this->objLanguage->email_mode, $arrTokens);
+        if ($strLanguage == '') {
+            $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
 
-        $arrAttachments = $this->getAttachments($this->objLanguage->attachments, $arrTokens);
+        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
+            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+            return false;
+        }
+
+        $objMail = new \Email();
+
+        list($objMail->fromName, $objMail->from) = \String::splitFriendlyEmail($objLanguage->email_sender);
+
+        $objMail->subject   = \String::parseSimpleTokens($objLanguage->email_subject, $arrTokens);
+        $objMail->text      = \String::parseSimpleTokens($objLanguage->email_text, $arrTokens);
+
+        if ($objLanguage->email_mode == 'textAndHtml') {
+            $objMail->html = \String::parseSimpleTokens($objLanguage->email_mode, $arrTokens);
+        }
+
+        $arrAttachments = $this->getAttachments($objLanguage->attachments, $arrTokens);
 
         if (!empty($arrAttachments)) {
             foreach ($arrAttachments as $strFile) {
@@ -56,9 +72,11 @@ class Email extends Base implements GatewayInterface
         }
 
         try {
-            $objMail->sendTo(\String::parseSimpleTokens($this->objLanguage->recipients, $arrTokens));
+            return $objMail->sendTo(\String::parseSimpleTokens($objLanguage->recipients, $arrTokens));
         } catch(\Exception $e) {
-            \System::log(sprintf('Could not send email for notification ID "%s".', $this->objNotification->id), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not send email for message ID "%s".', $objMessage->id), __METHOD__, TL_ERROR);
         }
+
+        return false;
     }
 }

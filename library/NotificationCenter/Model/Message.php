@@ -36,24 +36,25 @@ class Message extends \Model
      */
     protected static $strTable = 'tl_nc_message';
 
+
     /**
-     * Constructs the gateway
-     * @param   string Language
-     * @return  GatewayInterface|null
+     * Send this message using its gateway
+     * @param   array
+     * @param   string
+     * @return  bool
      */
-    public function buildGateway($strLanguage)
+    public function send(array $arrTokens, $strLanguage='')
     {
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
             \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
-            return null;
+            return false;
         }
 
-        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $strLanguage)) === null) {
-            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $this->id, $strLanguage), __METHOD__, TL_ERROR);
-            return null;
+        if (null !== $objGatewayModel->getGateway()) {
+            return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
         }
 
-        return $objGatewayModel->buildGateway($this, $objLanguage);
+        return false;
     }
 
     /**

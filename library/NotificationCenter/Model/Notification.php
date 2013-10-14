@@ -46,6 +46,29 @@ class Notification extends \Model
     }
 
     /**
+     * Sends a notification
+     * @param   array   The tokens
+     * @param   string  The language (optional)
+     * @return  array
+     */
+    public function send(array $arrTokens, $strLanguage='')
+    {
+        // Check if there are valid messages
+        if (($objMessages = $this->getMessages()) === null) {
+            \System::log('Could not find any messages for notification ID '.$this->id, __METHOD__, TL_ERROR);
+            return array();
+        }
+
+        $arrResult = array();
+
+        while ($objMessages->next()) {
+            $arrResult[$objMessages->id] = $objMessages->current()->send($arrTokens, $strLanguage);
+        }
+
+        return $arrResult;
+    }
+
+    /**
      * Find notification group for type
      * @param   string Type
      * @return  string Class
