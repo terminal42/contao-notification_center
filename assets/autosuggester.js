@@ -22,7 +22,11 @@ var AutoSuggester = new Class({
      */
     options: {
         'token': '##',
+        'class_input_mirror': 'autosuggester-input-mirror',
+        'class_input_mirror_container' : 'autosuggester-input-mirror-container',
+        'class_input_mirror_caret': 'autosuggester-input-mirror-caret',
         'class_box': 'autosuggester-box',
+        'class_box_container': 'autosuggester-box-container',
         'class_box_list': 'autosuggester-box-list',
         'class_box_list_item': 'autosuggester-box-list-item',
         'class_box_list_item_active': 'autosuggester-box-list-item-active',
@@ -55,26 +59,51 @@ var AutoSuggester = new Class({
         // Turn off the default autocomplete feature
         this.input.set('autocomplete', 'off');
 
-        this.setUpSuggestions();
-        this.registerObservers();
+		// Initialize the autocompleter with delay
+		// because the tinyMCE needs to get initialized
+        setTimeout((function() {
+	        if (window.tinyMCE) {
+	            this.tinyMCE = tinyMCE.get(this.input.get('id'));
+	        }
+
+			// Set the mirror for textarea
+	        if (this.input.get('tag') == 'textarea' && !this.tinyMCE) {
+	        	this.setUpMirror();
+	        }
+
+	        this.setUpSuggestions();
+	        this.registerObservers();
+	    }).bind(this), 500);
     },
 
     /**
      * Set up the suggestions
      */
     setUpSuggestions: function() {
-        var i;
+        var i, position;
+
+		this.box_container = new Element('div', {
+			'class': this.options.class_box_container
+		});
+
+		// Set the box container position
+		if (this.tinyMCE) {
+			this.setPosition(this.box_container, $(this.input.get('id') + '_ifr').getPosition());
+		} else {
+			this.setPosition(this.box_container, this.input.getPosition());
+		}
 
         this.box = new Element('div', {
             'id': this.input.get('id') + '_autosuggester',
             'class': this.options.class_box
-        }).setStyle('width', this.input.getSize().x);
+        });
 
         this.box_list = new Element('ul', {
             'class': this.options.class_box_list
         });
 
         this.box_list_items = [];
+        this.box_list_items_visible = [];
 
         // Generate the options
         for (i=0; i<this.source.length; i+=1) {
@@ -82,12 +111,42 @@ var AutoSuggester = new Class({
                 'class': this.options.class_box_list_item,
                 'html': '<div class="' + this.options.class_box_list_item_value + '">' + this.source[i]['value'] + '</div><div class="' + this.options.class_box_list_item_content + '">' + this.source[i]['content'] + '</div>'
             }).inject(this.box_list);
+
+            this.box_list_items_visible.push(i);
         }
 
         this.box_list.inject(this.box);
-        this.box.inject(this.input, 'after');
+        this.box.inject(this.box_container);
+        this.box_container.inject(this.input, 'after');
         this.box_visible = false;
     },
+
+	/**
+	 * Set up the input mirror
+	 */
+	setUpMirror: function() {
+		var copy = ["box-sizing", "font-family", "font-size", "font-style", "font-variant", "font-weight", "height", "letter-spacing", "line-height", "max-height", "min-height", "padding-bottom", "padding-left", "padding-right", "padding-top", "text-decoration", "text-indent", "text-transform", "width", "word-spacing"];
+		var styles = window.getComputedStyle(this.input);
+		var i;
+
+		this.input_mirror = new Element('div', {
+			'class': this.options.class_input_mirror,
+			'text': this.input.get('value')
+		});
+
+		this.input_mirror_caret = new Element('span', {
+			'class': this.options.class_input_mirror_caret,
+			'html': '&nbsp;'
+		});
+
+		// Clone all styles of an input
+		for (i=0; i<copy.length; i++) {
+			this.input_mirror.setStyle(copy[i], styles[copy[i]]);
+		}
+
+		this.input_mirror_caret.inject(this.input_mirror);
+		this.input_mirror.inject(this.input, 'after');
+	},
 
     /**
      * Register the observers
@@ -95,28 +154,7 @@ var AutoSuggester = new Class({
     registerObservers: function() {
         var i;
 
-        // Add the events to tinyMCE
-        if (window.tinyMCE) {
-            setTimeout((function() {
-                this.tinyMCE = tinyMCE.get(this.input.get('id'));
-
-                if (!this.tinyMCE) {
-                    return;
-                }
-
-                this.tinyMCE.onKeyUp.add((function(editor, event) {
-                   this.eventKeyUp.call(this, event);
-                }).bind(this));
-
-                // Fix an issue with the "enter" key (see #2)
-                this.tinyMCE.onKeyDown.listeners = [];
-
-                this.tinyMCE.onKeyDown.add((function(editor, event) {
-                    this.eventKeyDown.call(this, event);
-                }).bind(this));
-            }).bind(this), 1000);
-        }
-
+		// Add the regular events
         if (!this.tinyMCE) {
             this.input.addEvents({
                 'keyup': this.eventKeyUp.bind(this),
@@ -124,7 +162,21 @@ var AutoSuggester = new Class({
             });
         }
 
-        for (i=0; i<this.box_list_items.length; i+=1) {
+        // Add the events to tinyMCE
+        if (this.tinyMCE) {
+            this.tinyMCE.onKeyUp.add((function(editor, event) {
+               this.eventKeyUp.call(this, event);
+            }).bind(this));
+
+            // Fix an issue with the "enter" key (see #2)
+            this.tinyMCE.onKeyDown.listeners = [];
+
+            this.tinyMCE.onKeyDown.add((function(editor, event) {
+                this.eventKeyDown.call(this, event);
+            }).bind(this));
+        }
+
+        for (i=0; i<this.box_list_items.length; i++) {
             this.box_list_items[i].addEvents({
                 // Highlight the list item
                 'mouseenter': (function(event) {
@@ -145,8 +197,40 @@ var AutoSuggester = new Class({
      */
     showBox: function() {
         if (!this.box_visible) {
-            this.current_list_item = null;
+        	var index, value, chunks;
+        	var position = {x: 0, y: 0};
+
+			// Detect the box position in tinyMCE
+			if (this.tinyMCE) {
+				position.x = this.tinyMCE.selection.getRng().getClientRects()[0].left;
+				position.y = this.tinyMCE.selection.getNode().getClientRects()[0].top + this.tinyMCE.selection.getNode().getClientRects()[0].height;
+			} else if (this.input_mirror) {
+				// Detect the box position for regular textarea
+            	index = this.getCaretIndex();
+            	value = this.input.get('value');
+            	chunks = [value.substr(0, index), value.substr(index, value.length)];
+
+				// Inject the fake marker at the right position
+				this.input_mirror.set('html', '');
+            	this.input_mirror.grab(document.createTextNode(chunks[0]));
+            	this.input_mirror.grab(this.input_mirror_caret);
+            	this.input_mirror.grab(document.createTextNode(chunks[1]));
+
+            	position = this.input_mirror_caret.getPosition(this.input_mirror);
+            	position.y = position.y + this.input_mirror_caret.getSize().y;
+            } else {
+            	// Detect the box position for regular input
+            	position.y = this.input.getSize().y;
+            }
+
+		   	// Make all list items visible
+			for (i=0; i<this.box_list_items.length; i++) {
+				this.box_list_items[i].removeClass('invisible');
+			}
+
+ 			this.current_list_item = null;
             this.box.setStyle('display', 'block');
+            this.setPosition(this.box, position);
             this.box.scrollTo(0, 0);
             this.box_visible = true;
 
@@ -163,7 +247,7 @@ var AutoSuggester = new Class({
         this.box_visible = false;
 
         // Remove the highlight from all items
-        for (i=0; i<this.box_list_items.length; i+=1) {
+        for (i=0; i<this.box_list_items.length; i++) {
             this.box_list_items[i].removeClass(this.options.class_box_list_item_active);
         }
     },
@@ -176,10 +260,12 @@ var AutoSuggester = new Class({
             return;
         }
 
-        var value, index, selection;
+        var value, index, selection, i;
         var tokenLength = this.options.token.length;
         var rgxp = new RegExp(this.options.token, 'g');
+        var hide = true;
 
+		// Get the current caret index
         if (this.tinyMCE) {
             selection = this.tinyMCE.selection.getRng();
             value = selection.startContainer.wholeText;
@@ -193,11 +279,22 @@ var AutoSuggester = new Class({
             return;
         }
 
+        this.filter_text = '';
+
         // Open the box if there is an opening tag
-        if (value.substr(index - tokenLength, tokenLength) === this.options.token && ((value.match(rgxp) || []).length % 2) == 1) {
-            this.showBox();
-        } else {
-            this.hideBox();
+        if (((value.match(rgxp) || []).length % 2) == 1) {
+			for (i=index; i>=0; i--) {
+				if (value.substr(i - tokenLength, tokenLength) === this.options.token) {
+					this.showBox();
+					break;
+				}
+
+				this.filter_text = value[i - 1] + this.filter_text;
+			}
+
+			if (!this.filterItems()) {
+				this.hideBox();
+			}
         }
     },
 
@@ -208,6 +305,8 @@ var AutoSuggester = new Class({
         if (!this.box_visible) {
             return;
         }
+
+        var index = this.box_list_items_visible.indexOf(this.current_list_item);
 
         switch (this.getKeyCode(event)) {
             // Close the box
@@ -229,10 +328,10 @@ var AutoSuggester = new Class({
             case 'up':
                 event.preventDefault();
 
-                if (this.current_list_item === null) {
-                    this.highlightItem(this.box_list_items.length - 1);
-                } else if (this.current_list_item > 0) {
-                    this.highlightItem(this.current_list_item - 1);
+                if (index === -1) {
+                    this.highlightItem(this.box_list_items_visible.length - 1);
+                } else if (index > 0) {
+                    this.highlightItem(this.box_list_items_visible[index - 1]);
                 }
                 break;
 
@@ -240,10 +339,10 @@ var AutoSuggester = new Class({
             case 'down':
                 event.preventDefault();
 
-                if (this.current_list_item === null) {
-                    this.highlightItem(0);
-                } else if (this.current_list_item < this.box_list_items.length - 1) {
-                    this.highlightItem(this.current_list_item + 1);
+                if (index === -1) {
+                    this.highlightItem(this.box_list_items_visible[0]);
+                } else if (index < this.box_list_items_visible.length - 1) {
+                    this.highlightItem(this.box_list_items_visible[index + 1]);
                 }
                 break;
         }
@@ -278,22 +377,56 @@ var AutoSuggester = new Class({
 
     /**
      * Select the current item
+     * @todo the new index is at wrong place in tinyMCE
      */
     selectItem: function() {
-        var value, index;
+        var value, index, index_new;
+        var insert = this.source[this.current_list_item]['value'];
+
+		// Replace the filter text if any
+		if (this.filter_text.length > 0) {
+			insert = insert.substr(this.filter_text.length, insert.length);
+		}
 
         if (this.tinyMCE) {
-            this.tinyMCE.selection.setContent(this.source[this.current_list_item]['value'] + this.options.token);
-        } else {
+            this.tinyMCE.selection.setContent(insert + this.options.token);
+		} else {
             value = this.input.get('value');
             index = this.getCaretIndex();
-            index_new = index + (this.source[this.current_list_item]['value'] + this.options.token).length;
+            index_new = index + (insert + this.options.token).length;
 
-            this.input.set('value', value.slice(0, index) + this.source[this.current_list_item]['value'] + this.options.token + value.slice(index, value.length));
+            this.input.set('value', value.slice(0, index) + insert + this.options.token + value.slice(index, value.length));
             this.input.setSelectionRange(index_new, index_new);
         }
 
         this.hideBox();
+    },
+
+    /**
+     * Filter the items (return false if there are no items)
+     * @return false
+     */
+    filterItems: function() {
+	    var i, index;
+
+		for (i=0; i<this.box_list_items.length; i++) {
+			if (this.filter_text.length > 0 && this.source[i]['value'].indexOf(this.filter_text) !== 0) {
+				this.box_list_items[i].addClass('invisible');
+				index = this.box_list_items_visible.indexOf(i);
+
+				if (index > -1) {
+					this.box_list_items_visible.splice(index, 1);
+				}
+			} else {
+				this.box_list_items[i].removeClass('invisible');
+
+				if (this.box_list_items_visible.indexOf(i) === -1) {
+					this.box_list_items_visible.push(i);
+				}
+			}
+		}
+
+	    return this.box_list_items_visible.length > 0;
     },
 
     /**
@@ -323,5 +456,16 @@ var AutoSuggester = new Class({
         }
 
         return this.keys_mapper[code];
+    },
+
+    /**
+     * Set the position of an element. Used instead of MooTools' setPosition()
+     * because of computed position which affects the margins
+     * @param object
+     * @param object
+     */
+    setPosition: function(el, position) {
+	    el.setStyle('left', position.x);
+	    el.setStyle('top', position.y);
     }
 });
