@@ -52,27 +52,27 @@ class Email extends Base implements GatewayInterface
             return false;
         }
 
-        $objMail = new \Email();
+        $objEmail = new \Email();
 
-        list($objMail->fromName, $objMail->from) = \String::splitFriendlyEmail(\String::parseSimpleTokens($objLanguage->email_sender, $arrTokens));
+        list($objEmail->fromName, $objEmail->from) = \String::splitFriendlyEmail(\String::parseSimpleTokens($objLanguage->email_sender, $arrTokens));
 
-        $objMail->subject   = \String::parseSimpleTokens($objLanguage->email_subject, $arrTokens);
-        $objMail->text      = \String::parseSimpleTokens($objLanguage->email_text, $arrTokens);
+        $objEmail->subject   = \String::parseSimpleTokens($objLanguage->email_subject, $arrTokens);
+        $objEmail->text      = \String::parseSimpleTokens($objLanguage->email_text, $arrTokens);
 
         if ($objLanguage->email_mode == 'textAndHtml') {
-            $objMail->html = \String::parseSimpleTokens($objLanguage->email_html, $arrTokens);
+            $objEmail->html = \String::parseSimpleTokens($objLanguage->email_html, $arrTokens);
         }
 
         $arrAttachments = $this->getAttachments($objLanguage->attachments, $arrTokens);
 
         if (!empty($arrAttachments)) {
             foreach ($arrAttachments as $strFile) {
-                $objMail->attachFile($strFile);
+                $objEmail->attachFile($strFile);
             }
         }
 
         try {
-            return $objMail->sendTo(\String::parseSimpleTokens($objLanguage->recipients, $arrTokens));
+            return $objEmail->sendTo(\String::parseSimpleTokens($objLanguage->recipients, $arrTokens));
         } catch(\Exception $e) {
             \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }
