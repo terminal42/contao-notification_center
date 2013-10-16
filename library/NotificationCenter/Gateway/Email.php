@@ -53,26 +53,72 @@ class Email extends Base implements GatewayInterface
         }
 
         $objEmail = new \Email();
+        $objEmail->priority = $objMessage->email_priority;
 
-        list($objEmail->fromName, $objEmail->from) = \String::splitFriendlyEmail(\String::parseSimpleTokens($objLanguage->email_sender, $arrTokens));
-
-        $objEmail->subject   = \String::parseSimpleTokens($objLanguage->email_subject, $arrTokens);
-        $objEmail->text      = \String::parseSimpleTokens($objLanguage->email_text, $arrTokens);
-
-        if ($objLanguage->email_mode == 'textAndHtml') {
-            $objEmail->html = \String::parseSimpleTokens($objLanguage->email_html, $arrTokens);
+        // Set optional sender name
+        $strSenderName = $objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
+        if ($strSenderName != '') {
+            $strSenderName = $this->recursiveReplaceTokensAndTags($strSenderName, $arrTokens);
+            $objEmail->fromName = strip_tags($strSenderName);
         }
 
-        $arrAttachments = $this->getAttachments($objLanguage->attachments, $arrTokens);
+        // Set email sender address
+        $strSenderAddress = $objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
+        $strSenderAddress = $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens);
+        $objEmail->from = strip_tags($strSenderAddress);
 
+        // Set email subject
+        $strSubject = $objLanguage->email_subject;
+        $strSubject = $this->recursiveReplaceTokensAndTags($strSubject, $arrTokens);
+        $objEmail->subject = strip_tags($strSubject);
+
+        // Set email text content
+        $strText = $objLanguage->email_text;
+        $strText = $this->recursiveReplaceTokensAndTags($strText, $arrTokens);
+        $strText = \Controller::convertRelativeUrls($strText, '', true);
+        $objEmail->text = strip_tags($strText);
+
+        // Set optional email HTML content
+        if ($objLanguage->email_mode == 'textAndHtml')
+        {
+            $objTemplate = new \FrontendTemplate($this->email_template);
+            $objTemplate->body = $objLanguage->email_html;
+            $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
+
+            // Prevent parseSimpleTokens from stripping important HTML tags
+            $GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
+            $strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
+            $strHtml = $this->recursiveReplaceTokensAndTags($strHtml, $arrTokens);
+            $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
+            $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
+
+            // Parse template
+            $objEmail->html = $strHtml;
+            $objEmail->imageDir = TL_ROOT . '/';
+        }
+
+        // Add all attachments
+        $arrAttachments = $this->getAttachments($objLanguage->attachments, $arrTokens);
         if (!empty($arrAttachments)) {
             foreach ($arrAttachments as $strFile) {
                 $objEmail->attachFile($strFile);
             }
         }
 
+        // Set CC recipients
+        $arrCc = $this->compileRecipients($objLanguage->email_recipient_cc, $arrTokens);
+        if (!empty($arrCc)) {
+            $objEmail->sendCc($arrCc);
+        }
+
+        // Set BCC recipients
+        $arrBcc = $this->compileRecipients($objLanguage->email_recipient_bcc, $arrTokens);
+        if (!empty($arrBcc)) {
+            $objEmail->sendBcc($arrBcc);
+        }
+
         try {
-            return $objEmail->sendTo(\String::parseSimpleTokens($objLanguage->recipients, $arrTokens));
+            return $objEmail->sendTo($this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens));
         } catch(\Exception $e) {
             \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }

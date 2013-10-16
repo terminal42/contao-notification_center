@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     (
         '__selector__'                => array('gateway_type', 'email_mode'),
         'default'                     => '{general_legend},language,fallback',
-        'email'                       => '{general_legend},language,fallback,recipients;{attachments_legend},attachments;{gateway_legend},email_sender,email_subject,email_mode',
+        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc;{content_legend},email_subject,email_mode;{attachments_legend},attachments',
     ),
 
     'subpalettes' => array
@@ -184,13 +184,37 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
-        'email_sender' => array
+        'email_sender_name' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('tl_class'=>'long clr', 'rgxp'=>'friendly', 'mandatory'=>true),
-            'sql'                     => "varchar(255) NOT NULL default ''"
+            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''",
+        ),
+        'email_sender_address' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''",
+        ),
+        'email_recipient_cc' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc'],
+            'exclude'                 => true,
+            'inputType'               => 'textarea',
+            'eval'                    => array('rgxp'=>'extnd', 'style'=>'height:40px; width:314px', 'tl_class'=>'w50" style="height:auto'),
+            'sql'                     => "text NULL",
+        ),
+        'email_recipient_bcc' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc'],
+            'exclude'                 => true,
+            'inputType'               => 'textarea',
+            'eval'                    => array('rgxp'=>'extnd', 'style'=>'height:40px; width:314px', 'tl_class'=>'w50" style="height:auto'),
+            'sql'                     => "text NULL",
         ),
         'email_subject' => array
         (

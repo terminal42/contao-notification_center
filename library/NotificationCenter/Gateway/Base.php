@@ -31,7 +31,7 @@ use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 
-abstract class Base
+abstract class Base extends \Controller
 {
 
     /**
@@ -82,5 +82,61 @@ abstract class Base
         }
 
         return $arrAttachments;
+    }
+
+
+    /**
+     * Generate CC or BCC recipients from comma separated string
+     * @param string
+     */
+    protected function compileRecipients($strRecipients, $arrTokens)
+    {
+        $arrRecipients = array();
+
+        foreach ((array) trimsplit(',', $strRecipients) as $strAddress)
+        {
+            if ($strAddress != '') {
+                $strAddress = $this->recursiveReplaceTokensAndTags($strAddress, $arrTokens);
+                $strAddress = strip_tags($strAddress);
+
+                // Address could become empty through invalid inserttag
+                if ($strAddress == '' || !\Validator::isEmail($strAddress)) {
+                    continue;
+                }
+
+                $arrRecipients[] = $strAddress;
+            }
+        }
+
+        return $arrRecipients;
+    }
+
+
+    /**
+     * Recursively replace simple tokens and insert tags
+     * @param   string
+     * @param   array tokens
+     * @return  string
+     */
+    protected function recursiveReplaceTokensAndTags($strText, $arrTokens)
+    {
+        // Must decode, tokens could be encoded
+        $strText = \String::decodeEntities($strText);
+
+        // first parse the tokens as they might have if-else clauses
+        $strBuffer = \String::parseSimpleTokens($strText, $arrTokens);
+
+        // then replace the insert tags
+        $strBuffer = $this->replaceInsertTags($strBuffer, false);
+
+        // check if the inserttags have returned a simple token or an insert tag to parse
+        if ((strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false) && $strBuffer != $strText)
+        {
+            $strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens);
+        }
+
+        $strBuffer = \String::restoreBasicEntities($strBuffer);
+
+        return $strBuffer;
     }
 }

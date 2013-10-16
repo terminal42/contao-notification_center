@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
     (
         '__selector__'                => array('gateway_type'),
         'default'                     => '{title_legend},title,gateway',
-        'email'                       => '{title_legend},title,gateway;{languages_legend},languages',
+        'email'                       => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template',
     ),
 
     // Fields
@@ -182,6 +182,27 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
                 'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_nc_message']['languages'][3],
                 'tl_class'          =>'clr'
             )
-        )
+        ),
+        'email_priority' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_nc_message']['email_priority'],
+			'exclude'				=> true,
+			'default'				=> 3,
+			'inputType'				=> 'select',
+			'options'				=> array(1,2,3,4,5),
+			'reference'				=> &$GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options'],
+			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                   => "int(1) unsigned NOT NULL default '0'",
+		),
+		'email_template' => array
+		(
+			'label'					=> &$GLOBALS['TL_LANG']['tl_nc_message']['email_template'],
+			'exclude'				=> true,
+			'default'				=> 'mail_default',
+			'inputType'				=> 'select',
+			'options'				=> $this->getTemplateGroup('mail_'),
+			'eval'					=> array('tl_class'=>'w50'),
+            'sql'                   => "varchar(255) NOT NULL default ''",
+		),
     )
 );

@@ -28,15 +28,18 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_nc_language']['language']                = array('Language', 'Please select a language.');
-$GLOBALS['TL_LANG']['tl_nc_language']['fallback']                = array('Fallback', 'Activate this checkbox if this language should be your fallback.');
-$GLOBALS['TL_LANG']['tl_nc_language']['recipients']              = array('Recipients', 'Please enter a <strong>comma-separated</strong> list of recipients in this field. Use the help wizard to see the available simple tokens.');
-$GLOBALS['TL_LANG']['tl_nc_language']['attachments']             = array('Attachments', 'Please enter a <strong>comma-separated</strong> list of attachment tokens in this field. Use the help wizard to see the available simple tokens.');
-$GLOBALS['TL_LANG']['tl_nc_language']['email_sender']            = array('Sender', 'Please enter a <strong>comma-separated</strong> list of senders of the e-mail.');
-$GLOBALS['TL_LANG']['tl_nc_language']['email_subject']           = array('Subject', 'Please enter the subject for the e-mail.');
-$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']              = array('Mode', 'Choose the mode you would like to be used for this email.');
-$GLOBALS['TL_LANG']['tl_nc_language']['email_text']              = array('Raw text', 'Please enter the text.');
-$GLOBALS['TL_LANG']['tl_nc_language']['email_html']              = array('HTML', 'Please enter the HTML.');
+$GLOBALS['TL_LANG']['tl_nc_language']['language']                   = array('Language', 'Please select a language.');
+$GLOBALS['TL_LANG']['tl_nc_language']['fallback']                   = array('Fallback', 'Activate this checkbox if this language should be your fallback.');
+$GLOBALS['TL_LANG']['tl_nc_language']['recipients']                 = array('Recipients', 'Please enter a <strong>comma-separated</strong> list of recipients in this field. Use the help wizard to see the available simple tokens.');
+$GLOBALS['TL_LANG']['tl_nc_language']['attachments']                = array('Attachments', 'Please enter a <strong>comma-separated</strong> list of attachment tokens in this field. Use the help wizard to see the available simple tokens.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']          = array('Sender name', 'Please enter the sender name.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']       = array('Sender address', 'Please enter the sender email address.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']         = array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']        = array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_subject']              = array('Subject', 'Please enter the subject for the e-mail.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']                 = array('Mode', 'Choose the mode you would like to be used for this email.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_text']                 = array('Raw text', 'Please enter the text.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_html']                 = array('HTML', 'Please enter the HTML.');
 
 /**
  * Reference
@@ -47,20 +50,21 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textAndHtml']  = 'HTML and 
 /**
  * Buttons
  */
-$GLOBALS['TL_LANG']['tl_nc_language']['new']                     = array('New language', 'Add a new language.');
-$GLOBALS['TL_LANG']['tl_nc_language']['edit']                    = array('Edit language', 'Edit language ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_language']['copy']                    = array('Copy language', 'Copy language ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_language']['delete']                  = array('Delete language', 'Delete language ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_language']['show']                    = array('Language details', 'Show details for language ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_language']['new']                        = array('New language', 'Add a new language.');
+$GLOBALS['TL_LANG']['tl_nc_language']['edit']                       = array('Edit language', 'Edit language ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_language']['copy']                       = array('Copy language', 'Copy language ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_language']['delete']                     = array('Delete language', 'Delete language ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_language']['show']                       = array('Language details', 'Show details for language ID %s.');
 
 /**
  * Legends
  */
-$GLOBALS['TL_LANG']['tl_nc_language']['general_legend']          = 'General language settings';
-$GLOBALS['TL_LANG']['tl_nc_language']['attachments_legend']      = 'Attachments';
-$GLOBALS['TL_LANG']['tl_nc_language']['gateway_legend']          = 'Gateway settings';
+$GLOBALS['TL_LANG']['tl_nc_language']['general_legend']             = 'General language settings';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachments_legend']         = 'Attachments';
+$GLOBALS['TL_LANG']['tl_nc_language']['meta_legend']                = 'Meta information';
+$GLOBALS['TL_LANG']['tl_nc_language']['content_legend']             = 'Content';
 
 /**
  * Errors
  */
-$GLOBALS['TL_LANG']['tl_nc_language']['token_error']             = 'The following tokens you have used are not supported by this notification type: %s.';
+$GLOBALS['TL_LANG']['tl_nc_language']['token_error']                = 'The following tokens you have used are not supported by this notification type: %s.';
