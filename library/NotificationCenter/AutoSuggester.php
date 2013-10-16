@@ -33,11 +33,11 @@ class AutoSuggester extends \Controller
     {
         // Already initialized (e.g. for another DCA)
         // This could be if Contao loads a ptable or ctable
-        if (null !== $strTable) {
+        if (null !== static::$strTable) {
             return;
         }
 
-        // @todo implement editAll and overwriteAll
+        // @todo implement editAll and overrideAll
         if (\Input::get('act') != 'edit') {
             return;
         }
