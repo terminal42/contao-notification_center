@@ -63,7 +63,9 @@ var AutoSuggester = new Class({
 		// because the tinyMCE needs to get initialized
         setTimeout((function() {
 	        if (window.tinyMCE) {
-	            this.tinyMCE = tinyMCE.get(this.input.get('id'));
+	        	try {
+	            	this.tinyMCE = tinyMCE.get(this.input.get('id'));
+	            } catch (err) {}
 	        }
 
 			// Set the mirror for textarea
