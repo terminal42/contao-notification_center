@@ -7,6 +7,9 @@ Contao developers to send notifications via their extensions.
 If we can get this extension to be widely used, users will quickly get used
 to the way one can configure the notification center.
 
+## Translating
+The notification center can be translated via Transifex: https://www.transifex.com/projects/p/notification_center
+
 ## Adding your own notification type
 
 ```php
