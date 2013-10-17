@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-17T11:02:07+02:00
+ * last-updated: 2013-10-17T11:02:10+02:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']   = 'Konfiguracja';
 $GLOBALS['TL_LANG']['tl_nc_notification']['copy']['0']       = 'Kopiuj powiadomienie';
@@ -18,7 +17,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['copy']['1']       = 'Kopiuj powiadomi
 $GLOBALS['TL_LANG']['tl_nc_notification']['delete']['0']     = 'Usuń powiadomienie';
 $GLOBALS['TL_LANG']['tl_nc_notification']['delete']['1']     = 'Usuń powiadomienie ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['edit']['0']       = 'Zarządzaj powiadomieniami';
-$GLOBALS['TL_LANG']['tl_nc_notification']['edit']['1']       = 'Zarządzaj powiadomieniami dla powiadomienia ID %s.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['edit']['1']       = 'Zarządzaj wiadomościami dla powiadomienia ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['0'] = 'Edytuj powiadomienie';
 $GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['1'] = 'Edytuj powiadomienie ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['new']['0']        = 'Nowe powiadomienie';
