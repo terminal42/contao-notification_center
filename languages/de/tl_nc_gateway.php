@@ -11,9 +11,21 @@
  * last-updated: 2013-10-17T10:38:40+02:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['0'] = 'Titel';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['1'] = 'Bitte geben Sie einen Titel für dieses Gateway ein.';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['0']  = 'Typ';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['1']  = 'Bitte wählen Sie einen Typen für dieses Gateway.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']      = 'Gateway duplizieren';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['1']      = 'Editieren Sie Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['0']    = 'Gateway löschen';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['1']    = 'Löschen Sie Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['0']      = 'Gateway editieren';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['1']      = 'Editieren Sie Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend'] = 'Gateway Einstellungen';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['new']['0']       = 'Neues Gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['new']['1']       = 'Neues Gateway anlegen.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']      = 'Gateway Details';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']      = 'Details des Gateways ID %s anzeigen.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['0']     = 'Titel';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['1']     = 'Bitte geben Sie einen Titel für dieses Gateway ein.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['title_legend']   = 'Titel & Typ';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['0']      = 'Typ';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['1']      = 'Bitte wählen Sie einen Typen für dieses Gateway.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']  = 'Standard Email-Gateway';
 
