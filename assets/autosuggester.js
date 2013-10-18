@@ -272,6 +272,11 @@ var AutoSuggester = new Class({
             selection = this.tinyMCE.selection.getRng();
             value = selection.startContainer.wholeText;
             index = selection.startOffset;
+
+			// Fix the wrong index calculation
+            if (value && index == selection.startContainer.length && selection.startContainer.textContent.length != value.length) {
+	            index = index + (value.length - selection.startContainer.textContent.length);
+            }
         } else {
             value = this.input.get('value');
             index = this.getCaretIndex();
