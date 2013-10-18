@@ -37,12 +37,12 @@ class Notification extends \Model
     protected static $strTable = 'tl_nc_notification';
 
     /**
-     * Gets the notifications collection
+     * Gets the published notifications collection
      * @return \Model\Collection
      */
     public function getMessages()
     {
-        return Message::findByNotification($this);
+        return Message::findPublishedByNotification($this);
     }
 
     /**

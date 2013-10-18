@@ -100,6 +100,13 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
                 'icon'                => 'delete.gif',
                 'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
             ),
+            'toggle' => array
+            (
+                'label'               => &$GLOBALS['TL_LANG']['tl_nc_message']['toggle'],
+                'icon'                => 'visible.gif',
+                'attributes'          => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback'     => array('NotificationCenter\tl_nc_message', 'toggleIcon')
+            ),
             'show' => array
             (
                 'label'               => &$GLOBALS['TL_LANG']['tl_nc_message']['show'],
@@ -114,7 +121,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
     (
         '__selector__'                => array('gateway_type'),
         'default'                     => '{title_legend},title,gateway',
-        'email'                       => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template',
+        'email'                       => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template;{publish_legend},published',
     ),
 
     // Fields
@@ -184,25 +191,33 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             )
         ),
         'email_priority' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_nc_message']['email_priority'],
-			'exclude'				=> true,
-			'default'				=> 3,
-			'inputType'				=> 'select',
-			'options'				=> array(1,2,3,4,5),
-			'reference'				=> &$GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options'],
-			'eval'					=> array('rgxp'=>'digit', 'tl_class'=>'w50'),
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_nc_message']['email_priority'],
+            'exclude'               => true,
+            'default'               => 3,
+            'inputType'             => 'select',
+            'options'               => array(1,2,3,4,5),
+            'reference'             => &$GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options'],
+            'eval'                  => array('rgxp'=>'digit', 'tl_class'=>'w50'),
             'sql'                   => "int(1) unsigned NOT NULL default '0'",
-		),
-		'email_template' => array
-		(
-			'label'					=> &$GLOBALS['TL_LANG']['tl_nc_message']['email_template'],
-			'exclude'				=> true,
-			'default'				=> 'mail_default',
-			'inputType'				=> 'select',
-			'options'				=> $this->getTemplateGroup('mail_'),
-			'eval'					=> array('tl_class'=>'w50'),
+        ),
+        'email_template' => array
+        (
+            'label'                 => &$GLOBALS['TL_LANG']['tl_nc_message']['email_template'],
+            'exclude'               => true,
+            'default'               => 'mail_default',
+            'inputType'             => 'select',
+            'options'               => $this->getTemplateGroup('mail_'),
+            'eval'                  => array('tl_class'=>'w50'),
             'sql'                   => "varchar(255) NOT NULL default ''",
-		),
+        ),
+        'published' => array
+        (
+            'exclude'                 => true,
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_message']['published'],
+            'inputType'               => 'checkbox',
+            'eval'                    => array('doNotCopy'=>true),
+            'sql'                     => "char(1) NOT NULL default ''"
+        )
     )
 );

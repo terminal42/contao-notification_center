@@ -58,12 +58,17 @@ class Message extends \Model
     }
 
     /**
-     * Find by notification
+     * Find all published by notification
      * @param   Notification
      * @return  Message|null
      */
-    public static function findByNotification(Notification $objNotification, array $arrOptions=array())
+    public static function findPublishedByNotification(Notification $objNotification, array $arrOptions=array())
     {
-        return static::findBy('pid', $objNotification->id, $arrOptions);
+        $t = static::$strTable;
+
+        $arrColumns = array("$t.pid=? AND $t.published=1");
+        $arrValues  = array($objNotification->id);
+
+        return static::findBy($arrColumns, $arrValues, $arrOptions);
     }
 }

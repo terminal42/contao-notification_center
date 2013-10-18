@@ -65,11 +65,71 @@ class tl_nc_message extends \Backend
             $arrLanguages[] = $this->arrLanguages[$objLanguages->language];
         }
 
-        // @todo style this a little nicer
+        // @todo style languages a little nicer
         return '
-<div class="cte_type">
-<p><strong>' . $arrRow['title'] . '</strong> - ' . $this->arrGateways[$arrRow['gateway']] . '</p>
+<div class="cte_type ' . (($arrRow['published']) ? 'published' : 'unpublished') . '"><strong>' . $arrRow['title'] . '</strong> - ' . $this->arrGateways[$arrRow['gateway']] . '</div>
+<div>
 <p>' . implode(', ', $arrLanguages) . '</p>
 </div>';
+    }
+
+    /**
+     * Return the "toggle visibility" button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (strlen(\Input::get('tid'))) {
+            $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
+
+            if (\Environment::get('isAjaxRequest')) {
+                exit;
+            }
+
+            $this->redirect($this->getReferer());
+        }
+
+        $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
+
+        if (!$row['published']) {
+            $icon = 'invisible.gif';
+        }
+
+        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+    }
+
+    /**
+     * Disable/enable a user group
+     * @param integer
+     * @param boolean
+     */
+    public function toggleVisibility($intId, $blnVisible)
+    {
+        $objVersions = new \Versions('tl_nc_message', $intId);
+        $objVersions->initialize();
+
+        // Trigger the save_callback
+        if (is_array($GLOBALS['TL_DCA']['tl_nc_message']['fields']['published']['save_callback'])) {
+            foreach ($GLOBALS['TL_DCA']['tl_nc_message']['fields']['published']['save_callback'] as $callback) {
+                if (is_array($callback)) {
+                    $blnVisible = \System::importStatic($callback[0])->$callback[1]($blnVisible, $this);
+                } elseif (is_callable($callback)) {
+                    $blnVisible = $callback($blnVisible, $this);
+                }
+            }
+        }
+
+        // Update the database
+        \Database::getInstance()->prepare("UPDATE tl_nc_message SET tstamp=" . time() . ", published='" . ($blnVisible ? 1 : '') . "' WHERE id=?")
+            ->execute($intId);
+
+        $objVersions->create();
+        $this->log('A new version of record "tl_nc_message.id=' . $intId . '" has been created', __METHOD__, TL_GENERAL);
     }
 }
