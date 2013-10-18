@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     (
         '__selector__'                => array('gateway_type', 'email_mode'),
         'default'                     => '{general_legend},language,fallback',
-        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc;{content_legend},email_subject,email_mode;{attachments_legend},attachments',
+        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
     ),
 
     'subpalettes' => array
@@ -176,9 +176,9 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
-        'attachments' => array
+        'attachment_tokens' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['attachments'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens'],
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true),

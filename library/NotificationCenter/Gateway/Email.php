@@ -97,8 +97,8 @@ class Email extends Base implements GatewayInterface
             $objEmail->imageDir = TL_ROOT . '/';
         }
 
-        // Add all attachments
-        $arrAttachments = $this->getAttachments($objLanguage->attachments, $arrTokens);
+        // Add all token attachments
+        $arrAttachments = $this->getTokenAttachments($objLanguage->attachment_tokens, $arrTokens);
         if (!empty($arrAttachments)) {
             foreach ($arrAttachments as $strFile) {
                 $objEmail->attachFile($strFile);

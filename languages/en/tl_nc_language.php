@@ -31,7 +31,7 @@
 $GLOBALS['TL_LANG']['tl_nc_language']['language']                   = array('Language', 'Please select a language.');
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']                   = array('Fallback', 'Activate this checkbox if this language should be your fallback.');
 $GLOBALS['TL_LANG']['tl_nc_language']['recipients']                 = array('Recipients', 'Please enter a <strong>comma-separated</strong> list of recipients in this field. Use the help wizard to see the available simple tokens.');
-$GLOBALS['TL_LANG']['tl_nc_language']['attachments']                = array('Attachments', 'Please enter a <strong>comma-separated</strong> list of attachment tokens in this field. Use the help wizard to see the available simple tokens.');
+$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']          = array('Attachments via tokens', 'Please enter a <strong>comma-separated</strong> list of attachment tokens in this field. Use the help wizard to see the available simple tokens.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']          = array('Sender name', 'Please enter the sender name.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']       = array('Sender address', 'Please enter the sender email address.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']         = array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');

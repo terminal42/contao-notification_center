@@ -25,7 +25,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
             // Valid tokens
             'recipient_email' // The email address of the recipient
         ),
-        'attachments'    => array
+        'attachment_tokens'    => array
         (
             'form_*', // All the order condition form fields
             'document' // The document that should be attached (e.g. an invoice)

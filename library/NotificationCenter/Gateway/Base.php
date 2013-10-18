@@ -60,20 +60,20 @@ abstract class Base extends \Controller
     }
 
     /**
-     * Gets an array of valid attachments
+     * Gets an array of valid attachments of a token field
      * @param   string
      * @param   array Tokens
      * @return  array
      */
-    protected function getAttachments($strAttachments, array $arrTokens)
+    protected function getTokenAttachments($strAttachmentTokens, array $arrTokens)
     {
         $arrAttachments = array();
 
-        if ($strAttachments == '') {
+        if ($strAttachmentTokens == '') {
             return $arrAttachments;
         }
 
-        foreach (trimsplit(',', $strAttachments) as $strToken) {
+        foreach (trimsplit(',', $strAttachmentTokens) as $strToken) {
             $strFile = TL_ROOT . '/' . \String::parseSimpleTokens($strToken, $arrTokens);
 
             if (is_file($strFile)) {
