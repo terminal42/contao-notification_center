@@ -59,6 +59,18 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         ),
     ),
 
+    'edit' => array
+    (
+        // Hide the saveNclose button
+        'buttons_callback'  => array
+        (
+            function($arrButtons, $dc) {
+                unset($arrButtons['saveNclose']);
+                return $arrButtons;
+            }
+        )
+    ),
+
     // List
     'list' => array
     (
