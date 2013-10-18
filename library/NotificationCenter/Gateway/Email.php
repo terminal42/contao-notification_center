@@ -98,10 +98,20 @@ class Email extends Base implements GatewayInterface
         }
 
         // Add all token attachments
-        $arrAttachments = $this->getTokenAttachments($objLanguage->attachment_tokens, $arrTokens);
-        if (!empty($arrAttachments)) {
-            foreach ($arrAttachments as $strFile) {
+        $arrTokenAttachments = $this->getTokenAttachments($objLanguage->attachment_tokens, $arrTokens);
+        if (!empty($arrTokenAttachments)) {
+            foreach ($arrTokenAttachments as $strFile) {
                 $objEmail->attachFile($strFile);
+            }
+        }
+
+        // Add static attachments
+        $arrAttachments = deserialize($objLanguage->attachments);
+
+        if (is_array($arrAttachments) && !empty($arrAttachments)) {
+            $objFiles = \FilesModel::findMultipleByUuids($arrAttachments);
+            while ($objFiles->next()) {
+                $objEmail->attachFile($objFiles->path);
             }
         }
 

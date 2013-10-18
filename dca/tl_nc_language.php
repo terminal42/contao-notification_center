@@ -196,6 +196,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
+        'attachments' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['attachments'],
+            'exclude'                 => true,
+            'inputType'               => 'fileTree',
+            'eval'                    => array('multiple'=>true, 'fieldType'=>'checkbox', 'files'=>true, 'filesOnly'=>true, 'tl_class'=>'clr'),
+            'sql'                     => "blob NULL"
+        ),
         'email_sender_name' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name'],
