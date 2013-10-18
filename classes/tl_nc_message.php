@@ -58,19 +58,20 @@ class tl_nc_message extends \Backend
             }
         }
 
-        $arrLanguages = array();
+        $arrLanguages =  \Database::getInstance()->prepare('SELECT language FROM tl_nc_language WHERE pid=?')->execute($arrRow['id'])->fetchEach('language');
 
-        $objLanguages = \Database::getInstance()->prepare('SELECT language FROM tl_nc_language WHERE pid=?')->execute($arrRow['id']);
-        while ($objLanguages->next()) {
-            $arrLanguages[] = $this->arrLanguages[$objLanguages->language];
-        }
-
-        // @todo style languages a little nicer
-        return '
+        $strBuffer = '
 <div class="cte_type ' . (($arrRow['published']) ? 'published' : 'unpublished') . '"><strong>' . $arrRow['title'] . '</strong> - ' . $this->arrGateways[$arrRow['gateway']] . '</div>
 <div>
-<p>' . implode(', ', $arrLanguages) . '</p>
-</div>';
+<ul>';
+
+        foreach ($arrLanguages as $strLang) {
+            $strBuffer .= '<li>&#10148; ' . $this->arrLanguages[$strLang] . '</li>';
+        }
+
+        $strBuffer .= '</ul></div>';
+
+        return $strBuffer;
     }
 
     /**
