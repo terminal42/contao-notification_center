@@ -157,16 +157,24 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'default'                 => $GLOBALS['TL_LANGUAGE'],
             'inputType'               => 'select',
             'options'                 => \System::getLanguages(),
-            'eval'                    => array('mandatory'=>true, 'unique'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(5) NOT NULL default ''"
+            'eval'                    => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(5) NOT NULL default ''",
+            'save_callback' => array
+            (
+            	array('NotificationCenter\tl_nc_language', 'validateLanguageField')
+            )
         ),
         'fallback' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['fallback'],
             'exclude'                 => true,
             'inputType'               => 'checkbox',
-            'eval'                    => array('fallback'=>true, 'tl_class'=>'w50 m12'),
-            'sql'                     => "char(1) NOT NULL default ''"
+            'eval'                    => array('tl_class'=>'w50 m12'),
+            'sql'                     => "char(1) NOT NULL default ''",
+            'save_callback' => array
+            (
+            	array('NotificationCenter\tl_nc_language', 'validateFallbackField')
+            )
         ),
         'recipients' => array
         (
