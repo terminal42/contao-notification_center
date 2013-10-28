@@ -17,4 +17,3 @@ $GLOBALS['TL_LANG']['MOD']['nc_gateways']['1']      = 'Gateways verwalten';
 $GLOBALS['TL_LANG']['MOD']['nc_notifications']['0'] = 'Benachrichtigungen';
 $GLOBALS['TL_LANG']['MOD']['nc_notifications']['1'] = 'Verwalten Sie Benachrichtigungen.';
 $GLOBALS['TL_LANG']['MOD']['notification_center']   = 'Benachrichtigungszentrum';
-
