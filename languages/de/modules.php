@@ -8,12 +8,12 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-17T10:38:39+02:00
+ * last-updated: 2013-10-29T11:12:37+01:00
  */
-
 
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']['0']      = 'Gateways';
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']['1']      = 'Gateways verwalten';
 $GLOBALS['TL_LANG']['MOD']['nc_notifications']['0'] = 'Benachrichtigungen';
-$GLOBALS['TL_LANG']['MOD']['nc_notifications']['1'] = 'Verwalten Sie Benachrichtigungen.';
+$GLOBALS['TL_LANG']['MOD']['nc_notifications']['1'] = 'Verwalten Sie die Benachrichtigungen.';
 $GLOBALS['TL_LANG']['MOD']['notification_center']   = 'Benachrichtigungszentrum';
+

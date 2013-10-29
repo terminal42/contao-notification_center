@@ -8,19 +8,19 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-17T10:38:40+02:00
+ * last-updated: 2013-10-17T11:02:10+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']      = 'Gateway duplizieren';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['1']      = 'Editieren Sie Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['1']      = 'Editieren Sie das Gateway ID %s';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['0']    = 'Gateway löschen';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['1']    = 'Löschen Sie Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['1']    = 'Löschen Sie das Gateway ID %s';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['0']      = 'Gateway editieren';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['1']      = 'Editieren Sie Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['1']      = 'Editieren Sie das Gateway ID %s';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend'] = 'Gateway Einstellungen';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['new']['0']       = 'Neues Gateway';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['new']['1']       = 'Neues Gateway anlegen.';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']      = 'Gateway Details';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']      = 'Gateway-Details';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']      = 'Details des Gateways ID %s anzeigen.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title']['0']     = 'Titel';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title']['1']     = 'Bitte geben Sie einen Titel für dieses Gateway ein.';

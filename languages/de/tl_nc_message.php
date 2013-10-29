@@ -25,40 +25,39 @@
  * @license    LGPL
  */
 
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_nc_message']['title']                   = array('Titel', 'Bitte gib einen Namen für diese Nachricht ein.');
-$GLOBALS['TL_LANG']['tl_nc_message']['gateway']                 = array('Gateway', 'Bitte einen Gateway für diese Nachricht wählen.');
-$GLOBALS['TL_LANG']['tl_nc_message']['languages']               = array('Sprachen', 'Hier kannst du die verschiedenen Sprachen verwalten.', 'Sprachen verwalten', 'Schliessen');
-$GLOBALS['TL_LANG']['tl_nc_message']['email_priority']          = array('Priorität', 'Bitte die Priorität auswählen.');
-$GLOBALS['TL_LANG']['tl_nc_message']['email_template']          = array('Template-Datei', 'Bitte wähle eine Template-Datei.');
-$GLOBALS['TL_LANG']['tl_nc_message']['published']               = array('Nachricht veröffentlichen', 'Diese Nachricht einfügen beim Versenden der Notification.');
-
-/**
- * Buttons
- */
-$GLOBALS['TL_LANG']['tl_nc_message']['new']                     = array('Neue Nachricht', 'Füge eine neue Nachricht hinzu.');
-$GLOBALS['TL_LANG']['tl_nc_message']['edit']                    = array('Nachricht editieren', 'Nachricht ID %s editieren.');
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']                    = array('Nachricht kopieren', 'Kopiere Nachricht ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_message']['delete']                  = array('Nachricht löschen', 'Nachricht mit ID %s löschen.');
-$GLOBALS['TL_LANG']['tl_nc_message']['toggle']                  = array('Sichtbarkeit der Nachricht', 'Blende die Nachricht ID %s ein/aus.');
-$GLOBALS['TL_LANG']['tl_nc_message']['show']                    = array('Nachrichtendetails', 'Details für Nachricht ID %s anzeigen.');
-
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_nc_message']['title_legend']            = 'Titel & Gateway';
-$GLOBALS['TL_LANG']['tl_nc_message']['languages_legend']        = 'Sprachen';
-$GLOBALS['TL_LANG']['tl_nc_message']['expert_legend']           = 'Experteneinstellungen';
-$GLOBALS['TL_LANG']['tl_nc_message']['publish_legend']          = 'Veröffentlichen';
-
-/**
- * References
- */
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']['0']                   = 'Nachricht kopieren';
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Kopiere Nachricht ID %s.';
+$GLOBALS['TL_LANG']['tl_nc_message']['delete']['0']                 = 'Nachricht löschen';
+$GLOBALS['TL_LANG']['tl_nc_message']['delete']['1']                 = 'Nachricht mit ID %s löschen.';
+$GLOBALS['TL_LANG']['tl_nc_message']['edit']['0']                   = 'Nachricht editieren';
+$GLOBALS['TL_LANG']['tl_nc_message']['edit']['1']                   = 'Nachricht ID %s editieren.';
+$GLOBALS['TL_LANG']['tl_nc_message']['email_priority']['0']         = 'Priorität';
+$GLOBALS['TL_LANG']['tl_nc_message']['email_priority']['1']         = 'Bitte wählen Sie die Priorität aus.';
 $GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options']['1'] = 'sehr hoch';
 $GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options']['2'] = 'hoch';
 $GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options']['3'] = 'normal';
 $GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options']['4'] = 'tief';
 $GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options']['5'] = 'sehr tief';
+$GLOBALS['TL_LANG']['tl_nc_message']['email_template']['0']         = 'Template-Datei';
+$GLOBALS['TL_LANG']['tl_nc_message']['email_template']['1']         = 'Bitte wählen Sie eine Template-Datei aus.';
+$GLOBALS['TL_LANG']['tl_nc_message']['expert_legend']               = 'Experteneinstellungen';
+$GLOBALS['TL_LANG']['tl_nc_message']['gateway']['0']                = 'Gateway';
+$GLOBALS['TL_LANG']['tl_nc_message']['gateway']['1']                = 'Bitte wählen Sie einen Gateway für diese Nachricht.';
+$GLOBALS['TL_LANG']['tl_nc_message']['languages']['0']              = 'Sprachen';
+$GLOBALS['TL_LANG']['tl_nc_message']['languages']['1']              = 'Hier können Sie die verschiedenen Sprachen verwalten.';
+$GLOBALS['TL_LANG']['tl_nc_message']['languages']['2']              = 'Sprachen verwalten';
+$GLOBALS['TL_LANG']['tl_nc_message']['languages']['3']              = 'Schliessen';
+$GLOBALS['TL_LANG']['tl_nc_message']['languages_legend']            = 'Sprachen';
+$GLOBALS['TL_LANG']['tl_nc_message']['new']['0']                    = 'Neue Nachricht';
+$GLOBALS['TL_LANG']['tl_nc_message']['new']['1']                    = 'Eine neue Nachricht hinzufügen.';
+$GLOBALS['TL_LANG']['tl_nc_message']['publish_legend']              = 'Einstellungen veröffentlichen';
+$GLOBALS['TL_LANG']['tl_nc_message']['published']['0']              = 'Nachricht veröffentlichen';
+$GLOBALS['TL_LANG']['tl_nc_message']['published']['1']              = 'Diese Nachricht einfügen beim Versenden der Notification.';
+$GLOBALS['TL_LANG']['tl_nc_message']['show']['0']                   = 'Nachrichtendetails';
+$GLOBALS['TL_LANG']['tl_nc_message']['show']['1']                   = 'Details für Nachricht ID %s anzeigen.';
+$GLOBALS['TL_LANG']['tl_nc_message']['title']['0']                  = 'Titel';
+$GLOBALS['TL_LANG']['tl_nc_message']['title']['1']                  = 'Bitte geben Sie einen Namen für diese Nachricht ein.';
+$GLOBALS['TL_LANG']['tl_nc_message']['title_legend']                = 'Titel & Gateway';
+$GLOBALS['TL_LANG']['tl_nc_message']['toggle']['0']                 = 'Nachricht ein-/ausblenden';
+$GLOBALS['TL_LANG']['tl_nc_message']['toggle']['1']                 = 'Blende die Nachricht ID %s ein/aus.';
+

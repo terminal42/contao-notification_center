@@ -25,30 +25,23 @@
  * @license    LGPL
  */
 
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_nc_notification']['title']                   = array('Titel', 'Bitte gib einen Namen für diese Notification.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['gateway']                 = array('Typ', 'Bitte selektiere einen Typ für diese Notification.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']   = 'Konfiguration';
+$GLOBALS['TL_LANG']['tl_nc_notification']['copy']['0']       = 'Benachrichtigung kopieren';
+$GLOBALS['TL_LANG']['tl_nc_notification']['copy']['1']       = 'Benachrichtigung ID %s kopieren.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['delete']['0']     = 'Benachrichtigung löschen';
+$GLOBALS['TL_LANG']['tl_nc_notification']['delete']['1']     = 'Benachrichtigung ID %s löschen.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['edit']['0']       = 'Benachrichtigung editieren';
+$GLOBALS['TL_LANG']['tl_nc_notification']['edit']['1']       = 'Benachrichtigung ID %s editieren.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['0'] = 'Benachrichtigung bearbeiten';
+$GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['1'] = 'Benachrichtigung ID %s editieren.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['new']['0']        = 'Neue Benachrichtigung';
+$GLOBALS['TL_LANG']['tl_nc_notification']['new']['1']        = 'Neue Benachrichtigung erstellen.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['show']['0']       = 'Benachrichtigungsdetails';
+$GLOBALS['TL_LANG']['tl_nc_notification']['show']['1']       = 'Details für Benachrichtigung ID %s anzeigen.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['title']['0']      = 'Titel';
+$GLOBALS['TL_LANG']['tl_nc_notification']['title']['1']      = 'Bitte gib einen Namen für diese Notification.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']    = 'Titel & Typ';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['0']       = 'Typ';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['1']       = 'Bitte selektieren Sie einen Typ für diese Benachrichtigung.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']   = 'Standard eMail Gateway';
 
-
-/**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']           = 'Standard eMail Gateway';
-
-/**
- * Buttons
- */
-$GLOBALS['TL_LANG']['tl_nc_notification']['new']                     = array('Neue Notification', 'Neue Notification erstellen.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['edit']                    = array('Notification editieren', 'Notification ID %s editieren.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['copy']                    = array('Notification kopieren', 'Notification ID %s kopieren.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['delete']                  = array('Notification löschen', 'Notification ID %s löschen.');
-$GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('Notificationdetails', 'Details für Notification ID %s anzeigen.');
-
-
-/**
- * Legends
- */
-$GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']            = 'Titel & Typ';
-$GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']           = 'Konfiguration';
