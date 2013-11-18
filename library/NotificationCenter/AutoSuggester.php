@@ -68,7 +68,12 @@ class AutoSuggester extends \Controller
         $strGroup = NotificationModel::findGroupForType(static::$strType);
         $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$dc->field];
 
+        if (!is_array($arrTokens) || empty($arrTokens)) {
+            return '';
+        }
+
         $arrParsedTokens = array();
+
         foreach ($arrTokens as $strToken) {
             $arrParsedTokens[] = array
             (
