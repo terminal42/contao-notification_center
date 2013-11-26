@@ -46,3 +46,9 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('No
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']            = 'Title & type';
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']           = 'Configuration';
+
+/**
+ * Notification types
+ */
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['contao']              = 'Contao';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration'] = array('Member registration');
