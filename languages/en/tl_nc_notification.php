@@ -32,11 +32,6 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['title']                   = array('Ti
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Type', 'Please select a type for this notification.');
 
 /**
- * Reference
- */
-$GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']           = 'Standard eMail gateway';
-
-/**
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['new']                     = array('New notification', 'Create a new notification.');

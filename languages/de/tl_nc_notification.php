@@ -43,5 +43,4 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['title']['1']      = 'Bitte gib einen 
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']    = 'Titel & Typ';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['0']       = 'Typ';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['1']       = 'Bitte selektieren Sie einen Typ für diese Benachrichtigung.';
-$GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']   = 'Standard eMail Gateway';
 
