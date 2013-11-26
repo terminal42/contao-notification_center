@@ -31,3 +31,8 @@
 $GLOBALS['TL_LANG']['MOD']['notification_center']       = 'Notification Center';
 $GLOBALS['TL_LANG']['MOD']['nc_notifications']          = array('Notifications', 'Manage notifications.');
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']               = array('Gateways', 'Manage gateways');
+
+/**
+ * Front end modules
+ */
+$GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter'] = array('Lost password (Notification Center)', 'Generates a form to request a new password and sends the notification using the notification center.');

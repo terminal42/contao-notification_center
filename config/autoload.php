@@ -42,3 +42,12 @@ NamespaceClassLoader::addClassMap(array
     'NotificationCenter\tl_nc_language'         => 'system/modules/notification_center/classes/tl_nc_language.php',
     'NotificationCenter\tl_nc_message'          => 'system/modules/notification_center/classes/tl_nc_message.php'
 ));
+
+
+/**
+ * Register Contao classes
+ */
+ClassLoader::addClasses(array
+(
+	'Contao\ModulePasswordNotificationCenter' => 'system/modules/notification_center/modules/ModulePasswordNotificationCenter.php',
+));
