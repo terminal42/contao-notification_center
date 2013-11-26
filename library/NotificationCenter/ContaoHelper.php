@@ -75,14 +75,14 @@ class ContaoHelper extends \Controller
 
 		// translate/format values
 		foreach ($arrData as $strFieldName => $strFieldValue) {
-            $arrTokens['member_ ' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
+            $arrTokens['member_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
         }
 
         $objNotification = \NotificationCenter\Model\Notification::findByPk($objModule->nc_notification);
 
         if ($objNotification !== null)
         {
-        	$objNotification->send($arrData);
+        	$objNotification->send($arrTokens);
 
         	// Disable the email to admin because no core notification has been sent
             $objModule->reg_activate = true;
