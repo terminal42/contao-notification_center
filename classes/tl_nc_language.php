@@ -127,4 +127,32 @@ class tl_nc_language extends \Backend
 
 	    return $varValue;
     }
+
+
+    /**
+     * Validate e-mail addresses in the comma separated list
+     * @param mixed
+     * @param \DataContainer
+     * @return mixed
+     * @throws \Exception
+     */
+    public function validateEmailList($varValue, \DataContainer $dc)
+    {
+        if ($varValue != '') {
+            $chunks = trimsplit(',', $varValue);
+
+            foreach ($chunks as $chunk) {
+                // Skip string with tokens
+                if (strpos($chunk, '##') !== false) {
+                    continue;
+                }
+
+                if (!\Validator::isEmail($chunk)) {
+                    throw new \Exception($GLOBALS['TL_LANG']['ERR']['emails']);
+                }
+            }
+        }
+
+        return $varValue;
+    }
 }
