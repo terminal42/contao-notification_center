@@ -115,15 +115,16 @@ class tl_nc_language extends \Backend
      */
     public function validateFallbackField($varValue, \DataContainer $dc)
     {
-	    $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE fallback=1 AND pid=? AND id!=?")
-	    							   ->limit(1)
-	    							   ->execute($dc->activeRecord->pid, $dc->id);
+        if ($varValue) {
+    	    $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE fallback=1 AND pid=? AND id!=?")
+    	    							   ->limit(1)
+    	    							   ->execute($dc->activeRecord->pid, $dc->id);
 
-	    if ($objLanguages->numRows)
-	    {
-		    $this->Database->prepare("UPDATE tl_nc_language SET fallback='' WHERE id=?")
-		    			   ->execute($objLanguages->id);
-	    }
+    	    if ($objLanguages->numRows) {
+    		    $this->Database->prepare("UPDATE tl_nc_language SET fallback='' WHERE id=?")
+    		    			   ->execute($objLanguages->id);
+    	    }
+        }
 
 	    return $varValue;
     }
