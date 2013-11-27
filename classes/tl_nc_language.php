@@ -115,16 +115,45 @@ class tl_nc_language extends \Backend
      */
     public function validateFallbackField($varValue, \DataContainer $dc)
     {
-	    $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE fallback=1 AND pid=? AND id!=?")
-	    							   ->limit(1)
-	    							   ->execute($dc->activeRecord->pid, $dc->id);
+        if ($varValue) {
+    	    $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE fallback=1 AND pid=? AND id!=?")
+    	    							   ->limit(1)
+    	    							   ->execute($dc->activeRecord->pid, $dc->id);
 
-	    if ($objLanguages->numRows)
-	    {
-		    $this->Database->prepare("UPDATE tl_nc_language SET fallback='' WHERE id=?")
-		    			   ->execute($objLanguages->id);
-	    }
+    	    if ($objLanguages->numRows) {
+    		    $this->Database->prepare("UPDATE tl_nc_language SET fallback='' WHERE id=?")
+    		    			   ->execute($objLanguages->id);
+    	    }
+        }
 
 	    return $varValue;
+    }
+
+
+    /**
+     * Validate e-mail addresses in the comma separated list
+     * @param mixed
+     * @param \DataContainer
+     * @return mixed
+     * @throws \Exception
+     */
+    public function validateEmailList($varValue, \DataContainer $dc)
+    {
+        if ($varValue != '') {
+            $chunks = trimsplit(',', $varValue);
+
+            foreach ($chunks as $chunk) {
+                // Skip string with tokens
+                if (strpos($chunk, '##') !== false) {
+                    continue;
+                }
+
+                if (!\Validator::isEmail($chunk)) {
+                    throw new \Exception($GLOBALS['TL_LANG']['ERR']['emails']);
+                }
+            }
+        }
+
+        return $varValue;
     }
 }
