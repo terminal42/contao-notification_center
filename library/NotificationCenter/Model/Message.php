@@ -43,10 +43,11 @@ class Message extends \Model
      * @param   string
      * @return  bool
      */
-    public function send(array $arrTokens, $strLanguage='')
+    public function send(array $arrTokens, $strLanguage = '')
     {
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
             \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -62,7 +63,7 @@ class Message extends \Model
      * @param   Notification
      * @return  Message|null
      */
-    public static function findPublishedByNotification(Notification $objNotification, array $arrOptions=array())
+    public static function findPublishedByNotification(Notification $objNotification, array $arrOptions = array())
     {
         $t = static::$strTable;
 

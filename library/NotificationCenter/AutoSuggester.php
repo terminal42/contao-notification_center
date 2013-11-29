@@ -45,10 +45,10 @@ class AutoSuggester extends \Controller
         // @todo rename to nc_tokens
         \System::loadLanguageFile('tokens');
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/notification_center/assets/autosuggester' . ($GLOBALS['TL_CONFIG']['debugMode'] ? '' : '.min') . '.js';
-        $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/autosuggester' . ($GLOBALS['TL_CONFIG']['debugMode'] ? '' : '.min') . '.css';
+        $GLOBALS['TL_CSS'][]        = 'system/modules/notification_center/assets/autosuggester' . ($GLOBALS['TL_CONFIG']['debugMode'] ? '' : '.min') . '.css';
 
         static::$strTable = $dc->table;
-        static::$strType = \Database::getInstance()->prepare($GLOBALS['TL_DCA'][static::$strTable]['config']['nc_type_query'])->execute($dc->id)->type;
+        static::$strType  = \Database::getInstance()->prepare($GLOBALS['TL_DCA'][static::$strTable]['config']['nc_type_query'])->execute($dc->id)->type;
 
         foreach ($GLOBALS['TL_DCA'][static::$strTable]['fields'] as $field => $arrConfig) {
             if ($arrConfig['eval']['rgxp'] == 'nc_tokens') {
@@ -65,7 +65,7 @@ class AutoSuggester extends \Controller
      */
     public function init(\DataContainer $dc)
     {
-        $strGroup = NotificationModel::findGroupForType(static::$strType);
+        $strGroup  = NotificationModel::findGroupForType(static::$strType);
         $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$dc->field];
 
         if (!is_array($arrTokens) || empty($arrTokens)) {
@@ -105,7 +105,7 @@ window.addEvent('domready', function() {
             return false;
         }
 
-        $strGroup = NotificationModel::findGroupForType(static::$strType);
+        $strGroup       = NotificationModel::findGroupForType(static::$strType);
         $arrValidTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
 
         // Build regex pattern

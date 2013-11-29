@@ -51,11 +51,12 @@ class Notification extends \Model
      * @param   string  The language (optional)
      * @return  array
      */
-    public function send(array $arrTokens, $strLanguage='')
+    public function send(array $arrTokens, $strLanguage = '')
     {
         // Check if there are valid messages
         if (($objMessages = $this->getMessages()) === null) {
-            \System::log('Could not find any messages for notification ID '.$this->id, __METHOD__, TL_ERROR);
+            \System::log('Could not find any messages for notification ID ' . $this->id, __METHOD__, TL_ERROR);
+
             return array();
         }
 
