@@ -93,8 +93,7 @@ abstract class Base extends \Controller
     {
         $arrRecipients = array();
 
-        foreach ((array) trimsplit(',', $strRecipients) as $strAddress)
-        {
+        foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
                 $strAddress = $this->recursiveReplaceTokensAndTags($strAddress, $arrTokens);
                 $strAddress = strip_tags($strAddress);
@@ -130,8 +129,7 @@ abstract class Base extends \Controller
         $strBuffer = $this->replaceInsertTags($strBuffer, false);
 
         // check if the inserttags have returned a simple token or an insert tag to parse
-        if ((strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false) && $strBuffer != $strText)
-        {
+        if ((strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false) && $strBuffer != $strText) {
             $strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens);
         }
 

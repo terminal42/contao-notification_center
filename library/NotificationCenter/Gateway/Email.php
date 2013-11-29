@@ -41,7 +41,7 @@ class Email extends Base implements GatewayInterface
      * @param   string
      * @return  bool
      */
-    public function send(Message $objMessage, array $arrTokens, $strLanguage='')
+    public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
         if ($strLanguage == '') {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
@@ -49,40 +49,40 @@ class Email extends Base implements GatewayInterface
 
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
             \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+
             return false;
         }
 
-        $objEmail = new \Email();
+        $objEmail           = new \Email();
         $objEmail->priority = $objMessage->email_priority;
 
         // Set optional sender name
-        $strSenderName = $objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
+        $strSenderName = $objLanguage->email_sender_name ? : $GLOBALS['TL_ADMIN_NAME'];
         if ($strSenderName != '') {
-            $strSenderName = $this->recursiveReplaceTokensAndTags($strSenderName, $arrTokens);
+            $strSenderName      = $this->recursiveReplaceTokensAndTags($strSenderName, $arrTokens);
             $objEmail->fromName = strip_tags($strSenderName);
         }
 
         // Set email sender address
-        $strSenderAddress = $objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
+        $strSenderAddress = $objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
         $strSenderAddress = $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens);
-        $objEmail->from = strip_tags($strSenderAddress);
+        $objEmail->from   = strip_tags($strSenderAddress);
 
         // Set email subject
-        $strSubject = $objLanguage->email_subject;
-        $strSubject = $this->recursiveReplaceTokensAndTags($strSubject, $arrTokens);
+        $strSubject        = $objLanguage->email_subject;
+        $strSubject        = $this->recursiveReplaceTokensAndTags($strSubject, $arrTokens);
         $objEmail->subject = strip_tags($strSubject);
 
         // Set email text content
-        $strText = $objLanguage->email_text;
-        $strText = $this->recursiveReplaceTokensAndTags($strText, $arrTokens);
-        $strText = \Controller::convertRelativeUrls($strText, '', true);
+        $strText        = $objLanguage->email_text;
+        $strText        = $this->recursiveReplaceTokensAndTags($strText, $arrTokens);
+        $strText        = \Controller::convertRelativeUrls($strText, '', true);
         $objEmail->text = strip_tags($strText);
 
         // Set optional email HTML content
-        if ($objLanguage->email_mode == 'textAndHtml')
-        {
-            $objTemplate = new \FrontendTemplate($this->email_template);
-            $objTemplate->body = $objLanguage->email_html;
+        if ($objLanguage->email_mode == 'textAndHtml') {
+            $objTemplate          = new \FrontendTemplate($this->email_template);
+            $objTemplate->body    = $objLanguage->email_html;
             $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 
             // Prevent parseSimpleTokens from stripping important HTML tags
@@ -93,7 +93,7 @@ class Email extends Base implements GatewayInterface
             $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
 
             // Parse template
-            $objEmail->html = $strHtml;
+            $objEmail->html     = $strHtml;
             $objEmail->imageDir = TL_ROOT . '/';
         }
 
@@ -129,7 +129,7 @@ class Email extends Base implements GatewayInterface
 
         try {
             return $objEmail->sendTo($this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens));
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }
 
