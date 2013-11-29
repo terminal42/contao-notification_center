@@ -27,8 +27,8 @@
 
 namespace NotificationCenter\Gateway;
 
-use NotificationCenter\Model\Message;
 use NotificationCenter\Model\Language;
+use NotificationCenter\Model\Message;
 
 
 class Email extends Base implements GatewayInterface

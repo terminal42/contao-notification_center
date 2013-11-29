@@ -28,8 +28,6 @@
 namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Model\Gateway;
-use NotificationCenter\Model\Language;
-use NotificationCenter\Model\Message;
 
 abstract class Base extends \Controller
 {
