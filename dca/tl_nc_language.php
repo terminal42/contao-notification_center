@@ -182,7 +182,11 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'long clr', 'decodeEntities'=>true, 'mandatory'=>true),
-            'sql'                     => "varchar(255) NOT NULL default ''"
+            'sql'                     => "varchar(255) NOT NULL default ''",
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'validateEmailList')
+            )
         ),
         'attachment_tokens' => array
         (
@@ -221,16 +225,24 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('rgxp'=>'extnd', 'style'=>'height:40px; width:314px', 'tl_class'=>'w50" style="height:auto'),
+            'eval'                    => array('style'=>'height:40px; width:314px', 'tl_class'=>'w50" style="height:auto'),
             'sql'                     => "text NULL",
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'validateEmailList')
+            )
         ),
         'email_recipient_bcc' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('rgxp'=>'extnd', 'style'=>'height:40px; width:314px', 'tl_class'=>'w50" style="height:auto'),
+            'eval'                    => array('style'=>'height:40px; width:314px', 'tl_class'=>'w50" style="height:auto'),
             'sql'                     => "text NULL",
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'validateEmailList')
+            )
         ),
         'email_subject' => array
         (

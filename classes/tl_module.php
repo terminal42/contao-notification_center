@@ -38,10 +38,11 @@ class tl_module extends \Backend
     {
         $strWhere = '';
         $arrValues = array();
-        $arrTypesToLimit = $GLOBALS['TL_DCA']['tl_module']['fields'][$dc->field]['eval']['ncNotificationChoices'][$dc->activeRecord->type];
-        if (is_array($arrTypesToLimit) && empty($arrTypesToLimit)) {
-            $strWhere .= substr(str_repeat('type=? OR ', count($arrTypesToLimit)), 0, -4);
-            $arrValues = $arrTypesToLimit;
+        $arrTypes = $GLOBALS['TL_DCA']['tl_module']['fields'][$dc->field]['eval']['ncNotificationChoices'][$dc->activeRecord->type];
+
+        if (!empty($arrTypes) && is_array($arrTypes)) {
+            $strWhere = ' WHERE ' . implode(' OR ', array_fill(0, count($arrTypes), 'type=?'));
+            $arrValues = $arrTypes;
         }
 
         $arrChoices = array();
