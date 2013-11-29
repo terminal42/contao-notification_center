@@ -81,7 +81,7 @@ class Email extends Base implements GatewayInterface
 
         // Set optional email HTML content
         if ($objLanguage->email_mode == 'textAndHtml') {
-            $objTemplate          = new \FrontendTemplate($this->email_template);
+            $objTemplate          = new \FrontendTemplate($objMessage->email_template);
             $objTemplate->body    = $objLanguage->email_html;
             $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 
