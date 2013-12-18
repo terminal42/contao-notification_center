@@ -22,6 +22,7 @@ var AutoSuggester = new Class({
      */
     options: {
         'token': '##',
+        'suffix': '##',
         'class_input_mirror': 'autosuggester-input-mirror',
         'class_input_mirror_container' : 'autosuggester-input-mirror-container',
         'class_input_mirror_caret': 'autosuggester-input-mirror-caret',
@@ -397,13 +398,13 @@ var AutoSuggester = new Class({
         }
 
         if (this.tinyMCE) {
-            this.tinyMCE.selection.setContent(insert + this.options.token);
+            this.tinyMCE.selection.setContent(insert + this.options.suffix);
         } else {
             value = this.input.get('value');
             index = this.getCaretIndex();
-            index_new = index + (insert + this.options.token).length;
+            index_new = index + (insert + this.options.suffix).length;
 
-            this.input.set('value', value.slice(0, index) + insert + this.options.token + value.slice(index, value.length));
+            this.input.set('value', value.slice(0, index) + insert + this.options.suffix + value.slice(index, value.length));
             this.input.setSelectionRange(index_new, index_new);
         }
 
