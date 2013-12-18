@@ -283,6 +283,7 @@ var AutoSuggester = new Class({
         }
 
         if (!value) {
+            this.hideBox();
             return;
         }
 
