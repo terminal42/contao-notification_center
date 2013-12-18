@@ -419,17 +419,10 @@ var AutoSuggester = new Class({
         for (i=0; i<this.box_list_items.length; i++) {
             if (this.filter_text.length > 0 && this.source[i]['value'].indexOf(this.filter_text) !== 0) {
                 this.box_list_items[i].addClass('invisible');
-                index = this.box_list_items_visible.indexOf(i);
-
-                if (index > -1) {
-                    this.box_list_items_visible.splice(index, 1);
-                }
+                this.box_list_items_visible.erase(i);
             } else {
                 this.box_list_items[i].removeClass('invisible');
-
-                if (this.box_list_items_visible.indexOf(i) === -1) {
-                    this.box_list_items_visible.push(i);
-                }
+                this.box_list_items_visible.include(i);
             }
         }
 
