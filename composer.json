@@ -17,7 +17,11 @@
         "contao-legacy/dcawizard":"2.0.*"
     },
     "autoload":{
-        "classmap":["system/modules/notification_center/library"]
+        "psr-0": {
+            "NotificationCenter\\": [
+                "system/modules/notification_center/library/"
+            ]
+        }
     },
     "replace": {
         "contao-legacy/notification_center": "self.version"
