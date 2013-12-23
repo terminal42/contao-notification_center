@@ -19,7 +19,7 @@
     "autoload":{
         "psr-0": {
             "NotificationCenter\\": [
-                "system/modules/notification_center/library/"
+                "/library"
             ]
         }
     },
