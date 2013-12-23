@@ -29,7 +29,7 @@
     "extra":{
         "contao": {
             "sources":{
-                "system/modules/notification_center": "system/modules/notification_center"
+                "": "system/modules/notification_center"
             },
             "transifex": {
                 "project": "notification_center",
