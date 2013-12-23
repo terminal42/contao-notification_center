@@ -59,25 +59,20 @@ class Email extends Base implements GatewayInterface
         // Set optional sender name
         $strSenderName = $objLanguage->email_sender_name ? : $GLOBALS['TL_ADMIN_NAME'];
         if ($strSenderName != '') {
-            $strSenderName      = $this->recursiveReplaceTokensAndTags($strSenderName, $arrTokens);
-            $objEmail->fromName = strip_tags($strSenderName);
+            $objEmail->fromName = $this->recursiveReplaceTokensAndTags($strSenderName, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
         }
 
         // Set email sender address
         $strSenderAddress = $objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
-        $strSenderAddress = $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens);
-        $objEmail->from   = strip_tags($strSenderAddress);
+        $objEmail->from   = $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
         // Set email subject
-        $strSubject        = $objLanguage->email_subject;
-        $strSubject        = $this->recursiveReplaceTokensAndTags($strSubject, $arrTokens);
-        $objEmail->subject = strip_tags($strSubject);
+        $objEmail->subject = $this->recursiveReplaceTokensAndTags($objLanguage->email_subject, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
         // Set email text content
         $strText        = $objLanguage->email_text;
-        $strText        = $this->recursiveReplaceTokensAndTags($strText, $arrTokens);
-        $strText        = \Controller::convertRelativeUrls($strText, '', true);
-        $objEmail->text = strip_tags($strText);
+        $strText        = $this->recursiveReplaceTokensAndTags($strText, $arrTokens, static::NO_TAGS);
+        $objEmail->text = \Controller::convertRelativeUrls($strText, '', true);
 
         // Set optional email HTML content
         if ($objLanguage->email_mode == 'textAndHtml') {
@@ -128,7 +123,7 @@ class Email extends Base implements GatewayInterface
         }
 
         try {
-            return $objEmail->sendTo($this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens));
+            return $objEmail->sendTo($this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens, static::NO_TAGS|static::NO_BREAKS));
         } catch (\Exception $e) {
             \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }
