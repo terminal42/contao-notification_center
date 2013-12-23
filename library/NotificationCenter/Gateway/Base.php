@@ -33,6 +33,13 @@ abstract class Base extends \Controller
 {
 
     /**
+     * Text filter options
+     */
+    const NO_TAGS = 1;
+    const NO_BREAKS = 2;
+
+
+    /**
      * The gateway model
      * @var Gateway
      */
@@ -93,8 +100,7 @@ abstract class Base extends \Controller
 
         foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
-                $strAddress = $this->recursiveReplaceTokensAndTags($strAddress, $arrTokens);
-                $strAddress = strip_tags($strAddress);
+                $strAddress = $this->recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
                 // Address could become empty through invalid inserttag
                 if ($strAddress == '' || !\Validator::isEmail($strAddress)) {
@@ -113,10 +119,15 @@ abstract class Base extends \Controller
      * Recursively replace simple tokens and insert tags
      * @param   string
      * @param   array tokens
+     * @param   int
      * @return  string
      */
-    protected function recursiveReplaceTokensAndTags($strText, $arrTokens)
+    protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
     {
+        if ($intTextFlags > 0) {
+            $arrTokens = $this->convertToText($arrTokens);
+        }
+
         // Must decode, tokens could be encoded
         $strText = \String::decodeEntities($strText);
 
@@ -128,11 +139,44 @@ abstract class Base extends \Controller
 
         // check if the inserttags have returned a simple token or an insert tag to parse
         if ((strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false) && $strBuffer != $strText) {
-            $strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens);
+            $strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens, $intTextFlags);
         }
 
         $strBuffer = \String::restoreBasicEntities($strBuffer);
 
+        if ($intTextFlags > 0) {
+            $strBuffer = $this->convertToText($strBuffer);
+        }
+
         return $strBuffer;
+    }
+
+    /**
+     * Convert the given array or string to plain text using given options
+     * @param   mixed
+     * @param   int
+     * @return  mixed
+     */
+    protected function convertToText($varValue, $options)
+    {
+        if (is_array($varValue)) {
+            foreach ($varValue as $k => $v) {
+                $varValue[$k] = $this->convertToText($v, $options);
+            }
+
+            return $varValue;
+        }
+
+        // Remove HTML tags but keep line breaks for <br> and <p>
+		if ($options & static::NO_TAGS) {
+            $varValue = strip_tags(preg_replace('{(?!^)<(br|p|/p).*?/?>\n?(?!$)}is', "\n", $varValue));
+		}
+
+        // Remove line breaks (e.g. for subject)
+		if ($options & static::NO_BREAKS) {
+    		$varValue = str_replace(array("\r", "\n"), '', $varValue);
+		}
+
+        return $varValue;
     }
 }
