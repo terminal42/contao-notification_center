@@ -125,7 +125,7 @@ abstract class Base extends \Controller
     protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
     {
         if ($intTextFlags > 0) {
-            $arrTokens = $this->convertToText($arrTokens);
+            $arrTokens = $this->convertToText($arrTokens, $intTextFlags);
         }
 
         // Must decode, tokens could be encoded
@@ -145,7 +145,7 @@ abstract class Base extends \Controller
         $strBuffer = \String::restoreBasicEntities($strBuffer);
 
         if ($intTextFlags > 0) {
-            $strBuffer = $this->convertToText($strBuffer);
+            $strBuffer = $this->convertToText($strBuffer, $intTextFlags);
         }
 
         return $strBuffer;
