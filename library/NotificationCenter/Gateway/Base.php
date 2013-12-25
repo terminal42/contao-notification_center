@@ -168,14 +168,14 @@ abstract class Base extends \Controller
         }
 
         // Remove HTML tags but keep line breaks for <br> and <p>
-		if ($options & static::NO_TAGS) {
+        if ($options & static::NO_TAGS) {
             $varValue = strip_tags(preg_replace('{(?!^)<(br|p|/p).*?/?>\n?(?!$)}is', "\n", $varValue));
-		}
+        }
 
         // Remove line breaks (e.g. for subject)
-		if ($options & static::NO_BREAKS) {
-    		$varValue = str_replace(array("\r", "\n"), '', $varValue);
-		}
+        if ($options & static::NO_BREAKS) {
+            $varValue = str_replace(array("\r", "\n"), '', $varValue);
+        }
 
         return $varValue;
     }
