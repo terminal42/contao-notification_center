@@ -8,12 +8,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-17T11:02:06+02:00
+ * last-updated: 2013-10-29T14:48:19+01:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_nc_language']['attachments']['0']          = 'Załączniki';
-$GLOBALS['TL_LANG']['tl_nc_language']['attachments']['1']          = 'Wprowadź listę załączników <strong>po przecinku</strong>. Użyj kreatora pomocy, aby zobaczyć dostępne tokeny.';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Załączniki z tokenów';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['1']    = 'Wprowadź listę załączników <strong>po przecinku</strong>. Użyj kreatora pomocy, aby zobaczyć dostępne tokeny.';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachments']['0']          = 'Załączniki z systemu plików';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachments']['1']          = 'Wybierz statyczne pliki, które chcesz załączyć.';
 $GLOBALS['TL_LANG']['tl_nc_language']['attachments_legend']        = 'Załączniki';
 $GLOBALS['TL_LANG']['tl_nc_language']['content_legend']            = 'Zawartość';
 $GLOBALS['TL_LANG']['tl_nc_language']['copy']['0']                 = 'Kopiuj język';
