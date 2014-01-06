@@ -34,7 +34,7 @@
             },
             "transifex": {
                 "project": "notification_center",
-                "prefix": "master-notification_center-",
+                "prefix": "develop-notification_center-",
                 "languages_cto": "languages",
                 "languages_tx": ".tx"
             }
