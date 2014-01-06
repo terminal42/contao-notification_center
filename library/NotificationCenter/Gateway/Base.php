@@ -37,6 +37,7 @@ abstract class Base extends \Controller
      */
     const NO_TAGS = 1;
     const NO_BREAKS = 2;
+    const NO_EMAILS = 4;
 
 
     /**
@@ -167,6 +168,18 @@ abstract class Base extends \Controller
             return $varValue;
         }
 
+        // Replace friendly email before stripping tags
+        if (!($options & static::NO_EMAILS)) {
+            $arrEmails = array();
+            preg_match_all('{<.+@.+\.[A-Za-z]{2,6}>}', $varValue, $arrEmails);
+
+            if (!empty($arrEmails[0])) {
+                foreach ($arrEmails[0] as $k => $v) {
+                    $varValue = str_replace($v, '%email'.$k.'%', $varValue);
+                }
+            }
+        }
+
         // Remove HTML tags but keep line breaks for <br> and <p>
         if ($options & static::NO_TAGS) {
             $varValue = strip_tags(preg_replace('{(?!^)<(br|p|/p).*?/?>\n?(?!$)}is', "\n", $varValue));
@@ -175,6 +188,13 @@ abstract class Base extends \Controller
         // Remove line breaks (e.g. for subject)
         if ($options & static::NO_BREAKS) {
             $varValue = str_replace(array("\r", "\n"), '', $varValue);
+        }
+
+        // Restore friendly email after stripping tags
+        if (!($options & static::NO_EMAILS) && !empty($arrEmails[0])) {
+            foreach ($arrEmails[0] as $k => $v) {
+                $varValue = str_replace('%email'.$k.'%', $v, $varValue);
+            }
         }
 
         return $varValue;
