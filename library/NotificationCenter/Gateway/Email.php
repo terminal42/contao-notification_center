@@ -106,7 +106,7 @@ class Email extends Base implements GatewayInterface
         if (is_array($arrAttachments) && !empty($arrAttachments)) {
             $objFiles = \FilesModel::findMultipleByUuids($arrAttachments);
             while ($objFiles->next()) {
-                $objEmail->attachFile($objFiles->path);
+                $objEmail->attachFile(TL_ROOT . '/' . $objFiles->path);
             }
         }
 
