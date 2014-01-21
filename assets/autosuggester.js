@@ -21,8 +21,7 @@ var AutoSuggester = new Class({
      * Options
      */
     options: {
-        'token': '##',
-        'suffix': '##',
+        'rgxp': '[^ ]+$',
         'class_input_mirror': 'autosuggester-input-mirror',
         'class_input_mirror_container' : 'autosuggester-input-mirror-container',
         'class_input_mirror_caret': 'autosuggester-input-mirror-caret',
@@ -56,6 +55,7 @@ var AutoSuggester = new Class({
         this.setOptions(options);
         this.source = source;
         this.tinyMCE = false;
+        this.rgxp = new RegExp(this.options.rgxp, 'i');
 
         // Turn off the default autocomplete feature
         this.input.set('autocomplete', 'off');
@@ -89,13 +89,6 @@ var AutoSuggester = new Class({
             'class': this.options.class_box_container
         });
 
-        // Set the box container position
-        if (this.tinyMCE) {
-            this.setPosition(this.box_container, $(this.input.get('id') + '_ifr').getPosition());
-        } else {
-            this.setPosition(this.box_container, this.input.getPosition());
-        }
-
         this.box = new Element('div', {
             'id': this.input.get('id') + '_autosuggester',
             'class': this.options.class_box
@@ -120,7 +113,7 @@ var AutoSuggester = new Class({
 
         this.box_list.inject(this.box);
         this.box.inject(this.box_container);
-        this.box_container.inject(this.input, 'after');
+        this.box_container.inject(document.body);
         this.box_visible = false;
     },
 
@@ -231,6 +224,13 @@ var AutoSuggester = new Class({
                 this.box_list_items[i].removeClass('invisible');
             }
 
+            // Set the box container position
+            if (this.tinyMCE) {
+                this.setPosition(this.box_container, $(this.input.get('id') + '_ifr').getPosition());
+            } else {
+                this.setPosition(this.box_container, this.input.getPosition());
+            }
+
             this.current_list_item = null;
             this.box.setStyle('display', 'block');
             this.setPosition(this.box, position);
@@ -263,9 +263,7 @@ var AutoSuggester = new Class({
             return;
         }
 
-        var value, index, selection, i;
-        var tokenLength = this.options.token.length;
-        var rgxp = new RegExp(this.options.token, 'g');
+        var value, index, selection, i, match;
         var hide = true;
 
         // Get the current caret index
@@ -290,16 +288,14 @@ var AutoSuggester = new Class({
 
         this.filter_text = '';
 
-        // Open the box if there is an opening tag
-        if (((value.match(rgxp) || []).length % 2) == 1) {
-            for (i=index; i>=0; i--) {
-                if (value.substr(i - tokenLength, tokenLength) === this.options.token) {
-                    this.showBox();
-                    break;
-                }
+        value = value.slice(0, index);
+        match = this.rgxp.exec(value);
 
-                this.filter_text = value[i - 1] + this.filter_text;
-            }
+        // Open the box if there is an opening tag
+        if (match) {
+            this.showBox();
+
+            this.filter_text = match[0];
 
             if (!this.filterItems()) {
                 this.hideBox();
@@ -393,19 +389,20 @@ var AutoSuggester = new Class({
         var insert = this.source[this.current_list_item]['value'];
 
         // Replace the filter text if any
+/*
         if (this.filter_text.length > 0) {
             insert = insert.substr(this.filter_text.length, insert.length);
         }
+*/
 
         if (this.tinyMCE) {
-            this.tinyMCE.selection.setContent(insert + this.options.suffix);
+            this.tinyMCE.selection.setContent(insert);
         } else {
             value = this.input.get('value');
             index = this.getCaretIndex();
-            index_new = index + (insert + this.options.suffix).length;
 
-            this.input.set('value', value.slice(0, index) + insert + this.options.suffix + value.slice(index, value.length));
-            this.input.setSelectionRange(index_new, index_new);
+            this.input.set('value', value.slice(0, index-this.filter_text.length) + insert + value.slice(index, value.length));
+//            this.input.setSelectionRange(index_new, index_new);
         }
 
         this.hideBox();
@@ -417,14 +414,15 @@ var AutoSuggester = new Class({
      */
     filterItems: function() {
         var i, index;
+        var rgxp = new RegExp('^'+this.filter_text+'(?!$)', 'i');
 
         for (i=0; i<this.box_list_items.length; i++) {
-            if (this.filter_text.length > 0 && this.source[i]['value'].indexOf(this.filter_text) !== 0) {
-                this.box_list_items[i].addClass('invisible');
-                this.box_list_items_visible.erase(i);
-            } else {
+            if (rgxp.test(this.source[i]['value'])) {
                 this.box_list_items[i].removeClass('invisible');
                 this.box_list_items_visible.include(i);
+            } else {
+                this.box_list_items[i].addClass('invisible');
+                this.box_list_items_visible.erase(i);
             }
         }
 
