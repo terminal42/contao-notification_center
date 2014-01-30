@@ -57,10 +57,14 @@ class tl_form extends \Backend
             return;
         }
 
+        // Prepare tokens
         foreach ($arrData as $k => $v) {
             $arrData['form_' . $k] = $v;
             unset($arrData[$k]);
         }
+
+        // Administrator e-mail
+        $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
         $objNotification = Model\Notification::findByPk($arrForm['nc_notification']);
 
