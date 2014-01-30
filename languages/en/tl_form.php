@@ -26,20 +26,6 @@
  */
 
 /**
- * Register PSR-0 namespace
+ * Fields
  */
-NamespaceClassLoader::add('NotificationCenter', 'system/modules/notification_center/library');
-
-
-/**
- * Register classes outside the namespace folder
- */
-NamespaceClassLoader::addClassMap(array
-(
-    // DCA Helpers
-    'NotificationCenter\tl_form'                => 'system/modules/notification_center/classes/tl_form.php',
-    'NotificationCenter\tl_module'              => 'system/modules/notification_center/classes/tl_module.php',
-    'NotificationCenter\tl_nc_notification'     => 'system/modules/notification_center/classes/tl_nc_notification.php',
-    'NotificationCenter\tl_nc_language'         => 'system/modules/notification_center/classes/tl_nc_language.php',
-    'NotificationCenter\tl_nc_message'          => 'system/modules/notification_center/classes/tl_nc_message.php'
-));
+$GLOBALS['TL_LANG']['tl_form']['nc_notification']     = array('Notification', 'Please select a notification.');

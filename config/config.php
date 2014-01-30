@@ -57,6 +57,7 @@ $GLOBALS['TL_MODELS']['tl_nc_message']                  = 'NotificationCenter\Mo
  * Hooks
  */
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('NotificationCenter\AutoSuggester', 'verifyTokens');
+$GLOBALS['TL_HOOKS']['processFormData'][] = array('NotificationCenter\tl_form', 'sendFormNotification');
 
 /**
  * Notification Center Gateways
@@ -67,4 +68,7 @@ $GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gatewa
 /**
  * Notification Center Notification Types
  */
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array();
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['recipients'] = array('recipient_email');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'] = array('form_*');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
