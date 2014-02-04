@@ -30,11 +30,31 @@
  */
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title']                   = array('Title', 'Please enter a title for this gateway.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']                    = array('Type', 'Please select a type for this gateway.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_file']                = array('File type', 'Please choose the file type.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_type']                = array('Connection type', 'Please choose the connection type.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_host']                = array('Host name', 'Please enter the host name.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_port']                = array('Port number', 'Here you can enter the port number. Leave empty to use the default.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_username']            = array('Username', 'Please enter the username.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_password']            = array('Password', 'Please enter the password.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_path']                = array('Path', 'Here you can enter the path (e.g. <em>downloads</em>).');
 
 /**
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']           = 'Standard email gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['ftp']             = 'FTP export';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_file']['csv']         = 'CSV';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_file']['xml']         = 'Plain Text / XML';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_type']['local']       = 'Local';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_type']['ftp']         = 'FTP';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_type']['sftp']        = 'SFTP';
+
+/**
+ * Messages
+ */
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_confirm']       = 'Connection successful';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_class']   = 'Could not find FTP class!';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect'] = 'Failed to connect to server: %s';
 
 /**
  * Buttons

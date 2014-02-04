@@ -63,6 +63,14 @@ $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('NotificationCenter\AutoSugges
  */
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array();
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gateway\Email';
+$GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['ftp'] = 'NotificationCenter\Gateway\Ftp';
+
+/**
+ * Notification Center FTP Classes
+ */
+$GLOBALS['NOTIFICATION_CENTER']['FTP']['local'] = 'NotificationCenter\Ftp\Local';
+$GLOBALS['NOTIFICATION_CENTER']['FTP']['ftp'] = 'NotificationCenter\Ftp\Ftp';
+$GLOBALS['NOTIFICATION_CENTER']['FTP']['sftp'] = 'NotificationCenter\Ftp\Sftp';
 
 /**
  * Notification Center Notification Types

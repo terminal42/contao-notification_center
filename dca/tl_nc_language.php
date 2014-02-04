@@ -119,6 +119,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         '__selector__'                => array('gateway_type', 'email_mode'),
         'default'                     => '{general_legend},language,fallback',
         'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
+        'ftp'                         => '{general_legend},language,fallback;{meta_legend},ftp_filename,ftp_override;{content_legend},ftp_content',
     ),
 
     'subpalettes' => array
@@ -278,6 +279,30 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'inputType'               => 'textarea',
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true, 'mandatory'=>true),
             'sql'                     => "text NULL"
-        )
+        ),
+        'ftp_filename' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['ftp_filename'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'w50', 'decodeEntities'=>true, 'mandatory'=>true),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'ftp_override' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['ftp_override'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('tl_class'=>'w50 m12'),
+            'sql'                     => "char(1) NOT NULL default ''"
+        ),
+        'ftp_content' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['ftp_content'],
+            'exclude'                 => true,
+            'inputType'               => 'textarea',
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'decodeEntities'=>true, 'mandatory'=>true),
+            'sql'                     => "text NULL"
+        ),
     )
 );

@@ -25,21 +25,25 @@
  * @license    LGPL
  */
 
-/**
- * Register PSR-0 namespace
- */
-NamespaceClassLoader::add('NotificationCenter', 'system/modules/notification_center/library');
+namespace NotificationCenter\Ftp;
 
 
-/**
- * Register classes outside the namespace folder
- */
-NamespaceClassLoader::addClassMap(array
-(
-    // DCA Helpers
-    'NotificationCenter\tl_module'              => 'system/modules/notification_center/classes/tl_module.php',
-    'NotificationCenter\tl_nc_gateway'          => 'system/modules/notification_center/classes/tl_nc_gateway.php',
-    'NotificationCenter\tl_nc_notification'     => 'system/modules/notification_center/classes/tl_nc_notification.php',
-    'NotificationCenter\tl_nc_language'         => 'system/modules/notification_center/classes/tl_nc_language.php',
-    'NotificationCenter\tl_nc_message'          => 'system/modules/notification_center/classes/tl_nc_message.php'
-));
+interface FtpInterface
+{
+
+    /**
+     * Connect to the server
+     * @param object
+     * @throws \Exception
+     */
+    public function connect($objGateway);
+
+    /**
+     * Save the file
+     * @param string
+     * @param string
+     * @param boolean
+     * @return boolean
+     */
+    public function save($strFile, $strContent, $blnOverride=false);
+}
