@@ -52,3 +52,9 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('No
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']            = 'Title & type';
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']           = 'Configuration';
+
+/**
+ * Notification type
+ */
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['core']            = 'Core';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']       = array('Form submission', 'This notification type can be sent when the form is submitted.');

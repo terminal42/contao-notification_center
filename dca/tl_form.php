@@ -26,21 +26,19 @@
  */
 
 /**
- * Register PSR-0 namespace
+ * Palettes
  */
-NamespaceClassLoader::add('NotificationCenter', 'system/modules/notification_center/library');
-
+$GLOBALS['TL_DCA']['tl_form']['palettes']['default'] = str_replace('sendViaEmail;', 'nc_notification,sendViaEmail;', $GLOBALS['TL_DCA']['tl_form']['palettes']['default']);
 
 /**
- * Register classes outside the namespace folder
+ * Fields
  */
-NamespaceClassLoader::addClassMap(array
+$GLOBALS['TL_DCA']['tl_form']['fields']['nc_notification'] = array
 (
-    // DCA Helpers
-    'NotificationCenter\tl_form'                => 'system/modules/notification_center/classes/tl_form.php',
-    'NotificationCenter\tl_module'              => 'system/modules/notification_center/classes/tl_module.php',
-    'NotificationCenter\tl_nc_gateway'          => 'system/modules/notification_center/classes/tl_nc_gateway.php',
-    'NotificationCenter\tl_nc_notification'     => 'system/modules/notification_center/classes/tl_nc_notification.php',
-    'NotificationCenter\tl_nc_language'         => 'system/modules/notification_center/classes/tl_nc_language.php',
-    'NotificationCenter\tl_nc_message'          => 'system/modules/notification_center/classes/tl_nc_message.php'
-));
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['nc_notification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('NotificationCenter\tl_form', 'getNotificationChoices'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'"
+);
