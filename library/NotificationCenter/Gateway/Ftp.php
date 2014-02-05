@@ -76,6 +76,6 @@ class Ftp extends Base implements GatewayInterface
             $strContent = str_replace('"', '""', $strContent);
         }
 
-        return $objHandler->save($strFileName, $strContent, $objMessage->ftp_override);
+        return $objHandler->save($strFileName, $strContent, $objLanguage->ftp_override);
     }
 }
