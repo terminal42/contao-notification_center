@@ -68,7 +68,7 @@ class Ftp extends Base implements GatewayInterface
             return false;
         }
 
-        $strFileName = $this->recursiveReplaceTokensAndTags($objLanguage->ftp_filename, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+        $strFileName = $this->recursiveReplaceTokensAndTags($objLanguage->ftp_filename, $arrTokens, static::NO_TAGS|static::NO_BREAKS) . '.' . $this->objModel->ftp_file;
         $strContent = $this->recursiveReplaceTokensAndTags($objLanguage->ftp_content, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
         // Escape the quotes for CSV file
