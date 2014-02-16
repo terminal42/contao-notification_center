@@ -36,10 +36,6 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
-        'onload_callback' => array
-        (
-            array('NotificationCenter\tl_nc_gateway', 'loadFtpFields')
-        ),
         'onsubmit_callback' => array
         (
             array('NotificationCenter\tl_nc_gateway', 'checkFileServerConnection')
@@ -110,9 +106,17 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'                => array('type'),
+        '__selector__'                => array('type', 'file_connection'),
         'default'                     => '{title_legend},title,type',
-        'file'                        => '{title_legend},title,type;{gateway_legend},file_connection,file_type,file_host,file_port,file_username,file_password,file_path',
+        'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
+    ),
+
+    // Subpalettes
+    'subpalettes' => array
+    (
+        'file_connection_local'       => 'file_path',
+        'file_connection_ftp'         => 'file_host,file_port,file_username,file_password,file_path',
+        'file_connection_sftp'        => 'file_host,file_port,file_username,file_password,file_path',
     ),
 
     // Fields

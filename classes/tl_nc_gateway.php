@@ -30,28 +30,6 @@ namespace NotificationCenter;
 class tl_nc_gateway extends \Backend
 {
     /**
-     * Load FTP fields
-     * @param \DataContainer
-     */
-    public function loadFtpFields(\DataContainer $dc)
-    {
-        if (!$dc->id) {
-            return;
-        }
-
-        $objGateway = $this->Database->prepare("SELECT * FROM tl_nc_gateway WHERE id=?")
-                                     ->limit(1)
-                                     ->execute($dc->id);
-
-        if ($objGateway->ftp_type == 'local') {
-            unset($GLOBALS['TL_DCA']['tl_nc_gateway']['fields']['ftp_host']);
-            unset($GLOBALS['TL_DCA']['tl_nc_gateway']['fields']['ftp_port']);
-            unset($GLOBALS['TL_DCA']['tl_nc_gateway']['fields']['ftp_username']);
-            unset($GLOBALS['TL_DCA']['tl_nc_gateway']['fields']['ftp_password']);
-        }
-    }
-
-    /**
      * Check the FTP connection
      * @param \DataContainer
      */
