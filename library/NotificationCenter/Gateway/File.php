@@ -52,10 +52,10 @@ class File extends Base implements GatewayInterface
             return false;
         }
 
-        $strClass = $GLOBALS['NOTIFICATION_CENTER']['FILE'][$this->objModel->file_server_type];
+        $strClass = $GLOBALS['NOTIFICATION_CENTER']['FILE'][$this->objModel->file_connection];
 
         if (!class_exists($strClass)) {
-            \System::log(sprintf('Could not find file server class for type "%s"', $this->objModel->file_server_type), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not find file server class for type "%s"', $this->objModel->file_connection), __METHOD__, TL_ERROR);
             return false;
         }
 
