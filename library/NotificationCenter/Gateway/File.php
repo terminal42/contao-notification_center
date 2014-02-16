@@ -68,7 +68,7 @@ class File extends Base implements GatewayInterface
             return false;
         }
 
-        $strFileName = $this->recursiveReplaceTokensAndTags($objLanguage->file_name, $arrTokens, static::NO_TAGS|static::NO_BREAKS) . '.' . $this->objModel->file_name;
+        $strFileName = $this->recursiveReplaceTokensAndTags($objLanguage->file_name, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
         $strContent = $this->recursiveReplaceTokensAndTags($objLanguage->file_content, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
         // Escape the quotes for CSV file
