@@ -57,16 +57,40 @@ class tl_form extends \Backend
             return;
         }
 
+        $arrTokens = array();
+
         // Prepare tokens
         foreach ($arrData as $k => $v) {
-            $arrData['form_' . $k] = $v;
-            unset($arrData[$k]);
+            $this->flatten($v, 'form_'.$k, $arrTokens);
         }
 
         // Administrator e-mail
-        $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
+        $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
-        $objNotification->send($arrData);
+        $objNotification->send($arrTokens);
+    }
 
+    /**
+     * Flatten input data, Simple Tokens can't handle arrays
+     * @param   mixed
+     * @param   string
+     * @param   array
+     */
+    public function flatten($varValue, $strKey, &$arrData)
+    {
+        if (!is_array($varValue)) {
+            $arrData[$strKey] = $varValue;
+            return;
+        }
+
+        $blnAssoc = array_is_assoc($varValue);
+
+        foreach ($varValue as $k => $v) {
+            if ($blnAssoc && !is_array($v)) {
+                $this->flatten($v, $strKey.'_'.$k, $arrData);
+            } else {
+                $arrData[$strKey.'_'.$v] = '1';
+            }
+        }
     }
 }
