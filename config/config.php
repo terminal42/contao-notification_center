@@ -67,12 +67,6 @@ $GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gatewa
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['file'] = 'NotificationCenter\Gateway\File';
 
 /**
- * Notification Center FTP Classes
- */
-$GLOBALS['NOTIFICATION_CENTER']['FILE']['local'] = 'NotificationCenter\Ftp\Local';
-$GLOBALS['NOTIFICATION_CENTER']['FILE']['ftp'] = 'NotificationCenter\Ftp\Ftp';
-
-/**
  * Notification Center Notification Types
  */
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['recipients'] = array('admin_email');

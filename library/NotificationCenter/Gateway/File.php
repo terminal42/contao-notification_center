@@ -29,6 +29,7 @@ namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
+use Haste\Haste;
 
 
 class File extends Base implements GatewayInterface
@@ -36,6 +37,7 @@ class File extends Base implements GatewayInterface
 
     /**
      * Create file
+     *
      * @param   Message
      * @param   array
      * @param   string
@@ -52,30 +54,172 @@ class File extends Base implements GatewayInterface
             return false;
         }
 
-        $strClass = $GLOBALS['NOTIFICATION_CENTER']['FILE'][$this->objModel->file_connection];
+        $strFileName = $this->recursiveReplaceTokensAndTags(
+            $objLanguage->file_name,
+            $arrTokens,
+            static::NO_TAGS|static::NO_BREAKS
+        );
 
-        if (!class_exists($strClass)) {
-            \System::log(sprintf('Could not find file server class for type "%s"', $this->objModel->file_connection), __METHOD__, TL_ERROR);
-            return false;
-        }
-
-        $objHandler = new $strClass();
-
-        try {
-            $objHandler->connect($this->objModel);
-        } catch (\Exception $e) {
-            \System::log(sprintf('Could not connect to the file server with error "%s"', $e->getMessage()), __METHOD__, TL_ERROR);
-            return false;
-        }
-
-        $strFileName = $this->recursiveReplaceTokensAndTags($objLanguage->file_name, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
-        $strContent = $this->recursiveReplaceTokensAndTags($objLanguage->file_content, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
-
-        // Escape the quotes for CSV file
+        // Escape quotes and line breaks for CSV files
         if ($this->objModel->file_type == 'csv') {
-            $strContent = str_replace('"', '""', $strContent);
+            array_walk($arrTokens, function(&$varValue) {
+                $varValue = str_replace(array('"', "\r\n", "\r"), array('""', "\n", "\n"), $varValue);
+            });
         }
 
-        return $objHandler->save($strFileName, $strContent, $objLanguage->file_override);
+        $strContent = $this->recursiveReplaceTokensAndTags(
+            $objLanguage->file_content,
+            $arrTokens,
+            static::NO_TAGS|static::NO_BREAKS
+        );
+
+        return $this->save($strFileName, $strContent, (bool) $objLanguage->file_override);
+    }
+
+    /**
+     * Test connection to the given server
+     *
+     * @return  bool
+     */
+    public function testConnection()
+    {
+        switch ($this->objModel->file_connection) {
+
+            case 'local':
+                break;
+
+            case 'ftp':
+                break;
+
+            default:
+                throw new \UnexpectedValueException('Unknown server connection of type "' . $this->objModel->file_connection . '"');
+        }
+    }
+
+    /**
+     * Save file to the server
+     *
+     * @param   string
+     * @param   string
+     * @param   bool
+     * @return  bool
+     * @throws  \UnexpectedValueException
+     */
+    protected function save($strFileName, $strContent, $blnOverride)
+    {
+        switch ($this->objModel->file_connection) {
+
+            case 'local':
+                return $this->saveToLocal($strFileName, $strContent, $blnOverride);
+
+            case 'ftp':
+                return $this->saveToFTP($strFileName, $strContent, $blnOverride);
+
+            default:
+                throw new \UnexpectedValueException('Unknown server connection of type "' . $this->objModel->file_connection . '"');
+        }
+    }
+
+    /**
+     * Generate a unique filename based on folder content
+     *
+     * @param   string
+     * @param   array
+     * @return  string
+     */
+    protected function getUniqueFileName($strFile, $arrFiles)
+    {
+        $offset = 1;
+        $pathinfo = pathinfo($strFile);
+        $name = $pathinfo['filename'];
+
+        // Look for file that start with same name and have same file extension
+        $arrFiles = preg_grep('/^' . preg_quote($name, '/') . '.*\.' . preg_quote($pathinfo['extension'], '/') . '/', $arrFiles);
+
+        foreach ($arrFiles as $file) {
+            if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
+                $file = str_replace('.' . $pathinfo['extension'], '', $file);
+                $intValue = intval(substr($file, (strrpos($file, '_') + 1)));
+
+                $offset = max($offset, $intValue);
+            }
+        }
+
+        return str_replace($name, $name . '__' . ++$offset, $strFile);
+    }
+
+    /**
+     * Save file to local server
+     *
+     * @param   string
+     * @param   string
+     * @param   bool
+     * @return  bool
+     */
+    protected function saveToLocal($strFileName, $strContent, $blnOverride)
+    {
+        // Make sure the directory exists
+        if (!is_dir(TL_ROOT . '/' . $this->objModel->file_path)) {
+            Haste::mkdirr($this->objModel->file_path);
+        }
+
+        // Make sure we don't overwrite existing files
+        if (!$blnOverride && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)) {
+            $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path));
+        }
+
+        $objFile = new \File($this->strPath . '/' . $strFile);
+        $blnResult = $objFile->write($strContent);
+        $objFile->close();
+
+        return $blnResult;
+    }
+
+    /**
+     * Save file to FTP server
+     *
+     * @param   string
+     * @param   string
+     * @param   bool
+     * @return  bool
+     * @throws  \RuntimeException
+     */
+    protected function saveToFTP($strFileName, $strContent, $blnOverride)
+    {
+        if (($resConnection = ftp_connect($this->objModel->file_host, intval($this->objModel->file_port ?: 21), 5)) === false) {
+            throw new \RuntimeException('Could not connect to the FTP server');
+        }
+
+        if (@ftp_login($resConnection, $this->objModel->file_username, $this->objModel->file_password) === false) {
+            @ftp_close($resConnection);
+            throw new \RuntimeException('FTP server authentication failed');
+        }
+
+        // @todo should be configurable
+        ftp_pasv($resConnection, true);
+
+        // Make sure we don't overwrite existing files
+        if (!$blnOverride) {
+            if (($arrFiles = @ftp_nlist($resConnection, $this->objModel->file_path)) === false) {
+                @ftp_close($resConnection);
+                return false;
+            }
+
+            $strFileName = $this->getUniqueFileName($strFileName, $arrFiles);
+        }
+
+        // Write content to temporary file
+        $objFile = new \File('system/tmp/' . md5(uniqid(mt_rand(), true)));
+        $objFile->write($strContent);
+        $objFile->close();
+
+        // Copy the temporary file to the server
+        $blnResult = @ftp_fput($resConnection, $this->objModel->file_path . '/' . $strFile, $objFile->handle, FTP_BINARY);
+
+        // Delete temporary file and close FTP connection
+        $objFile->delete();
+        @ftp_close($resConnection);
+
+        return $blnResult;
     }
 }
