@@ -73,7 +73,13 @@ class File extends Base implements GatewayInterface
             static::NO_TAGS|static::NO_BREAKS
         );
 
-        return $this->save($strFileName, $strContent, (bool) $objLanguage->file_override);
+        try {
+            return $this->save($strFileName, $strContent, (bool) $objLanguage->file_override);
+        } catch (\Exception $e) {
+            $this->log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+            return false;
+        }
+
     }
 
     /**
