@@ -116,7 +116,6 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         'file_connection_local'       => 'file_path',
         'file_connection_ftp'         => 'file_host,file_port,file_username,file_password,file_path',
-        'file_connection_sftp'        => 'file_host,file_port,file_username,file_password,file_path',
     ),
 
     // Fields
@@ -167,7 +166,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
-            'options'                 => array('local', 'ftp', 'sftp'),
+            'options'                 => array('local', 'ftp'),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection'],
             'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(8) NOT NULL default ''"

@@ -47,7 +47,6 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['csv']            = 'CSV';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['xml']            = 'Plain Text / XML';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['local']    = 'Local';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['ftp']      = 'FTP';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['sftp']     = 'SFTP';
 
 /**
  * Messages

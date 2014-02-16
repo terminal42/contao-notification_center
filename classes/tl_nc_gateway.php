@@ -35,7 +35,7 @@ class tl_nc_gateway extends \Backend
      */
     public function checkFileServerConnection(\DataContainer $dc)
     {
-        if ($dc->activeRecord->type != 'ftp' || ($dc->activeRecord->file_connection != 'ftp' && $dc->activeRecord->file_connection != 'sftp')) {
+        if ($dc->activeRecord->type != 'ftp' || $dc->activeRecord->file_connection != 'ftp') {
             return;
         }
 

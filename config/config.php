@@ -71,7 +71,6 @@ $GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['file'] = 'NotificationCenter\Gateway
  */
 $GLOBALS['NOTIFICATION_CENTER']['FILE']['local'] = 'NotificationCenter\Ftp\Local';
 $GLOBALS['NOTIFICATION_CENTER']['FILE']['ftp'] = 'NotificationCenter\Ftp\Ftp';
-$GLOBALS['NOTIFICATION_CENTER']['FILE']['sftp'] = 'NotificationCenter\Ftp\Sftp';
 
 /**
  * Notification Center Notification Types
