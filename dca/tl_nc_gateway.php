@@ -200,7 +200,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_password'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'file_path' => array
