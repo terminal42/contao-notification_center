@@ -55,7 +55,7 @@ class tl_nc_gateway extends \Backend
      * Check the FTP connection
      * @param \DataContainer
      */
-    public function checkFtpConnection(\DataContainer $dc)
+    public function checkFileServerConnection(\DataContainer $dc)
     {
         if ($dc->activeRecord->type != 'ftp' || $dc->activeRecord->ftp_type == 'local') {
             return;

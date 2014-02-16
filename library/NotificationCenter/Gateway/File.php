@@ -31,7 +31,7 @@ use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 
 
-class Ftp extends Base implements GatewayInterface
+class File extends Base implements GatewayInterface
 {
 
     /**
@@ -52,10 +52,10 @@ class Ftp extends Base implements GatewayInterface
             return false;
         }
 
-        $strClass = $GLOBALS['NOTIFICATION_CENTER']['FTP'][$this->objModel->ftp_type];
+        $strClass = $GLOBALS['NOTIFICATION_CENTER']['FILE'][$this->objModel->file_server_type];
 
         if (!class_exists($strClass)) {
-            \System::log(sprintf('Could not find FTP class for type "%s"', $this->objModel->ftp_type), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not find file server class for type "%s"', $this->objModel->file_server_type), __METHOD__, TL_ERROR);
             return false;
         }
 
@@ -64,18 +64,18 @@ class Ftp extends Base implements GatewayInterface
         try {
             $objHandler->connect($this->objModel);
         } catch (\Exception $e) {
-            \System::log(sprintf('Could not connect to the FTP server with error "%s"', $e->getMessage()), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not connect to the file server with error "%s"', $e->getMessage()), __METHOD__, TL_ERROR);
             return false;
         }
 
-        $strFileName = $this->recursiveReplaceTokensAndTags($objLanguage->ftp_filename, $arrTokens, static::NO_TAGS|static::NO_BREAKS) . '.' . $this->objModel->ftp_file;
-        $strContent = $this->recursiveReplaceTokensAndTags($objLanguage->ftp_content, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+        $strFileName = $this->recursiveReplaceTokensAndTags($objLanguage->file_name, $arrTokens, static::NO_TAGS|static::NO_BREAKS) . '.' . $this->objModel->file_name;
+        $strContent = $this->recursiveReplaceTokensAndTags($objLanguage->file_content, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
         // Escape the quotes for CSV file
-        if ($this->objModel->ftp_file == 'csv') {
+        if ($this->objModel->file_type == 'csv') {
             $strContent = str_replace('"', '""', $strContent);
         }
 
-        return $objHandler->save($strFileName, $strContent, $objLanguage->ftp_override);
+        return $objHandler->save($strFileName, $strContent, $objLanguage->file_override);
     }
 }
