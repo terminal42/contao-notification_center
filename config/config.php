@@ -64,6 +64,7 @@ $GLOBALS['TL_HOOKS']['processFormData'][] = array('NotificationCenter\tl_form', 
  */
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array();
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gateway\Email';
+$GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['file'] = 'NotificationCenter\Gateway\File';
 
 /**
  * Notification Center Notification Types
@@ -72,3 +73,5 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['recip
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'] = array('form_*', 'admin_email');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_name'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_content'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];

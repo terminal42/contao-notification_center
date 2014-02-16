@@ -35,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Ty
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']           = 'Standard eMail gateway';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['file']            = 'Write to file';
 
 /**
  * Buttons

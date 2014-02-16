@@ -28,13 +28,32 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_nc_gateway']['title']                   = array('Title', 'Please enter a title for this gateway.');
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']                    = array('Type', 'Please select a type for this gateway.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['title']                       = array('Title', 'Please enter a title for this gateway.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']                        = array('Type', 'Please select a type for this gateway.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']                   = array('File type', 'Please choose the file type.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']             = array('Connection type', 'Please choose the connection type.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_host']                   = array('Host name', 'Please enter the host name.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_port']                   = array('Port number', 'Here you can enter the port number. Leave empty to use the default.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_username']               = array('Username', 'Please enter the username.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_password']               = array('Password', 'Please enter the password.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_path']                   = array('Path', 'Here you can enter the path (e.g. <em>downloads</em>).');
 
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']           = 'Standard email gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']               = 'Standard email gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['file']                = 'Write to file';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['csv']            = 'CSV';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['xml']            = 'Plain Text / XML';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['local']    = 'Local';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['ftp']      = 'FTP';
+
+/**
+ * Messages
+ */
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_confirm']       = 'Connection successful';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_class']   = 'Could not find FTP class!';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect'] = 'Failed to connect to server: %s';
 
 /**
  * Buttons

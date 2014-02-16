@@ -36,6 +36,10 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
+        'onsubmit_callback' => array
+        (
+            array('NotificationCenter\tl_nc_gateway', 'checkFileServerConnection')
+        ),
         'sql' => array
         (
             'keys' => array
@@ -102,8 +106,16 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Palettes
     'palettes' => array
     (
+        '__selector__'                => array('type', 'file_connection'),
         'default'                     => '{title_legend},title,type',
-        'email'                       => '{title_legend},title,type;{gateway_legend},',
+        'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
+    ),
+
+    // Subpalettes
+    'subpalettes' => array
+    (
+        'file_connection_local'       => 'file_path',
+        'file_connection_ftp'         => 'file_host,file_port,file_username,file_password,file_path',
     ),
 
     // Fields
@@ -136,6 +148,68 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['type'],
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
-        )
+        ),
+        'file_type' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'select',
+            'options'                 => array('csv', 'xml'),
+            'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type'],
+            'eval'                    => array('tl_class'=>'w50'),
+            'sql'                     => "varchar(4) NOT NULL default ''"
+        ),
+        'file_connection' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'select',
+            'options'                 => array('local', 'ftp'),
+            'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection'],
+            'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(8) NOT NULL default ''"
+        ),
+        'file_host' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_host'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'file_port' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_port'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('rgxp'=>'digit', 'tl_class'=>'w50'),
+            'sql'                     => "varchar(5) NOT NULL default ''"
+        ),
+        'file_username' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_username'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'file_password' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_password'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'decodeEntities'=>true, 'hideInput'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'file_path' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_path'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('decodeEntities'=>true, 'trailingSlash'=>false, 'tl_class'=>'clr long'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
     )
 );
