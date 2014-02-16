@@ -53,7 +53,7 @@ class tl_form extends \Backend
      */
     public function sendFormNotification($arrData, $arrForm)
     {
-        if (!$arrForm['nc_notification']) {
+        if (!$arrForm['nc_notification'] || ($objNotification = Model\Notification::findByPk($arrForm['nc_notification'])) === null) {
             return;
         }
 
@@ -66,10 +66,7 @@ class tl_form extends \Backend
         // Administrator e-mail
         $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
-        $objNotification = Model\Notification::findByPk($arrForm['nc_notification']);
+        $objNotification->send($arrData);
 
-        if ($objNotification !== null) {
-            $objNotification->send($arrData);
-        }
     }
 }
