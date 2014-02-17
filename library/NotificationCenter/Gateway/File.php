@@ -70,7 +70,7 @@ class File extends Base implements GatewayInterface
         $strContent = $this->recursiveReplaceTokensAndTags(
             $objLanguage->file_content,
             $arrTokens,
-            static::NO_TAGS|static::NO_BREAKS
+            static::NO_TAGS
         );
 
         try {
