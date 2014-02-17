@@ -135,6 +135,10 @@ class File extends Base implements GatewayInterface
      */
     protected function getUniqueFileName($strFile, $arrFiles)
     {
+        if (!in_array($strFile, $arrFiles)) {
+            return $strFile;
+        }
+
         $offset = 1;
         $pathinfo = pathinfo($strFile);
         $name = $pathinfo['filename'];
