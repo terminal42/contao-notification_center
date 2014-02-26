@@ -36,6 +36,10 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
+        'onload_callback' => array
+        (
+            array('NotificationCenter\tl_nc_gateway', 'loadSettingsLanguageFile')
+        ),
         'onsubmit_callback' => array
         (
             array('NotificationCenter\tl_nc_gateway', 'checkFileServerConnection')
@@ -106,14 +110,16 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'                => array('type', 'file_connection'),
+        '__selector__'                => array('type', 'email', 'email_overrideSmtp', 'file_connection'),
         'default'                     => '{title_legend},title,type',
+        'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
     ),
 
     // Subpalettes
     'subpalettes' => array
     (
+        'email_overrideSmtp'          => 'email_smtpHost,email_smtpUser,email_smtpPass,email_smtpEnc,email_smtpPort',
         'file_connection_local'       => 'file_path',
         'file_connection_ftp'         => 'file_host,file_port,file_username,file_password,file_path',
     ),
@@ -148,6 +154,50 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['type'],
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
+        ),
+        'email_overrideSmtp' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['email_overrideSmtp'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('submitOnChange'=>true),
+            'sql'                     => "char(1) NOT NULL default ''"
+        ),
+        'email_smtpHost' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpHost'],
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'nospace'=>true, 'tl_class'=>'long'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'smtpUser' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpUser'],
+            'inputType'               => 'text',
+            'eval'                    => array('decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'email_smtpPass' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpPass'],
+            'inputType'               => 'textStore',
+            'eval'                    => array('decodeEntities'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'email_smtpEnc' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpEnc'],
+            'inputType'               => 'select',
+            'options'                 => array(''=>'-', 'ssl'=>'SSL', 'tls'=>'TLS'),
+            'eval'                    => array('tl_class'=>'w50'),
+            'sql'                     => "varchar(3) NOT NULL default ''"
+        ),
+        'email_smtpPort' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpPort'],
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(16) NOT NULL default ''"
         ),
         'file_type' => array
         (

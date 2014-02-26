@@ -30,8 +30,16 @@ namespace NotificationCenter;
 class tl_nc_gateway extends \Backend
 {
     /**
+     * Loads the language file tl_settings
+     */
+    public function loadSettingsLanguageFile()
+    {
+        \System::loadLanguageFile('tl_settings');
+    }
+
+    /**
      * Check the FTP connection
-     * @param \DataContainer
+     * @param   \DataContainer
      */
     public function checkFileServerConnection(\DataContainer $dc)
     {
