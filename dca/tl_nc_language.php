@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     (
         '__selector__'                => array('gateway_type', 'email_mode'),
         'default'                     => '{general_legend},language,fallback',
-        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
+        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
         'file'                        => '{general_legend},language,fallback;{meta_legend},file_name,file_override;{content_legend},file_content',
     ),
 
@@ -162,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'sql'                     => "varchar(5) NOT NULL default ''",
             'save_callback' => array
             (
-            	array('NotificationCenter\tl_nc_language', 'validateLanguageField')
+                array('NotificationCenter\tl_nc_language', 'validateLanguageField')
             )
         ),
         'fallback' => array
@@ -174,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'sql'                     => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
-            	array('NotificationCenter\tl_nc_language', 'validateFallbackField')
+                array('NotificationCenter\tl_nc_language', 'validateFallbackField')
             )
         ),
         'recipients' => array
@@ -240,6 +240,18 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'inputType'               => 'textarea',
             'eval'                    => array('style'=>'height:40px; width:314px', 'tl_class'=>'w50" style="height:auto'),
             'sql'                     => "text NULL",
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'validateEmailList')
+            )
+        ),
+        'email_replyTo' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''",
             'save_callback' => array
             (
                 array('NotificationCenter\tl_nc_language', 'validateEmailList')

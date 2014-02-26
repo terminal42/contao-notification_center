@@ -66,6 +66,11 @@ class Email extends Base implements GatewayInterface
         $strSenderAddress = $objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
         $objEmail->from   = $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
+        // Set reply-to address
+        if ($objLanguage->email_replyTo) {
+            $objEmail->replyTo($objLanguage->email_replyTo);
+        }
+
         // Set email subject
         $objEmail->subject = $this->recursiveReplaceTokensAndTags($objLanguage->email_subject, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
 
