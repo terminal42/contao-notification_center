@@ -25,10 +25,17 @@
  * @license    LGPL
  */
 
+
+/**
+ * Palettes
+ */
+$GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,nc_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
+$GLOBALS['TL_DCA']['tl_module']['palettes']['lostPasswordNotificationCenter'] = str_replace('reg_password', 'nc_notification', $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPassword']);
+
+
 /**
  * Fields
  */
-
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'] = array
 (
     'label'                     => &$GLOBALS['TL_LANG']['tl_module']['nc_notification'],
@@ -38,3 +45,10 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'] = array
     'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
     'sql'                       => "int(10) unsigned NOT NULL default '0'"
 );
+
+
+/**
+ * Notification choices
+ */
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['registration'] = array('member_registration');
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['lostPasswordNotificationCenter'] = array('member_password');
