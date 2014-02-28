@@ -8,8 +8,9 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-29T14:48:19+01:00
+ * last-updated: 2014-02-28T08:54:12+01:00
  */
+
 
 $GLOBALS['TL_LANG']['tl_nc_message']['copy']['0']                   = 'Kopiuj wiadomość';
 $GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Kopiuj wiadomość ID %s.';

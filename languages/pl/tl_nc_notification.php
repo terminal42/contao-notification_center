@@ -8,8 +8,9 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-17T11:02:10+02:00
+ * last-updated: 2014-02-28T08:54:13+01:00
  */
+
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']   = 'Konfiguracja';
 $GLOBALS['TL_LANG']['tl_nc_notification']['copy']['0']       = 'Kopiuj powiadomienie';
