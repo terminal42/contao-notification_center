@@ -26,13 +26,19 @@
  */
 
 /**
- * Backend Modules
+ * Palettes
  */
-$GLOBALS['TL_LANG']['MOD']['notification_center']       = 'Notification Center';
-$GLOBALS['TL_LANG']['MOD']['nc_notifications']          = array('Notifications', 'Manage notifications.');
-$GLOBALS['TL_LANG']['MOD']['nc_gateways']               = array('Gateways', 'Manage gateways');
+$GLOBALS['TL_DCA']['tl_form']['palettes']['default'] = str_replace('sendViaEmail;', 'nc_notification,sendViaEmail;', $GLOBALS['TL_DCA']['tl_form']['palettes']['default']);
 
 /**
- * Front end modules
+ * Fields
  */
-$GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter'] = array('Lost password (Notification Center)', 'Generates a form to request a new password and sends the notification using the notification center.');
+$GLOBALS['TL_DCA']['tl_form']['fields']['nc_notification'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['nc_notification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('NotificationCenter\tl_form', 'getNotificationChoices'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'"
+);

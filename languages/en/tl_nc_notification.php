@@ -35,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Ty
  * Reference
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']           = 'Standard eMail gateway';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['file']            = 'Write to file';
 
 /**
  * Buttons
@@ -51,3 +52,12 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('No
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']            = 'Title & type';
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']           = 'Configuration';
+
+/**
+ * Notification types
+ */
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['core']            = 'Core';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']       = array('Form submission', 'This notification type can be sent when the form is submitted.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['contao']              = 'Contao';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration'] = array('Member registration');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_password']     = array('Member lost password');

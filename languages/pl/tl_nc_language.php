@@ -8,8 +8,9 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-29T14:48:19+01:00
+ * last-updated: 2014-02-28T08:54:11+01:00
  */
+
 
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Załączniki z tokenów';
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['1']    = 'Wprowadź listę załączników <strong>po przecinku</strong>. Użyj kreatora pomocy, aby zobaczyć dostępne tokeny.';
