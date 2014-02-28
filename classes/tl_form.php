@@ -59,9 +59,12 @@ class tl_form extends \Backend
 
         $arrTokens = array();
 
-        // Prepare tokens
         foreach ($arrData as $k => $v) {
             $this->flatten($v, 'form_'.$k, $arrTokens);
+        }
+
+        foreach ($arrForm as $k => $v) {
+            $this->flatten($v, 'formconfig_'.$k, $arrTokens);
         }
 
         // Administrator e-mail
