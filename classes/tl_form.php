@@ -81,7 +81,9 @@ class tl_form extends \Backend
      */
     public function flatten($varValue, $strKey, &$arrData)
     {
-        if (!is_array($varValue)) {
+        if (is_object($varValue)) {
+            return;
+        } elseif (!is_array($varValue)) {
             $arrData[$strKey] = $varValue;
             return;
         }
