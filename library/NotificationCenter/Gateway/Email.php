@@ -78,7 +78,7 @@ class Email extends Base implements GatewayInterface
 
         // Set reply-to address
         if ($objLanguage->email_replyTo) {
-            $objEmail->replyTo($objLanguage->email_replyTo);
+            $objEmail->replyTo($this->recursiveReplaceTokensAndTags($objLanguage->email_replyTo, $arrTokens, static::NO_TAGS|static::NO_BREAKS));
         }
 
         // Set email subject
