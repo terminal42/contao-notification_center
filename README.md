@@ -44,7 +44,7 @@ $strType = 'iso_order_status_change';
 $objNotificationCollection = NotificationCenter\Model\Notification::findByType($strType);
 if (null !== $objNotificationCollection) {
     while ($objNotificationCollection->next()) {
-                $objNotification = $objNotificationCollection->current();
+        $objNotification = $objNotificationCollection->current();
         $objNotification->send($arrTokens, $strLanguage); // Language is optional
     }
 }
