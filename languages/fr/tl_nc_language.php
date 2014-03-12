@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:10+01:00
+ * last-updated: 2014-03-12T13:42:08+01:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Fichiers joints par jetons';
 $GLOBALS['TL_LANG']['tl_nc_language']['attachments']['0']          = 'Fichiers joints à partir du gestionnaire de fichiers';
@@ -52,5 +51,5 @@ $GLOBALS['TL_LANG']['tl_nc_language']['new']['1']                  = 'Ajouter un
 $GLOBALS['TL_LANG']['tl_nc_language']['recipients']['0']           = 'Destinataires';
 $GLOBALS['TL_LANG']['tl_nc_language']['show']['0']                 = 'Détails de la langue';
 $GLOBALS['TL_LANG']['tl_nc_language']['show']['1']                 = 'Afficher les détails de la langue ID %s.';
-$GLOBALS['TL_LANG']['tl_nc_language']['token_error']               = 'Les jetons suivants que vous avez utilisés ne sont pas pris en charge par ce type de notification :%s.';
+$GLOBALS['TL_LANG']['tl_nc_language']['token_error']               = 'Les jetons suivants que vous avez utilisés ne sont pas pris en charge par ce type de notification : %s.';
 
