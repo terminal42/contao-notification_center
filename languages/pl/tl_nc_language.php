@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:11+01:00
+ * last-updated: 2014-03-12T13:42:08+01:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Załączniki z tokenów';
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['1']    = 'Wprowadź listę załączników <strong>po przecinku</strong>. Użyj kreatora pomocy, aby zobaczyć dostępne tokeny.';
@@ -34,6 +33,8 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']['0']  = 'Wyślij BC
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']['1']  = 'Odbiorcy, którzy powinni otrzymać ukrytą kopię wiadomości. Wprowadź kilka adresów po przecinku.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']['0']   = 'Wyślij CC do';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']['1']   = 'Odbiorcy, którzy powinni otrzymać kopię wiadomości. Wprowadź kilka adresów po przecinku.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo']['0']        = 'Adres "odpowiedz do"';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo']['1']        = 'Tutaj możesz ustawić adres "odpowiedz do" dla tej wiadomości.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']['0'] = 'Adres nadawcy';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']['1'] = 'Wprowadź adres e-mail nadawcy.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']['0']    = 'Nazwa nadawcy';
@@ -44,6 +45,12 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_text']['0']           = 'Tekst';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']['1']           = 'Wprowadź tekst.';
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']['0']             = 'Rezerwowy';
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']['1']             = 'Zaznacz to pole, jeśli język ma być rezerwowy.';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_content']['0']         = 'Zawartość pliku';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_content']['1']         = 'Proszę wprowadzić zawartość pliku.';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_name']['0']            = 'Nazwa pliku';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_name']['1']            = 'Proszę wprowadzić nazwę pliku bez rozszerzenia.';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_override']['0']        = 'Nadpisz istniejący plik';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_override']['1']        = 'Nadpisz istniejący plik, jeśli już istnieje.';
 $GLOBALS['TL_LANG']['tl_nc_language']['general_legend']            = 'Ogólne ustawienia języka';
 $GLOBALS['TL_LANG']['tl_nc_language']['language']['0']             = 'Język';
 $GLOBALS['TL_LANG']['tl_nc_language']['language']['1']             = 'Wybierz język.';
