@@ -47,7 +47,8 @@ class Language extends \Model
 
         $arrColumns = array("$t.pid=?", "($t.language=? OR $t.fallback=1)");
         $arrValues  = array($objMessage->id, $strLanguage);
+        $arrOptions = array('order' => 'fallback');
 
-        return static::findOneBy($arrColumns, $arrValues);
+        return static::findOneBy($arrColumns, $arrValues, $arrOptions);
     }
 }
