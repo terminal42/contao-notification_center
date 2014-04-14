@@ -37,10 +37,14 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']          = array('Sen
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']       = array('Sender address', 'Please enter the sender email address.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']         = array('Send a CC to', 'Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']        = array('Send a BCC to', 'Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo']              = array('Reply-to address', 'You can optionally set a reply-to address for this message.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_subject']              = array('Subject', 'Please enter the subject for the e-mail.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']                 = array('Mode', 'Choose the mode you would like to be used for this email.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']                 = array('Raw text', 'Please enter the text.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']                 = array('HTML', 'Please enter the HTML.');
+$GLOBALS['TL_LANG']['tl_nc_language']['file_name']                  = array('File name', 'Please enter the file name without extension.');
+$GLOBALS['TL_LANG']['tl_nc_language']['file_override']              = array('Override existing file', 'Override the old file if it exists.');
+$GLOBALS['TL_LANG']['tl_nc_language']['file_content']               = array('File content', 'Please enter the file content.');
 
 /**
  * Reference

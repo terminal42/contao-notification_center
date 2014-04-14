@@ -25,30 +25,20 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\Model;
+/**
+ * Palettes
+ */
+$GLOBALS['TL_DCA']['tl_form']['palettes']['default'] = str_replace('sendViaEmail;', 'nc_notification,sendViaEmail;', $GLOBALS['TL_DCA']['tl_form']['palettes']['default']);
 
-class Language extends \Model
-{
-
-    /**
-     * Name of the current table
-     * @var string
-     */
-    protected static $strTable = 'tl_nc_language';
-
-    /**
-     * Find by message and language or fallback
-     * @param   Message
-     * @param   string Language
-     */
-    public static function findByMessageAndLanguageOrFallback(Message $objMessage, $strLanguage)
-    {
-        $t = static::$strTable;
-
-        $arrColumns = array("$t.pid=?", "($t.language=? OR $t.fallback=1)");
-        $arrValues  = array($objMessage->id, $strLanguage);
-        $arrOptions = array('order' => 'fallback');
-
-        return static::findOneBy($arrColumns, $arrValues, $arrOptions);
-    }
-}
+/**
+ * Fields
+ */
+$GLOBALS['TL_DCA']['tl_form']['fields']['nc_notification'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_form']['nc_notification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('NotificationCenter\tl_form', 'getNotificationChoices'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'"
+);

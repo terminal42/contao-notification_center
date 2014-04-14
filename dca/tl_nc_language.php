@@ -118,7 +118,8 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     (
         '__selector__'                => array('gateway_type', 'email_mode'),
         'default'                     => '{general_legend},language,fallback',
-        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
+        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
+        'file'                        => '{general_legend},language,fallback;{meta_legend},file_name,file_override;{content_legend},file_content',
     ),
 
     'subpalettes' => array
@@ -161,7 +162,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'sql'                     => "varchar(5) NOT NULL default ''",
             'save_callback' => array
             (
-            	array('NotificationCenter\tl_nc_language', 'validateLanguageField')
+                array('NotificationCenter\tl_nc_language', 'validateLanguageField')
             )
         ),
         'fallback' => array
@@ -173,7 +174,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'sql'                     => "char(1) NOT NULL default ''",
             'save_callback' => array
             (
-            	array('NotificationCenter\tl_nc_language', 'validateFallbackField')
+                array('NotificationCenter\tl_nc_language', 'validateFallbackField')
             )
         ),
         'recipients' => array
@@ -244,6 +245,18 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
                 array('NotificationCenter\tl_nc_language', 'validateEmailList')
             )
         ),
+        'email_replyTo' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'w50'),
+            'sql'                     => "varchar(255) NOT NULL default ''",
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'validateEmailList')
+            )
+        ),
         'email_subject' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_subject'],
@@ -278,6 +291,30 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'inputType'               => 'textarea',
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true, 'mandatory'=>true),
             'sql'                     => "text NULL"
-        )
+        ),
+        'file_name' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_name'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'w50', 'decodeEntities'=>true, 'mandatory'=>true),
+            'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'file_override' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_override'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('tl_class'=>'w50 m12'),
+            'sql'                     => "char(1) NOT NULL default ''"
+        ),
+        'file_content' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_content'],
+            'exclude'                 => true,
+            'inputType'               => 'textarea',
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'decodeEntities'=>true, 'mandatory'=>true, 'style'=>'min-height:100px'),
+            'sql'                     => "text NULL"
+        ),
     )
 );

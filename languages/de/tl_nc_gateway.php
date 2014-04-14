@@ -8,8 +8,9 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2013-10-17T11:02:10+02:00
+ * last-updated: 2014-02-28T08:54:09+01:00
  */
+
 
 $GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']      = 'Gateway duplizieren';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['1']      = 'Editieren Sie das Gateway ID %s';

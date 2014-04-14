@@ -8,10 +8,10 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:08+01:00
+ * last-updated: 2014-03-12T13:42:08+01:00
  */
 
 
-$GLOBALS['TL_LANG']['tl_module']['nc_notification']['0'] = 'Notification';
-$GLOBALS['TL_LANG']['tl_module']['nc_notification']['1'] = 'Sélectionner une notification.';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['core_form']['admin_email'] = 'Adresse e-mail de l\'administrateur de la page en cours.';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['core_form']['form_*']      = 'Tous les champs du formulaire.';
 

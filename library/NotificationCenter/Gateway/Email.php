@@ -33,6 +33,11 @@ use NotificationCenter\Model\Message;
 
 class Email extends Base implements GatewayInterface
 {
+    /**
+     * SMTP settings cache
+     * @var array
+     */
+    protected $arrSMTPCache = array();
 
     /**
      * Send email message
@@ -53,7 +58,12 @@ class Email extends Base implements GatewayInterface
             return false;
         }
 
+        // Override SMTP settings if desired
+        $this->overrideSMTPSettings();
         $objEmail           = new \Email();
+        $this->resetSMTPSettings();
+
+        // Set priority
         $objEmail->priority = $objMessage->email_priority;
 
         // Set optional sender name
@@ -65,6 +75,11 @@ class Email extends Base implements GatewayInterface
         // Set email sender address
         $strSenderAddress = $objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
         $objEmail->from   = $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+
+        // Set reply-to address
+        if ($objLanguage->email_replyTo) {
+            $objEmail->replyTo($this->recursiveReplaceTokensAndTags($objLanguage->email_replyTo, $arrTokens, static::NO_TAGS|static::NO_BREAKS));
+        }
 
         // Set email subject
         $objEmail->subject = $this->recursiveReplaceTokensAndTags($objLanguage->email_subject, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
@@ -129,5 +144,38 @@ class Email extends Base implements GatewayInterface
         }
 
         return false;
+    }
+
+    /**
+     * Override SMTP settings
+     */
+    protected function overrideSMTPSettings()
+    {
+        if (!$this->objModel->email_overrideSmtp) {
+            return;
+        }
+
+        $this->arrSMTPCache['useSMTP'] = $GLOBALS['TL_CONFIG']['useSMTP'];
+        $GLOBALS['TL_CONFIG']['useSMTP'] = true;
+
+        foreach (array('smtpHost', 'smtpUser', 'smtpPass', 'smtpEnc', 'smtpPort') as $strKey) {
+            $this->arrSMTPCache[$strKey] = $GLOBALS['TL_CONFIG'][$strKey];
+            $strEmailKey = 'email_' . $strKey;
+            $GLOBALS['TL_CONFIG'][$strKey] = $this->objModel->{$strEmailKey};
+        }
+    }
+
+    /**
+     * Reset SMTP settings
+     */
+    protected function resetSMTPSettings()
+    {
+        if (!$this->objModel->email_overrideSmtp) {
+            return;
+        }
+
+        foreach (array('useSMTP', 'smtpHost', 'smtpUser', 'smtpPass', 'smtpEnc', 'smtpPort') as $strKey) {
+            $GLOBALS['TL_CONFIG'][$strKey] = $this->arrSMTPCache[$strKey];
+        }
     }
 }

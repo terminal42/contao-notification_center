@@ -8,8 +8,9 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T09:57:57+01:00
+ * last-updated: 2014-02-28T08:54:06+01:00
  */
+
 
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']['0']      = 'Gateways';
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']['1']      = 'Gateways verwalten';

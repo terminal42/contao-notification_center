@@ -1,28 +1,14 @@
 <?php
-
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Translations are managed using Transifex. To create a new translation
+ * or to help to maintain an existing one, please register at transifex.com.
  *
- * Formerly known as TYPOlight Open Source CMS.
+ * @link http://help.transifex.com/intro/translating.html
+ * @link https://www.transifex.com/projects/p/notification_center/language/de/
  *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
+ * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2013
- * @license    LGPL
+ * last-updated: 2014-03-12T13:42:08+01:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']   = 'Konfiguration';

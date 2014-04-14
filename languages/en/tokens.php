@@ -25,30 +25,8 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\Model;
-
-class Language extends \Model
-{
-
-    /**
-     * Name of the current table
-     * @var string
-     */
-    protected static $strTable = 'tl_nc_language';
-
-    /**
-     * Find by message and language or fallback
-     * @param   Message
-     * @param   string Language
-     */
-    public static function findByMessageAndLanguageOrFallback(Message $objMessage, $strLanguage)
-    {
-        $t = static::$strTable;
-
-        $arrColumns = array("$t.pid=?", "($t.language=? OR $t.fallback=1)");
-        $arrValues  = array($objMessage->id, $strLanguage);
-        $arrOptions = array('order' => 'fallback');
-
-        return static::findOneBy($arrColumns, $arrValues, $arrOptions);
-    }
-}
+/**
+ * Tokens
+ */
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['core_form']['admin_email'] = 'E-mail address of administrator of the current page.';
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['core_form']['form_*'] = 'All the form fields.';
