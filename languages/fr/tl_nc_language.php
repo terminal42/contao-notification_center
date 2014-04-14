@@ -8,13 +8,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:10+01:00
+ * last-updated: 2014-03-12T13:50:45+01:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Fichiers joints par jetons';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Fichiers joints à partir de jetons';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['1']    = 'Saisir une liste <strong>séparée par des virgules </strong> de jetons de fichiers à joindre. Utiliser l\'assistant d\'aide pour voir afficher les jetons disponibles.';
 $GLOBALS['TL_LANG']['tl_nc_language']['attachments']['0']          = 'Fichiers joints à partir du gestionnaire de fichiers';
-$GLOBALS['TL_LANG']['tl_nc_language']['attachments']['1']          = 'Sélectionner des fichiers à joindre à partir du gestionnaires de fichiers.';
+$GLOBALS['TL_LANG']['tl_nc_language']['attachments']['1']          = 'Utiliser le sélecteur de fichier pour ajouter des fichiers statiques.';
 $GLOBALS['TL_LANG']['tl_nc_language']['attachments_legend']        = 'Fichiers joints';
 $GLOBALS['TL_LANG']['tl_nc_language']['content_legend']            = 'Contenu';
 $GLOBALS['TL_LANG']['tl_nc_language']['copy']['0']                 = 'Copier la langue';
@@ -26,13 +26,15 @@ $GLOBALS['TL_LANG']['tl_nc_language']['edit']['1']                 = 'Éditer la
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']['0']           = 'HTML';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']['1']           = 'Saisir le code HTML.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['0']           = 'Mode';
-$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['1']           = 'Choisissez le mode à utiliser pour ce message.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['1']           = 'Choisir le mode à utiliser pour ce message.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textAndHtml'] = 'HTML et texte';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textOnly']    = 'Texte seulement';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']['0']  = 'Envoyer une BCC à';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']['1']  = 'Les destinataires qui doivent recevoir une copie carbone cachée de l\'e-mail. Séparer les adresses par une virgule.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']['0']   = 'Envoyer une CC à';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']['1']   = 'Les destinataires qui doivent recevoir une copie carbone de l\'e-mail. Séparer les adresses par une virgule.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo']['0']        = 'Adresse de réponse';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo']['1']        = 'Définir une adresse de réponse pour ce message.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']['0'] = 'Adresse de l\'expéditeur';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']['1'] = 'Saisir l\'adresse email de l\'expéditeur.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']['0']    = 'Nom de l\'expéditeur';
@@ -43,6 +45,12 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_text']['0']           = 'Texte brut
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']['1']           = 'Saisir le texte.';
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']['0']             = 'Langue de secours';
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']['1']             = 'Cocher pour utiliser cette langue en secours.';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_content']['0']         = 'Contenu du fichier';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_content']['1']         = 'Saisir le contenu du fichier';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_name']['0']            = 'Nom de fichier';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_name']['1']            = 'Saisir le nom de fichier sans extension.';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_override']['0']        = 'Écraser le fichier existant';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_override']['1']        = 'Écraser l\'ancien fichier s\'il est déjà existant.';
 $GLOBALS['TL_LANG']['tl_nc_language']['general_legend']            = 'Paramètres de langue';
 $GLOBALS['TL_LANG']['tl_nc_language']['language']['0']             = 'Langue';
 $GLOBALS['TL_LANG']['tl_nc_language']['language']['1']             = 'Sélectionner une langue.';
@@ -50,7 +58,8 @@ $GLOBALS['TL_LANG']['tl_nc_language']['meta_legend']               = 'Informatio
 $GLOBALS['TL_LANG']['tl_nc_language']['new']['0']                  = 'Nouvelle langue';
 $GLOBALS['TL_LANG']['tl_nc_language']['new']['1']                  = 'Ajouter une nouvelle langue.';
 $GLOBALS['TL_LANG']['tl_nc_language']['recipients']['0']           = 'Destinataires';
+$GLOBALS['TL_LANG']['tl_nc_language']['recipients']['1']           = 'Saisir une liste <strong>séparée par des virgules</strong> de destinataires. Utiliser l\'assistant d\'aide pour voir afficher les jetons disponibles.';
 $GLOBALS['TL_LANG']['tl_nc_language']['show']['0']                 = 'Détails de la langue';
 $GLOBALS['TL_LANG']['tl_nc_language']['show']['1']                 = 'Afficher les détails de la langue ID %s.';
-$GLOBALS['TL_LANG']['tl_nc_language']['token_error']               = 'Les jetons suivants que vous avez utilisés ne sont pas pris en charge par ce type de notification :%s.';
+$GLOBALS['TL_LANG']['tl_nc_language']['token_error']               = 'Les jetons suivants utilisés ne sont pas pris en charge par ce type de notification : %s.';
 

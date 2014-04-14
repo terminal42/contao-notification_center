@@ -15,7 +15,8 @@
         "contao/core":">=3.2",
         "contao-community-alliance/composer-installer":"*",
         "contao-legacy/namespaceclassloader":">=1.0.1",
-        "terminal42/dcawizard":"2.0.*"
+        "contao-legacy/haste":"4.*",
+        "terminal42/dcawizard":"2.*"
     },
     "autoload":{
         "psr-0": {
@@ -34,7 +35,7 @@
             },
             "transifex": {
                 "project": "notification_center",
-                "prefix": "develop-notification_center-",
+                "prefix": "master-notification_center-",
                 "languages_cto": "languages",
                 "languages_tx": ".tx"
             }

@@ -68,26 +68,43 @@ $GLOBALS['TL_HOOKS']['createNewUser'][] = array('NotificationCenter\ContaoHelper
 /**
  * Notification Center Gateways
  */
-$GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array();
-$GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['email'] = 'NotificationCenter\Gateway\Email';
-$GLOBALS['NOTIFICATION_CENTER']['GATEWAY']['file'] = 'NotificationCenter\Gateway\File';
+$GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
+    (array) $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'],
+    array(
+         'email' => 'NotificationCenter\Gateway\Email',
+         'file'  => 'NotificationCenter\Gateway\File'
+    )
+);
 
 /**
  * Notification Center Notification Types
  */
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['recipients'] = array('admin_email', 'form_*');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'] = array('form_*', 'formconfig_*', 'admin_email');
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
+    (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'],
+    array(
+         'core'   => array(
+             'core_form' => array(
+                 'recipients' => array('admin_email', 'form_*'),
+                 'email_text' => array('form_*', 'formconfig_*', 'admin_email')
+             )
+         ),
+         'contao' => array(
+             'member_registration' => array(
+                 'recipients' => array('member_email', 'admin_email'),
+                 'email_text' => array('domain', 'link', 'member_*', 'recipient_email')
+             ),
+             'member_password'     => array(
+                 'recipients' => array('recipient_email'),
+                 'email_text' => array('domain', 'link', 'member_*', 'recipient_email')
+             )
+         )
+    )
+);
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_name'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_content'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['recipients'] = array('member_email', 'admin_email');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['attachment_tokens'] = array();
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'] = array('domain', 'link', 'member_*', 'recipient_email');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['recipients'] = array('recipient_email');
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['attachment_tokens'] = array();
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_text'] = array('domain', 'link', 'member_*', 'recipient_email');
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_text'];

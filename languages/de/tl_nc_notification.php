@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:13+01:00
+ * last-updated: 2014-03-12T13:42:08+01:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']   = 'Konfiguration';
 $GLOBALS['TL_LANG']['tl_nc_notification']['copy']['0']       = 'Benachrichtigung kopieren';
@@ -30,4 +29,5 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['title']['1']      = 'Bitte gib einen 
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']    = 'Titel & Typ';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['0']       = 'Typ';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['1']       = 'Bitte selektieren Sie einen Typ für diese Benachrichtigung.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']   = 'Standard eMail Gateway';
 
