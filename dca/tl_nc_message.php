@@ -92,6 +92,13 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
                 'href'                => 'act=paste&amp;mode=copy',
                 'icon'                => 'copy.gif'
             ),
+            'cut' => array
+            (
+                'label'                 => &$GLOBALS['TL_LANG']['tl_nc_message']['cut'],
+                'href'                  => 'act=paste&amp;mode=cut',
+                'icon'                  => 'cut.gif',
+                'attributes'            => 'onclick="Backend.getScrollOffset();"'
+            ),
             'delete' => array
             (
                 'label'               => &$GLOBALS['TL_LANG']['tl_nc_message']['delete'],

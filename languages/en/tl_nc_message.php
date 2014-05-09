@@ -40,7 +40,8 @@ $GLOBALS['TL_LANG']['tl_nc_message']['published']               = array('Publish
  */
 $GLOBALS['TL_LANG']['tl_nc_message']['new']                     = array('New message', 'Create a new message.');
 $GLOBALS['TL_LANG']['tl_nc_message']['edit']                    = array('Edit message', 'Edit message ID %s.');
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']                    = array('Copy message', 'Copy message ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']                    = array('Duplicate message', 'Duplicate message ID %s.');
+$GLOBALS['TL_LANG']['tl_nc_message']['cut']                     = array('Move message', 'Move message ID %s.');
 $GLOBALS['TL_LANG']['tl_nc_message']['delete']                  = array('Delete message', 'Delete message ID %s.');
 $GLOBALS['TL_LANG']['tl_nc_message']['toggle']                  = array('Toggle visibility of message', 'Toggle visibility of message ID %s.');
 $GLOBALS['TL_LANG']['tl_nc_message']['show']                    = array('Gateway message', 'Show details for message ID %s.');
