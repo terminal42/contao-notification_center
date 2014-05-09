@@ -170,7 +170,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'eval'                    => array('mandatory'=>true, 'nospace'=>true, 'tl_class'=>'long'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
-        'smtpUser' => array
+        'email_smtpUser' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpUser'],
             'inputType'               => 'text',
