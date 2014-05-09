@@ -119,7 +119,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Subpalettes
     'subpalettes' => array
     (
-        'email_overrideSmtp'          => 'email_smtpHost,email_smtpUser,email_smtpPass,email_smtpEnc,email_smtpPort',
+        'email_overrideSmtp'          => 'email_smtpHost,smtpUser,email_smtpPass,email_smtpEnc,email_smtpPort',
         'file_connection_local'       => 'file_path',
         'file_connection_ftp'         => 'file_host,file_port,file_username,file_password,file_path',
     ),
