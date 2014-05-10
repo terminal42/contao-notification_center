@@ -85,7 +85,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
          'core'   => array(
              'core_form' => array(
                  'recipients' => array('admin_email', 'form_*'),
-                 'email_text' => array('form_*', 'formconfig_*', 'admin_email', 'raw')
+                 'email_text' => array('form_*', 'formconfig_*', 'admin_email', 'raw_data')
              )
          ),
          'contao' => array(
