@@ -51,16 +51,18 @@ class tl_form extends \Backend
      * @param array
      * @param array
      */
-    public function sendFormNotification($arrData, $arrForm)
+    public function sendFormNotification($arrData, $arrForm,  $arrFiles, $arrLabels)
     {
         if (!$arrForm['nc_notification'] || ($objNotification = Model\Notification::findByPk($arrForm['nc_notification'])) === null) {
             return;
         }
 
         $arrTokens = array();
+        $arrTokens['raw_data'] = '';
 
         foreach ($arrData as $k => $v) {
             $this->flatten($v, 'form_'.$k, $arrTokens);
+            $arrTokens['raw_data'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
         }
 
         foreach ($arrForm as $k => $v) {
