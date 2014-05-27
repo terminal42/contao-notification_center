@@ -30,10 +30,10 @@ namespace NotificationCenter;
 class tl_nc_message extends \Backend
 {
     /**
-     * Available languages
+     * Available translations
      * @var array
      */
-    protected $arrLanguages = array();
+    protected $arrTranslations = array();
 
     /**
      * Available gateways
@@ -48,8 +48,8 @@ class tl_nc_message extends \Backend
      */
     public function listRows($arrRow)
     {
-        if (empty($this->arrLanguages)) {
-            $this->arrLanguages = \System::getLanguages();
+        if (empty($this->arrTranslations)) {
+            $this->arrTranslations = \System::getLanguages();
         }
         if (empty($this->arrGateways)) {
             $objGateways = \Database::getInstance()->execute('SELECT id,title FROM tl_nc_gateway');
@@ -58,15 +58,15 @@ class tl_nc_message extends \Backend
             }
         }
 
-        $arrLanguages =  \Database::getInstance()->prepare('SELECT language FROM tl_nc_language WHERE pid=?')->execute($arrRow['id'])->fetchEach('language');
+        $arrTranslations =  \Database::getInstance()->prepare('SELECT language FROM tl_nc_language WHERE pid=?')->execute($arrRow['id'])->fetchEach('language');
 
         $strBuffer = '
 <div class="cte_type ' . (($arrRow['published']) ? 'published' : 'unpublished') . '"><strong>' . $arrRow['title'] . '</strong> - ' . $this->arrGateways[$arrRow['gateway']] . '</div>
 <div>
 <ul>';
 
-        foreach ($arrLanguages as $strLang) {
-            $strBuffer .= '<li>&#10148; ' . $this->arrLanguages[$strLang] . '</li>';
+        foreach ($arrTranslations as $strLang) {
+            $strBuffer .= '<li>&#10148; ' . $this->arrTranslations[$strLang] . '</li>';
         }
 
         $strBuffer .= '</ul></div>';
