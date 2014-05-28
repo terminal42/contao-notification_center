@@ -106,7 +106,7 @@ window.addEvent('domready', function() {
         }
 
         $strGroup       = NotificationModel::findGroupForType(static::$strType);
-        $arrValidTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
+        $arrValidTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
 
         // Build regex pattern
         $strPattern = '/##(' . implode('|', $arrValidTokens) . ')##/i';
