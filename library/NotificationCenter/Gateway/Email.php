@@ -48,6 +48,8 @@ class Email extends Base implements GatewayInterface
      */
     public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
+        // Yes this code is duplicate but cannot only reside within prepareEmail()
+        // because one cannot set the recipients on Email before calling sendTo()
         if ($strLanguage == '') {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
@@ -56,6 +58,41 @@ class Email extends Base implements GatewayInterface
             \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
 
             return false;
+        }
+
+        $objEmail = $this->prepareEmail($objMessage, $arrTokens, $strLanguage);
+
+        // Actually impossible but defensive
+        if ($objEmail === null) {
+            return false;
+        }
+
+        try {
+            return $objEmail->sendTo($this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens, static::NO_TAGS|static::NO_BREAKS));
+        } catch (\Exception $e) {
+            \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
+        }
+
+        return false;
+    }
+
+    /**
+     * Prepare email message
+     * @param   Message
+     * @param   array
+     * @param   string
+     * @return  \Email|null
+     */
+    public function prepareEmail(Message $objMessage, array $arrTokens, $strLanguage = '')
+    {
+        if ($strLanguage == '') {
+            $strLanguage = $GLOBALS['TL_LANGUAGE'];
+        }
+
+        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
+            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+
+            return null;
         }
 
         // Override SMTP settings if desired
@@ -137,13 +174,7 @@ class Email extends Base implements GatewayInterface
             $objEmail->sendBcc($arrBcc);
         }
 
-        try {
-            return $objEmail->sendTo($this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens, static::NO_TAGS|static::NO_BREAKS));
-        } catch (\Exception $e) {
-            \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
-        }
-
-        return false;
+        return $objEmail;
     }
 
     /**
