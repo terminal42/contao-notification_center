@@ -33,6 +33,8 @@ $GLOBALS['TL_LANG']['tl_nc_message']['gateway']                 = array('Gateway
 $GLOBALS['TL_LANG']['tl_nc_message']['languages']               = array('Languages', 'Here you can manage the different languages.', 'Manage languages', 'Close');
 $GLOBALS['TL_LANG']['tl_nc_message']['email_priority']          = array('Priority', 'Please select a priority.');
 $GLOBALS['TL_LANG']['tl_nc_message']['email_template']          = array('Template file', 'Please choose a template file.');
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']            = array('Tag', 'Here you can enter the tag.');
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']     = array('Enable open tracking', 'Here you can enable open tracking.');
 $GLOBALS['TL_LANG']['tl_nc_message']['published']               = array('Publish message', 'Include this message when a notification is being sent.');
 
 /**

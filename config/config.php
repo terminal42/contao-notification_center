@@ -71,8 +71,9 @@ $GLOBALS['TL_HOOKS']['createNewUser'][] = array('NotificationCenter\ContaoHelper
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
     (array) $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'],
     array(
-         'email' => 'NotificationCenter\Gateway\Email',
-         'file'  => 'NotificationCenter\Gateway\File'
+         'email'    => 'NotificationCenter\Gateway\Email',
+         'file'     => 'NotificationCenter\Gateway\File',
+         'postmark' => 'NotificationCenter\Gateway\Postmark',
     )
 );
 

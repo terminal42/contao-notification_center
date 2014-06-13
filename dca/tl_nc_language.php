@@ -120,6 +120,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'default'                     => '{general_legend},language,fallback',
         'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
         'file'                        => '{general_legend},language,fallback;{meta_legend},file_name,file_override;{content_legend},file_content',
+        'postmark'                    => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode',
     ),
 
     'subpalettes' => array
