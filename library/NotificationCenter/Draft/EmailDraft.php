@@ -1,0 +1,204 @@
+<?php
+
+/**
+ * Contao Open Source CMS
+ * Copyright (C) 2005-2011 Leo Feyer
+ *
+ * Formerly known as TYPOlight Open Source CMS.
+ *
+ * This program is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation, either
+ * version 3 of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this program. If not, please visit the Free
+ * Software Foundation website at <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5
+ * @copyright  terminal42 gmbh 2013
+ * @license    LGPL
+ */
+
+namespace NotificationCenter\Draft;
+
+
+use NotificationCenter\Model\Language;
+use NotificationCenter\Model\Message;
+use NotificationCenter\Util\String;
+
+class EmailDraft implements EmailDraftInterface
+{
+    /**
+     * Message
+     * @var Message
+     */
+    private $objMessage = null;
+
+    /**
+     * Language
+     * @var Language
+     */
+    private $objLanguage = null;
+
+    /**
+     * Tokens
+     * @var array
+     */
+    private $arrTokens = array();
+
+    /**
+     * Construct the object
+     * @param Message  $objMessage
+     * @param Language $objLanguage
+     * @param          $arrTokens
+     */
+    public function __construct(Message $objMessage, Language $objLanguage, $arrTokens)
+    {
+        $this->arrTokens = $arrTokens;
+        $this->objLanguage = $objLanguage;
+        $this->objMessage = $objMessage;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSenderEmail()
+    {
+        $strSenderAddress = $this->objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
+        return String::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSenderName()
+    {
+        $strSenderName = $this->objLanguage->email_sender_name ? : $GLOBALS['TL_ADMIN_NAME'];
+        return String::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRecipientEmails()
+    {
+        return String::compileRecipients($this->objLanguage->recipients, $this->arrTokens);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCcRecipientEmails()
+    {
+        return String::compileRecipients($this->objLanguage->email_recipient_cc, $this->arrTokens);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBccRecipientEmails()
+    {
+        return String::compileRecipients($this->objLanguage->email_recipient_bcc, $this->arrTokens);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReplyToEmail()
+    {
+        if ($this->objLanguage->email_replyTo) {
+            return String::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+        }
+
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubject()
+    {
+        return String::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return $this->objMessage->email_priority;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTextBody()
+    {
+        $strText = $this->objLanguage->email_text;
+        $strText        = String::recursiveReplaceTokensAndTags($strText, $this->arrTokens, String::NO_TAGS);
+        return \Controller::convertRelativeUrls($strText, '', true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHtmlBody()
+    {
+        if ($this->objLanguage->email_mode == 'textAndHtml') {
+            $objTemplate          = new \FrontendTemplate($this->objMessage->email_template);
+            $objTemplate->body    = $this->objLanguage->email_html;
+            $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
+
+            // Prevent parseSimpleTokens from stripping important HTML tags
+            $GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
+            $strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
+            $strHtml = String::recursiveReplaceTokensAndTags($strHtml, $this->arrTokens);
+            $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
+            $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
+            return $strHtml;
+        }
+
+        return '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttachments()
+    {
+        // Token attachments
+        $arrAttachments = String::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
+
+        // Add static attachments
+        $arrStaticAttachments = deserialize($this->objLanguage->attachments, true);
+
+        if (!empty($arrStaticAttachments)) {
+            $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
+            while ($objFiles->next()) {
+                $arrAttachments[] = TL_ROOT . '/' . $objFiles->path;
+            }
+        }
+
+        return $arrAttachments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preview()
+    {
+        return 'Sender: ' . $this->getSenderEmail() . "\n" .
+        'Recipients: ' . $this->getRecipientEmails() . "\n" .
+        'CC-Recipients: ' . $this->getCcRecipientEmails() . "\n" .
+        'BCC-Recipients: ' . $this->getBccRecipientEmails() . "\n" .
+        'Subject: ' . $this->getSubject() . "\n" .
+        'Text-Body: ' . $this->getTextBody() . "\n" .
+        'HTML-Body: ' . $this->getHtmlBody();
+    }
+} 
