@@ -91,8 +91,7 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
         $objEmail->priority = $objDraft->getPriority();
 
         // Set optional sender name
-        $strSenderName = $objDraft->getSenderName();
-        if ($strSenderName != '') {
+        if ($strSenderName = $objDraft->getSenderName()) {
             $objEmail->fromName = $strSenderName;
         }
 
