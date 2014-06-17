@@ -42,12 +42,6 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
     protected $arrSMTPCache = array();
 
     /**
-     * Draft instance
-     * @var EmailDraft
-     */
-    protected $objDraft = null;
-
-    /**
      * Lanugage instance
      * @var Language
      */
@@ -62,10 +56,6 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
      */
     public function getDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
-        if ($this->objDraft !== null) {
-            return $this->objDraft;
-        }
-
         if ($strLanguage == '') {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
@@ -76,8 +66,7 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
             return null;
         }
 
-        $this->objDraft = new EmailDraft($objMessage, $this->objLanguage, $arrTokens);
-        return $this->objDraft;
+        return new EmailDraft($objMessage, $this->objLanguage, $arrTokens);
     }
 
     /**
