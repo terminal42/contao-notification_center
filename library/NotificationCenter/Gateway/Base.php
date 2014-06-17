@@ -69,22 +69,6 @@ abstract class Base extends \Controller
     }
 
     /**
-     * @deprecated Use String::recursiveReplaceTokensAndTags()
-     */
-    protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
-    {
-        return String::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
-    }
-
-    /**
-     * @deprecated Use String::convertToText()
-     */
-    protected function convertToText($varValue, $options)
-    {
-        return String::convertToText($varValue, $options);
-    }
-
-    /**
      * @deprecated Use String::getTokenAttachments()
      */
     public static function getTokenAttachments($strAttachmentTokens, array $arrTokens)
@@ -98,5 +82,21 @@ abstract class Base extends \Controller
     public static function compileRecipients($strRecipients, $arrTokens)
     {
         return String::compileRecipients($strRecipients, $arrTokens);
+    }
+
+    /**
+     * @deprecated Use String::recursiveReplaceTokensAndTags()
+     */
+    protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
+    {
+        return String::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
+    }
+
+    /**
+     * @deprecated Use String::convertToText()
+     */
+    protected function convertToText($varValue, $options)
+    {
+        return String::convertToText($varValue, $options);
     }
 }
