@@ -178,7 +178,7 @@ class File extends Base implements GatewayInterface
             $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path));
         }
 
-        $objFile = new \File($this->strPath . '/' . $strFile);
+        $objFile = new \File($this->strPath . '/' . $strFileName);
         $blnResult = $objFile->write($strContent);
         $objFile->close();
 
