@@ -27,11 +27,13 @@
 
 namespace NotificationCenter\Gateway;
 
+use NotificationCenter\MessageDraft\EmailMessageDraft;
+use NotificationCenter\MessageDraft\MessageDraftFactoryInterface;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 
 
-class Email extends Base implements GatewayInterface
+class Email extends Base implements GatewayInterface, MessageDraftFactoryInterface
 {
     /**
      * SMTP settings cache
@@ -40,50 +42,13 @@ class Email extends Base implements GatewayInterface
     protected $arrSMTPCache = array();
 
     /**
-     * Send email message
+     * Returns a MessageDraft
      * @param   Message
      * @param   array
      * @param   string
-     * @return  bool
+     * @return  MessageDraftInterface|null (if no draft could be found)
      */
-    public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
-    {
-        // Yes this code is duplicate but cannot only reside within prepareEmail()
-        // because one cannot set the recipients on Email before calling sendTo()
-        if ($strLanguage == '') {
-            $strLanguage = $GLOBALS['TL_LANGUAGE'];
-        }
-
-        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
-            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
-        $objEmail = $this->prepareEmail($objMessage, $arrTokens, $strLanguage);
-
-        // Actually impossible but defensive
-        if ($objEmail === null) {
-            return false;
-        }
-
-        try {
-            return $objEmail->sendTo($this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens, static::NO_TAGS|static::NO_BREAKS));
-        } catch (\Exception $e) {
-            \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
-        }
-
-        return false;
-    }
-
-    /**
-     * Prepare email message
-     * @param   Message
-     * @param   array
-     * @param   string
-     * @return  \Email|null
-     */
-    public function prepareEmail(Message $objMessage, array $arrTokens, $strLanguage = '')
+    public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
         if ($strLanguage == '') {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
@@ -95,86 +60,88 @@ class Email extends Base implements GatewayInterface
             return null;
         }
 
+        return new EmailMessageDraft($objMessage, $objLanguage, $arrTokens);
+    }
+
+    /**
+     * Send email message
+     * @param   Message
+     * @param   array
+     * @param   string
+     * @return  bool
+     */
+    public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
+    {
+        /**
+         * @var $objDraft \NotificationCenter\MessageDraft\EmailMessageDraft
+         */
+        $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
+
+        // return false if no language found for BC
+        if ($objDraft === null) {
+            return false;
+        }
+
         // Override SMTP settings if desired
         $this->overrideSMTPSettings();
-        $objEmail           = new \Email();
+        $objEmail = new \Email();
         $this->resetSMTPSettings();
 
         // Set priority
-        $objEmail->priority = $objMessage->email_priority;
+        $objEmail->priority = $objDraft->getPriority();
 
         // Set optional sender name
-        $strSenderName = $objLanguage->email_sender_name ? : $GLOBALS['TL_ADMIN_NAME'];
-        if ($strSenderName != '') {
-            $objEmail->fromName = $this->recursiveReplaceTokensAndTags($strSenderName, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+        if ($strSenderName = $objDraft->getSenderName()) {
+            $objEmail->fromName = $strSenderName;
         }
 
         // Set email sender address
-        $strSenderAddress = $objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
-        $objEmail->from   = $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+        $objEmail->from   = $objDraft->getSenderEmail();
 
         // Set reply-to address
-        if ($objLanguage->email_replyTo) {
-            $objEmail->replyTo($this->recursiveReplaceTokensAndTags($objLanguage->email_replyTo, $arrTokens, static::NO_TAGS|static::NO_BREAKS));
+        if ($strReplyTo = $objDraft->getReplyToEmail()) {
+            $objEmail->replyTo($strReplyTo);
         }
 
         // Set email subject
-        $objEmail->subject = $this->recursiveReplaceTokensAndTags($objLanguage->email_subject, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+        $objEmail->subject = $objDraft->getSubject();
 
         // Set email text content
-        $strText        = $objLanguage->email_text;
-        $strText        = $this->recursiveReplaceTokensAndTags($strText, $arrTokens, static::NO_TAGS);
-        $objEmail->text = \Controller::convertRelativeUrls($strText, '', true);
+        $objEmail->text = $objDraft->getTextBody();
 
         // Set optional email HTML content
-        if ($objLanguage->email_mode == 'textAndHtml') {
-            $objTemplate          = new \FrontendTemplate($objMessage->email_template);
-            $objTemplate->body    = $objLanguage->email_html;
-            $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
-
-            // Prevent parseSimpleTokens from stripping important HTML tags
-            $GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
-            $strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
-            $strHtml = $this->recursiveReplaceTokensAndTags($strHtml, $arrTokens);
-            $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
-            $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
-
-            // Parse template
+        if ($strHtml = $objDraft->getHtmlBody()) {
             $objEmail->html     = $strHtml;
             $objEmail->imageDir = TL_ROOT . '/';
         }
 
-        // Add all token attachments
-        $arrTokenAttachments = $this->getTokenAttachments($objLanguage->attachment_tokens, $arrTokens);
-        if (!empty($arrTokenAttachments)) {
-            foreach ($arrTokenAttachments as $strFile) {
+        // Add attachments
+        $arrAttachments = $objDraft->getAttachments();
+        if (!empty($arrAttachments)) {
+            foreach ($arrAttachments as $strFile) {
                 $objEmail->attachFile($strFile);
             }
         }
 
-        // Add static attachments
-        $arrAttachments = deserialize($objLanguage->attachments);
-
-        if (is_array($arrAttachments) && !empty($arrAttachments)) {
-            $objFiles = \FilesModel::findMultipleByUuids($arrAttachments);
-            while ($objFiles->next()) {
-                $objEmail->attachFile(TL_ROOT . '/' . $objFiles->path);
-            }
-        }
-
         // Set CC recipients
-        $arrCc = $this->compileRecipients($objLanguage->email_recipient_cc, $arrTokens);
+        $arrCc = $objDraft->getCcRecipientEmails();
         if (!empty($arrCc)) {
             $objEmail->sendCc($arrCc);
         }
 
         // Set BCC recipients
-        $arrBcc = $this->compileRecipients($objLanguage->email_recipient_bcc, $arrTokens);
+        $arrBcc = $objDraft->getBccRecipientEmails();
         if (!empty($arrBcc)) {
             $objEmail->sendBcc($arrBcc);
         }
 
-        return $objEmail;
+        try {
+            return $objEmail->sendTo($objDraft->getRecipientEmails());
+        } catch (\Exception $e) {
+            \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
+        }
+
+        return false;
     }
 
     /**
