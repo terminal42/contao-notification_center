@@ -141,7 +141,7 @@ class EmailDraft implements EmailDraftInterface
     public function getTextBody()
     {
         $strText = $this->objLanguage->email_text;
-        $strText        = String::recursiveReplaceTokensAndTags($strText, $this->arrTokens, String::NO_TAGS);
+        $strText = String::recursiveReplaceTokensAndTags($strText, $this->arrTokens, String::NO_TAGS);
         return \Controller::convertRelativeUrls($strText, '', true);
     }
 
@@ -201,4 +201,4 @@ class EmailDraft implements EmailDraftInterface
         'Text-Body: ' . $this->getTextBody() . "\n" .
         'HTML-Body: ' . $this->getHtmlBody();
     }
-} 
+}
