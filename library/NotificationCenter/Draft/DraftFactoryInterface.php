@@ -30,14 +30,14 @@ namespace NotificationCenter\Draft;
 
 use NotificationCenter\Model\Message;
 
-interface HasDraftInterface
+interface DraftFactoryInterface
 {
     /**
-     * Returns a Draft
+     * Creates a Draft
      * @param   Message
      * @param   array
      * @param   string
      * @return  DraftInterface|null (if no draft could be found)
      */
-    public function getDraft(Message $objMessage, array $arrTokens, $strLanguage = '');
+    public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '');
 }

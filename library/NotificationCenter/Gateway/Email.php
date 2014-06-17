@@ -28,12 +28,12 @@
 namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Draft\EmailDraft;
-use NotificationCenter\Draft\HasDraftInterface;
+use NotificationCenter\Draft\DraftFactoryInterface;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 
 
-class Email extends Base implements GatewayInterface, HasDraftInterface
+class Email extends Base implements GatewayInterface, DraftFactoryInterface
 {
     /**
      * SMTP settings cache
@@ -48,7 +48,7 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
      * @param   string
      * @return  DraftInterface|null (if no draft could be found)
      */
-    public function getDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
+    public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
         if ($strLanguage == '') {
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
@@ -75,7 +75,7 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
         /**
          * @var $objDraft \NotificationCenter\Draft\EmailDraft
          */
-        $objDraft = $this->getDraft($objMessage, $arrTokens, $strLanguage);
+        $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
 
         // return false if no language found for BC
         if ($objDraft === null) {
