@@ -32,7 +32,7 @@ use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Util\String;
 
-class EmailDraft implements EmailDraftInterface
+class EmailDraft implements DraftInterface
 {
     /**
      * Message
@@ -66,7 +66,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the sender email as a string
+     * @return  string
      */
     public function getSenderEmail()
     {
@@ -75,7 +76,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the sender name as a string
+     * @return  string
      */
     public function getSenderName()
     {
@@ -84,7 +86,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the recipient emails
+     * @return  array
      */
     public function getRecipientEmails()
     {
@@ -92,7 +95,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the carbon copy recipient emails
+     * @return  array
      */
     public function getCcRecipientEmails()
     {
@@ -100,7 +104,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the blind carbon copy recipient emails
+     * @return  array
      */
     public function getBccRecipientEmails()
     {
@@ -108,7 +113,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the replyTo email address
+     * @return  string
      */
     public function getReplyToEmail()
     {
@@ -120,7 +126,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the subject as a string
+     * @return  string
      */
     public function getSubject()
     {
@@ -128,7 +135,13 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the priority of the email
+     * 1 = Highest
+     * 2 = High
+     * 3 = Normal
+     * 4 = Low
+     * 5 = Lowest
+     * @return  int
      */
     public function getPriority()
     {
@@ -136,7 +149,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the text body as a string
+     * @return  string
      */
     public function getTextBody()
     {
@@ -146,7 +160,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the html body as a string
+     * @return  string
      */
     public function getHtmlBody()
     {
@@ -168,7 +183,8 @@ class EmailDraft implements EmailDraftInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Returns the paths to attachments as an array
+     * @return  array
      */
     public function getAttachments()
     {
