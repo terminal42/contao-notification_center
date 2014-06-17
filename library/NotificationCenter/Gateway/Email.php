@@ -42,12 +42,6 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
     protected $arrSMTPCache = array();
 
     /**
-     * Lanugage instance
-     * @var Language
-     */
-    protected $objLanguage = null;
-
-    /**
      * Returns a Draft
      * @param   Message
      * @param   array
@@ -60,13 +54,13 @@ class Email extends Base implements GatewayInterface, HasDraftInterface
             $strLanguage = $GLOBALS['TL_LANGUAGE'];
         }
 
-        if (($this->objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
+        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
             \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
 
             return null;
         }
 
-        return new EmailDraft($objMessage, $this->objLanguage, $arrTokens);
+        return new EmailDraft($objMessage, $objLanguage, $arrTokens);
     }
 
     /**
