@@ -71,7 +71,7 @@ abstract class Base extends \Controller
     /**
      * @deprecated Use String::getTokenAttachments()
      */
-    public static function getTokenAttachments($strAttachmentTokens, array $arrTokens)
+    protected function getTokenAttachments($strAttachmentTokens, array $arrTokens)
     {
         return String::getTokenAttachments($strAttachmentTokens, $arrTokens);
     }
@@ -79,7 +79,7 @@ abstract class Base extends \Controller
     /**
      * @deprecated Use String::compileRecipients()
      */
-    public static function compileRecipients($strRecipients, $arrTokens)
+    protected function compileRecipients($strRecipients, $arrTokens)
     {
         return String::compileRecipients($strRecipients, $arrTokens);
     }
