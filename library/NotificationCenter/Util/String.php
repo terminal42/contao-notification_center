@@ -58,7 +58,7 @@ class String extends \Controller
         $strBuffer = \String::parseSimpleTokens($strText, $arrTokens);
 
         // then replace the insert tags
-        $strBuffer = static::replaceInsertTags($strBuffer, false);
+        $strBuffer = \Haste\Haste::getInstance()->call('replaceInsertTags', array($strBuffer, false));
 
         // check if the inserttags have returned a simple token or an insert tag to parse
         if ((strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false) && $strBuffer != $strText) {
