@@ -26,9 +26,9 @@
  */
 
 
-namespace NotificationCenter\Draft;
+namespace NotificationCenter\MessageDraft;
 
-interface DraftInterface
+interface MessageDraftInterface
 {
     /**
      * Returns a string (e.g. the email body etc.)

@@ -27,13 +27,13 @@
 
 namespace NotificationCenter\Gateway;
 
-use NotificationCenter\Draft\EmailDraft;
-use NotificationCenter\Draft\DraftFactoryInterface;
+use NotificationCenter\MessageDraft\EmailMessageDraft;
+use NotificationCenter\MessageDraft\MessageDraftFactoryInterface;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 
 
-class Email extends Base implements GatewayInterface, DraftFactoryInterface
+class Email extends Base implements GatewayInterface, MessageDraftFactoryInterface
 {
     /**
      * SMTP settings cache
@@ -42,11 +42,11 @@ class Email extends Base implements GatewayInterface, DraftFactoryInterface
     protected $arrSMTPCache = array();
 
     /**
-     * Returns a Draft
+     * Returns a MessageDraft
      * @param   Message
      * @param   array
      * @param   string
-     * @return  DraftInterface|null (if no draft could be found)
+     * @return  MessageDraftInterface|null (if no draft could be found)
      */
     public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
@@ -60,7 +60,7 @@ class Email extends Base implements GatewayInterface, DraftFactoryInterface
             return null;
         }
 
-        return new EmailDraft($objMessage, $objLanguage, $arrTokens);
+        return new EmailMessageDraft($objMessage, $objLanguage, $arrTokens);
     }
 
     /**
@@ -73,7 +73,7 @@ class Email extends Base implements GatewayInterface, DraftFactoryInterface
     public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
         /**
-         * @var $objDraft \NotificationCenter\Draft\EmailDraft
+         * @var $objDraft \NotificationCenter\MessageDraft\EmailMessageDraft
          */
         $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
 

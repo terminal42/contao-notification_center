@@ -26,18 +26,18 @@
  */
 
 
-namespace NotificationCenter\Draft;
+namespace NotificationCenter\MessageDraft;
 
 use NotificationCenter\Model\Message;
 
-interface DraftFactoryInterface
+interface MessageDraftFactoryInterface
 {
     /**
-     * Creates a Draft
+     * Creates a MessageDraft
      * @param   Message
      * @param   array
      * @param   string
-     * @return  DraftInterface|null (if no draft could be found)
+     * @return  MessageDraftInterface|null (if no draft could be found)
      */
     public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '');
 }

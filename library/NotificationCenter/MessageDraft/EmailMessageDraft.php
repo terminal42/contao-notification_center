@@ -25,14 +25,14 @@
  * @license    LGPL
  */
 
-namespace NotificationCenter\Draft;
+namespace NotificationCenter\MessageDraft;
 
 
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Util\String;
 
-class EmailDraft implements DraftInterface
+class EmailMessageDraft implements MessageDraftInterface
 {
     /**
      * Message
