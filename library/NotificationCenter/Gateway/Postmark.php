@@ -27,12 +27,36 @@
 
 namespace NotificationCenter\Gateway;
 
+use NotificationCenter\MessageDraft\MessageDraftFactoryInterface;
+use NotificationCenter\MessageDraft\PostmarkMessageDraft;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 
 
-class Postmark extends Base implements GatewayInterface
+class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInterface
 {
+
+    /**
+     * Returns a MessageDraft
+     * @param   Message
+     * @param   array
+     * @param   string
+     * @return  MessageDraftInterface|null (if no draft could be found)
+     */
+    public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
+    {
+        if ($strLanguage == '') {
+            $strLanguage = $GLOBALS['TL_LANGUAGE'];
+        }
+
+        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
+            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+
+            return null;
+        }
+
+        return new PostmarkMessageDraft($objMessage, $objLanguage, $arrTokens);
+    }
 
     /**
      * Send Postmark request message
@@ -48,69 +72,52 @@ class Postmark extends Base implements GatewayInterface
             return false;
         }
 
-        if ($strLanguage == '') {
-            $strLanguage = $GLOBALS['TL_LANGUAGE'];
-        }
+        /**
+         * @var $objDraft \NotificationCenter\MessageDraft\PostmarkMessageDraft
+         */
+        $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
 
-        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
-            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
-
+        // return false if no language found for BC
+        if ($objDraft === null) {
             return false;
         }
 
-        $strSenderName = $objLanguage->email_sender_name ? : $GLOBALS['TL_ADMIN_NAME'];
-        $strSenderAddress = $objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
-
-        // Get email text content
-        $strText = $objLanguage->email_text;
-        $strText = $this->recursiveReplaceTokensAndTags($strText, $arrTokens, static::NO_TAGS);
-        $strText =  \Controller::convertRelativeUrls($strText, '', true);
-
-        // Get HTML
-        $objTemplate          = new \FrontendTemplate($objMessage->email_template);
-        $objTemplate->body    = $objLanguage->email_html;
-        $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
-
-        // Prevent parseSimpleTokens from stripping important HTML tags
-        $GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
-        $strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
-        $strHtml = $this->recursiveReplaceTokensAndTags($strHtml, $arrTokens);
-        $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
-        $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
+        $strFrom = $objDraft->getSenderEmail();
+        // Generate friendly name from address if possible
+        if ($strSenderName = $objDraft->getSenderName()) {
+            $strFrom = $strSenderName . ' <' . $strFrom . '>';
+        }
 
         // Set basic data
         $arrData = array
         (
-            'From' => ($strSenderName ? ($strSenderName . ' ') : '') . $this->recursiveReplaceTokensAndTags($strSenderAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS),
-            'To' => $this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens, static::NO_TAGS|static::NO_BREAKS),
-            'Subject' => $this->recursiveReplaceTokensAndTags($objLanguage->email_subject, $arrTokens, static::NO_TAGS|static::NO_BREAKS),
-            'HtmlBody' => $strHtml,
-            'TextBody' => $strText,
-            'TrackOpens' => $objMessage->postmark_trackOpens ? true : false
+            'From'          => $strFrom,
+            // @todo shouldn't we send multiple requests if multiple recipients?
+            'To'            => $this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens, static::NO_TAGS|static::NO_BREAKS),
+            'Subject'       => $objDraft->getSubject(),
+            'HtmlBody'      => $objDraft->getHtmlBody(),
+            'TextBody'      => $objDraft->getTextBody(),
+            'TrackOpens'    => $objDraft->getTrackOpen()
         );
-
-        $arrCc = $this->compileRecipients($objLanguage->email_recipient_cc, $arrTokens);
 
         // Set CC recipients
         if (!empty($arrCc)) {
-            $arrData['Cc'] = implode(',', array_slice($arrCc, 0, 20));
+            $arrData['Cc'] = implode(',', array_slice($objDraft->getCcRecipientEmails(), 0, 20));
         }
-
-        $arrBcc = $this->compileRecipients($objLanguage->email_recipient_bcc, $arrTokens);
 
         // Set BCC recipients
         if (!empty($arrBcc)) {
-            $arrData['Bcc'] = implode(',', array_slice($arrBcc, 0, 20));
+            $arrData['Bcc'] = implode(',', array_slice($objDraft->getBccRecipientEmails(), 0, 20));
         }
 
         // Set reply-to address
-        if ($objLanguage->email_replyTo) {
-            $arrData['ReplyTo'] = $this->recursiveReplaceTokensAndTags($objLanguage->email_replyTo, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+        if ($strReplyTo = $objDraft->getReplyToEmail()) {
+            $arrData['ReplyTo'] = $strReplyTo;
         }
 
         // Set the Postmark tag
-        if ($objMessage->postmark_tag != '') {
-            $arrData['Tag'] = $objMessage->postmark_tag;
+        if ($strTag = $objDraft->getTag()) {
+            $arrData['Tag'] = $strTag;
         }
 
         $objRequest = new \Request();

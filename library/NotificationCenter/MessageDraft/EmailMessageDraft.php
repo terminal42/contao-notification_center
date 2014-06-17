@@ -38,19 +38,19 @@ class EmailMessageDraft implements MessageDraftInterface
      * Message
      * @var Message
      */
-    private $objMessage = null;
+    protected $objMessage = null;
 
     /**
      * Language
      * @var Language
      */
-    private $objLanguage = null;
+    protected $objLanguage = null;
 
     /**
      * Tokens
      * @var array
      */
-    private $arrTokens = array();
+    protected $arrTokens = array();
 
     /**
      * Construct the object
