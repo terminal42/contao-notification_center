@@ -130,7 +130,14 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         $objRequest->send(($this->objModel->postmark_ssl ? 'https://' : 'http://') . 'api.postmarkapp.com/email', $strData, 'POST');
 
         if ($objRequest->hasError()) {
-            \System::log(sprintf('Error sending the Postmark request for message ID "%s": %s', $objMessage->id, $objRequest->error), __METHOD__, TL_ERROR);
+            \System::log(
+                sprintf('Error sending the Postmark request for message ID "%s". HTTP Response status code: %s. JSON data sent: %s',
+                    $objMessage->id,
+                    $objRequest->code,
+                    $strData
+                ),
+                __METHOD__,
+                TL_ERROR);
             return false;
         } else {
             $strWouldHave = ($this->objModel->postmark_test) ? ' would have (test mode)' : '';
