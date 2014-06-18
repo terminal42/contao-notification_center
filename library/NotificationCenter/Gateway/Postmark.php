@@ -92,8 +92,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         $arrData = array
         (
             'From'          => $strFrom,
-            // @todo shouldn't we send multiple requests if multiple recipients?
-            'To'            => $this->recursiveReplaceTokensAndTags($objLanguage->recipients, $arrTokens, static::NO_TAGS|static::NO_BREAKS),
+            'To'            => implode(',', array_slice($objDraft->getRecipientEmails(), 0, 20)),
             'Subject'       => $objDraft->getSubject(),
             'HtmlBody'      => $objDraft->getHtmlBody(),
             'TextBody'      => $objDraft->getTextBody(),
