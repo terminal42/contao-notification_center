@@ -88,11 +88,14 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
             $strFrom = $strSenderName . ' <' . $strFrom . '>';
         }
 
+        // Recipients
+        $arrTo = array_slice($objDraft->getRecipientEmails(), 0, 20);
+
         // Set basic data
         $arrData = array
         (
             'From'          => $strFrom,
-            'To'            => implode(',', array_slice($objDraft->getRecipientEmails(), 0, 20)),
+            'To'            => implode(',', $arrTo),
             'Subject'       => $objDraft->getSubject(),
             'HtmlBody'      => $objDraft->getHtmlBody(),
             'TextBody'      => $objDraft->getTextBody(),
@@ -119,14 +122,27 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
             $arrData['Tag'] = $strTag;
         }
 
+        $strData = json_encode($arrData);
+
         $objRequest = new \Request();
         $objRequest->setHeader('Content-Type', 'application/json');
         $objRequest->setHeader('X-Postmark-Server-Token', ($this->objModel->postmark_test ? 'POSTMARK_API_TEST' : $this->objModel->postmark_key));
-        $objRequest->send(($this->objModel->postmark_ssl ? 'https://' : 'http://') . 'api.postmarkapp.com/email', json_encode($arrData), 'POST');
+        $objRequest->send(($this->objModel->postmark_ssl ? 'https://' : 'http://') . 'api.postmarkapp.com/email', $strData, 'POST');
 
         if ($objRequest->hasError()) {
             \System::log(sprintf('Error sending the Postmark request for message ID "%s": %s', $objMessage->id, $objRequest->error), __METHOD__, TL_ERROR);
             return false;
+        } else {
+            $strWouldHave = ($this->objModel->postmark_test) ? ' would have (test mode)' : '';
+            \System::log(
+                sprintf('The Postmark API accepted the request and%s sent %s emails. HTTP Response status code: %s. JSON data sent: %s',
+                    $strWouldHave,
+                    count($arrTo),
+                    $objRequest->code,
+                    $strData
+                ),
+                __METHOD__,
+                TL_GENERAL);
         }
 
         return true;
