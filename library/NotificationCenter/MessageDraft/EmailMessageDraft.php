@@ -207,14 +207,20 @@ class EmailMessageDraft implements MessageDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function preview()
+    public function getKeyValueArray()
     {
-        return 'Sender: ' . $this->getSenderEmail() . "\n" .
-        'Recipients: ' . $this->getRecipientEmails() . "\n" .
-        'CC-Recipients: ' . $this->getCcRecipientEmails() . "\n" .
-        'BCC-Recipients: ' . $this->getBccRecipientEmails() . "\n" .
-        'Subject: ' . $this->getSubject() . "\n" .
-        'Text-Body: ' . $this->getTextBody() . "\n" .
-        'HTML-Body: ' . $this->getHtmlBody();
+        return array(
+            'sender_email'          => $this->getSenderName(),
+            'sender_name'           => $this->getSenderName(),
+            'recipient_emails'      => $this->getRecipientEmails(),
+            'cc_recipient_emails'   => $this->getCcRecipientEmails(),
+            'bcc_recipient_emails'  => $this->getBccRecipientEmails(),
+            'replyto_email'         => $this->getReplyToEmail(),
+            'subject'               => $this->getSubject(),
+            'priority'              => $this->getPriority(),
+            'text'                  => $this->getTextBody(),
+            'html'                  => $this->getHtmlBody(),
+            'attachments'           => $this->getAttachments()
+        );
     }
 }
