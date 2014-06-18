@@ -31,8 +31,20 @@ namespace NotificationCenter\MessageDraft;
 interface MessageDraftInterface
 {
     /**
-     * Returns a key -> value array
-     * @return  array
+     * Returns the tokens for that message draft
+     * @return array
      */
-    public function getKeyValueArray();
+    public function getTokens();
+
+    /**
+     * Returns the message model for that message draft
+     * @return \NotificationCenter\MessageDraft\Message
+     */
+    public function getMessage();
+
+    /**
+     * Returns the language for that message draft
+     * @return string
+     */
+    public function getLanguage();
 }

@@ -207,20 +207,24 @@ class EmailMessageDraft implements MessageDraftInterface
     /**
      * {@inheritdoc}
      */
-    public function getKeyValueArray()
+    public function getTokens()
     {
-        return array(
-            'sender_email'          => $this->getSenderName(),
-            'sender_name'           => $this->getSenderName(),
-            'recipient_emails'      => $this->getRecipientEmails(),
-            'cc_recipient_emails'   => $this->getCcRecipientEmails(),
-            'bcc_recipient_emails'  => $this->getBccRecipientEmails(),
-            'replyto_email'         => $this->getReplyToEmail(),
-            'subject'               => $this->getSubject(),
-            'priority'              => $this->getPriority(),
-            'text'                  => $this->getTextBody(),
-            'html'                  => $this->getHtmlBody(),
-            'attachments'           => $this->getAttachments()
-        );
+        return $this->arrTokens;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessage()
+    {
+        return $this->objMessage;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLanguage()
+    {
+        return $this->objLanguage->language;
     }
 }
