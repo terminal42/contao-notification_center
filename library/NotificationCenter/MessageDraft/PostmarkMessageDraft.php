@@ -51,17 +51,4 @@ class PostmarkMessageDraft extends EmailMessageDraft
     {
         return $this->objMessage->postmark_tag;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getKeyValueArray()
-    {
-        return array_merge(
-            parent::getKeyValueArray(),
-            array(
-                'track_open' => $this->getTrackOpen(),
-                'tag'        => $this->getTag()
-            ));
-    }
 }
