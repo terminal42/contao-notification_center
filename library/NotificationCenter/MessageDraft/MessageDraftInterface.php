@@ -31,8 +31,8 @@ namespace NotificationCenter\MessageDraft;
 interface MessageDraftInterface
 {
     /**
-     * Returns a string (e.g. the email body etc.)
-     * @return  string
+     * Returns a key -> value array
+     * @return  array
      */
-    public function preview();
+    public function getKeyValueArray();
 }
