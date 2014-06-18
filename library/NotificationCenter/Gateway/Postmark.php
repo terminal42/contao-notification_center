@@ -132,11 +132,17 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         $objRequest->setHeader('X-Postmark-Server-Token', ($this->objModel->postmark_test ? 'POSTMARK_API_TEST' : $this->objModel->postmark_key));
         $objRequest->send(($this->objModel->postmark_ssl ? 'https://' : 'http://') . 'api.postmarkapp.com/email', $strData, 'POST');
 
+        // Postmark uses HTTP status code 10 for wrong API keys. The contao request class cannot handle this and thus returns 0.
+        $code = $objRequest->code;
+        if ($code == 0) {
+            $code = 10;
+        }
+
         if ($objRequest->hasError()) {
             \System::log(
                 sprintf('Error sending the Postmark request for message ID "%s". HTTP Response status code: %s. JSON data sent: %s',
                     $objMessage->id,
-                    $objRequest->code,
+                    $code,
                     $strData
                 ),
                 __METHOD__,
@@ -148,7 +154,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
                 sprintf('The Postmark API accepted the request and%s sent %s emails. HTTP Response status code: %s. JSON data sent: %s',
                     $strWouldHave,
                     count($arrTo),
-                    $objRequest->code,
+                    $code,
                     $strData
                 ),
                 __METHOD__,
