@@ -85,7 +85,10 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         $strFrom = $objDraft->getSenderEmail();
         // Generate friendly name from address if possible
         if ($strSenderName = $objDraft->getSenderName()) {
-            $strFrom = $strSenderName . ' <' . $strFrom . '>';
+            // Don't do this if the sender name contains the email address
+            if ($strFrom !== $strSenderName) {
+                $strFrom = $strSenderName . ' <' . $strFrom . '>';
+            }
         }
 
         // Recipients
