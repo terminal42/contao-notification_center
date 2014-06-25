@@ -64,6 +64,7 @@ $GLOBALS['TL_MODELS']['tl_nc_message']                  = 'NotificationCenter\Mo
 $GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('NotificationCenter\AutoSuggester', 'verifyTokens');
 $GLOBALS['TL_HOOKS']['processFormData'][] = array('NotificationCenter\tl_form', 'sendFormNotification');
 $GLOBALS['TL_HOOKS']['createNewUser'][] = array('NotificationCenter\ContaoHelper', 'sendRegistrationEmail');
+$GLOBALS['TL_HOOKS']['updatePersonalData'][] = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
 
 /**
  * Notification Center Gateways
@@ -94,6 +95,10 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
                  'recipients' => array('member_email', 'admin_email'),
                  'email_text' => array('domain', 'link', 'member_*', 'recipient_email')
              ),
+             'member_personaldata' => array(
+                 'recipients' => array('member_email', 'admin_email'),
+                 'email_text' => array('domain', 'member_*', 'member_old_*', 'recipient_email')
+             ),
              'member_password'     => array(
                  'recipients' => array('recipient_email'),
                  'email_text' => array('domain', 'link', 'member_*', 'recipient_email')
@@ -107,5 +112,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_content'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_personaldata']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_personaldata']['email_text'];
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_personaldata']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_personaldata']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_text'];
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_text'];
