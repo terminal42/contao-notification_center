@@ -92,7 +92,19 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         }
 
         // Recipients
-        $arrTo = array_slice($objDraft->getRecipientEmails(), 0, 20);
+        $arrTo = $objDraft->getRecipientEmails();
+        $arrCc = $objDraft->getCcRecipientEmails();
+        $arrBcc = $objDraft->getBccRecipientEmails();
+
+        if (count(array_merge($arrTo, $arrCc, $arrBcc)) >= 20) {
+            \System::log(
+                sprintf('The Postmark gateway does not support sending to more than 20 recipients (CC and BCC included) for message ID "%s".',
+                    $objMessage->id
+                ),
+                __METHOD__,
+                TL_ERROR);
+            return false;
+        }
 
         // Set basic data
         $arrData = array
@@ -107,12 +119,12 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
 
         // Set CC recipients
         if (!empty($arrCc)) {
-            $arrData['Cc'] = implode(',', array_slice($objDraft->getCcRecipientEmails(), 0, 20));
+            $arrData['Cc'] = implode(',', $arrCc);
         }
 
         // Set BCC recipients
         if (!empty($arrBcc)) {
-            $arrData['Bcc'] = implode(',', array_slice($objDraft->getBccRecipientEmails(), 0, 20));
+            $arrData['Bcc'] = implode(',',$arrBcc);
         }
 
         // Set reply-to address
