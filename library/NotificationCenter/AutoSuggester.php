@@ -77,11 +77,10 @@ class AutoSuggester extends \Controller
         foreach ($arrTokens as $strToken) {
             $arrParsedTokens[] = array
             (
-                'value'     => $strToken,
+                'value'     => '##' . $strToken . '##',
                 'content'   => $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][static::$strType][$strToken] ?: ''
             );
         }
-
 
         $GLOBALS['TL_MOOTOOLS'][] = "
 <script>

@@ -8,7 +8,7 @@ var AutoSuggester = new Class({
     /**
      * Source array:
      * [0] => Array(
-     *  'value' => 'cart_html',
+     *   'value' => 'cart_html',
      *   'content' => 'Adds the HTML cart.'
      * ),
      * [1] => Array(
@@ -21,7 +21,7 @@ var AutoSuggester = new Class({
      * Options
      */
     options: {
-        'rgxp': '[^ ]+$',
+        'rgxp': '[^ |\n]+$',
         'class_input_mirror': 'autosuggester-input-mirror',
         'class_input_mirror_container' : 'autosuggester-input-mirror-container',
         'class_input_mirror_caret': 'autosuggester-input-mirror-caret',
@@ -160,16 +160,30 @@ var AutoSuggester = new Class({
 
         // Add the events to tinyMCE
         if (this.tinyMCE) {
-            this.tinyMCE.onKeyUp.add((function(editor, event) {
-               this.eventKeyUp.call(this, event);
-            }).bind(this));
 
-            // Fix an issue with the "enter" key (see #2)
-            this.tinyMCE.onKeyDown.listeners = [];
+            if (window.tinyMCE.majorVersion == '4') {
+                this.tinyMCE.on('keyUp', function(event) {
+                   this.eventKeyUp.call(this, event);
+                }.bind(this));
 
-            this.tinyMCE.onKeyDown.add((function(editor, event) {
-                this.eventKeyDown.call(this, event);
-            }).bind(this));
+                // Fix an issue with the "enter" key (see #2)
+                this.tinyMCE.off('keyDown');
+
+                this.tinyMCE.on('keyDown', function(event) {
+                    this.eventKeyDown.call(this, event);
+                }.bind(this));
+            } else {
+                this.tinyMCE.onKeyUp.add((function(editor, event) {
+                   this.eventKeyUp.call(this, event);
+                }).bind(this));
+
+                // Fix an issue with the "enter" key (see #2)
+                this.tinyMCE.onKeyDown.listeners = [];
+
+                this.tinyMCE.onKeyDown.add((function(editor, event) {
+                    this.eventKeyDown.call(this, event);
+                }).bind(this));
+            }
         }
 
         for (i=0; i<this.box_list_items.length; i++) {
@@ -389,20 +403,19 @@ var AutoSuggester = new Class({
         var insert = this.source[this.current_list_item]['value'];
 
         // Replace the filter text if any
-/*
         if (this.filter_text.length > 0) {
             insert = insert.substr(this.filter_text.length, insert.length);
         }
-*/
 
         if (this.tinyMCE) {
             this.tinyMCE.selection.setContent(insert);
         } else {
             value = this.input.get('value');
             index = this.getCaretIndex();
+            index_new = index + insert.length;
 
-            this.input.set('value', value.slice(0, index-this.filter_text.length) + insert + value.slice(index, value.length));
-//            this.input.setSelectionRange(index_new, index_new);
+            this.input.set('value', value.slice(0, index) + insert + value.slice(index, value.length));
+            this.input.setSelectionRange(index_new, index_new);
         }
 
         this.hideBox();
