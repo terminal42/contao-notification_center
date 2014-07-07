@@ -56,13 +56,13 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         'sorting' => array
         (
             'mode'                    => 2,
-            'fields'                  => array('dateSent DESC', 'id DESC'),
+            'fields'                  => array('dateAdded DESC', 'id DESC'),
             'panelLayout'             => 'filter;search,limit'
         ),
         'label' => array
         (
             'fields'                  => array('message', 'dateSent'),
-            'format'                  => '<span style="color:#b3b3b3;padding-right:3px">[%s]</span> %s',
+            'label_callback'          => array('NotificationCenter\tl_nc_queue', 'listRows'),
         ),/*
         'global_operations' => array
         (
@@ -76,6 +76,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         ),*/
         'operations' => array
         (
+            // @todo: maybe format the json encoded tokens for better usability?
             'show' => array
             (
                 'label'               => &$GLOBALS['TL_LANG']['tl_nc_queue']['show'],
@@ -106,6 +107,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         ),
         'dateAdded' => array
         (
+            'flag'                    => 6,
             'sql'                     => "int(10) unsigned NOT NULL default '0'"
         ),
         'dateSent' => array

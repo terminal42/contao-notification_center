@@ -42,7 +42,8 @@ NamespaceClassLoader::addClassMap(array
     'NotificationCenter\tl_nc_gateway'          => 'system/modules/notification_center/classes/tl_nc_gateway.php',
     'NotificationCenter\tl_nc_notification'     => 'system/modules/notification_center/classes/tl_nc_notification.php',
     'NotificationCenter\tl_nc_language'         => 'system/modules/notification_center/classes/tl_nc_language.php',
-    'NotificationCenter\tl_nc_message'          => 'system/modules/notification_center/classes/tl_nc_message.php'
+    'NotificationCenter\tl_nc_message'          => 'system/modules/notification_center/classes/tl_nc_message.php',
+    'NotificationCenter\tl_nc_queue'            => 'system/modules/notification_center/classes/tl_nc_queue.php'
 ));
 
 
