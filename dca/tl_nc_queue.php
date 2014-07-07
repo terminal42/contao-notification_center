@@ -110,29 +110,36 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         ),
         'message' => array
         (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['message'],
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
             'relation'                => array('type'=>'belongsTo', 'table'=>'tl_nc_message', 'load'=>'lazy')
-
         ),
         'dateAdded' => array
         (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['dateAdded'],
             'flag'                    => 6,
             'sql'                     => "int(10) unsigned NOT NULL default '0'"
         ),
         'dateSent' => array
         (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['dateSent'],
+            'flag'                    => 6,
             'sql'                     => "int(10) unsigned NOT NULL default '0'"
         ),
         'error' => array
         (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['error'],
+            'inputType'               => 'checkbox',
             'sql'                     => "char(1) NOT NULL default ''"
         ),
         'tokens' => array
         (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['tokens'],
             'sql'                     => "blob NULL"
         ),
         'language' => array
         (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['language'],
             'sql'                     => "varchar(5) NOT NULL default ''"
         )
     )

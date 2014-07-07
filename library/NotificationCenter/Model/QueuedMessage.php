@@ -83,7 +83,7 @@ class QueuedMessage extends \Model
             throw new \BadMethodCallException('You cannot re-queue a message that has already been sent!');
         }
 
-        $this->error = 0;
+        $this->error = '';
         $this->save();
 
         return $this;

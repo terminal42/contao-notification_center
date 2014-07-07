@@ -26,6 +26,16 @@
  */
 
 /**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_nc_queue']['message'][0]        = 'Source message';
+$GLOBALS['TL_LANG']['tl_nc_queue']['dateAdded'][0]      = 'Date added to queue';
+$GLOBALS['TL_LANG']['tl_nc_queue']['dateSent'][0]       = 'Date sent from queue';
+$GLOBALS['TL_LANG']['tl_nc_queue']['error'][0]          = 'Had an error during delivery process';
+$GLOBALS['TL_LANG']['tl_nc_queue']['tokens'][0]         = 'Tokens';
+$GLOBALS['TL_LANG']['tl_nc_queue']['language'][0]       = 'Language';
+
+/**
  * Status
  */
 $GLOBALS['TL_LANG']['tl_nc_queue']['status']['queued']                       = 'Waiting in queue.';
