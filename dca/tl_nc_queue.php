@@ -116,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         ),
         'error' => array
         (
-            'sql'                     => "char(1) unsigned NOT NULL default ''"
+            'sql'                     => "char(1) NOT NULL default ''"
         ),
         'tokens' => array
         (
