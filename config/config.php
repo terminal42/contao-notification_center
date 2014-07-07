@@ -71,6 +71,11 @@ $GLOBALS['TL_HOOKS']['processFormData'][] = array('NotificationCenter\tl_form', 
 $GLOBALS['TL_HOOKS']['createNewUser'][] = array('NotificationCenter\ContaoHelper', 'sendRegistrationEmail');
 
 /**
+ * Queue manager
+ */
+$GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'] = new \NotificationCenter\Queue\QueueManager();
+
+/**
  * Notification Center Gateways
  */
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
