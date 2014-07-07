@@ -66,6 +66,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         ),/*
         'global_operations' => array
         (
+            // @todo add a global operation to manually send the queue (use ajax because of max_script_execution)
             'all' => array
             (
                 'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
@@ -83,6 +84,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
                 'href'                => 'act=show',
                 'icon'                => 'show.gif'
             )
+            // @todo maybe add buttons to re-queue messages with status "error"
         )
     ),
 
