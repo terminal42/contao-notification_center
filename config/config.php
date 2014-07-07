@@ -40,7 +40,8 @@ array_insert($GLOBALS['BE_MOD'], 1, array
         'nc_queue' => array
         (
             'tables'        => array('tl_nc_queue'),
-            'icon'          => 'system/modules/notification_center/assets/queue.png'
+            'icon'          => 'system/modules/notification_center/assets/queue.png',
+            're-queue'      => array('NotificationCenter\tl_nc_queue', 'reQueue')
         ),
         'nc_gateways' => array
         (

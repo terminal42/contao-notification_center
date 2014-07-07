@@ -39,10 +39,13 @@ class QueuedMessage extends \Model
     /**
      * Set the tokens
      * @param array $arrTokens
+     * @return $this
      */
     public function setTokens($arrTokens)
     {
         $this->tokens = json_encode($arrTokens);
+
+        return $this;
     }
 
     /**
@@ -67,6 +70,23 @@ class QueuedMessage extends \Model
         } else {
             return 'queued';
         }
+    }
+
+
+    /**
+     * Re-queue
+     * @return $this
+     */
+    public function reQueue()
+    {
+        if ($this->dateSent > 0) {
+            throw new \BadMethodCallException('You cannot re-queue a message that has already been sent!');
+        }
+
+        $this->error = 0;
+        $this->save();
+
+        return $this;
     }
 
     /**

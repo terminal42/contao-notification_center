@@ -32,3 +32,14 @@ $GLOBALS['TL_LANG']['tl_nc_queue']['status']['queued']                       = '
 $GLOBALS['TL_LANG']['tl_nc_queue']['status']['error']                        = 'Error sending the message. Check the system log for more details.';
 $GLOBALS['TL_LANG']['tl_nc_queue']['status']['sent']                         = 'Message sent.';
 $GLOBALS['TL_LANG']['tl_nc_queue']['source']                                 = 'Source';
+
+/**
+ * Buttons
+ */
+$GLOBALS['TL_LANG']['tl_nc_queue']['re-queue']  = array('Add to queue again', 'This queued message (ID %s) encountered an error but you can re-add it to the queue by clicking this button.');
+$GLOBALS['TL_LANG']['tl_nc_queue']['show']      = array('Show details', 'Shows details of the queued message ID %s.');
+
+/**
+ * Confirmation
+ */
+$GLOBALS['TL_LANG']['tl_nc_queue']['re-queueConfirmation']  = 'Are you sure you want to re-add queued message ID %s to the queue?';

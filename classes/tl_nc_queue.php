@@ -68,4 +68,31 @@ class tl_nc_queue extends \Backend
 
         return vsprintf($strBuffer, $arrValues);
     }
+
+    /**
+     * Re-queue a queued message
+     * @param   \DataContainer
+     */
+    public function reQueue(\DataContainer $dc)
+    {
+        $objQueuedMsg = QueuedMessage::findByPk($dc->id);
+        $objQueuedMsg->reQueue();
+        \Controller::redirect(str_replace('&key=re-queue', '', \Environment::get('request')));
+    }
+
+    /**
+     * Return the re-queue button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function reQueueButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        $objMessage = QueuedMessage::findByPk($row['id']);
+        return ($objMessage->getStatus() === 'error') ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+    }
 }

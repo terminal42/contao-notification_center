@@ -77,6 +77,14 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         ),*/
         'operations' => array
         (
+            're-queue' => array
+            (
+                'label'               => &$GLOBALS['TL_LANG']['tl_nc_queue']['re-queue'],
+                'href'                => 'key=re-queue',
+                'icon'                => 'system/modules/notification_center/assets/re-queue.png',
+                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['tl_nc_queue']['re-queueConfirmation'] . '\'))return false;Backend.getScrollOffset()"',
+                'button_callback'     => array('NotificationCenter\tl_nc_queue', 'reQueueButton')
+            ),
             // @todo: maybe format the json encoded tokens for better usability?
             'show' => array
             (
@@ -84,7 +92,6 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
                 'href'                => 'act=show',
                 'icon'                => 'show.gif'
             )
-            // @todo maybe add buttons to re-queue messages with status "error"
         )
     ),
 
