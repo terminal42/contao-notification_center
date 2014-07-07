@@ -37,6 +37,11 @@ array_insert($GLOBALS['BE_MOD'], 1, array
             'tables'        => array('tl_nc_notification', 'tl_nc_message', 'tl_nc_language'),
             'icon'          => 'system/modules/notification_center/assets/notification.png',
         ),
+        'nc_queue' => array
+        (
+            'tables'        => array('tl_nc_queue'),
+            'icon'          => 'system/modules/notification_center/assets/queue.png'
+        ),
         'nc_gateways' => array
         (
             'tables'        => array('tl_nc_gateway'),

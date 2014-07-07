@@ -30,6 +30,7 @@
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title']                   = array('Title', 'Please enter a title for this notification.');
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Type', 'Please select a type for this notification.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['enableQueue']             = array('Enable queue', 'Adds the messages of this notification to the message queue.');
 
 /**
  * Reference
@@ -52,6 +53,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('No
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']            = 'Title & type';
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']           = 'Configuration';
+$GLOBALS['TL_LANG']['tl_nc_notification']['queue_legend']            = 'Queue settings';
 
 /**
  * Notification types

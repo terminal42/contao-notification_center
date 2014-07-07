@@ -30,6 +30,7 @@
  */
 $GLOBALS['TL_LANG']['MOD']['notification_center']       = 'Notification Center';
 $GLOBALS['TL_LANG']['MOD']['nc_notifications']          = array('Notifications', 'Manage notifications.');
+$GLOBALS['TL_LANG']['MOD']['nc_queue']                  = array('Queue', 'View the message queue.');
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']               = array('Gateways', 'Manage gateways');
 
 /**

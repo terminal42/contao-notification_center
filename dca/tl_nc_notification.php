@@ -112,7 +112,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     'palettes' => array
     (
         '__selector__'                => array('type'),
-        'default'                     => '{title_legend},title,type',
+        'default'                     => '{title_legend},title,type;{queue_legend},enableQueue',
     ),
 
     // Fields
@@ -145,6 +145,15 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
+        ),
+        'enableQueue' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['enableQueue'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('tl_class'=>'clr'),
+            'sql'                     => "char(1) NOT NULL default ''"
         )
     )
 );
