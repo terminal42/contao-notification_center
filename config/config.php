@@ -62,6 +62,12 @@ $GLOBALS['TL_MODELS']['tl_nc_notification']             = 'NotificationCenter\Mo
 $GLOBALS['TL_MODELS']['tl_nc_gateway']                  = 'NotificationCenter\Model\Gateway';
 $GLOBALS['TL_MODELS']['tl_nc_language']                 = 'NotificationCenter\Model\Language';
 $GLOBALS['TL_MODELS']['tl_nc_message']                  = 'NotificationCenter\Model\Message';
+$GLOBALS['TL_MODELS']['tl_nc_queue']                    = 'NotificationCenter\Model\QueuedMessage';
+
+/**
+ * Cron jobs
+ */
+$GLOBALS['TL_CRON']['minutely'][] = array('NotificationCenter\Frontend\Helper', 'sendMessageQueue');
 
 /**
  * Hooks
