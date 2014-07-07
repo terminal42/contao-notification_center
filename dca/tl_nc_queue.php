@@ -129,17 +129,20 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         'error' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['error'],
+            'filter'                  => true,
             'inputType'               => 'checkbox',
             'sql'                     => "char(1) NOT NULL default ''"
         ),
         'tokens' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['tokens'],
+            'search'                  => true,
             'sql'                     => "blob NULL"
         ),
         'language' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['language'],
+            'filter'                  => true,
             'sql'                     => "varchar(5) NOT NULL default ''"
         )
     )
