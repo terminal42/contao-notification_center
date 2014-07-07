@@ -111,8 +111,10 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         'message' => array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['message'],
+            'filter'                  => true,
+            'foreignKey'              => 'tl_nc_message.title',
             'sql'                     => "int(10) unsigned NOT NULL default '0'",
-            'relation'                => array('type'=>'belongsTo', 'table'=>'tl_nc_message', 'load'=>'lazy')
+            'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
         ),
         'dateAdded' => array
         (
