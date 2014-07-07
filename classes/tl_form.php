@@ -70,7 +70,7 @@ class tl_form extends \Backend
         // Administrator e-mail
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
-        $objNotification->send($arrTokens);
+        $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
     }
 
     /**
