@@ -105,12 +105,24 @@ class QueuedMessage extends \Model
     }
 
     /**
-     * Find all published by notification
-     * @param   Notification
-     * @return  Message|null
+     * Find next given number of messages from the queue that have not been sent yet
+     * @param   int $intQuantity Number of messages
+     * @param   array $arrOptions
+     * @return  QueuedMessage[]|null
      */
-    public static function findByQuantity($intQuantity = 10)
+    public static function findQueuedByQuantity($intQuantity = 10, $arrOptions = array())
     {
-        return static::findAll(array('order'=>'dateAdded', 'limit'=>$intQuantity));
+        $t = static::getTable();
+
+        $arrOptions = array_merge(
+            array(
+                'column' => array("$t.dateSent=''", "$t.error!=1"),
+                'order'  => "$t.dateAdded",
+                'limit'  => $intQuantity
+            ),
+            $arrOptions
+        );
+
+        return static::find($arrOptions);
     }
 }

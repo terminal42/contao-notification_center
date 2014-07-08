@@ -90,7 +90,7 @@ class QueueManager
      */
     public function sendFromQueue($intNumberOfMsgs = 10)
     {
-        $objQueuedMsgs = QueuedMessage::findByQuantity($intNumberOfMsgs);
+        $objQueuedMsgs = QueuedMessage::findQueuedByQuantity($intNumberOfMsgs);
 
         foreach ($objQueuedMsgs as $objQueuedMsg) {
             /* @var $objQueuedMsg QueuedMessage */
