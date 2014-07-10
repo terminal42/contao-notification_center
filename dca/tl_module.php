@@ -32,6 +32,12 @@
 $GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,nc_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
 $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPasswordNotificationCenter'] = str_replace('reg_password', 'nc_notification', $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPassword']);
 
+if (strpos($GLOBALS['TL_DCA']['tl_module']['palettes']['personalData'], 'newsletters')) {
+    $GLOBALS['TL_DCA']['tl_module']['palettes']['personalData'] = str_replace('newsletters;', 'newsletters,nc_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['personalData']);
+} else {
+    $GLOBALS['TL_DCA']['tl_module']['palettes']['personalData'] = str_replace('editable;', 'editable,nc_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['personalData']);
+}
+
 
 /**
  * Fields
