@@ -226,7 +226,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('style'=>'height:40px; width:314px', 'decodeEntities'=>true, 'tl_class'=>'w50" style="height:auto'),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'style'=>'height:40px; width:314px', 'decodeEntities'=>true, 'tl_class'=>'w50" style="height:auto'),
             'sql'                     => "text NULL",
             'save_callback' => array
             (
@@ -238,7 +238,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('style'=>'height:40px; width:314px', 'decodeEntities'=>true, 'tl_class'=>'w50" style="height:auto'),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'style'=>'height:40px; width:314px', 'decodeEntities'=>true, 'tl_class'=>'w50" style="height:auto'),
             'sql'                     => "text NULL",
             'save_callback' => array
             (
