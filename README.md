@@ -37,7 +37,16 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
 
 ## Sending a notification
 
-Extension developers most likely want to send all notifications of a specific type:
+Extension developers most likely want to send a single notification identified by ID,:
+
+```php
+$objNotification = NotificationCenter\Model\Notification::findByPk($intNotificationId);
+if (null !== $objNotification) {
+    $objNotification->send($arrTokens, $strLanguage); // Language is optional
+}
+```
+
+If you want to send all notifications of a certain type, you can send it like this:
 
 ```php
 $strType = 'iso_order_status_change';
@@ -47,14 +56,5 @@ if (null !== $objNotificationCollection) {
         $objNotification = $objNotificationCollection->current();
         $objNotification->send($arrTokens, $strLanguage); // Language is optional
     }
-}
-```
-
-If you want to send a single notification identified by ID, you can send it like this:
-
-```php
-$objNotification = NotificationCenter\Model\Notification::findByPk($intNotificationId);
-if (null !== $objNotification) {
-    $objNotification->send($arrTokens, $strLanguage); // Language is optional
 }
 ```

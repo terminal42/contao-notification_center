@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  terminal42 gmbh 2013
+ * @copyright  terminal42 gmbh 2014
  * @license    LGPL
  */
 
@@ -179,7 +179,7 @@ class File extends Base implements GatewayInterface
             $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path));
         }
 
-        $objFile = new \File($this->strPath . '/' . $strFile);
+        $objFile = new \File($this->strPath . '/' . $strFileName);
         $blnResult = $objFile->write($strContent);
         $objFile->close();
 

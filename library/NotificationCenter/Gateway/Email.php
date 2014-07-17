@@ -21,7 +21,7 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  terminal42 gmbh 2013
+ * @copyright  terminal42 gmbh 2014
  * @license    LGPL
  */
 

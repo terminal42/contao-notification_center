@@ -9,7 +9,7 @@
 
 .autosuggester-box-container {
 	position: absolute;
-	z-index: 1;
+	z-index: 9;
 }
 
 .autosuggester-box {
