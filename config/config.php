@@ -93,6 +93,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
                  'email_recipient_cc'   => array('admin_email', 'form_*'),
                  'email_recipient_bcc'  => array('admin_email', 'form_*'),
                  'email_replyTo'        => array('admin_email', 'form_*'),
+                 'attachment_tokens'    => array('form_*'),
              )
          ),
          'contao' => array(
@@ -106,6 +107,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
                  'email_recipient_cc'   => array('admin_email', 'form_*'),
                  'email_recipient_bcc'  => array('admin_email', 'form_*'),
                  'email_replyTo'        => array('admin_email', 'form_*'),
+                 'attachment_tokens'    => array('form_*'),
              ),
              'member_password'     => array(
                  'recipients'           => array('recipient_email'),
