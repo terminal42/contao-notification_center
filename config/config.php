@@ -84,43 +84,40 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
     array(
          'core'   => array(
              'core_form' => array(
-                 'recipients' => array('admin_email', 'form_*'),
-                 'email_text' => array('form_*', 'formconfig_*', 'admin_email')
+                 'recipients'           => array('admin_email', 'form_*'),
+                 'email_subject'        => array('form_*', 'formconfig_*', 'admin_email'),
+                 'email_text'           => array('form_*', 'formconfig_*', 'admin_email'),
+                 'email_html'           => array('form_*', 'formconfig_*', 'admin_email'),
+                 'file_name'            => array('form_*', 'formconfig_*', 'admin_email'),
+                 'file_content'         => array('form_*', 'formconfig_*', 'admin_email'),
+                 'email_recipient_cc'   => array('admin_email', 'form_*'),
+                 'email_recipient_bcc'  => array('admin_email', 'form_*'),
+                 'email_replyTo'        => array('admin_email', 'form_*'),
              )
          ),
          'contao' => array(
              'member_registration' => array(
-                 'recipients' => array('member_email', 'admin_email'),
-                 'email_text' => array('domain', 'link', 'member_*', 'recipient_email')
+                 'recipients'           => array('member_email', 'admin_email'),
+                 'email_subject'        => array('form_*', 'formconfig_*', 'admin_email'),
+                 'email_text'           => array('form_*', 'formconfig_*', 'admin_email'),
+                 'email_html'           => array('form_*', 'formconfig_*', 'admin_email'),
+                 'file_name'            => array('form_*', 'formconfig_*', 'admin_email'),
+                 'file_content'         => array('form_*', 'formconfig_*', 'admin_email'),
+                 'email_recipient_cc'   => array('admin_email', 'form_*'),
+                 'email_recipient_bcc'  => array('admin_email', 'form_*'),
+                 'email_replyTo'        => array('admin_email', 'form_*'),
              ),
              'member_password'     => array(
-                 'recipients' => array('recipient_email'),
-                 'email_text' => array('domain', 'link', 'member_*', 'recipient_email')
+                 'recipients'           => array('recipient_email'),
+                 'email_subject'        => array('domain', 'link', 'member_*', 'recipient_email'),
+                 'email_text'           => array('domain', 'link', 'member_*', 'recipient_email'),
+                 'email_html'           => array('domain', 'link', 'member_*', 'recipient_email'),
+                 'file_name'            => array('domain', 'link', 'member_*', 'recipient_email'),
+                 'file_content'         => array('domain', 'link', 'member_*', 'recipient_email'),
+                 'email_recipient_cc'   => array('recipient_email'),
+                 'email_recipient_bcc'  => array('recipient_email'),
+                 'email_replyTo'        => array('recipient_email'),
              )
          )
     )
 );
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_name'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_recipient_cc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_recipient_bcc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_replyTo'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['file_content'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['core']['core_form']['email_text'];
-
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_recipient_cc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_recipient_bcc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_replyTo'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['recipients'];
-
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_subject'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_html'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_registration']['email_text'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_recipient_cc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_recipient_bcc'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['recipients'];
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['email_replyTo'] = &$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['member_password']['recipients'];
-
-
