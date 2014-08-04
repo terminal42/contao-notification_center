@@ -36,7 +36,7 @@ class Helper
      */
     public function sendMessageQueue()
     {
-        /** @var $objQueueManager \NotificationCenter\Queue\QueueManager */
+        /** @var $objQueueManager \NotificationCenter\Queue\QueueManagerInterface */
         $objQueueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
 
         // @todo currently always sends 10 messages, make that configurable?

@@ -61,7 +61,7 @@ class Message extends \Model
 
             return false;
         } else {
-            /** @var $objQueueManager \NotificationCenter\Queue\QueueManager */
+            /** @var $objQueueManager \NotificationCenter\Queue\QueueManagerInterface */
             $objQueueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
             $objQueueManager->addMessage($this, $arrTokens, $strLanguage);
 
