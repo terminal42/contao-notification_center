@@ -68,7 +68,7 @@ class Message extends \Model
             // always add to queue (logging functionality) but if not enabled, directly send
             $objNotification = $this->getRelated('pid');
             if (!$objNotification->enableQueue) {
-                $arrResult = $objQueueManager->sendMessages(new \Model\Collection($this, static::getTable()));
+                $arrResult = $objQueueManager->sendMessages(new \Model\Collection(array($this), static::getTable()));
                 return $arrResult[$this->id];
             }
 
