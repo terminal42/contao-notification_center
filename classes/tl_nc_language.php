@@ -147,8 +147,9 @@ class tl_nc_language extends \Backend
             $chunks = trimsplit(',', $varValue);
 
             foreach ($chunks as $chunk) {
-                // Skip string with tokens
-                if (strpos($chunk, '##') !== false) {
+
+                // Skip string with tokens or inserttags
+                if (strpos($chunk, '##') !== false || strpos($chunk, '{{') !== false) {
                     continue;
                 }
 
