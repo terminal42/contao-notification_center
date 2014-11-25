@@ -38,7 +38,7 @@ class Notification extends \Model
 
     /**
      * Gets the published notifications collection
-     * @return \Model\Collection
+     * @return Message[]
      */
     public function getMessages()
     {
@@ -62,8 +62,8 @@ class Notification extends \Model
 
         $arrResult = array();
 
-        while ($objMessages->next()) {
-            $arrResult[$objMessages->id] = $objMessages->current()->send($arrTokens, $strLanguage);
+        foreach ($objMessages as $objMessage) {
+            $arrResult[$objMessage->id] = $objMessage->send($arrTokens, $strLanguage);
         }
 
         return $arrResult;
