@@ -45,6 +45,7 @@ class Message extends \Model
      */
     public function send(array $arrTokens, $strLanguage = '')
     {
+        /** @var Gateway $objGatewayModel */
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
             \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
 

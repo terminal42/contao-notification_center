@@ -28,17 +28,20 @@
 namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Model\Gateway;
+use NotificationCenter\Util\String;
 
+/**
+ * No need no extend Controller but left here for BC
+ */
 abstract class Base extends \Controller
 {
-
     /**
      * Text filter options
+     * @deprecated Use the Util\String constants instead (only here for BC)
      */
     const NO_TAGS = 1;
     const NO_BREAKS = 2;
     const NO_EMAILS = 4;
-
 
     /**
      * The gateway model
@@ -58,7 +61,7 @@ abstract class Base extends \Controller
 
     /**
      * Gets the gateway model
-     * @return  NotificationCenter\Model\Gateway
+     * @return  \NotificationCenter\Model\Gateway
      */
     public function getModel()
     {
@@ -66,137 +69,34 @@ abstract class Base extends \Controller
     }
 
     /**
-     * Gets an array of valid attachments of a token field
-     * @param   string
-     * @param   array Tokens
-     * @return  array
+     * @deprecated Use String::getTokenAttachments()
      */
     protected function getTokenAttachments($strAttachmentTokens, array $arrTokens)
     {
-        $arrAttachments = array();
-
-        if ($strAttachmentTokens == '') {
-            return $arrAttachments;
-        }
-
-        foreach (trimsplit(',', $strAttachmentTokens) as $strToken) {
-            $strFile = TL_ROOT . '/' . \String::parseSimpleTokens($strToken, $arrTokens);
-
-            if (is_file($strFile)) {
-                $arrAttachments[$strToken] = $strFile;
-            }
-        }
-
-        return $arrAttachments;
+        return String::getTokenAttachments($strAttachmentTokens, $arrTokens);
     }
 
-
     /**
-     * Generate CC or BCC recipients from comma separated string
-     * @param string
+     * @deprecated Use String::compileRecipients()
      */
     protected function compileRecipients($strRecipients, $arrTokens)
     {
-        $arrRecipients = array();
-
-        foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
-            if ($strAddress != '') {
-                $strAddress = $this->recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
-
-                // Address could become empty through invalid inserttag
-                if ($strAddress == '' || !\Validator::isEmail($strAddress)) {
-                    continue;
-                }
-
-                $arrRecipients[] = $strAddress;
-            }
-        }
-
-        return $arrRecipients;
+        return String::compileRecipients($strRecipients, $arrTokens);
     }
 
-
     /**
-     * Recursively replace simple tokens and insert tags
-     * @param   string
-     * @param   array tokens
-     * @param   int
-     * @return  string
+     * @deprecated Use String::recursiveReplaceTokensAndTags()
      */
     protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
     {
-        if ($intTextFlags > 0) {
-            $arrTokens = $this->convertToText($arrTokens, $intTextFlags);
-        }
-
-        // Must decode, tokens could be encoded
-        $strText = \String::decodeEntities($strText);
-
-        // first parse the tokens as they might have if-else clauses
-        $strBuffer = \String::parseSimpleTokens($strText, $arrTokens);
-
-        // then replace the insert tags
-        $strBuffer = $this->replaceInsertTags($strBuffer, false);
-
-        // check if the inserttags have returned a simple token or an insert tag to parse
-        if ((strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false) && $strBuffer != $strText) {
-            $strBuffer = $this->recursiveReplaceTokensAndTags($strBuffer, $arrTokens, $intTextFlags);
-        }
-
-        $strBuffer = \String::restoreBasicEntities($strBuffer);
-
-        if ($intTextFlags > 0) {
-            $strBuffer = $this->convertToText($strBuffer, $intTextFlags);
-        }
-
-        return $strBuffer;
+        return String::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
     }
 
     /**
-     * Convert the given array or string to plain text using given options
-     * @param   mixed
-     * @param   int
-     * @return  mixed
+     * @deprecated Use String::convertToText()
      */
     protected function convertToText($varValue, $options)
     {
-        if (is_array($varValue)) {
-            foreach ($varValue as $k => $v) {
-                $varValue[$k] = $this->convertToText($v, $options);
-            }
-
-            return $varValue;
-        }
-
-        // Replace friendly email before stripping tags
-        if (!($options & static::NO_EMAILS)) {
-            $arrEmails = array();
-            preg_match_all('{<.+@.+\.[A-Za-z]{2,6}>}', $varValue, $arrEmails);
-
-            if (!empty($arrEmails[0])) {
-                foreach ($arrEmails[0] as $k => $v) {
-                    $varValue = str_replace($v, '%email'.$k.'%', $varValue);
-                }
-            }
-        }
-
-        // Remove HTML tags but keep line breaks for <br> and <p>
-        if ($options & static::NO_TAGS) {
-            $varValue = strip_tags(preg_replace('{(?!^)<(br|p|/p).*?/?>\n?(?!$)}is', "\n", $varValue));
-        }
-
-        // Remove line breaks (e.g. for subject)
-        if ($options & static::NO_BREAKS) {
-            $varValue = str_replace(array("\r", "\n"), '', $varValue);
-        }
-
-        // Restore friendly email after stripping tags
-        if (!($options & static::NO_EMAILS) && !empty($arrEmails[0])) {
-            foreach ($arrEmails[0] as $k => $v) {
-                $varValue = str_replace('%email'.$k.'%', $v, $varValue);
-            }
-        }
-
-        return $varValue;
+        return String::convertToText($varValue, $options);
     }
 }

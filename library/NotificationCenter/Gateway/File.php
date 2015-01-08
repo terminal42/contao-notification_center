@@ -30,6 +30,7 @@ namespace NotificationCenter\Gateway;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 use Haste\Haste;
+use NotificationCenter\Util\String;
 
 
 class File extends Base implements GatewayInterface
@@ -54,10 +55,10 @@ class File extends Base implements GatewayInterface
             return false;
         }
 
-        $strFileName = $this->recursiveReplaceTokensAndTags(
+        $strFileName = String::recursiveReplaceTokensAndTags(
             $objLanguage->file_name,
             $arrTokens,
-            static::NO_TAGS|static::NO_BREAKS
+            String::NO_TAGS|String::NO_BREAKS
         );
 
         // Escape quotes and line breaks for CSV files
@@ -67,16 +68,16 @@ class File extends Base implements GatewayInterface
             });
         }
 
-        $strContent = $this->recursiveReplaceTokensAndTags(
+        $strContent = String::recursiveReplaceTokensAndTags(
             $objLanguage->file_content,
             $arrTokens,
-            static::NO_TAGS
+            String::NO_TAGS
         );
 
         try {
             return $this->save($strFileName, $strContent, (bool) $objLanguage->file_override);
         } catch (\Exception $e) {
-            $this->log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+            \System::log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
             return false;
         }
 

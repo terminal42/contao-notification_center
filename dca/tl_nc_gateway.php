@@ -114,6 +114,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         'default'                     => '{title_legend},title,type',
         'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
+        'postmark'                    => '{title_legend},title,type;{gateway_legend},postmark_key,postmark_test,postmark_ssl',
     ),
 
     // Subpalettes
@@ -260,6 +261,30 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'inputType'               => 'text',
             'eval'                    => array('decodeEntities'=>true, 'trailingSlash'=>false, 'tl_class'=>'clr long'),
             'sql'                     => "varchar(255) NOT NULL default ''"
+        ),
+        'postmark_key' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('mandatory'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(64) NOT NULL default ''"
+        ),
+        'postmark_test' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('tl_class'=>'w50 m12'),
+            'sql'                     => "char(1) NOT NULL default ''"
+        ),
+        'postmark_ssl' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('tl_class'=>'w50'),
+            'sql'                     => "char(1) NOT NULL default ''"
         ),
     )
 );
