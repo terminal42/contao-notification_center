@@ -71,7 +71,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderEmail()
     {
-        $strSenderAddress = $this->objLanguage->email_sender_address ? : $GLOBALS['TL_ADMIN_EMAIL'];
+        $strSenderAddress = $this->objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
         return String::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
     }
 
@@ -81,7 +81,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderName()
     {
-        $strSenderName = $this->objLanguage->email_sender_name ? : $GLOBALS['TL_ADMIN_NAME'];
+        $strSenderName = $this->objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
         return String::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
     }
 

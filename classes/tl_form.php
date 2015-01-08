@@ -31,10 +31,10 @@ class tl_form extends \Backend
 {
     /**
      * Get notification choices
-     * @param   \DataContainer
-     * @return  array
+     *
+     * @return array
      */
-    public function getNotificationChoices(\DataContainer $dc)
+    public function getNotificationChoices()
     {
         $arrChoices = array();
         $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='core_form' ORDER BY title");
@@ -48,15 +48,42 @@ class tl_form extends \Backend
 
     /**
      * Send the form notification
-     * @param array
-     * @param array
+     *
+     * @param array $arrData
+     * @param array $arrForm
+     * @param array $arrFiles
+     * @param array $arrLabels
      */
-    public function sendFormNotification($arrData, $arrForm,  $arrFiles, $arrLabels)
+    public function sendFormNotification($arrData, $arrForm, $arrFiles, $arrLabels)
     {
         if (!$arrForm['nc_notification'] || ($objNotification = Model\Notification::findByPk($arrForm['nc_notification'])) === null) {
             return;
         }
 
+        /** @var Model\Notification $objNotification */
+        $objNotification->send(
+            $this->generateTokens(
+                (array) $arrData,
+                (array) $arrForm,
+                (array) $arrFiles,
+                (array) $arrLabels
+            ),
+            $GLOBALS['TL_LANGUAGE']
+        );
+    }
+
+    /**
+     * Generate the tokens
+     *
+     * @param array $arrData
+     * @param array $arrForm
+     * @param array $arrFiles
+     * @param array $arrLabels
+     *
+     * @return array
+     */
+    public function generateTokens(array $arrData, array $arrForm, array $arrFiles, array $arrLabels)
+    {
         $arrTokens = array();
         $arrTokens['raw_data'] = '';
 
@@ -72,14 +99,15 @@ class tl_form extends \Backend
         // Administrator e-mail
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
-        $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
+        return $arrTokens;
     }
 
     /**
      * Flatten input data, Simple Tokens can't handle arrays
-     * @param   mixed
-     * @param   string
-     * @param   array
+     *
+     * @param mixed  $varValue
+     * @param string $strKey
+     * @param array  $arrData
      */
     public function flatten($varValue, $strKey, &$arrData)
     {
