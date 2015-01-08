@@ -29,6 +29,12 @@ namespace NotificationCenter;
 
 class tl_form extends \Backend
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * Get notification choices
      *
