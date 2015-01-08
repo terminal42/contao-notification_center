@@ -176,10 +176,10 @@ class File extends Base implements GatewayInterface
 
         // Make sure we don't overwrite existing files
         if (!$blnOverride && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)) {
-            $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path));
+            $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path, true));
         }
 
-        $objFile = new \File($this->strPath . '/' . $strFileName);
+        $objFile = new \File($this->objModel->file_path . '/' . $strFileName);
         $blnResult = $objFile->write($strContent);
         $objFile->close();
 
