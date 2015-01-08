@@ -48,15 +48,32 @@ class tl_form extends \Backend
 
     /**
      * Send the form notification
-     * @param array
-     * @param array
+     *
+     * @param array $arrData
+     * @param array $arrForm
+     * @param array $arrFiles
+     * @param array $arrLabels
      */
-    public function sendFormNotification($arrData, $arrForm,  $arrFiles, $arrLabels)
+    public function sendFormNotification($arrData, $arrForm, $arrFiles, $arrLabels)
     {
         if (!$arrForm['nc_notification'] || ($objNotification = Model\Notification::findByPk($arrForm['nc_notification'])) === null) {
             return;
         }
 
+        $objNotification->send($this->generateTokens($arrData, $arrForm, $arrLabels), $GLOBALS['TL_LANGUAGE']);
+    }
+
+    /**
+     * Generate the tokens
+     *
+     * @param array $arrData
+     * @param array $arrForm
+     * @param array $arrLabels
+     *
+     * @return array
+     */
+    public function generateTokens($arrData, $arrForm, $arrLabels)
+    {
         $arrTokens = array();
         $arrTokens['raw_data'] = '';
 
@@ -72,7 +89,7 @@ class tl_form extends \Backend
         // Administrator e-mail
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
-        $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
+        return $arrTokens;
     }
 
     /**
