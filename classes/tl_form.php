@@ -31,10 +31,10 @@ class tl_form extends \Backend
 {
     /**
      * Get notification choices
-     * @param   \DataContainer
-     * @return  array
+     *
+     * @return array
      */
-    public function getNotificationChoices(\DataContainer $dc)
+    public function getNotificationChoices()
     {
         $arrChoices = array();
         $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='core_form' ORDER BY title");
@@ -60,7 +60,16 @@ class tl_form extends \Backend
             return;
         }
 
-        $objNotification->send($this->generateTokens($arrData, $arrForm, $arrLabels), $GLOBALS['TL_LANGUAGE']);
+        /** @var Model\Notification $objNotification */
+        $objNotification->send(
+            $this->generateTokens(
+                (array) $arrData,
+                (array) $arrForm,
+                (array) $arrFiles,
+                (array) $arrLabels
+            ),
+            $GLOBALS['TL_LANGUAGE']
+        );
     }
 
     /**
@@ -68,11 +77,12 @@ class tl_form extends \Backend
      *
      * @param array $arrData
      * @param array $arrForm
+     * @param array $arrFiles
      * @param array $arrLabels
      *
      * @return array
      */
-    public function generateTokens($arrData, $arrForm, $arrLabels)
+    public function generateTokens(array $arrData, array $arrForm, array $arrFiles, array $arrLabels)
     {
         $arrTokens = array();
         $arrTokens['raw_data'] = '';
@@ -94,9 +104,10 @@ class tl_form extends \Backend
 
     /**
      * Flatten input data, Simple Tokens can't handle arrays
-     * @param   mixed
-     * @param   string
-     * @param   array
+     *
+     * @param mixed  $varValue
+     * @param string $strKey
+     * @param array  $arrData
      */
     public function flatten($varValue, $strKey, &$arrData)
     {
