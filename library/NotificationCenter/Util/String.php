@@ -40,9 +40,10 @@ class String extends \Controller
 
     /**
      * Recursively replace simple tokens and insert tags
-     * @param   string
-     * @param   array tokens
-     * @param   int
+     * @param   string $strText
+     * @param   array $arrTokens Array of Tokens
+     * @param   int $intTextFlags Filters the tokens and the text for a given set of options
+     *
      * @return  string
      */
     public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
