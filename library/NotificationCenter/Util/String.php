@@ -36,6 +36,7 @@ class String extends \Controller
     const NO_TAGS = 1;
     const NO_BREAKS = 2;
     const NO_EMAILS = 4;
+    const PRESERVE_TAGS = 8;
 
 
     /**
@@ -55,8 +56,31 @@ class String extends \Controller
         // Must decode, tokens could be encoded
         $strText = \String::decodeEntities($strText);
 
+        // If preserving tags is desired, replace all opening and closing tags with a hash so they don't get stripped
+        // by parseSimpleTokens()
+        // This is useful e.g. for XML content
+        if ($intTextFlags & static::PRESERVE_TAGS) {
+            $strHash = md5($strText);
+            $strTagOpenReplacement  = 'NC-TAG-OPEN-' . $strHash;
+            $strTagCloseReplacement = 'NC-TAG-CLOSE-' . $strHash;
+
+            $strText = str_replace(
+                array('<', '>'),
+                array($strTagOpenReplacement, $strTagCloseReplacement),
+                $strText
+            );
+        }
+
         // first parse the tokens as they might have if-else clauses
         $strBuffer = \String::parseSimpleTokens($strText, $arrTokens);
+
+        if ($intTextFlags & static::PRESERVE_TAGS) {
+            $strBuffer = str_replace(
+                array($strTagOpenReplacement, $strTagCloseReplacement),
+                array('<', '>'),
+                $strBuffer
+            );
+        }
 
         // then replace the insert tags
         $strBuffer = \Haste\Haste::getInstance()->call('replaceInsertTags', array($strBuffer, false));

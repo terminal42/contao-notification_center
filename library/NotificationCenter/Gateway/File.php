@@ -68,10 +68,11 @@ class File extends Base implements GatewayInterface
             });
         }
 
+        // Preserve all tags here as this is pretty useful in XML :-)
         $strContent = String::recursiveReplaceTokensAndTags(
             $objLanguage->file_content,
             $arrTokens,
-            String::NO_TAGS
+            String::PRESERVE_TAGS
         );
 
         try {
