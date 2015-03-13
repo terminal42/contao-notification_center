@@ -68,10 +68,10 @@ class File extends Base implements GatewayInterface
             });
         }
 
+        // Preserve all tags here as this is pretty useful in XML :-)
         $strContent = String::recursiveReplaceTokensAndTags(
             $objLanguage->file_content,
-            $arrTokens,
-            String::NO_TAGS
+            $arrTokens
         );
 
         try {
@@ -171,7 +171,7 @@ class File extends Base implements GatewayInterface
     {
         // Make sure the directory exists
         if (!is_dir(TL_ROOT . '/' . $this->objModel->file_path)) {
-            Haste::mkdirr($this->objModel->file_path);
+            new \Folder($this->objModel->file_path);
         }
 
         // Make sure we don't overwrite existing files

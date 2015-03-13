@@ -314,7 +314,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_content'],
             'exclude'                 => true,
             'inputType'               => 'textarea',
-            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'decodeEntities'=>true, 'mandatory'=>true, 'style'=>'min-height:100px'),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'decodeEntities'=>true, 'preserveTags'=>true, 'mandatory'=>true, 'style'=>'min-height:100px'),
             'sql'                     => "text NULL"
         ),
     )
