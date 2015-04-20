@@ -125,13 +125,17 @@ class tl_form extends \Backend
         }
 
         $blnAssoc = array_is_assoc($varValue);
+        $arrValues = array();
 
         foreach ($varValue as $k => $v) {
             if ($blnAssoc && !is_array($v)) {
                 $this->flatten($v, $strKey.'_'.$k, $arrData);
             } else {
                 $arrData[$strKey.'_'.$v] = '1';
+                $arrValues[]             = $v;
             }
         }
+
+        $arrData[$strKey] = implode(', ', $arrValues);
     }
 }
