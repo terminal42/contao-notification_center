@@ -42,7 +42,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_subject']              = array('Sub
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']                 = array('Mode', 'Choose the mode you would like to be used for this email.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']                 = array('Raw text', 'Please enter the text.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']                 = array('HTML', 'Please enter the HTML.');
-$GLOBALS['TL_LANG']['tl_nc_language']['file_name']                  = array('File name', 'Please enter the file name without extension.');
+$GLOBALS['TL_LANG']['tl_nc_language']['file_name']                  = array('File name', 'Please enter the file name.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_override']              = array('Override existing file', 'Override the old file if it exists.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_content']               = array('File content', 'Please enter the file content.');
 
