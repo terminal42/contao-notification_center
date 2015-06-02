@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-05-28T09:43:38+02:00
+ * last-updated: 2014-07-17T14:48:39+02:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']                = 'Копировать шлюз';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['1']                = 'Копировать шлюз ID %s.';
@@ -44,6 +43,12 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect']        = 'Ошибка
 $GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend']           = 'Параметры шлюза';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['new']['0']                 = 'Новый шлюз';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['new']['1']                 = 'Создать новый шлюз.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key']['0']        = 'Ключ Postmark API';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key']['1']        = 'Введите уникальный ключ Postmark API.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']['0']        = 'Включить SSL';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']['1']        = 'Вы можете включить SSL-соединение.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['0']       = 'Включить тестовый режим';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['1']       = 'Вы можете включить тестовый режим.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']                = 'Детали шлюза';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']                = 'Показать детали шлюза ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title']['0']               = 'Название';
@@ -53,4 +58,5 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['0']                = 'Тип';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['1']                = 'Выберите тип этого шлюза.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']            = 'Стандарт почтового шлюза';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['file']             = 'Запись в файл';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['postmark']         = 'Почтовые марки (postmarkapp.com)';
 

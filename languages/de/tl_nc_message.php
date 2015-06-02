@@ -8,12 +8,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:12+01:00
+ * last-updated: 2014-04-14T09:17:13+02:00
  */
 
-
 $GLOBALS['TL_LANG']['tl_nc_message']['copy']['0']                   = 'Nachricht kopieren';
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Kopiere Nachricht ID %s.';
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Nachricht mit ID %s kopieren.';
+$GLOBALS['TL_LANG']['tl_nc_message']['cut']['0']                    = 'Nachricht verschieben';
+$GLOBALS['TL_LANG']['tl_nc_message']['cut']['1']                    = 'Nachricht mit ID %s verschieben.';
 $GLOBALS['TL_LANG']['tl_nc_message']['delete']['0']                 = 'Nachricht löschen';
 $GLOBALS['TL_LANG']['tl_nc_message']['delete']['1']                 = 'Nachricht mit ID %s löschen.';
 $GLOBALS['TL_LANG']['tl_nc_message']['edit']['0']                   = 'Nachricht editieren';
@@ -37,6 +38,10 @@ $GLOBALS['TL_LANG']['tl_nc_message']['languages']['3']              = 'Schliesse
 $GLOBALS['TL_LANG']['tl_nc_message']['languages_legend']            = 'Sprachen';
 $GLOBALS['TL_LANG']['tl_nc_message']['new']['0']                    = 'Neue Nachricht';
 $GLOBALS['TL_LANG']['tl_nc_message']['new']['1']                    = 'Eine neue Nachricht hinzufügen.';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']['0']           = 'Schlagwort';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']['1']           = 'Hier können Sie ein Schlagwort definieren.';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']['0']    = 'Open-Tracking aktivieren';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']['1']    = 'Hier können Sie das "Open-Tracking" aktivieren.';
 $GLOBALS['TL_LANG']['tl_nc_message']['publish_legend']              = 'Einstellungen veröffentlichen';
 $GLOBALS['TL_LANG']['tl_nc_message']['published']['0']              = 'Nachricht veröffentlichen';
 $GLOBALS['TL_LANG']['tl_nc_message']['published']['1']              = 'Diese Nachricht einfügen beim Versenden der Notification.';
