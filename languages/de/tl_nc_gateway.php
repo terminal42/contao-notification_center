@@ -8,25 +8,55 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:09+01:00
+ * last-updated: 2014-04-14T09:17:13+02:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']      = 'Gateway duplizieren';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['1']      = 'Editieren Sie das Gateway ID %s';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['0']    = 'Gateway löschen';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['1']    = 'Löschen Sie das Gateway ID %s';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['0']      = 'Gateway editieren';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['1']      = 'Editieren Sie das Gateway ID %s';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend'] = 'Gateway Einstellungen';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['new']['0']       = 'Neues Gateway';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['new']['1']       = 'Neues Gateway anlegen.';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']      = 'Gateway-Details';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']      = 'Details des Gateways ID %s anzeigen.';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['0']     = 'Titel';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['1']     = 'Bitte geben Sie einen Titel für dieses Gateway ein.';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['title_legend']   = 'Titel & Typ';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['0']      = 'Typ';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['1']      = 'Bitte wählen Sie einen Typen für dieses Gateway.';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']  = 'Standard Email-Gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']                = 'Gateway duplizieren';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['1']                = 'Editieren Sie das Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['0']              = 'Gateway löschen';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['delete']['1']              = 'Löschen Sie das Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['0']                = 'Gateway editieren';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['edit']['1']                = 'Editieren Sie das Gateway ID %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['email_overrideSmtp']['0']  = 'SMTP-Einstellungen überschreiben';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['email_overrideSmtp']['1']  = 'Aktivieren Sie diese Checkbox um die Contao SMTP-Einstellungen (Systemeinstellungen) zu überschreiben und sie anschließend zu individualisieren. ';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['0']     = 'Verbindungstyp';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['1']     = 'Bitte wählen Sie einen Verbindungstyp aus.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['ftp']   = 'FTP';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['local'] = 'Lokal';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_host']['0']           = 'Server';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_host']['1']           = 'Bitte geben Sie den Servernamen ein.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_password']['0']       = 'Passwort';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_password']['1']       = 'Bitte geben Sie das zugehörige FTP-Passwort ein.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_path']['0']           = 'Pfad';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_path']['1']           = 'Hier können Sie den Zielordner bestimmen. (z.B. downloads)';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_port']['0']           = 'Port';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_port']['1']           = 'Bitte geben Sie die Portnummer ein. Wenn das Feld leer bleibt wird der Standard-Port verwendet.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['0']           = 'Dateiformat';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['1']           = 'Bitte wählen Sie ein Dateiformat aus.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['csv']         = 'CSV';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['xml']         = 'Plain Text / XML';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_username']['0']       = 'Benutzername';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['file_username']['1']       = 'Bitte geben Sie den FTP-Benutzernamen ein.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_confirm']              = 'Verbindung erfolgreich!';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_class']          = 'Konnte FTP-Klasse nicht finden.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect']        = 'Verbindung zum Fehler ist fehlgeschlagen: %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend']           = 'Gateway Einstellungen';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['new']['0']                 = 'Neues Gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['new']['1']                 = 'Neues Gateway anlegen.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key']['0']        = 'Postmark API-Key';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key']['1']        = 'Bitte gebe deinen persönlichen Postmark API-Key ein.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']['0']        = 'SSL-Verbindung aktivieren';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']['1']        = 'Hier können Sie die SSL-Verbindung aktivieren.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['0']       = 'Testmodus aktivieren';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['1']       = 'Hier aktivieren Sie den Testmodus.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']                = 'Gateway-Details';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']                = 'Details des Gateways ID %s anzeigen.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['0']               = 'Titel';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['title']['1']               = 'Bitte geben Sie einen Titel für dieses Gateway ein.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['title_legend']             = 'Titel & Typ';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['0']                = 'Typ';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['1']                = 'Bitte wählen Sie einen Typen für dieses Gateway.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']            = 'Standard E-Mail-Gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['file']             = 'In Datei schreiben';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['postmark']         = 'Postmark (postmarkapp.com)';
 
