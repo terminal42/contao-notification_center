@@ -140,7 +140,7 @@ class File extends Base implements GatewayInterface
             return $strFile;
         }
 
-        $offset = 1;
+        $offset = 0;
         $pathinfo = pathinfo($strFile);
         $name = $pathinfo['filename'];
 
@@ -150,7 +150,7 @@ class File extends Base implements GatewayInterface
         foreach ($arrFiles as $file) {
             if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
                 $file = str_replace('.' . $pathinfo['extension'], '', $file);
-                $intValue = intval(substr($file, (strrpos($file, '_') + 1)));
+                $intValue = intval(substr($file, (strrpos($file, '__') + 2)));
 
                 $offset = max($offset, $intValue);
             }
