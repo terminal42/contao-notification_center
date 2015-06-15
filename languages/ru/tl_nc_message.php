@@ -8,12 +8,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-05-28T09:43:41+02:00
+ * last-updated: 2014-07-17T14:48:39+02:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']['0']                   = 'Копировать сообщение';
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Копировать сообщение ID %s.';
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']['0']                   = 'Дублировать сообщение';
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Дублировать сообщение ID %s.';
+$GLOBALS['TL_LANG']['tl_nc_message']['cut']['0']                    = 'Переместить сообщение';
+$GLOBALS['TL_LANG']['tl_nc_message']['cut']['1']                    = 'Переместить сообщение ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_message']['delete']['0']                 = 'Удалить сообщение';
 $GLOBALS['TL_LANG']['tl_nc_message']['delete']['1']                 = 'Удалить сообщение ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_message']['edit']['0']                   = 'Редактировать сообщение';
@@ -37,6 +38,10 @@ $GLOBALS['TL_LANG']['tl_nc_message']['languages']['3']              = 'Закр�
 $GLOBALS['TL_LANG']['tl_nc_message']['languages_legend']            = 'Языки';
 $GLOBALS['TL_LANG']['tl_nc_message']['new']['0']                    = 'Новое сообщение';
 $GLOBALS['TL_LANG']['tl_nc_message']['new']['1']                    = 'Создать новое сообщение.';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']['0']           = 'Тег';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']['1']           = 'Вы можете ввести тег.';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']['0']    = 'Включить открытое отслеживание';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']['1']    = 'Вы можете включить открытое отслеживание.';
 $GLOBALS['TL_LANG']['tl_nc_message']['publish_legend']              = 'Настройки публикации';
 $GLOBALS['TL_LANG']['tl_nc_message']['published']['0']              = 'Опубликовать сообщение';
 $GLOBALS['TL_LANG']['tl_nc_message']['published']['1']              = 'Включить это сообщение при отправке уведомления.';

@@ -55,23 +55,27 @@ class tl_nc_language extends \Backend
      * @param   string
      * @return  string
      */
-    public function generateWizardList($objRecords, $strId)
+    public function generateWizardList($objRecords, $strId, $widget)
     {
         $strReturn = '
 <table class="tl_listing showColumns">
 <thead>
     <td class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['tl_nc_language']['language'][0] . '</td>
     <td class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['tl_nc_language']['fallback'][0] . '</td>
+    <td class="tl_folder_tlist"></td>
 </thead>
 <tbody>';
 
         $arrLanguages = \System::getLanguages();
 
         while ($objRecords->next()) {
+            $row = $objRecords->row();
+
             $strReturn .= '
 <tr>
     <td class="tl_file_list">' . $arrLanguages[$objRecords->language] . '</td>
     <td class="tl_file_list">' . (($objRecords->fallback) ? '&#10004;' : '') . '</td>
+    <td class="tl_file_list">' . $widget->generateRowOperation('edit', $row) . '</td>
 </tr>
 ';
         }
@@ -93,16 +97,16 @@ class tl_nc_language extends \Backend
      */
     public function validateLanguageField($varValue, \DataContainer $dc)
     {
-	    $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE language=? AND pid=? AND id!=?")
-	    							   ->limit(1)
-	    							   ->execute($varValue, $dc->activeRecord->pid, $dc->id);
+        $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE language=? AND pid=? AND id!=?")
+            ->limit(1)
+            ->execute($varValue, $dc->activeRecord->pid, $dc->id);
 
-	    if ($objLanguages->numRows)
-	    {
-		    throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $dc->field));
-	    }
+        if ($objLanguages->numRows)
+        {
+            throw new \Exception(sprintf($GLOBALS['TL_LANG']['ERR']['unique'], $dc->field));
+        }
 
-	    return $varValue;
+        return $varValue;
     }
 
 
@@ -116,17 +120,17 @@ class tl_nc_language extends \Backend
     public function validateFallbackField($varValue, \DataContainer $dc)
     {
         if ($varValue) {
-    	    $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE fallback=1 AND pid=? AND id!=?")
-    	    							   ->limit(1)
-    	    							   ->execute($dc->activeRecord->pid, $dc->id);
+            $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE fallback=1 AND pid=? AND id!=?")
+                ->limit(1)
+                ->execute($dc->activeRecord->pid, $dc->id);
 
-    	    if ($objLanguages->numRows) {
-    		    $this->Database->prepare("UPDATE tl_nc_language SET fallback='' WHERE id=?")
-    		    			   ->execute($objLanguages->id);
-    	    }
+            if ($objLanguages->numRows) {
+                $this->Database->prepare("UPDATE tl_nc_language SET fallback='' WHERE id=?")
+                    ->execute($objLanguages->id);
+            }
         }
 
-	    return $varValue;
+        return $varValue;
     }
 
 
@@ -143,8 +147,9 @@ class tl_nc_language extends \Backend
             $chunks = trimsplit(',', $varValue);
 
             foreach ($chunks as $chunk) {
-                // Skip string with tokens
-                if (strpos($chunk, '##') !== false) {
+
+                // Skip string with tokens or inserttags
+                if (strpos($chunk, '##') !== false || strpos($chunk, '{{') !== false) {
                     continue;
                 }
 

@@ -30,8 +30,8 @@
  */
 $GLOBALS['TL_LANG']['tl_nc_language']['language']                   = array('Language', 'Please select a language.');
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']                   = array('Fallback', 'Activate this checkbox if this language should be your fallback.');
-$GLOBALS['TL_LANG']['tl_nc_language']['recipients']                 = array('Recipients', 'Please enter a <strong>comma-separated</strong> list of recipients in this field. Use the help wizard to see the available simple tokens.');
-$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']          = array('Attachments via tokens', 'Please enter a <strong>comma-separated</strong> list of attachment tokens in this field. Use the help wizard to see the available simple tokens.');
+$GLOBALS['TL_LANG']['tl_nc_language']['recipients']                 = array('Recipients', 'Please enter a <strong>comma-separated</strong> list of recipients in this field. Use the autocompleter to see the available simple tokens.');
+$GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']          = array('Attachments via tokens', 'Please enter a <strong>comma-separated</strong> list of attachment tokens in this field. Use the autocompleter to see the available simple tokens.');
 $GLOBALS['TL_LANG']['tl_nc_language']['attachments']                = array('Attachments from file system', 'Please choose from the file picker if you would like to add static files.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']          = array('Sender name', 'Please enter the sender name.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']       = array('Sender address', 'Please enter the sender email address.');
@@ -42,7 +42,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_subject']              = array('Sub
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']                 = array('Mode', 'Choose the mode you would like to be used for this email.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']                 = array('Raw text', 'Please enter the text.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']                 = array('HTML', 'Please enter the HTML.');
-$GLOBALS['TL_LANG']['tl_nc_language']['file_name']                  = array('File name', 'Please enter the file name without extension.');
+$GLOBALS['TL_LANG']['tl_nc_language']['file_name']                  = array('File name', 'Please enter the file name.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_override']              = array('Override existing file', 'Override the old file if it exists.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_content']               = array('File content', 'Please enter the file content.');
 

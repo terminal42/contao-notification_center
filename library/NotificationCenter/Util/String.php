@@ -40,9 +40,10 @@ class String extends \Controller
 
     /**
      * Recursively replace simple tokens and insert tags
-     * @param   string
-     * @param   array tokens
-     * @param   int
+     * @param   string $strText
+     * @param   array $arrTokens Array of Tokens
+     * @param   int $intTextFlags Filters the tokens and the text for a given set of options
+     *
      * @return  string
      */
     public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
@@ -54,8 +55,20 @@ class String extends \Controller
         // Must decode, tokens could be encoded
         $strText = \String::decodeEntities($strText);
 
+        // Replace all opening and closing tags with a hash so they don't get stripped
+        // by parseSimpleTokens() - this is useful e.g. for XML content
+        $strHash = md5($strText);
+        $strTagOpenReplacement  = 'NC-TAG-OPEN-' . $strHash;
+        $strTagCloseReplacement = 'NC-TAG-CLOSE-' . $strHash;
+        $arrOriginal = array('<', '>');
+        $arrReplacement = array($strTagOpenReplacement, $strTagCloseReplacement);
+
+        $strText = str_replace($arrOriginal, $arrReplacement, $strText);
+
         // first parse the tokens as they might have if-else clauses
         $strBuffer = \String::parseSimpleTokens($strText, $arrTokens);
+
+        $strBuffer = str_replace($arrReplacement, $arrOriginal, $strBuffer);
 
         // then replace the insert tags
         $strBuffer = \Haste\Haste::getInstance()->call('replaceInsertTags', array($strBuffer, false));
@@ -158,11 +171,11 @@ class String extends \Controller
         foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
                 $strAddress = static::recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
-
-                list ($strName, $strAddress) = \String::splitFriendlyEmail($strAddress);
+                
+                list($strName, $strEmail) = \String::splitFriendlyEmail($strAddress);
 
                 // Address could become empty through invalid insert tag
-                if ($strAddress == '' || !\Validator::isEmail($strAddress)) {
+                if ($strAddress == '' || !\Validator::isEmail($strEmail)) {
                     continue;
                 }
 

@@ -79,7 +79,9 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
 
         // return false if no language found for BC
         if ($objDraft === null) {
+
             \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -97,7 +99,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         }
 
         // Set email sender address
-        $objEmail->from   = $objDraft->getSenderEmail();
+        $objEmail->from = $objDraft->getSenderEmail();
 
         // Set reply-to address
         if ($strReplyTo = $objDraft->getReplyToEmail()) {

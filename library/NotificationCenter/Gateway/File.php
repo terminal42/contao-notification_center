@@ -68,10 +68,10 @@ class File extends Base implements GatewayInterface
             });
         }
 
+        // Preserve all tags here as this is pretty useful in XML :-)
         $strContent = String::recursiveReplaceTokensAndTags(
             $objLanguage->file_content,
-            $arrTokens,
-            String::NO_TAGS
+            $arrTokens
         );
 
         try {
@@ -140,7 +140,7 @@ class File extends Base implements GatewayInterface
             return $strFile;
         }
 
-        $offset = 1;
+        $offset = 0;
         $pathinfo = pathinfo($strFile);
         $name = $pathinfo['filename'];
 
@@ -150,7 +150,7 @@ class File extends Base implements GatewayInterface
         foreach ($arrFiles as $file) {
             if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
                 $file = str_replace('.' . $pathinfo['extension'], '', $file);
-                $intValue = intval(substr($file, (strrpos($file, '_') + 1)));
+                $intValue = intval(substr($file, (strrpos($file, '__') + 2)));
 
                 $offset = max($offset, $intValue);
             }
@@ -171,15 +171,15 @@ class File extends Base implements GatewayInterface
     {
         // Make sure the directory exists
         if (!is_dir(TL_ROOT . '/' . $this->objModel->file_path)) {
-            Haste::mkdirr($this->objModel->file_path);
+            new \Folder($this->objModel->file_path);
         }
 
         // Make sure we don't overwrite existing files
         if (!$blnOverride && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)) {
-            $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path));
+            $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path, true));
         }
 
-        $objFile = new \File($this->strPath . '/' . $strFileName);
+        $objFile = new \File($this->objModel->file_path . '/' . $strFileName);
         $blnResult = $objFile->write($strContent);
         $objFile->close();
 

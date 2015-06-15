@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-05-28T09:43:42+02:00
+ * last-updated: 2014-07-17T14:48:39+02:00
  */
-
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']                    = 'Конфигурация';
 $GLOBALS['TL_LANG']['tl_nc_notification']['copy']['0']                        = 'Копировать уведомление';
@@ -37,5 +36,6 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']['1']           = 
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']                    = 'Стандарт почтового шлюза';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['file']                     = 'Запись в файл';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_password']['0']     = 'Забытый пароль участника';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_personaldata']['0'] = 'Персональные данные участника';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration']['0'] = 'Регистрация участника';
 

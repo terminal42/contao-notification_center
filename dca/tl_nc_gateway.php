@@ -219,7 +219,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'inputType'               => 'select',
             'options'                 => array('local', 'ftp'),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection'],
-            'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(8) NOT NULL default ''"
         ),
         'file_host' => array
