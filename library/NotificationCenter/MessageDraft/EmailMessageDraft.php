@@ -196,6 +196,11 @@ class EmailMessageDraft implements MessageDraftInterface
 
         if (!empty($arrStaticAttachments)) {
             $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
+
+            if ($objFiles === null) {
+                return $arrAttachments;
+            }
+
             while ($objFiles->next()) {
                 $arrAttachments[] = TL_ROOT . '/' . $objFiles->path;
             }
