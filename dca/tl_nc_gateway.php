@@ -66,6 +66,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         'label' => array
         (
             'fields'                  => array('title'),
+            'label_callback'          => array('NotificationCenter\tl_nc_gateway', 'executeLabelCallback')
         ),
         'global_operations' => array
         (

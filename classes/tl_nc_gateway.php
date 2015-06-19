@@ -27,6 +27,9 @@
 
 namespace NotificationCenter;
 
+use NotificationCenter\Gateway\LabelCallbackInterface;
+use NotificationCenter\Model\Gateway;
+
 class tl_nc_gateway extends \Backend
 {
     /**
@@ -64,5 +67,28 @@ class tl_nc_gateway extends \Backend
         }
 
         \Message::addConfirmation($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_confirm']);
+    }
+
+    /**
+     * Gets the back end list label
+     *
+     * @param array             $row
+     * @param string            $label
+     * @param \DataContainer    $dc
+     * @param array             $args
+     *
+     * @return string
+     */
+    public function executeLabelCallback($row, $label, \DataContainer $dc, $args)
+    {
+        $model = Gateway::findByPk($row['id']);
+        $gateway = $model->getGateway();
+
+        if ($gateway instanceof LabelCallbackInterface) {
+
+            return $gateway->getLabel($row, $label,$dc, $args);
+        }
+
+        return $label;
     }
 }
