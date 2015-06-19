@@ -41,39 +41,23 @@ class Message extends \Model
      * Send this message using its gateway
      * @param   array
      * @param   string
-     * @param   bool
      * @return  bool
      */
-    public function send(array $arrTokens, $strLanguage = '', $blnDisableQueue = false)
+    public function send(array $arrTokens, $strLanguage = '')
     {
-        if ($blnDisableQueue) {
-            if (($objGatewayModel = $this->getRelated('gateway')) === null) {
-                \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
-
-                return false;
-            }
-
-            if (null !== $objGatewayModel->getGateway()) {
-                return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
-            }
-
-            \System::log(sprintf('Could not find gateway class for gateway ID "%s".', $objGatewayModel->id), __METHOD__, TL_ERROR);
+        if (($objGatewayModel = $this->getRelated('gateway')) === null) {
+            \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
 
             return false;
-        } else {
-            /** @var $objQueueManager \NotificationCenter\Queue\QueueManagerInterface */
-            $objQueueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
-            $objQueueManager->addMessage($this, $arrTokens, $strLanguage);
-
-            // always add to queue (logging functionality) but if not enabled, directly send
-            $objNotification = $this->getRelated('pid');
-            if (!$objNotification->enableQueue) {
-                $arrResult = $objQueueManager->sendMessages(new \Model\Collection(array($this), static::getTable()));
-                return $arrResult[$this->id];
-            }
-
-            return true;
         }
+
+        if (null !== $objGatewayModel->getGateway()) {
+            return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
+        }
+
+        \System::log(sprintf('Could not find gateway class for gateway ID "%s".', $objGatewayModel->id), __METHOD__, TL_ERROR);
+
+        return false;
     }
 
     /**
