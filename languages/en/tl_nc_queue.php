@@ -47,6 +47,7 @@ $GLOBALS['TL_LANG']['tl_nc_queue']['source']                                 = '
  * Buttons
  */
 $GLOBALS['TL_LANG']['tl_nc_queue']['re-queue']  = array('Add to queue again', 'This queued message (ID %s) encountered an error but you can re-add it to the queue by clicking this button.');
+$GLOBALS['TL_LANG']['tl_nc_queue']['delete']    = array('Delete queued message', 'Delete queued message (ID %s).');
 $GLOBALS['TL_LANG']['tl_nc_queue']['show']      = array('Show details', 'Shows details of the queued message ID %s.');
 
 /**
