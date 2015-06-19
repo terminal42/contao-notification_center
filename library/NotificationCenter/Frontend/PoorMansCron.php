@@ -29,17 +29,24 @@
 namespace NotificationCenter\Frontend;
 
 
-class Helper
+class PoorMansCron
 {
+    public function minutely() { $this->sendMessagesFromQueue('minutely'); }
+    public function hourly()   { $this->sendMessagesFromQueue('hourly');   }
+    public function daily()    { $this->sendMessagesFromQueue('daily');    }
+    public function weekly()   { $this->sendMessagesFromQueue('weekly');   }
+    public function monthly()  { $this->sendMessagesFromQueue('monthly');  }
+
     /**
-     * Hooked by minutely cron job
+     * Triggers queues and sends their messages based on poor man cron jobs.
+     *
+     * @param string $interval
      */
-    public function sendMessageQueue()
+    private function sendMessagesFromQueue($interval)
     {
         /** @var $objQueueManager \NotificationCenter\Queue\QueueManagerInterface */
         $objQueueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
 
-        // @todo currently always sends 10 messages, make that configurable?
-        $objQueueManager->sendFromQueue();
+        //$objQueueManager->sendFromQueue();
     }
-} 
+}

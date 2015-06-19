@@ -68,7 +68,11 @@ $GLOBALS['TL_MODELS']['tl_nc_queue']                    = 'NotificationCenter\Mo
 /**
  * Cron jobs
  */
-$GLOBALS['TL_CRON']['minutely'][] = array('NotificationCenter\Frontend\Helper', 'sendMessageQueue');
+$GLOBALS['TL_CRON']['minutely'][] = array('NotificationCenter\Frontend\PoorMansCron', 'minutely');
+$GLOBALS['TL_CRON']['hourly'][]   = array('NotificationCenter\Frontend\PoorMansCron', 'hourly');
+$GLOBALS['TL_CRON']['daily'][]    = array('NotificationCenter\Frontend\PoorMansCron', 'daily');
+$GLOBALS['TL_CRON']['weekly'][]   = array('NotificationCenter\Frontend\PoorMansCron', 'weekly');
+$GLOBALS['TL_CRON']['monthly'][]  = array('NotificationCenter\Frontend\PoorMansCron', 'monthly');
 
 /**
  * Hooks
