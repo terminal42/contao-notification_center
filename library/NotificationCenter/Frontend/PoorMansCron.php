@@ -29,6 +29,8 @@
 namespace NotificationCenter\Frontend;
 
 
+use NotificationCenter\Model\Gateway;
+
 class PoorMansCron
 {
     public function minutely() { $this->sendMessagesFromQueue('minutely'); }
@@ -44,9 +46,18 @@ class PoorMansCron
      */
     private function sendMessagesFromQueue($interval)
     {
-        /** @var $objQueueManager \NotificationCenter\Queue\QueueManagerInterface */
-        $objQueueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
+        $queueGateways = Gateway::findQueuesByInterval($interval);
 
-        //$objQueueManager->sendFromQueue();
+        if ($queueGateways === null) {
+
+            return;
+        }
+
+        /** @var $queueManager \NotificationCenter\Queue\QueueManagerInterface */
+        $queueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
+
+        foreach ($queueGateways as $queueGateway) {
+            $queueManager->sendFromQueue($queueGateway->id, (int) $queueGateway->queue_cronMessages);
+        }
     }
 }

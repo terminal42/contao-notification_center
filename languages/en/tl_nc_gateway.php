@@ -30,7 +30,10 @@
  */
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title']                       = array('Title', 'Please enter a title for this gateway.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']                        = array('Type', 'Please select a type for this gateway.');
-$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway']               = array('Target gateway', 'This gateway will queue all the messages and then send them over the gateway you define here.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway']         = array('Target gateway', 'This gateway will queue all the messages and then send them over the gateway you define here.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronEnable']            = array('Enable poor man\'s cronjob', 'This will register this queue gateway to the poor man\'s cronjob.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']          = array('Interval', 'Choose the interval you would like to have this queue gateway be invoked.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronMessages']          = array('Number of messages', 'Here you can enter the number of messages that should be sent per invocation.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['email_overrideSmtp']          = array('Override SMTP settings', 'This gateway will take the Contao e-mail settings by default. If you want to override the SMTP settings for this specific gateway, activate this checkbox.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']                   = array('File type', 'Please choose the file type.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']             = array('Connection type', 'Please choose the connection type.');
@@ -46,10 +49,15 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']                = array('Ena
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['queue']               = 'Queue';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']               = 'Standard email gateway';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['file']                = 'Write to file';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['postmark']            = 'Postmark (postmarkapp.com)';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['queue']                   = 'Queue';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']                   = 'Standard email gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['file']                    = 'Write to file';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['postmark']                = 'Postmark (postmarkapp.com)';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['minutely']  = 'Every minute';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['hourly']    = 'Every hour';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['daily']     = 'Every day';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['weekly']    = 'Every week';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['monthly']   = 'Every month';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['csv']            = 'CSV';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_type']['xml']            = 'Plain Text / XML';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['local']    = 'Local';
@@ -76,3 +84,4 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['show']                    = array('Gateway
  */
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title_legend']            = 'Title & type';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend']          = 'Gateway settings';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['cronjob_legend']          = 'Cronjob settings';
