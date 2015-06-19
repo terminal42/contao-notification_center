@@ -151,6 +151,12 @@ class ContaoHelper extends \Controller
      */
     public function addQueueToUserNavigation($arrModules, $blnShowAll)
     {
+        // Make sure there's no exception if notification_center has not been properly installed yet
+        if (!\Database::getInstance()->tableExists('tl_nc_gateway')) {
+
+            return $arrModules;
+        }
+
         if (!\Database::getInstance()
             ->prepare('SELECT COUNT(id) as count FROM tl_nc_gateway WHERE type=? AND tstamp>0')
             ->execute('queue')->count
