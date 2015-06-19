@@ -27,6 +27,9 @@
 
 namespace NotificationCenter;
 
+use NotificationCenter\Model\Gateway;
+use NotificationCenter\Model\Message;
+
 class tl_nc_message extends \Backend
 {
     /**
@@ -40,6 +43,28 @@ class tl_nc_message extends \Backend
      * @var array
      */
     protected $arrGateways = array();
+
+    /**
+     * Modifies the palette for the queue gateway so it takes the one from the
+     * target gateway
+     *
+     * @param \DataContainer $dc
+     */
+    public function modifyPalette(\DataContainer $dc)
+    {
+        if (\Input::get('act') != 'edit') {
+            return;
+        }
+
+        $message = Message::findByPk($dc->id);
+        $gateway = $message->getRelated('gateway');
+
+        if ($gateway !== null && $gateway->type == 'queue') {
+            $targetGateway = Gateway::findByPk($gateway->targetGateway);
+            $GLOBALS['TL_DCA']['tl_nc_message']['palettes']['queue'] =
+                $GLOBALS['TL_DCA']['tl_nc_message']['palettes'][$targetGateway->type];
+        }
+    }
 
     /**
      * child_record_callback

@@ -47,6 +47,9 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
                 'id'    => 'primary',
                 'pid'   => 'index'
             )
+        ),
+        'onload_callback'   => array(
+            array('NotificationCenter\tl_nc_message', 'modifyPalette')
         )
     ),
 

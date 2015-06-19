@@ -27,11 +27,35 @@
 
 namespace NotificationCenter;
 
+use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Notification;
 
 class tl_nc_language extends \Backend
 {
+
+    /**
+     * Modifies the palette for the queue gateway so it takes the one from the
+     * target gateway
+     *
+     * @param \DataContainer $dc
+     */
+    public function modifyPalette(\DataContainer $dc)
+    {
+        if (\Input::get('act') != 'edit') {
+            return;
+        }
+
+        $language = Language::findByPk($dc->id);
+        $message = $language->getRelated('pid');
+        $gateway = $message->getRelated('gateway');
+
+        if ($gateway !== null && $gateway->type == 'queue') {
+            $targetGateway = Gateway::findByPk($gateway->targetGateway);
+            $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['queue'] =
+                $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$targetGateway->type];
+        }
+    }
 
     /**
      * Save gateway type in language when creating new record
