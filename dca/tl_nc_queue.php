@@ -37,7 +37,6 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         'dataContainer'               => 'Table',
         'closed'                      => true,
         'notEditable'                 => true,
-        'notDeletable'                => true,
         'notCopyable'                 => true,
         'notSortable'                 => true,
         'sql' => array
@@ -63,18 +62,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         (
             'fields'                  => array('message', 'dateSent'),
             'label_callback'          => array('NotificationCenter\tl_nc_queue', 'listRows'),
-        ),/*
-        'global_operations' => array
-        (
-            // @todo add a global operation to manually send the queue (use ajax because of max_script_execution)
-            'all' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href'                => 'act=select',
-                'class'               => 'header_edit_all',
-                'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="e"'
-            )
-        ),*/
+        ),
         'operations' => array
         (
             're-queue' => array
@@ -84,6 +72,14 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
                 'icon'                => 'system/modules/notification_center/assets/re-queue.png',
                 'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['tl_nc_queue']['re-queueConfirmation'] . '\'))return false;Backend.getScrollOffset()"',
                 'button_callback'     => array('NotificationCenter\tl_nc_queue', 'reQueueButton')
+            ),
+            'delete' => array
+            (
+                'label'               => &$GLOBALS['TL_LANG']['tl_nc_queue']['delete'],
+                'href'                => 'act=delete',
+                'icon'                => 'delete.gif',
+                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
+                'button_callback'     => array('NotificationCenter\tl_nc_queue', 'deleteButton')
             ),
             // @todo: maybe format the json encoded tokens for better usability?
             'show' => array

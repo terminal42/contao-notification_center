@@ -95,4 +95,20 @@ class tl_nc_queue extends \Backend
         $objMessage = QueuedMessage::findByPk($row['id']);
         return ($objMessage->getStatus() === 'error') ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
+
+    /**
+     * Return the delete button
+     * @param array
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @param string
+     * @return string
+     */
+    public function deleteButton($row, $href, $label, $title, $icon, $attributes)
+    {
+        $objMessage = QueuedMessage::findByPk($row['id']);
+        return ($objMessage->getStatus() !== 'sent') ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+    }
 }
