@@ -51,7 +51,7 @@ class tl_nc_language extends \Backend
         $gateway = $message->getRelated('gateway');
 
         if ($gateway !== null && $gateway->type == 'queue') {
-            $targetGateway = Gateway::findByPk($gateway->targetGateway);
+            $targetGateway = Gateway::findByPk($gateway->queue_targetGateway);
             $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['queue'] =
                 $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$targetGateway->type];
         }

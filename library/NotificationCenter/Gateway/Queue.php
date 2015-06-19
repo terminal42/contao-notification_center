@@ -60,7 +60,7 @@ class Queue implements GatewayInterface, LabelCallbackInterface
      */
     public function getLabel($row, $label, \DataContainer $dc, $args)
     {
-        $targetModel = Gateway::findByPk($row['targetGateway']);
+        $targetModel = Gateway::findByPk($row['queue_targetGateway']);
 
         if ($targetModel === null) {
 

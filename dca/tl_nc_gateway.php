@@ -113,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         '__selector__'                => array('type', 'email', 'email_overrideSmtp', 'file_connection'),
         'default'                     => '{title_legend},title,type',
-        'queue'                       => '{title_legend},title,type;{gateway_legend},targetGateway',
+        'queue'                       => '{title_legend},title,type;{gateway_legend},queue_targetGateway',
         'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
         'postmark'                    => '{title_legend},title,type;{gateway_legend},postmark_key,postmark_test,postmark_ssl',
@@ -158,9 +158,9 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
         ),
-        'targetGateway' => array
+        'queue_targetGateway' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['targetGateway'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway'],
             'exclude'                 => true,
             'filter'                  => true,
             'inputType'               => 'select',
