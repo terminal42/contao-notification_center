@@ -89,6 +89,7 @@ $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'] = new \NotificationCenter\Queue
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
     (array) $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'],
     array(
+         'queue'    => 'NotificationCenter\Gateway\Queue',
          'email'    => 'NotificationCenter\Gateway\Email',
          'file'     => 'NotificationCenter\Gateway\File',
          'postmark' => 'NotificationCenter\Gateway\Postmark',

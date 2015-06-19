@@ -112,6 +112,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         '__selector__'                => array('type', 'email', 'email_overrideSmtp', 'file_connection'),
         'default'                     => '{title_legend},title,type',
+        'queue'                       => '{title_legend},title,type;{gateway_legend},targetGateway',
         'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
         'postmark'                    => '{title_legend},title,type;{gateway_legend},postmark_key,postmark_test,postmark_ssl',
@@ -155,6 +156,27 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['type'],
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
+        ),
+        'targetGateway' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['targetGateway'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'select',
+            'options_callback'        => function() {
+                $options = array();
+
+                $gateways = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_gateway WHERE type!=?')
+                    ->execute('queue');
+
+                while ($gateways->next()) {
+                    $options[$gateways->id] = $gateways->title;
+                }
+
+                return $options;
+            },
+            'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "int(10) NOT NULL default '0'"
         ),
         'email_overrideSmtp' => array
         (
