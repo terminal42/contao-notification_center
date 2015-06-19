@@ -73,10 +73,12 @@ $GLOBALS['TL_CRON']['minutely'][] = array('NotificationCenter\Frontend\Helper', 
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('NotificationCenter\AutoSuggester', 'verifyTokens');
-$GLOBALS['TL_HOOKS']['processFormData'][] = array('NotificationCenter\tl_form', 'sendFormNotification');
-$GLOBALS['TL_HOOKS']['createNewUser'][] = array('NotificationCenter\ContaoHelper', 'sendRegistrationEmail');
-$GLOBALS['TL_HOOKS']['updatePersonalData'][] = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]       = array('NotificationCenter\AutoSuggester', 'verifyTokens');
+$GLOBALS['TL_HOOKS']['processFormData'][]       = array('NotificationCenter\tl_form', 'sendFormNotification');
+$GLOBALS['TL_HOOKS']['createNewUser'][]         = array('NotificationCenter\ContaoHelper', 'sendRegistrationEmail');
+$GLOBALS['TL_HOOKS']['updatePersonalData'][]    = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
+$GLOBALS['TL_HOOKS']['getUserNavigation'][]     = array('NotificationCenter\ContaoHelper', 'addQueueToUserNavigation');
+
 
 /**
  * Queue manager

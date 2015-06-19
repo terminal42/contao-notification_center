@@ -140,4 +140,21 @@ class ContaoHelper extends \Controller
         	$objNotification->send($arrTokens);
         }
     }
+
+    /**
+     * Remove Queue from back end navigation if no queue gateway is available yet
+     *
+     * @param array
+     * @param bool
+     *
+     * @return array
+     */
+    public function addQueueToUserNavigation($arrModules, $blnShowAll)
+    {
+        if (!\Database::getInstance()->prepare('SELECT COUNT(id) as count FROM tl_nc_gateway WHERE type=? AND tstamp>0')->execute('queue')->count) {
+            unset($arrModules['notification_center']['modules']['nc_queue']);
+        }
+
+        return $arrModules;
+    }
 }
