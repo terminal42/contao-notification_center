@@ -105,24 +105,28 @@ class QueuedMessage extends \Model
     }
 
     /**
-     * Find next given number of messages from the queue that have not been sent yet
-     * @param   int $intQuantity Number of messages
-     * @param   array $arrOptions
-     * @return  QueuedMessage[]|null
+     * Find next given number of messages from the queue that have not been sent yet.
+     *
+     * @param int       $sourceQueue
+     * @param int       $numberOfMsgs
+     * @param array     $options
+     *
+     * @return QueuedMessage[]|null
      */
-    public static function findQueuedByQuantity($intQuantity = 10, $arrOptions = array())
+    public static function findBySourceAndQuantity($sourceQueue, $numberOfMsgs, $options = array())
     {
         $t = static::getTable();
+        $sourceQueue = (int) $sourceQueue;
 
-        $arrOptions = array_merge(
+        $options = array_merge(
             array(
-                'column' => array("$t.dateSent=''", "$t.error!=1"),
+                'column' => array("$t.sourceQueue=$sourceQueue", "$t.dateSent=''", "$t.error!=1"),
                 'order'  => "$t.dateAdded",
-                'limit'  => $intQuantity
+                'limit'  => $numberOfMsgs
             ),
-            $arrOptions
+            $options
         );
 
-        return static::find($arrOptions);
+        return static::find($options);
     }
 }

@@ -34,74 +34,77 @@ use NotificationCenter\Model\QueuedMessage;
 class QueueManager implements QueueManagerInterface
 {
     /**
-     * Adds a message to the queue
-     * @param Message $objMessage
-     * @param         $arrTokens
-     * @param         $strLanguage
+     * Adds a message to the queue.
+     *
+     * @param Message   $message
+     * @param           $tokens
+     * @param           $language
+     *
      * @return $this
      */
-    public function addMessage(Message $objMessage, $arrTokens, $strLanguage)
+    public function addMessage(Message $message, $tokens, $language)
     {
-        $objQueuedMessage = new QueuedMessage();
-        $objQueuedMessage->message = $objMessage->id;
-        $objQueuedMessage->dateAdded = time();
-        $objQueuedMessage->setTokens($arrTokens);
-        $objQueuedMessage->language = $strLanguage;
+        $gateway = $message->getRelated('gateway');
 
+        if ($gateway === null || $gateway->type !== 'queue') {
+
+            throw new \InvalidArgumentException('You cannot add a message to the queue that does not belong to any queue gateway.');
+        }
+
+        $objQueuedMessage = new QueuedMessage();
+        $objQueuedMessage->message          = $message->id;
+        $objQueuedMessage->sourceQueue      = $gateway->id;
+        $objQueuedMessage->targetGateway    = $gateway->targetGateway;
+        $objQueuedMessage->dateAdded = time();
+        $objQueuedMessage->setTokens($tokens);
+        $objQueuedMessage->language = $language;
         $objQueuedMessage->save();
 
         return $this;
     }
 
     /**
-     * Deletes a message from the queue
-     * @param Message $objMessage
+     * Deletes a message from the queue.
+     *
+     * @param Message $message
+     *
      * @return $this
      */
-    public function removeMessage(Message $objMessage)
+    public function removeMessage(Message $message)
     {
         \Database::getInstance()->prepare('DELETE FROM tl_nc_queue WHERE message=?')
-            ->execute($objMessage->id);
+            ->execute($message->id);
 
         return $this;
     }
 
     /**
-     * Sends a collection of messages
-     * @param Message[] $objMsgCollection
-     * @return array An array containing true or false (delivery result) for every message
-     */
-    public function sendMessages(\Model\Collection $objMessageCollection)
-    {
-        $arrResult = array();
-        $arrMessageIds = $objMessageCollection->fetchEach('id');
-        $objQueuedMsgs = QueuedMessage::findMultipleByIds($arrMessageIds);
-        foreach ($objQueuedMsgs as $objQueuedMsg) {
-            $arrResult[$objQueuedMsg->message] = $objQueuedMsg->send();
-        }
-
-        return $arrResult;
-    }
-
-    /**
-     * Sends a given number of messages in the queue
-     * @param int $intNumberOfMsgs Number of messages to send
+     * Sends a given number of messages in the queue.
+     *
+     * @param int $sourceQueue      The ID of the source queue
+     * @param int $numberOfMsgs     Number of messages to send
+     *
      * @return $this
      */
-    public function sendFromQueue($intNumberOfMsgs = 10)
+    public function sendFromQueue($sourceQueue, $numberOfMsgs)
     {
-        $objQueuedMsgs = QueuedMessage::findQueuedByQuantity($intNumberOfMsgs);
+        $messages = QueuedMessage::findBySourceAndQuantity($sourceQueue, $numberOfMsgs);
 
-        foreach ($objQueuedMsgs as $objQueuedMsg) {
-            /* @var $objQueuedMsg QueuedMessage */
-            $blnResult = $objQueuedMsg->send();
-            if (!$blnResult) {
-                $objQueuedMsg->error = 1;
+        if ($messages === null) {
+
+            return $this;
+        }
+
+        foreach ($messages as $msg) {
+            /* @var $msg QueuedMessage */
+            $result = $msg->send();
+            if (!$result) {
+                $msg->error = 1;
             } else {
-                $objQueuedMsg->dateSent = time();
+                $msg->dateSent = time();
             }
 
-            $objQueuedMsg->save();
+            $msg->save();
         }
 
         return $this;

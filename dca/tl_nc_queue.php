@@ -43,8 +43,10 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         (
             'keys' => array
             (
-                'id'        => 'primary',
-                'message'   => 'index'
+                'id'            => 'primary',
+                'message'       => 'index',
+                'sourceQueue'   => 'index',
+                'targetGateway' => 'index',
             )
         )
     ),
@@ -103,6 +105,14 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         'id' => array
         (
             'sql'                     => "int(10) unsigned NOT NULL auto_increment"
+        ),
+        'sourceQueue' => array
+        (
+            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'targetGateway' => array
+        (
+            'sql'                     => "int(10) unsigned NOT NULL default '0'"
         ),
         'message' => array
         (

@@ -34,31 +34,32 @@ use NotificationCenter\Model\QueuedMessage;
 interface QueueManagerInterface
 {
     /**
-     * Adds a message to the queue
-     * @param Message $objMessage
-     * @param         $arrTokens
-     * @param         $strLanguage
+     * Adds a message to the queue.
+     *
+     * @param Message   $message
+     * @param           $tokens
+     * @param           $language
+     *
      * @return $this
      */
-    public function addMessage(Message $objMessage, $arrTokens, $strLanguage);
+    public function addMessage(Message $message, $tokens, $language);
 
     /**
-     * Deletes a message from the queue
-     * @param Message $objMessage
+     * Deletes a message from the queue.
+     *
+     * @param Message $message
+     *
      * @return $this
      */
-    public function removeMessage(Message $objMessage);
-    /**
-     * Sends a collection of messages
-     * @param Message[] $objMsgCollection
-     * @return array An array containing true or false (delivery result) for every message
-     */
-    public function sendMessages(\Model\Collection $objMessageCollection);
+    public function removeMessage(Message $message);
 
     /**
-     * Sends a given number of messages in the queue
-     * @param int $intNumberOfMsgs Number of messages to send
+     * Sends a given number of messages in the queue.
+     *
+     * @param int $sourceQueue      The ID of the source queue
+     * @param int $numberOfMsgs     Number of messages to send
+     *
      * @return $this
      */
-    public function sendFromQueue($intNumberOfMsgs = 10);
+    public function sendFromQueue($sourceQueue, $numberOfMsgs);
 } 
