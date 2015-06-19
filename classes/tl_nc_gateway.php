@@ -91,4 +91,19 @@ class tl_nc_gateway extends \Backend
 
         return $label;
     }
+
+    /**
+     * Gets the cron job explanation
+     *
+     * @param \DataContainer $dc
+     */
+    public function queueCronjobExplanation(\DataContainer $dc)
+    {
+        return sprintf('<div style="color: #4b85ba;
+            background: #eff5fa;
+            padding: 10px;
+            border-radius: 3px;">%s</div>',
+            str_replace('{gateway_id}', $dc->id, $GLOBALS['TL_LANG']['queueCronjobExplanation'])
+        );
+    }
 }

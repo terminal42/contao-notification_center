@@ -85,3 +85,19 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['show']                    = array('Gateway
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title_legend']            = 'Title & type';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend']          = 'Gateway settings';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['cronjob_legend']          = 'Cronjob settings';
+
+/**
+ * Others
+ */
+$GLOBALS['TL_LANG']['queueCronjobExplanation'] = 'Queued messages will remain in the queue forever unless
+you trigger the sending mechanism by either using a real cron job or
+the Contao internal poor man\'s cronjob. The Notification Center is shipped
+with a binary that can be executed using a real cronjob. To setup a real cronjob
+that invokes the queue of this queue gateway (ID: {gateway_id}) and send 15 messages every 10 minutes,
+you would need to setup the following crontab:
+<br><blockquote>*/10 * * * * /path/to/contao/system/modules/notification_center/bin/queue -s {gateway_id} -n 15</blockquote><br>
+or let\'s say you want to send 30 messages every 5 minutes afther every hour, then you would set it up like this:
+<br><blockquote>5 * * * * /path/to/contao/system/modules/notification_center/bin/queue -s {gateway_id} -n 30</blockquote><br>
+If you don\'t have access to real cronjobs then you can enable the poor man\'s cron. Note that it doesn\'t provide the same
+flexibility in terms of interval settings and it is subject to the web execution context and thus certainly affected by
+PHP configurations such as the maximum execution time. Thus, try to keep the number of messages sent per invocation as low as possible.';

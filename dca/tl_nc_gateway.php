@@ -114,7 +114,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         '__selector__'                => array('type', 'queue_cronEnable', 'email', 'email_overrideSmtp', 'file_connection'),
         'default'                     => '{title_legend},title,type',
-        'queue'                       => '{title_legend},title,type;{gateway_legend},queue_targetGateway;{cronjob_legend},queue_cronEnable',
+        'queue'                       => '{title_legend},title,type;{gateway_legend},queue_targetGateway;{cronjob_legend},queue_cronExplanation,queue_cronEnable',
         'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
         'postmark'                    => '{title_legend},title,type;{gateway_legend},postmark_key,postmark_test,postmark_ssl',
@@ -180,6 +180,11 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             },
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                     => "int(10) NOT NULL default '0'"
+        ),
+        'queue_cronExplanation' => array
+        (
+            'exclude'                 => true,
+            'input_field_callback'    => array('NotificationCenter\tl_nc_gateway', 'queueCronjobExplanation')
         ),
         'queue_cronEnable' => array
         (
