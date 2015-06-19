@@ -91,16 +91,25 @@ class QueuedMessage extends \Model
 
     /**
      * Send this queued message
+     *
      * @return  bool
      */
     public function send()
     {
-        $objMessage = $this->getRelated('message');
-        if ($objMessage === null) {
+        $message = $this->getRelated('message');
+        if ($message === null) {
             \System::log('Could not send queued message ' . $this->id . ' because related message could not be found.', __METHOD__, TL_ERROR);
             return false;
         } else {
-            return $objMessage->send($this->getTokens(), $this->language, true);
+            // Temporarily set gateway to target gateway
+            $message->gateway = $this->targetGateway;
+
+            $result = $message->send($this->getTokens(), $this->language);
+
+            // Reset gateway
+            $message->gateway = $this->sourceQueue;
+
+            return $result;
         }
     }
 
