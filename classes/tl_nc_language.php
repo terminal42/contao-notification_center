@@ -155,7 +155,7 @@ class tl_nc_language extends \Backend
             foreach ($chunks as $chunk) {
 
                 // Skip string with tokens or inserttags
-                if (strpos($chunk, '##') !== false || strpos($chunk, '{{') !== false) {
+                if (strpos($chunk, '##') !== false || strpos($chunk, '{{') !== false|| strpos($chunk, '{if') !== false) {
                     continue;
                 }
 
