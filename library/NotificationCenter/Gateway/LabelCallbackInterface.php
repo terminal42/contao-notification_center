@@ -25,15 +25,19 @@
  * @license    LGPL
  */
 
-/**
- * Backend Modules
- */
-$GLOBALS['TL_LANG']['MOD']['notification_center']       = 'Notification Center';
-$GLOBALS['TL_LANG']['MOD']['nc_notifications']          = array('Notifications', 'Manage notifications.');
-$GLOBALS['TL_LANG']['MOD']['nc_queue']                  = array('Queue', 'View the message queue.');
-$GLOBALS['TL_LANG']['MOD']['nc_gateways']               = array('Gateways', 'Manage gateways');
+namespace NotificationCenter\Gateway;
 
-/**
- * Front end modules
- */
-$GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter'] = array('Lost password (Notification Center)', 'Generates a form to request a new password and sends the notification using the notification center.');
+interface LabelCallbackInterface
+{
+    /**
+     * Gets the back end list label
+     *
+     * @param array             $row
+     * @param string            $label
+     * @param \DataContainer    $dc
+     * @param array             $args
+     *
+     * @return string
+     */
+    public function getLabel($row, $label, \DataContainer $dc, $args);
+}

@@ -46,6 +46,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         ),
         'onload_callback'             => array
         (
+            array('NotificationCenter\tl_nc_language', 'modifyPalette'),
             array('NotificationCenter\AutoSuggester', 'load')
         ),
         'sql' => array

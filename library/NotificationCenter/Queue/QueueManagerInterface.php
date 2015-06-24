@@ -25,15 +25,41 @@
  * @license    LGPL
  */
 
-/**
- * Backend Modules
- */
-$GLOBALS['TL_LANG']['MOD']['notification_center']       = 'Notification Center';
-$GLOBALS['TL_LANG']['MOD']['nc_notifications']          = array('Notifications', 'Manage notifications.');
-$GLOBALS['TL_LANG']['MOD']['nc_queue']                  = array('Queue', 'View the message queue.');
-$GLOBALS['TL_LANG']['MOD']['nc_gateways']               = array('Gateways', 'Manage gateways');
+namespace NotificationCenter\Queue;
 
-/**
- * Front end modules
- */
-$GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter'] = array('Lost password (Notification Center)', 'Generates a form to request a new password and sends the notification using the notification center.');
+
+use NotificationCenter\Model\Message;
+use NotificationCenter\Model\QueuedMessage;
+
+interface QueueManagerInterface
+{
+    /**
+     * Adds a message to the queue.
+     *
+     * @param Message   $message
+     * @param           $tokens
+     * @param           $language
+     *
+     * @return $this
+     */
+    public function addMessage(Message $message, $tokens, $language);
+
+    /**
+     * Deletes a message from the queue.
+     *
+     * @param Message $message
+     *
+     * @return $this
+     */
+    public function removeMessage(Message $message);
+
+    /**
+     * Sends a given number of messages in the queue.
+     *
+     * @param int $sourceQueue      The ID of the source queue
+     * @param int $numberOfMsgs     Number of messages to send
+     *
+     * @return $this
+     */
+    public function sendFromQueue($sourceQueue, $numberOfMsgs);
+} 

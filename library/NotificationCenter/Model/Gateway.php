@@ -80,4 +80,22 @@ class Gateway extends \Model
 
         return $this->objGateway;
     }
+
+    /**
+     * Find queues by interval.
+     *
+     * @param   string $interval
+     * @param   array $options
+     *
+     * @return Gateway[]|null
+     */
+    public static function findQueuesByInterval($interval, $options = array())
+    {
+        $t = static::$strTable;
+
+        $columns = array("$t.type=?", "$t.queue_cronEnable=?", "$t.queue_cronInterval=?");
+        $values  = array('queue', 1, $interval);
+
+        return static::findBy($columns, $values, $options);
+    }
 }

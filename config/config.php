@@ -37,6 +37,12 @@ array_insert($GLOBALS['BE_MOD'], 1, array
             'tables'        => array('tl_nc_notification', 'tl_nc_message', 'tl_nc_language'),
             'icon'          => 'system/modules/notification_center/assets/notification.png',
         ),
+        'nc_queue' => array
+        (
+            'tables'        => array('tl_nc_queue'),
+            'icon'          => 'system/modules/notification_center/assets/queue.png',
+            're-queue'      => array('NotificationCenter\tl_nc_queue', 'reQueue')
+        ),
         'nc_gateways' => array
         (
             'tables'        => array('tl_nc_gateway'),
@@ -57,14 +63,31 @@ $GLOBALS['TL_MODELS']['tl_nc_notification']             = 'NotificationCenter\Mo
 $GLOBALS['TL_MODELS']['tl_nc_gateway']                  = 'NotificationCenter\Model\Gateway';
 $GLOBALS['TL_MODELS']['tl_nc_language']                 = 'NotificationCenter\Model\Language';
 $GLOBALS['TL_MODELS']['tl_nc_message']                  = 'NotificationCenter\Model\Message';
+$GLOBALS['TL_MODELS']['tl_nc_queue']                    = 'NotificationCenter\Model\QueuedMessage';
+
+/**
+ * Cron jobs
+ */
+$GLOBALS['TL_CRON']['minutely'][] = array('NotificationCenter\Frontend\PoorMansCron', 'minutely');
+$GLOBALS['TL_CRON']['hourly'][]   = array('NotificationCenter\Frontend\PoorMansCron', 'hourly');
+$GLOBALS['TL_CRON']['daily'][]    = array('NotificationCenter\Frontend\PoorMansCron', 'daily');
+$GLOBALS['TL_CRON']['weekly'][]   = array('NotificationCenter\Frontend\PoorMansCron', 'weekly');
+$GLOBALS['TL_CRON']['monthly'][]  = array('NotificationCenter\Frontend\PoorMansCron', 'monthly');
 
 /**
  * Hooks
  */
-$GLOBALS['TL_HOOKS']['addCustomRegexp'][] = array('NotificationCenter\AutoSuggester', 'verifyTokens');
-$GLOBALS['TL_HOOKS']['processFormData'][] = array('NotificationCenter\tl_form', 'sendFormNotification');
-$GLOBALS['TL_HOOKS']['createNewUser'][] = array('NotificationCenter\ContaoHelper', 'sendRegistrationEmail');
-$GLOBALS['TL_HOOKS']['updatePersonalData'][] = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
+$GLOBALS['TL_HOOKS']['addCustomRegexp'][]       = array('NotificationCenter\AutoSuggester', 'verifyTokens');
+$GLOBALS['TL_HOOKS']['processFormData'][]       = array('NotificationCenter\tl_form', 'sendFormNotification');
+$GLOBALS['TL_HOOKS']['createNewUser'][]         = array('NotificationCenter\ContaoHelper', 'sendRegistrationEmail');
+$GLOBALS['TL_HOOKS']['updatePersonalData'][]    = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
+$GLOBALS['TL_HOOKS']['getUserNavigation'][]     = array('NotificationCenter\ContaoHelper', 'addQueueToUserNavigation');
+
+
+/**
+ * Queue manager
+ */
+$GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'] = new \NotificationCenter\Queue\QueueManager();
 
 /**
  * Notification Center Gateways
@@ -72,6 +95,7 @@ $GLOBALS['TL_HOOKS']['updatePersonalData'][] = array('NotificationCenter\ContaoH
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
     (array) $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'],
     array(
+         'queue'    => 'NotificationCenter\Gateway\Queue',
          'email'    => 'NotificationCenter\Gateway\Email',
          'file'     => 'NotificationCenter\Gateway\File',
          'postmark' => 'NotificationCenter\Gateway\Postmark',

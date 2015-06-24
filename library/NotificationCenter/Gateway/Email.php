@@ -79,7 +79,9 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
 
         // return false if no language found for BC
         if ($objDraft === null) {
-            \System::log('No draft for message ID ' . $objMessage->id, __METHOD__, TL_ERROR);
+
+            \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
+
             return false;
         }
 
