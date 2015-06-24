@@ -93,8 +93,8 @@ class Gateway extends \Model
     {
         $t = static::$strTable;
 
-        $columns = array("$t.type=?", "$t.queue_cronInterval=?");
-        $values  = array('queue', $interval);
+        $columns = array("$t.type=?", "$t.queue_cronEnable=?", "$t.queue_cronInterval=?");
+        $values  = array('queue', 1, $interval);
 
         return static::findBy($columns, $values, $options);
     }
