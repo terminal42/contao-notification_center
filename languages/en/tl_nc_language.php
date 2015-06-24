@@ -26,14 +26,16 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']                 = array('Mod
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']                 = array('Raw text', 'Please enter the text.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']                 = array('HTML', 'Please enter the HTML.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_name']                  = array('File name', 'Please enter the file name.');
-$GLOBALS['TL_LANG']['tl_nc_language']['file_override']              = array('Override existing file', 'Override the old file if it exists.');
+$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']          = array('Storage mode', 'Here you can choose whether you want to override the existing file or append to an existing file if present.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_content']               = array('File content', 'Please enter the file content.');
 
 /**
  * Reference
  */
-$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textOnly']     = 'Text only';
-$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textAndHtml']  = 'HTML and text';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textOnly']         = 'Text only';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textAndHtml']      = 'HTML and text';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['override']  = 'Override existing file';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['append']    = 'Append to existing file';
 
 /**
  * Buttons
