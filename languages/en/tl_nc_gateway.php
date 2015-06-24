@@ -96,7 +96,7 @@ with a binary that can be executed using a real cronjob. To setup a real cronjob
 that invokes the queue of this queue gateway (ID: {gateway_id}) and send 15 messages every 10 minutes,
 you would need to setup the following crontab:
 <br><blockquote>*/10 * * * * /path/to/contao/system/modules/notification_center/bin/queue -s {gateway_id} -n 15</blockquote><br>
-or let\'s say you want to send 30 messages every 5 minutes afther every hour, then you would set it up like this:
+or let\'s say you want to send 30 messages every 5 minutes after every hour, then you would set it up like this:
 <br><blockquote>5 * * * * /path/to/contao/system/modules/notification_center/bin/queue -s {gateway_id} -n 30</blockquote><br>
 If you don\'t have access to real cronjobs then you can enable the poor man\'s cron. Note that it doesn\'t provide the same
 flexibility in terms of interval settings and it is subject to the web execution context and thus certainly affected by
