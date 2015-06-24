@@ -94,10 +94,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
     ),
 
     // Palettes
-    'palettes' => array
-    (
-        'default'                     => '{title_legend},title,type'
-    ),
+    'palettes' => array(),
 
     // Fields
     'fields' => array
