@@ -290,7 +290,10 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode'],
             'exclude'                 => true,
             'inputType'               => 'select',
-            'options'                 => array('override', 'append'),
+            'options'                 => array(
+                \NotificationCenter\Gateway\File::FILE_STORAGE_OVERRIDE,
+                \NotificationCenter\Gateway\File::FILE_STORAGE_APPEND,
+            ),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode'],
             'eval'                    => array(
                 'includeBlankOption' => true,

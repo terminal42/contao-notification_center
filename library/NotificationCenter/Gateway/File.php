@@ -18,6 +18,12 @@ use NotificationCenter\Util\String;
 
 class File extends Base implements GatewayInterface
 {
+    /**
+     * File storage options
+     */
+    const FILE_STORAGE_CREATE   = ''; // Creates a new file every time
+    const FILE_STORAGE_OVERRIDE = 'override'; // Overrides the existing file if available
+    const FILE_STORAGE_APPEND   = 'append'; // Appends to an existing file if available
 
     /**
      * Create file
@@ -158,13 +164,15 @@ class File extends Base implements GatewayInterface
         }
 
         // Make sure we don't overwrite existing files
-        if ($strStorageMode === '' && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)) {
+        if ($strStorageMode === self::FILE_STORAGE_CREATE
+            && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)
+        ) {
             $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path, true));
         }
 
         $objFile = new \File($this->objModel->file_path . '/' . $strFileName);
 
-        if ($strStorageMode === 'append') {
+        if ($strStorageMode === self::FILE_STORAGE_APPEND) {
             $strContent = $objFile->getContent() . "\n" . $strContent;
         }
 
@@ -198,7 +206,7 @@ class File extends Base implements GatewayInterface
         ftp_pasv($resConnection, true);
 
         // Make sure we don't overwrite existing files
-        if ($strStorageMode === '') {
+        if ($strStorageMode === self::FILE_STORAGE_CREATE) {
             if (($arrFiles = @ftp_nlist($resConnection, $this->objModel->file_path)) === false) {
                 @ftp_close($resConnection);
                 return false;
@@ -207,7 +215,7 @@ class File extends Base implements GatewayInterface
             $strFileName = $this->getUniqueFileName($strFileName, $arrFiles);
         }
 
-        if ($strStorageMode === 'append') {
+        if ($strStorageMode === self::FILE_STORAGE_APPEND) {
             ob_start();
             ftp_get($resConnection, "php://output", $this->objModel->file_path, FTP_BINARY);
             $fileContents = ob_get_contents();
