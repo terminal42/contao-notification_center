@@ -58,7 +58,7 @@ class File extends Base implements GatewayInterface
         );
 
         try {
-            return $this->save($strFileName, $strContent, $objLanguage->file_storage_mode);
+            return $this->save($strFileName, $strContent, (string) $objLanguage->file_storage_mode);
         } catch (\Exception $e) {
             \System::log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
             return false;
