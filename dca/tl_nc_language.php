@@ -292,7 +292,11 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'inputType'               => 'select',
             'options'                 => array('override', 'append'),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode'],
-            'eval'                    => array('includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array(
+                'includeBlankOption' => true,
+                'blankOptionLabel'   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['create'],
+                'tl_class'           => 'w50'
+            ),
             'sql'                     => "varchar(8) NOT NULL default ''"
         ),
         'file_content' => array

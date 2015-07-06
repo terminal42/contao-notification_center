@@ -34,6 +34,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['file_content']               = array('Fil
  */
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textOnly']         = 'Text only';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textAndHtml']      = 'HTML and text';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['create']    = 'Create new file';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['override']  = 'Override existing file';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['append']    = 'Append to existing file';
 
