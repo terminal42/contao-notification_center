@@ -203,8 +203,12 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''",
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'validateEmailList')
+            )
         ),
         'email_recipient_cc' => array
         (
