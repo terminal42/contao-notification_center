@@ -28,7 +28,7 @@
 namespace NotificationCenter\Util;
 
 
-class String extends \Controller
+class String
 {
     /**
      * Text filter options
