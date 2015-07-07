@@ -10,6 +10,8 @@
 
 namespace NotificationCenter;
 
+use NotificationCenter\Util\Form;
+
 class tl_form extends \Backend
 {
 
@@ -87,6 +89,11 @@ class tl_form extends \Backend
 
         // Administrator e-mail
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
+
+        // Upload fields
+        foreach ($arrFiles as $fieldName => $file) {
+            $arrTokens['form_' . $fieldName] = Form::getFileUploadPathForToken($file);
+        }
 
         return $arrTokens;
     }
