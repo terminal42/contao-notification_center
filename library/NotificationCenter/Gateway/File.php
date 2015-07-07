@@ -173,7 +173,11 @@ class File extends Base implements GatewayInterface
 
         $objFile = new \File($this->objModel->file_path . '/' . $strFileName);
 
-        if ($strStorageMode === self::FILE_STORAGE_APPEND) {
+        // Don't start with a newline
+        if ($strStorageMode === self::FILE_STORAGE_APPEND
+            && $objFile->exists()
+            && $objFile->getContent() !== ''
+        ) {
             $strContent = $objFile->getContent() . "\n" . $strContent;
         }
 
@@ -223,7 +227,10 @@ class File extends Base implements GatewayInterface
             $fileContents = ob_get_contents();
             ob_end_clean();
 
-            $strContent .= $fileContents . "\n" . $strContent;
+            // Don't start with a newline
+            if ($fileContents !== '') {
+                $strContent .= $fileContents . "\n" . $strContent;
+            }
         }
 
         // Write content to temporary file
