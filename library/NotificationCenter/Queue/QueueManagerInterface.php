@@ -12,7 +12,6 @@ namespace NotificationCenter\Queue;
 
 
 use NotificationCenter\Model\Message;
-use NotificationCenter\Model\QueuedMessage;
 
 interface QueueManagerInterface
 {

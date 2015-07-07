@@ -11,10 +11,6 @@
 namespace NotificationCenter\MessageDraft;
 
 
-use NotificationCenter\Model\Language;
-use NotificationCenter\Model\Message;
-use NotificationCenter\Util\String;
-
 class PostmarkMessageDraft extends EmailMessageDraft
 {
     /**

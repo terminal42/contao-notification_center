@@ -12,7 +12,6 @@ namespace NotificationCenter;
 
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Language;
-use NotificationCenter\Model\Notification;
 
 class tl_nc_language extends \Backend
 {

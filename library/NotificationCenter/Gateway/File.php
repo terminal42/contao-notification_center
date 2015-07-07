@@ -12,7 +12,6 @@ namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
-use Haste\Haste;
 use NotificationCenter\Util\String;
 
 
