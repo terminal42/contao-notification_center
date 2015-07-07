@@ -195,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''",
         ),
         'email_sender_address' => array
@@ -203,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''",
             'save_callback' => array
             (
