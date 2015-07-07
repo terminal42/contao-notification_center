@@ -40,7 +40,7 @@ class ContaoHelper extends \Controller
         $arrTokens['link']        = \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
 
         // Support newsletters
-        if (in_array('newsletter', $this->Config->getActiveModules())) {
+        if (in_array('newsletter', \ModuleLoader::getActive())) {
             if (!is_array($arrData['newsletter'])) {
                 if ($arrData['newsletter'] != '') {
                     $objChannels                    = \Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array) $arrData['newsletter'])) . ")");
