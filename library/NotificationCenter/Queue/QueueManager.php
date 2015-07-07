@@ -34,11 +34,11 @@ class QueueManager implements QueueManagerInterface
             throw new \InvalidArgumentException('You cannot add a message to the queue that does not belong to any queue gateway.');
         }
 
-        $objQueuedMessage = new QueuedMessage();
-        $objQueuedMessage->message          = $message->id;
-        $objQueuedMessage->sourceQueue      = $gateway->id;
-        $objQueuedMessage->targetGateway    = $gateway->queue_targetGateway;
-        $objQueuedMessage->dateAdded = time();
+        $objQueuedMessage                = new QueuedMessage();
+        $objQueuedMessage->message       = $message->id;
+        $objQueuedMessage->sourceQueue   = $gateway->id;
+        $objQueuedMessage->targetGateway = $gateway->queue_targetGateway;
+        $objQueuedMessage->dateAdded     = time();
         $objQueuedMessage->setTokens($tokens);
         $objQueuedMessage->language = $language;
         $objQueuedMessage->save();

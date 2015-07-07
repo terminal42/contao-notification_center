@@ -68,7 +68,7 @@ class Gateway extends \Model
      * Find queues by interval.
      *
      * @param   string $interval
-     * @param   array $options
+     * @param   array  $options
      *
      * @return Gateway[]|null
      */

@@ -70,7 +70,7 @@ abstract class Base extends \Controller
     /**
      * @deprecated Use String::recursiveReplaceTokensAndTags()
      */
-    protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
+    protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags = 0)
     {
         return String::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
     }

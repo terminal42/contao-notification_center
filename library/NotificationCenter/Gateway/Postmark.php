@@ -52,6 +52,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
     {
         if ($this->objModel->postmark_key == '') {
             \System::log(sprintf('Please provide the Postmark API key for message ID "%s"', $objMessage->id), __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -75,8 +76,8 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         }
 
         // Recipients
-        $arrTo = $objDraft->getRecipientEmails();
-        $arrCc = $objDraft->getCcRecipientEmails();
+        $arrTo  = $objDraft->getRecipientEmails();
+        $arrCc  = $objDraft->getCcRecipientEmails();
         $arrBcc = $objDraft->getBccRecipientEmails();
 
         if (count(array_merge($arrTo, $arrCc, $arrBcc)) >= 20) {
@@ -86,18 +87,19 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
                 ),
                 __METHOD__,
                 TL_ERROR);
+
             return false;
         }
 
         // Set basic data
         $arrData = array
         (
-            'From'          => $strFrom,
-            'To'            => implode(',', $arrTo),
-            'Subject'       => $objDraft->getSubject(),
-            'HtmlBody'      => $objDraft->getHtmlBody(),
-            'TextBody'      => $objDraft->getTextBody(),
-            'TrackOpens'    => $objDraft->getTrackOpen()
+            'From'       => $strFrom,
+            'To'         => implode(',', $arrTo),
+            'Subject'    => $objDraft->getSubject(),
+            'HtmlBody'   => $objDraft->getHtmlBody(),
+            'TextBody'   => $objDraft->getTextBody(),
+            'TrackOpens' => $objDraft->getTrackOpen()
         );
 
         // Set CC recipients
@@ -107,7 +109,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
 
         // Set BCC recipients
         if (!empty($arrBcc)) {
-            $arrData['Bcc'] = implode(',',$arrBcc);
+            $arrData['Bcc'] = implode(',', $arrBcc);
         }
 
         // Set reply-to address
@@ -142,6 +144,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
                 ),
                 __METHOD__,
                 TL_ERROR);
+
             return false;
         } else {
             $strWouldHave = ($this->objModel->postmark_test) ? ' would have (test mode)' : '';

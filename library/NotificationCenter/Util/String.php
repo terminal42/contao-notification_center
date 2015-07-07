@@ -24,12 +24,12 @@ class String
     /**
      * Recursively replace simple tokens and insert tags
      * @param   string $strText
-     * @param   array $arrTokens Array of Tokens
-     * @param   int $intTextFlags Filters the tokens and the text for a given set of options
+     * @param   array  $arrTokens Array of Tokens
+     * @param   int    $intTextFlags Filters the tokens and the text for a given set of options
      *
      * @return  string
      */
-    public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
+    public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags = 0)
     {
         if ($intTextFlags > 0) {
             $arrTokens = static::convertToText($arrTokens, $intTextFlags);
@@ -40,11 +40,11 @@ class String
 
         // Replace all opening and closing tags with a hash so they don't get stripped
         // by parseSimpleTokens() - this is useful e.g. for XML content
-        $strHash = md5($strText);
+        $strHash                = md5($strText);
         $strTagOpenReplacement  = 'NC-TAG-OPEN-' . $strHash;
         $strTagCloseReplacement = 'NC-TAG-CLOSE-' . $strHash;
-        $arrOriginal = array('<', '>');
-        $arrReplacement = array($strTagOpenReplacement, $strTagCloseReplacement);
+        $arrOriginal            = array('<', '>');
+        $arrReplacement         = array($strTagOpenReplacement, $strTagCloseReplacement);
 
         $strText = str_replace($arrOriginal, $arrReplacement, $strText);
 
@@ -93,7 +93,7 @@ class String
 
             if (!empty($arrEmails[0])) {
                 foreach ($arrEmails[0] as $k => $v) {
-                    $varValue = str_replace($v, '%email'.$k.'%', $varValue);
+                    $varValue = str_replace($v, '%email' . $k . '%', $varValue);
                 }
             }
         }
@@ -111,7 +111,7 @@ class String
         // Restore friendly email after stripping tags
         if (!($options & static::NO_EMAILS) && !empty($arrEmails[0])) {
             foreach ($arrEmails[0] as $k => $v) {
-                $varValue = str_replace('%email'.$k.'%', $v, $varValue);
+                $varValue = str_replace('%email' . $k . '%', $v, $varValue);
             }
         }
 
@@ -153,8 +153,8 @@ class String
 
         foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
-                $strAddress = static::recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
-                
+                $strAddress = static::recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
+
                 list($strName, $strEmail) = \String::splitFriendlyEmail($strAddress);
 
                 // Address could become empty through invalid insert tag

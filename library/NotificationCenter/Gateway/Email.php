@@ -139,12 +139,12 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
             return;
         }
 
-        $this->arrSMTPCache['useSMTP'] = $GLOBALS['TL_CONFIG']['useSMTP'];
+        $this->arrSMTPCache['useSMTP']   = $GLOBALS['TL_CONFIG']['useSMTP'];
         $GLOBALS['TL_CONFIG']['useSMTP'] = true;
 
         foreach (array('smtpHost', 'smtpUser', 'smtpPass', 'smtpEnc', 'smtpPort') as $strKey) {
-            $this->arrSMTPCache[$strKey] = $GLOBALS['TL_CONFIG'][$strKey];
-            $strEmailKey = 'email_' . $strKey;
+            $this->arrSMTPCache[$strKey]   = $GLOBALS['TL_CONFIG'][$strKey];
+            $strEmailKey                   = 'email_' . $strKey;
             $GLOBALS['TL_CONFIG'][$strKey] = $this->objModel->{$strEmailKey};
         }
     }

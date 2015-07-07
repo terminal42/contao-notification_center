@@ -15,10 +15,10 @@ interface LabelCallbackInterface
     /**
      * Gets the back end list label
      *
-     * @param array             $row
-     * @param string            $label
-     * @param \DataContainer    $dc
-     * @param array             $args
+     * @param array          $row
+     * @param string         $label
+     * @param \DataContainer $dc
+     * @param array          $args
      *
      * @return string
      */

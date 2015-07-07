@@ -40,18 +40,19 @@ class File extends Base implements GatewayInterface
 
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
             \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+
             return false;
         }
 
         $strFileName = String::recursiveReplaceTokensAndTags(
             $objLanguage->file_name,
             $arrTokens,
-            String::NO_TAGS|String::NO_BREAKS
+            String::NO_TAGS | String::NO_BREAKS
         );
 
         // Escape quotes and line breaks for CSV files
         if ($this->objModel->file_type == 'csv') {
-            array_walk($arrTokens, function(&$varValue) {
+            array_walk($arrTokens, function (&$varValue) {
                 $varValue = str_replace(array('"', "\r\n", "\r"), array('""', "\n", "\n"), $varValue);
             });
         }
@@ -66,6 +67,7 @@ class File extends Base implements GatewayInterface
             return $this->save($strFileName, $strContent, (string) $objLanguage->file_storage_mode);
         } catch (\Exception $e) {
             \System::log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -128,16 +130,16 @@ class File extends Base implements GatewayInterface
             return $strFile;
         }
 
-        $offset = 0;
+        $offset   = 0;
         $pathinfo = pathinfo($strFile);
-        $name = $pathinfo['filename'];
+        $name     = $pathinfo['filename'];
 
         // Look for file that start with same name and have same file extension
         $arrFiles = preg_grep('/^' . preg_quote($name, '/') . '.*\.' . preg_quote($pathinfo['extension'], '/') . '/', $arrFiles);
 
         foreach ($arrFiles as $file) {
             if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
-                $file = str_replace('.' . $pathinfo['extension'], '', $file);
+                $file     = str_replace('.' . $pathinfo['extension'], '', $file);
                 $intValue = intval(substr($file, (strrpos($file, '__') + 2)));
 
                 $offset = max($offset, $intValue);
@@ -208,6 +210,7 @@ class File extends Base implements GatewayInterface
         if ($strStorageMode === self::FILE_STORAGE_CREATE) {
             if (($arrFiles = @ftp_nlist($resConnection, $this->objModel->file_path)) === false) {
                 @ftp_close($resConnection);
+
                 return false;
             }
 

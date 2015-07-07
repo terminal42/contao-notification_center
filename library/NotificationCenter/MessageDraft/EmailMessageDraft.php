@@ -43,9 +43,9 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function __construct(Message $objMessage, Language $objLanguage, $arrTokens)
     {
-        $this->arrTokens = $arrTokens;
+        $this->arrTokens   = $arrTokens;
         $this->objLanguage = $objLanguage;
-        $this->objMessage = $objMessage;
+        $this->objMessage  = $objMessage;
     }
 
     /**
@@ -55,7 +55,8 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getSenderEmail()
     {
         $strSenderAddress = $this->objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
-        return String::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+
+        return String::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
     }
 
     /**
@@ -65,7 +66,8 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getSenderName()
     {
         $strSenderName = $this->objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
-        return String::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+
+        return String::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
     }
 
     /**
@@ -102,7 +104,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getReplyToEmail()
     {
         if ($this->objLanguage->email_replyTo) {
-            return String::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+            return String::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
         }
 
         return '';
@@ -114,7 +116,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSubject()
     {
-        return String::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+        return String::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
     }
 
     /**
@@ -139,6 +141,7 @@ class EmailMessageDraft implements MessageDraftInterface
     {
         $strText = $this->objLanguage->email_text;
         $strText = String::recursiveReplaceTokensAndTags($strText, $this->arrTokens, String::NO_TAGS);
+
         return \Controller::convertRelativeUrls($strText, '', true);
     }
 
@@ -159,6 +162,7 @@ class EmailMessageDraft implements MessageDraftInterface
             $strHtml = String::recursiveReplaceTokensAndTags($strHtml, $this->arrTokens);
             $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
             $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
+
             return $strHtml;
         }
 

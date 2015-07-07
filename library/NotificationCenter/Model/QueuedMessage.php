@@ -82,6 +82,7 @@ class QueuedMessage extends \Model
         $message = $this->getRelated('message');
         if ($message === null) {
             \System::log('Could not send queued message ' . $this->id . ' because related message could not be found.', __METHOD__, TL_ERROR);
+
             return false;
         } else {
             // Temporarily set gateway to target gateway
@@ -99,15 +100,15 @@ class QueuedMessage extends \Model
     /**
      * Find next given number of messages from the queue that have not been sent yet.
      *
-     * @param int       $sourceQueue
-     * @param int       $numberOfMsgs
-     * @param array     $options
+     * @param int   $sourceQueue
+     * @param int   $numberOfMsgs
+     * @param array $options
      *
      * @return QueuedMessage[]|null
      */
     public static function findBySourceAndQuantity($sourceQueue, $numberOfMsgs, $options = array())
     {
-        $t = static::getTable();
+        $t           = static::getTable();
         $sourceQueue = (int) $sourceQueue;
 
         $options = array_merge(
