@@ -7,6 +7,7 @@
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
+
 namespace NotificationCenter\Gateway;
 
 
