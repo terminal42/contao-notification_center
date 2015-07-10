@@ -74,8 +74,7 @@ class ContaoHelper extends \Controller
     public function sendActivationEmail($objMember, &$objModule)
     {
         if (!$objModule->nc_notification) {
-          //  return;
-            var_dump('no Notification!');
+            return;
         }
 
         $arrTokens = array();
