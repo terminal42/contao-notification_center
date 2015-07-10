@@ -66,6 +66,7 @@ $GLOBALS['TL_HOOKS']['createNewUser'][]         = array('NotificationCenter\Cont
 $GLOBALS['TL_HOOKS']['updatePersonalData'][]    = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
 $GLOBALS['TL_HOOKS']['getUserNavigation'][]     = array('NotificationCenter\ContaoHelper', 'addQueueToUserNavigation');
 
+$GLOBALS['TL_HOOKS']['activateAccount'][]       = array('NotificationCenter\ContaoHelper', 'sendActivationEmail');
 
 /**
  * Queue manager
@@ -105,6 +106,19 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
                  'email_recipient_bcc'  => array('admin_email', 'form_*'),
                  'email_replyTo'        => array('admin_email', 'form_*'),
                  'attachment_tokens'    => array('form_*'),
+             ),
+             'member_activation' => array(
+                 'recipients'           => array('member_email', 'admin_email'),
+                 'email_subject'        => array('domain', 'member_*', 'admin_email'),
+                 'email_text'           => array('domain', 'member_*', 'admin_email'),
+                 'email_html'           => array('domain', 'member_*', 'admin_email'),
+                 'file_name'            => array('domain', 'member_*', 'admin_email'),
+                 'file_content'         => array('domain', 'member_*', 'admin_email'),
+                 'email_sender_name'    => array('admin_email', 'form_*'),
+                 'email_sender_address' => array('admin_email', 'form_*'),
+                 'email_recipient_cc'   => array('admin_email', 'member_*'),
+                 'email_recipient_bcc'  => array('admin_email', 'member_*'),
+                 'email_replyTo'        => array('admin_email', 'member_*'),
              ),
              'member_registration' => array(
                  'recipients'           => array('member_email', 'admin_email'),
