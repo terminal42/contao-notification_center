@@ -68,6 +68,7 @@ class ContaoHelper extends \Controller
 
     /**
      * Send a activation e-mail
+     *
      * @param object
      * @param object
      */
@@ -77,23 +78,18 @@ class ContaoHelper extends \Controller
             return;
         }
 
-        $arrTokens = array();
+        $arrTokens                = array();
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrTokens['domain'] = \Environment::get('host');
+        $arrTokens['domain']      = \Environment::get('host');
 
         // Support newsletters
-        if (in_array('newsletter', $this->Config->getActiveModules()))
-        {
-            if ($objMember->newsletter != null)
-            {
+        if (in_array('newsletter', $this->Config->getActiveModules())) {
+            if ($objMember->newsletter != null) {
                 $arrNewsletter(deserialize($objMember->newsletter));
-                if ($arrData['newsletter'] != '')
-                {
-                    $objChannels = \Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(". implode(',', array_map('intval', (array) $arrData['newsletter'])) .")");
+                if ($arrData['newsletter'] != '') {
+                    $objChannels                    = \Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array)$arrData['newsletter'])) . ")");
                     $arrTokens['member_newsletter'] = implode("\n", $objChannels->fetchEach('title'));
-                }
-                else
-                {
+                } else {
                     $arrTokens['member_newsletter'] = '';
                 }
             }
