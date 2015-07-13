@@ -83,7 +83,7 @@ class ContaoHelper extends \Controller
         $arrTokens['domain']      = \Environment::get('host');
 
         // Support newsletters
-        if (in_array('newsletter', $this->Config->getActiveModules())) {
+        if (in_array('newsletter', \ModuleLoader::getActive())) {
             if ($objMember->newsletter != null) {
                 $arrNewsletter(deserialize($objMember->newsletter));
                 if ($arrData['newsletter'] != '') {
@@ -128,7 +128,7 @@ class ContaoHelper extends \Controller
         $arrTokens['domain']      = \Environment::get('host');
 
         // Support newsletters
-        if (in_array('newsletter', $this->Config->getActiveModules())) {
+        if (in_array('newsletter', \ModuleLoader::getActive())) {
             if (!is_array($arrData['newsletter'])) {
                 if ($arrData['newsletter'] != '') {
                     $objChannels                    = \Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array) $arrData['newsletter'])) . ")");
