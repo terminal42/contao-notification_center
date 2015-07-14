@@ -12,7 +12,7 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,nc_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
+$GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,nc_notification,nc_activation_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
 $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPasswordNotificationCenter'] = str_replace('reg_password', 'nc_notification', $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPassword']);
 
 if (strpos($GLOBALS['TL_DCA']['tl_module']['palettes']['personalData'], 'newsletters')) {
@@ -36,9 +36,20 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'] = array
     'relation'                  => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_nc_notification'),
 );
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification'] = array
+(
+    'label'                     => &$GLOBALS['TL_LANG']['tl_module']['nc_activation_notification'],
+    'exclude'                   => true,
+    'inputType'                 => 'select',
+    'options_callback'          => array('NotificationCenter\tl_module', 'getNotificationChoices'),
+    'eval'                      => array('includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+    'sql'                       => "int(10) unsigned NOT NULL default '0'",
+    'relation'                  => array('type'=>'hasOne', 'load'=>'lazy', 'table'=>'tl_nc_notification'),
+);
 
 /**
  * Notification choices
  */
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['registration'] = array('member_registration');
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['lostPasswordNotificationCenter'] = array('member_password');
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification']['eval']['ncNotificationChoices']['registration'] = array('member_activation');

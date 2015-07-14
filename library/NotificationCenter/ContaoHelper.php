@@ -37,7 +37,7 @@ class ContaoHelper extends \Controller
         $arrTokens         = array();
         $arrTokens['link'] = \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
 
-        $this->sendNotifications($arrData, $objModule, $arrTokens);
+        $this->sendNotifications($objModule->nc_notification, $arrData, $objModule, $arrTokens);
     }
 
     /**
@@ -48,14 +48,14 @@ class ContaoHelper extends \Controller
      */
     public function sendActivationEmail($objMember, &$objModule)
     {
-        if (!$objModule->nc_notification) {
+        if (!$objModule->nc_activation_notification) {
             return;
         }
 
         //convert object to array
         $arrData = $objMember->row();
 
-        $this->sendNotifications($arrData, $objModule);
+        $this->sendNotifications($objModule->nc_activation_notification, $arrData, $objModule);
     }
 
     /**
@@ -78,7 +78,7 @@ class ContaoHelper extends \Controller
             $arrTokens['member_old_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
         }
 
-        $this->sendNotifications($arrData, $objModule, $arrTokens);
+        $this->sendNotifications($objModule->nc_notification, $arrData, $objModule, $arrTokens);
     }
 
     /**
@@ -88,7 +88,7 @@ class ContaoHelper extends \Controller
      * @param array
      * @param object
      */
-    private function sendNotifications($arrData, $objModule, $arrTokens = array())
+    private function sendNotifications($intNotification, $arrData, $objModule, $arrTokens = array())
     {
         if (!is_array($arrTokens)) $arrTokens = array();
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
@@ -111,7 +111,7 @@ class ContaoHelper extends \Controller
             $arrTokens['member_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
         }
 
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($objModule->nc_notification);
+        $objNotification = \NotificationCenter\Model\Notification::findByPk($intNotification);
 
         if ($objNotification !== null) {
             $objNotification->send($arrTokens);
