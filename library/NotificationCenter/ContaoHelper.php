@@ -34,36 +34,10 @@ class ContaoHelper extends \Controller
             return;
         }
 
-        $arrTokens                = array();
-        $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrTokens['domain']      = \Environment::get('host');
-        $arrTokens['link']        = \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
+        $arrTokens         = array();
+        $arrTokens['link'] = \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
 
-        // Support newsletters
-        if (in_array('newsletter', \ModuleLoader::getActive())) {
-            if (!is_array($arrData['newsletter'])) {
-                if ($arrData['newsletter'] != '') {
-                    $objChannels                    = \Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array) $arrData['newsletter'])) . ")");
-                    $arrTokens['member_newsletter'] = implode("\n", $objChannels->fetchEach('title'));
-                } else {
-                    $arrTokens['member_newsletter'] = '';
-                }
-            }
-        }
-
-        // translate/format values
-        foreach ($arrData as $strFieldName => $strFieldValue) {
-            $arrTokens['member_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
-        }
-
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($objModule->nc_notification);
-
-        if ($objNotification !== null) {
-            $objNotification->send($arrTokens);
-
-            // Disable the email to admin because no core notification has been sent
-            $objModule->reg_activate = true;
-        }
+        $this->sendNotifications($arrData, $objModule, $arrTokens);
     }
 
     /**
@@ -78,41 +52,15 @@ class ContaoHelper extends \Controller
             return;
         }
 
-        $arrTokens                = array();
-        $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrTokens['domain']      = \Environment::get('host');
+        //convert object to array
+        $arrData = $objMember->row();
 
-        // Support newsletters
-        if (in_array('newsletter', \ModuleLoader::getActive())) {
-            if ($objMember->newsletter != null) {
-                $arrNewsletter(deserialize($objMember->newsletter));
-                if ($arrData['newsletter'] != '') {
-                    $objChannels                    = \Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array)$arrData['newsletter'])) . ")");
-                    $arrTokens['member_newsletter'] = implode("\n", $objChannels->fetchEach('title'));
-                } else {
-                    $arrTokens['member_newsletter'] = '';
-                }
-            }
-        }
-
-        // translate/format values
-        foreach ($arrData as $strFieldName => $strFieldValue) {
-            $arrTokens['member_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
-        }
-
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($objModule->nc_notification);
-
-        if ($objNotification !== null)
-        {
-            $objNotification->send($arrTokens);
-
-            // Disable the email to admin because no core notification has been sent
-            $objModule->reg_activate = true;
-        }
+        $this->sendNotifications($arrData, $objModule);
     }
 
     /**
      * Send the personal data change e-mail
+     *
      * @param object
      * @param array
      * @param object
@@ -124,6 +72,25 @@ class ContaoHelper extends \Controller
         }
 
         $arrTokens                = array();
+
+        // Translate/format old values
+        foreach ($_SESSION['PERSONAL_DATA'] as $strFieldName => $strFieldValue) {
+            $arrTokens['member_old_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
+        }
+
+        $this->sendNotifications($arrData, $objModule, $arrTokens);
+    }
+
+    /**
+     * send the e-mail for the given module
+     *
+     * @param array
+     * @param array
+     * @param object
+     */
+    private function sendNotifications($arrData, $objModule, $arrTokens = array())
+    {
+        if (!is_array($arrTokens)) $arrTokens = array();
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
         $arrTokens['domain']      = \Environment::get('host');
 
@@ -139,12 +106,7 @@ class ContaoHelper extends \Controller
             }
         }
 
-        // Translate/format old values
-        foreach ($_SESSION['PERSONAL_DATA'] as $strFieldName => $strFieldValue) {
-            $arrTokens['member_old_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
-        }
-
-        // Translate/format new values
+        // translate/format values
         foreach ($arrData as $strFieldName => $strFieldValue) {
             $arrTokens['member_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
         }
@@ -153,6 +115,9 @@ class ContaoHelper extends \Controller
 
         if ($objNotification !== null) {
             $objNotification->send($arrTokens);
+
+            // Disable the email to admin because no core notification has been sent
+            $objModule->reg_activate = true;
         }
     }
 
