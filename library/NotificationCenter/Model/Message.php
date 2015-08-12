@@ -34,13 +34,24 @@ class Message extends \Model
             return false;
         }
 
-        if (null !== $objGatewayModel->getGateway()) {
-            return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
+        if (null === $objGatewayModel->getGateway()) {
+            \System::log(sprintf('Could not find gateway class for gateway ID "%s".', $objGatewayModel->id), __METHOD__, TL_ERROR);
+
+            return false;
         }
 
-        \System::log(sprintf('Could not find gateway class for gateway ID "%s".', $objGatewayModel->id), __METHOD__, TL_ERROR);
+        if (isset($GLOBALS['TL_HOOKS']['sendNotificationMessage']) && is_array($GLOBALS['TL_HOOKS']['sendNotificationMessage'])) {
+            foreach ($GLOBALS['TL_HOOKS']['sendNotificationMessage'] as $arrCallback) {
+                $arrCallback = array(new $arrCallback[0](), $arrCallback[1]);
+                $blnSuccess  = call_user_func($arrCallback, $this, $arrTokens, $strLanguage, $objGatewayModel);
 
-        return false;
+                if (!$blnSuccess) {
+                    return false;
+                }
+            }
+        }
+
+        return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
     }
 
     /**

@@ -58,3 +58,33 @@ if (null !== $objNotificationCollection) {
     }
 }
 ```
+
+## Hooks
+
+If you want to enrich each message being send by some meta data or want to disable some messages being sent, you can
+use the sendNotificationMessage hook:
+
+```php
+
+// config.php
+$GLOBALS['TL_HOOKS']['sendNotificationMessage'][] = array('MyHook', 'execute');
+
+// The hook
+class MyHook
+{
+    public function execute($objMessage, $arrTokens, $language, $objGatewayModel)
+    {
+         if (!$objMessage->regardUserSettings || !FE_USER_LOGGED_IN 
+            || $objMessage->getRelated('pid')->type !== 'custom_notification') {
+            return true;
+         }
+         
+         $user = \MemberModel::findByPK($arrTokens['recipient']);     
+         if (!$user || !$user->disableEmailNotifications) {
+            return true;
+         }
+                      
+         return false;
+    }
+}
+```
