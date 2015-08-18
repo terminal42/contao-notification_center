@@ -1,6 +1,13 @@
 Notification Center Changelog
 ===========================
 
+Version 1.3.0 (2015-??-??)
+---------------------------------
+
+### Fixed
+- Do not add a new line if file storage mode append but existing file was empty
+
+
 Version 1.3.0-rc1 (2015-07-07)
 ---------------------------------
 
