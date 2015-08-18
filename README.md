@@ -61,7 +61,7 @@ if (null !== $objNotificationCollection) {
 
 ## Hooks
 
-If you want to enrich each message being send by some meta data or want to disable some messages being sent, you can
+If you want to enrich each message being sent by some meta data or want to disable some messages being sent, you can
 use the sendNotificationMessage hook:
 
 ```php
