@@ -1,8 +1,12 @@
 Notification Center Changelog
 ===========================
 
-Version 1.3.0 (2015-??-??)
+Version 1.3.0 (2015-09-03)
 ---------------------------------
+
+### New
+- Added a sendNotificationMessage hook (#72)
+- Allow recipient token to contain a list of recipients. (#75)
 
 ### Fixed
 - Do not add a new line if file storage mode append but existing file was empty
