@@ -1,27 +1,10 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2014
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
@@ -29,12 +12,17 @@ namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
-use Haste\Haste;
 use NotificationCenter\Util\String;
 
 
 class File extends Base implements GatewayInterface
 {
+    /**
+     * File storage options
+     */
+    const FILE_STORAGE_CREATE   = ''; // Creates a new file every time
+    const FILE_STORAGE_OVERRIDE = 'override'; // Overrides the existing file if available
+    const FILE_STORAGE_APPEND   = 'append'; // Appends to an existing file if available
 
     /**
      * Create file
@@ -52,18 +40,19 @@ class File extends Base implements GatewayInterface
 
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
             \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+
             return false;
         }
 
         $strFileName = String::recursiveReplaceTokensAndTags(
             $objLanguage->file_name,
             $arrTokens,
-            String::NO_TAGS|String::NO_BREAKS
+            String::NO_TAGS | String::NO_BREAKS
         );
 
         // Escape quotes and line breaks for CSV files
         if ($this->objModel->file_type == 'csv') {
-            array_walk($arrTokens, function(&$varValue) {
+            array_walk($arrTokens, function (&$varValue) {
                 $varValue = str_replace(array('"', "\r\n", "\r"), array('""', "\n", "\n"), $varValue);
             });
         }
@@ -75,9 +64,10 @@ class File extends Base implements GatewayInterface
         );
 
         try {
-            return $this->save($strFileName, $strContent, (bool) $objLanguage->file_override);
+            return $this->save($strFileName, $strContent, (string) $objLanguage->file_storage_mode);
         } catch (\Exception $e) {
             \System::log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -108,19 +98,19 @@ class File extends Base implements GatewayInterface
      *
      * @param   string
      * @param   string
-     * @param   bool
+     * @param   string
      * @return  bool
      * @throws  \UnexpectedValueException
      */
-    protected function save($strFileName, $strContent, $blnOverride)
+    protected function save($strFileName, $strContent, $strStorageMode)
     {
         switch ($this->objModel->file_connection) {
 
             case 'local':
-                return $this->saveToLocal($strFileName, $strContent, $blnOverride);
+                return $this->saveToLocal($strFileName, $strContent, $strStorageMode);
 
             case 'ftp':
-                return $this->saveToFTP($strFileName, $strContent, $blnOverride);
+                return $this->saveToFTP($strFileName, $strContent, $strStorageMode);
 
             default:
                 throw new \UnexpectedValueException('Unknown server connection of type "' . $this->objModel->file_connection . '"');
@@ -140,16 +130,16 @@ class File extends Base implements GatewayInterface
             return $strFile;
         }
 
-        $offset = 0;
+        $offset   = 0;
         $pathinfo = pathinfo($strFile);
-        $name = $pathinfo['filename'];
+        $name     = $pathinfo['filename'];
 
         // Look for file that start with same name and have same file extension
         $arrFiles = preg_grep('/^' . preg_quote($name, '/') . '.*\.' . preg_quote($pathinfo['extension'], '/') . '/', $arrFiles);
 
         foreach ($arrFiles as $file) {
             if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
-                $file = str_replace('.' . $pathinfo['extension'], '', $file);
+                $file     = str_replace('.' . $pathinfo['extension'], '', $file);
                 $intValue = intval(substr($file, (strrpos($file, '__') + 2)));
 
                 $offset = max($offset, $intValue);
@@ -164,10 +154,10 @@ class File extends Base implements GatewayInterface
      *
      * @param   string
      * @param   string
-     * @param   bool
+     * @param   string
      * @return  bool
      */
-    protected function saveToLocal($strFileName, $strContent, $blnOverride)
+    protected function saveToLocal($strFileName, $strContent, $strStorageMode)
     {
         // Make sure the directory exists
         if (!is_dir(TL_ROOT . '/' . $this->objModel->file_path)) {
@@ -175,11 +165,22 @@ class File extends Base implements GatewayInterface
         }
 
         // Make sure we don't overwrite existing files
-        if (!$blnOverride && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)) {
+        if ($strStorageMode === self::FILE_STORAGE_CREATE
+            && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)
+        ) {
             $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path, true));
         }
 
         $objFile = new \File($this->objModel->file_path . '/' . $strFileName);
+
+        // Don't start with a newline
+        if ($strStorageMode === self::FILE_STORAGE_APPEND
+            && $objFile->exists()
+            && $objFile->getContent() !== ''
+        ) {
+            $strContent = $objFile->getContent() . "\n" . $strContent;
+        }
+
         $blnResult = $objFile->write($strContent);
         $objFile->close();
 
@@ -191,11 +192,11 @@ class File extends Base implements GatewayInterface
      *
      * @param   string
      * @param   string
-     * @param   bool
+     * @param   string
      * @return  bool
      * @throws  \RuntimeException
      */
-    protected function saveToFTP($strFileName, $strContent, $blnOverride)
+    protected function saveToFTP($strFileName, $strContent, $strStorageMode)
     {
         if (($resConnection = ftp_connect($this->objModel->file_host, intval($this->objModel->file_port ?: 21), 5)) === false) {
             throw new \RuntimeException('Could not connect to the FTP server');
@@ -210,13 +211,26 @@ class File extends Base implements GatewayInterface
         ftp_pasv($resConnection, true);
 
         // Make sure we don't overwrite existing files
-        if (!$blnOverride) {
+        if ($strStorageMode === self::FILE_STORAGE_CREATE) {
             if (($arrFiles = @ftp_nlist($resConnection, $this->objModel->file_path)) === false) {
                 @ftp_close($resConnection);
+
                 return false;
             }
 
             $strFileName = $this->getUniqueFileName($strFileName, $arrFiles);
+        }
+
+        if ($strStorageMode === self::FILE_STORAGE_APPEND) {
+            ob_start();
+            ftp_get($resConnection, "php://output", $this->objModel->file_path, FTP_BINARY);
+            $fileContents = ob_get_contents();
+            ob_end_clean();
+
+            // Don't start with a newline
+            if ($fileContents !== '') {
+                $strContent .= $fileContents . "\n" . $strContent;
+            }
         }
 
         // Write content to temporary file

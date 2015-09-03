@@ -1,27 +1,10 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2013
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
@@ -60,9 +43,9 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function __construct(Message $objMessage, Language $objLanguage, $arrTokens)
     {
-        $this->arrTokens = $arrTokens;
+        $this->arrTokens   = $arrTokens;
         $this->objLanguage = $objLanguage;
-        $this->objMessage = $objMessage;
+        $this->objMessage  = $objMessage;
     }
 
     /**
@@ -72,7 +55,8 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getSenderEmail()
     {
         $strSenderAddress = $this->objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
-        return String::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+
+        return String::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
     }
 
     /**
@@ -82,7 +66,8 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getSenderName()
     {
         $strSenderName = $this->objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
-        return String::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+
+        return String::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
     }
 
     /**
@@ -119,7 +104,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getReplyToEmail()
     {
         if ($this->objLanguage->email_replyTo) {
-            return String::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+            return String::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
         }
 
         return '';
@@ -131,7 +116,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSubject()
     {
-        return String::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, String::NO_TAGS|String::NO_BREAKS);
+        return String::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
     }
 
     /**
@@ -156,6 +141,7 @@ class EmailMessageDraft implements MessageDraftInterface
     {
         $strText = $this->objLanguage->email_text;
         $strText = String::recursiveReplaceTokensAndTags($strText, $this->arrTokens, String::NO_TAGS);
+
         return \Controller::convertRelativeUrls($strText, '', true);
     }
 
@@ -176,6 +162,7 @@ class EmailMessageDraft implements MessageDraftInterface
             $strHtml = String::recursiveReplaceTokensAndTags($strHtml, $this->arrTokens);
             $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
             $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
+
             return $strHtml;
         }
 

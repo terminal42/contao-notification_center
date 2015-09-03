@@ -1,27 +1,10 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2014
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
@@ -48,7 +31,8 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         (
             'keys' => array
             (
-                'id' => 'primary'
+                'id'                    => 'primary',
+                'queue_cronInterval'    => 'index'
             )
         )
     ),
@@ -66,6 +50,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         'label' => array
         (
             'fields'                  => array('title'),
+            'label_callback'          => array('NotificationCenter\tl_nc_gateway', 'executeLabelCallback')
         ),
         'global_operations' => array
         (
@@ -110,8 +95,9 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Palettes
     'palettes' => array
     (
-        '__selector__'                => array('type', 'email', 'email_overrideSmtp', 'file_connection'),
+        '__selector__'                => array('type', 'queue_cronEnable', 'email', 'email_overrideSmtp', 'file_connection'),
         'default'                     => '{title_legend},title,type',
+        'queue'                       => '{title_legend},title,type;{gateway_legend},queue_targetGateway;{cronjob_legend},queue_cronExplanation,queue_cronEnable',
         'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
         'postmark'                    => '{title_legend},title,type;{gateway_legend},postmark_key,postmark_test,postmark_ssl',
@@ -120,6 +106,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Subpalettes
     'subpalettes' => array
     (
+        'queue_cronEnable'            => 'queue_cronInterval,queue_cronMessages',
         'email_overrideSmtp'          => 'email_smtpHost,email_smtpUser,email_smtpPass,email_smtpEnc,email_smtpPort',
         'file_connection_local'       => 'file_path',
         'file_connection_ftp'         => 'file_host,file_port,file_username,file_password,file_path',
@@ -155,6 +142,58 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['type'],
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
+        ),
+        'queue_targetGateway' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway'],
+            'exclude'                 => true,
+            'filter'                  => true,
+            'inputType'               => 'select',
+            'options_callback'        => function() {
+                $options = array();
+
+                $gateways = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_gateway WHERE type!=?')
+                    ->execute('queue');
+
+                while ($gateways->next()) {
+                    $options[$gateways->id] = $gateways->title;
+                }
+
+                return $options;
+            },
+            'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
+            'sql'                     => "int(10) NOT NULL default '0'"
+        ),
+        'queue_cronExplanation' => array
+        (
+            'exclude'                 => true,
+            'input_field_callback'    => array('NotificationCenter\tl_nc_gateway', 'queueCronjobExplanation')
+        ),
+        'queue_cronEnable' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronEnable'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('submitOnChange'=>true),
+            'sql'                     => "char(1) NOT NULL default ''"
+        ),
+        'queue_cronInterval' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval'],
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'options'                 => array('minutely', 'hourly', 'daily', 'weekly', 'monthly'),
+            'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval'],
+            'eval'                    => array('tl_class'=>'w50', 'includeBlankOption'=>true, 'mandatory'=>true),
+            'sql'                     => "varchar(12) NOT NULL default ''"
+        ),
+        'queue_cronMessages' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronMessages'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('tl_class'=>'w50', 'rgxp'=>'natural', 'mandatory'=>true),
+            'sql'                     => "int(10) NOT NULL default '0'"
         ),
         'email_overrideSmtp' => array
         (
@@ -219,7 +258,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'inputType'               => 'select',
             'options'                 => array('local', 'ftp'),
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection'],
-            'eval'                    => array('submitOnChange'=>true, 'tl_class'=>'w50'),
+            'eval'                    => array('includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(8) NOT NULL default ''"
         ),
         'file_host' => array

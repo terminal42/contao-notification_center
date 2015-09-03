@@ -1,34 +1,17 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2013
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
 namespace NotificationCenter\Util;
 
 
-class String extends \Controller
+class String
 {
     /**
      * Text filter options
@@ -41,12 +24,12 @@ class String extends \Controller
     /**
      * Recursively replace simple tokens and insert tags
      * @param   string $strText
-     * @param   array $arrTokens Array of Tokens
-     * @param   int $intTextFlags Filters the tokens and the text for a given set of options
+     * @param   array  $arrTokens Array of Tokens
+     * @param   int    $intTextFlags Filters the tokens and the text for a given set of options
      *
      * @return  string
      */
-    public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags=0)
+    public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags = 0)
     {
         if ($intTextFlags > 0) {
             $arrTokens = static::convertToText($arrTokens, $intTextFlags);
@@ -57,11 +40,11 @@ class String extends \Controller
 
         // Replace all opening and closing tags with a hash so they don't get stripped
         // by parseSimpleTokens() - this is useful e.g. for XML content
-        $strHash = md5($strText);
+        $strHash                = md5($strText);
         $strTagOpenReplacement  = 'NC-TAG-OPEN-' . $strHash;
         $strTagCloseReplacement = 'NC-TAG-CLOSE-' . $strHash;
-        $arrOriginal = array('<', '>');
-        $arrReplacement = array($strTagOpenReplacement, $strTagCloseReplacement);
+        $arrOriginal            = array('<', '>');
+        $arrReplacement         = array($strTagOpenReplacement, $strTagCloseReplacement);
 
         $strText = str_replace($arrOriginal, $arrReplacement, $strText);
 
@@ -110,7 +93,7 @@ class String extends \Controller
 
             if (!empty($arrEmails[0])) {
                 foreach ($arrEmails[0] as $k => $v) {
-                    $varValue = str_replace($v, '%email'.$k.'%', $varValue);
+                    $varValue = str_replace($v, '%email' . $k . '%', $varValue);
                 }
             }
         }
@@ -128,7 +111,7 @@ class String extends \Controller
         // Restore friendly email after stripping tags
         if (!($options & static::NO_EMAILS) && !empty($arrEmails[0])) {
             foreach ($arrEmails[0] as $k => $v) {
-                $varValue = str_replace('%email'.$k.'%', $v, $varValue);
+                $varValue = str_replace('%email' . $k . '%', $v, $varValue);
             }
         }
 
@@ -166,11 +149,13 @@ class String extends \Controller
      */
     public static function compileRecipients($strRecipients, $arrTokens)
     {
+        // Replaces tokens first so that tokens can contain a list of recipients.
+        $strRecipients = static::recursiveReplaceTokensAndTags($strRecipients, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
         $arrRecipients = array();
 
         foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
-                $strAddress = static::recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS|static::NO_BREAKS);
+                $strAddress = static::recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
 
                 list($strName, $strEmail) = \String::splitFriendlyEmail($strAddress);
 

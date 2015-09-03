@@ -1,27 +1,10 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2014
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
@@ -46,6 +29,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         ),
         'onload_callback'             => array
         (
+            array('NotificationCenter\tl_nc_language', 'modifyPalette'),
             array('NotificationCenter\AutoSuggester', 'load')
         ),
         'sql' => array
@@ -119,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         '__selector__'                => array('gateway_type', 'email_mode'),
         'default'                     => '{general_legend},language,fallback',
         'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
-        'file'                        => '{general_legend},language,fallback;{meta_legend},file_name,file_override;{content_legend},file_content',
+        'file'                        => '{general_legend},language,fallback;{meta_legend},file_name,file_storage_mode;{content_legend},file_content',
         'postmark'                    => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode',
     ),
 
@@ -211,7 +195,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'tl_class'=>'w50'),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'decodeEntities'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''",
         ),
         'email_sender_address' => array
@@ -219,8 +203,12 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address'],
             'exclude'                 => true,
             'inputType'               => 'text',
-            'eval'                    => array('maxlength'=>255, 'rgxp'=>'email', 'tl_class'=>'w50'),
+            'eval'                    => array('rgxp'=>'nc_tokens', 'maxlength'=>255, 'decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''",
+            'save_callback' => array
+            (
+                array('NotificationCenter\tl_nc_language', 'validateEmailList')
+            )
         ),
         'email_recipient_cc' => array
         (
@@ -301,13 +289,22 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'w50', 'decodeEntities'=>true, 'mandatory'=>true),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
-        'file_override' => array
+        'file_storage_mode' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_override'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode'],
             'exclude'                 => true,
-            'inputType'               => 'checkbox',
-            'eval'                    => array('tl_class'=>'w50 m12'),
-            'sql'                     => "char(1) NOT NULL default ''"
+            'inputType'               => 'select',
+            'options'                 => array(
+                \NotificationCenter\Gateway\File::FILE_STORAGE_OVERRIDE,
+                \NotificationCenter\Gateway\File::FILE_STORAGE_APPEND,
+            ),
+            'reference'               => &$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode'],
+            'eval'                    => array(
+                'includeBlankOption' => true,
+                'blankOptionLabel'   => &$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['create'],
+                'tl_class'           => 'w50'
+            ),
+            'sql'                     => "varchar(8) NOT NULL default ''"
         ),
         'file_content' => array
         (

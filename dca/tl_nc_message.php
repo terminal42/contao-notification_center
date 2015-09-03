@@ -1,27 +1,10 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2014
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
@@ -47,6 +30,9 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
                 'id'    => 'primary',
                 'pid'   => 'index'
             )
+        ),
+        'onload_callback'   => array(
+            array('NotificationCenter\tl_nc_message', 'modifyPalette')
         )
     ),
 
@@ -126,7 +112,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
     'palettes' => array
     (
         '__selector__'                => array('gateway_type'),
-        'default'                     => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},postmark_tag,postmark_trackOpens;{publish_legend},published', // @todo - remove this
+        'default'                     => '{title_legend},title,gateway;',
         'email'                       => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template;{publish_legend},published',
         'file'                        => '{title_legend},title,gateway;{languages_legend},languages;{publish_legend},published',
         'postmark'                    => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},postmark_tag,postmark_trackOpens;{publish_legend},published',

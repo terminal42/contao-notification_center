@@ -1,27 +1,10 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2013
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
@@ -69,6 +52,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
     {
         if ($this->objModel->postmark_key == '') {
             \System::log(sprintf('Please provide the Postmark API key for message ID "%s"', $objMessage->id), __METHOD__, TL_ERROR);
+
             return false;
         }
 
@@ -92,8 +76,8 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         }
 
         // Recipients
-        $arrTo = $objDraft->getRecipientEmails();
-        $arrCc = $objDraft->getCcRecipientEmails();
+        $arrTo  = $objDraft->getRecipientEmails();
+        $arrCc  = $objDraft->getCcRecipientEmails();
         $arrBcc = $objDraft->getBccRecipientEmails();
 
         if (count(array_merge($arrTo, $arrCc, $arrBcc)) >= 20) {
@@ -103,18 +87,19 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
                 ),
                 __METHOD__,
                 TL_ERROR);
+
             return false;
         }
 
         // Set basic data
         $arrData = array
         (
-            'From'          => $strFrom,
-            'To'            => implode(',', $arrTo),
-            'Subject'       => $objDraft->getSubject(),
-            'HtmlBody'      => $objDraft->getHtmlBody(),
-            'TextBody'      => $objDraft->getTextBody(),
-            'TrackOpens'    => $objDraft->getTrackOpen()
+            'From'       => $strFrom,
+            'To'         => implode(',', $arrTo),
+            'Subject'    => $objDraft->getSubject(),
+            'HtmlBody'   => $objDraft->getHtmlBody(),
+            'TextBody'   => $objDraft->getTextBody(),
+            'TrackOpens' => $objDraft->getTrackOpen()
         );
 
         // Set CC recipients
@@ -124,7 +109,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
 
         // Set BCC recipients
         if (!empty($arrBcc)) {
-            $arrData['Bcc'] = implode(',',$arrBcc);
+            $arrData['Bcc'] = implode(',', $arrBcc);
         }
 
         // Set reply-to address
@@ -159,6 +144,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
                 ),
                 __METHOD__,
                 TL_ERROR);
+
             return false;
         } else {
             $strWouldHave = ($this->objModel->postmark_test) ? ' would have (test mode)' : '';

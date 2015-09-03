@@ -1,27 +1,10 @@
 <?php
 
 /**
- * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * notification_center extension for Contao Open Source CMS
  *
- * Formerly known as TYPOlight Open Source CMS.
- *
- * This program is free software: you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation, either
- * version 3 of the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this program. If not, please visit the Free
- * Software Foundation website at <http://www.gnu.org/licenses/>.
- *
- * PHP version 5
- * @copyright  terminal42 gmbh 2014
+ * @copyright  Copyright (c) 2008-2015, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
 
@@ -45,18 +28,30 @@ class Message extends \Model
      */
     public function send(array $arrTokens, $strLanguage = '')
     {
-        /** @var Gateway $objGatewayModel */
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
             \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
 
             return false;
         }
 
-        if (null !== $objGatewayModel->getGateway()) {
-            return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
+        if (null === $objGatewayModel->getGateway()) {
+            \System::log(sprintf('Could not find gateway class for gateway ID "%s".', $objGatewayModel->id), __METHOD__, TL_ERROR);
+
+            return false;
         }
 
-        return false;
+        if (isset($GLOBALS['TL_HOOKS']['sendNotificationMessage']) && is_array($GLOBALS['TL_HOOKS']['sendNotificationMessage'])) {
+            foreach ($GLOBALS['TL_HOOKS']['sendNotificationMessage'] as $arrCallback) {
+                $arrCallback = array(new $arrCallback[0](), $arrCallback[1]);
+                $blnSuccess  = call_user_func($arrCallback, $this, $arrTokens, $strLanguage, $objGatewayModel);
+
+                if (!$blnSuccess) {
+                    return false;
+                }
+            }
+        }
+
+        return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
     }
 
     /**
