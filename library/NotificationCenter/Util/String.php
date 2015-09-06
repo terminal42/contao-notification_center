@@ -155,8 +155,6 @@ class String
 
         foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
-                $strAddress = static::recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
-
                 list($strName, $strEmail) = \String::splitFriendlyEmail($strAddress);
 
                 // Address could become empty through invalid insert tag
