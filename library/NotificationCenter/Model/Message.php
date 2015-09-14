@@ -42,8 +42,7 @@ class Message extends \Model
 
         if (isset($GLOBALS['TL_HOOKS']['sendNotificationMessage']) && is_array($GLOBALS['TL_HOOKS']['sendNotificationMessage'])) {
             foreach ($GLOBALS['TL_HOOKS']['sendNotificationMessage'] as $arrCallback) {
-                $arrCallback = array(new $arrCallback[0](), $arrCallback[1]);
-                $blnSuccess  = call_user_func($arrCallback, $this, $arrTokens, $strLanguage, $objGatewayModel);
+                $blnSuccess = \Controller::importStatic($arrCallback[0])->$arrCallback[1]($this, $arrTokens, $strLanguage, $objGatewayModel);
 
                 if (!$blnSuccess) {
                     return false;
