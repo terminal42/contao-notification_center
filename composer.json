@@ -14,16 +14,18 @@
         "php":">=5.3.2",
         "contao/core":"^3.2",
         "contao-community-alliance/composer-plugin":"2.*",
-        "terminal42/contao-namespace-class-loader":"^1.0.1",
         "codefog/contao-haste":"4.*",
         "terminal42/dcawizard":"2.*"
     },
     "autoload":{
         "psr-0": {
             "NotificationCenter\\": [
-                "/library"
+                "library/"
             ]
-        }
+        },
+        "classmap": [
+            "classes/"
+        ]
     },
     "replace": {
         "contao-legacy/notification_center": "self.version"
