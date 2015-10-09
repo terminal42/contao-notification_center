@@ -83,4 +83,10 @@ or let\'s say you want to send 30 messages every 5 minutes after every hour, the
 <br><blockquote>5 * * * * /path/to/contao/system/modules/notification_center/bin/queue -s {gateway_id} -n 30</blockquote><br>
 If you don\'t have access to real cronjobs then you can enable the poor man\'s cron. Note that it doesn\'t provide the same
 flexibility in terms of interval settings and it is subject to the web execution context and thus certainly affected by
-PHP configurations such as the maximum execution time. Thus, try to keep the number of messages sent per invocation as low as possible.';
+PHP configurations such as the maximum execution time. Thus, try to keep the number of messages sent per invocation as low as possible.
+<br><br>
+<strong>Note: </strong>When you installed the notification center using Composer, the path to the binary differs:
+<blockquote>
+/path/to/contao/composer/vendor/terminal42/notification_center/bin/queue
+</blockquote>
+';

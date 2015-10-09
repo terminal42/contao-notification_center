@@ -44,7 +44,7 @@ class File extends Base implements GatewayInterface
             return false;
         }
 
-        $strFileName = String::recursiveReplaceTokensAndTags(
+        $strFileName = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags(
             $objLanguage->file_name,
             $arrTokens,
             String::NO_TAGS | String::NO_BREAKS
@@ -58,7 +58,7 @@ class File extends Base implements GatewayInterface
         }
 
         // Preserve all tags here as this is pretty useful in XML :-)
-        $strContent = String::recursiveReplaceTokensAndTags(
+        $strContent = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags(
             $objLanguage->file_content,
             $arrTokens
         );
