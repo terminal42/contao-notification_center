@@ -79,12 +79,12 @@ class tl_form extends \Backend
         $arrTokens['raw_data'] = '';
 
         foreach ($arrData as $k => $v) {
-            $this->flatten($v, 'form_'.$k, $arrTokens);
+            \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens);
             $arrTokens['raw_data'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
         }
 
         foreach ($arrForm as $k => $v) {
-            $this->flatten($v, 'formconfig_'.$k, $arrTokens);
+            \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens);
         }
 
         // Administrator e-mail
@@ -104,6 +104,9 @@ class tl_form extends \Backend
      * @param mixed  $varValue
      * @param string $strKey
      * @param array  $arrData
+     *
+     * @deprecated Deprecated since version 1.3.1, to be removed in version 2.
+     *             Use Haste\Util\StringUtil::flatten() instead.
      */
     public function flatten($varValue, $strKey, &$arrData)
     {

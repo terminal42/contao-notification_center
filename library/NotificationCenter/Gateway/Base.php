@@ -68,18 +68,18 @@ abstract class Base extends \Controller
     }
 
     /**
-     * @deprecated Use String::recursiveReplaceTokensAndTags()
+     * @deprecated Use \Haste\Util\StringUtil::recursiveReplaceTokensAndTags()
      */
     protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags = 0)
     {
-        return String::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
+        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
     }
 
     /**
-     * @deprecated Use String::convertToText()
+     * @deprecated Use \Haste\Util\StringUtil::convertToText()
      */
     protected function convertToText($varValue, $options)
     {
-        return String::convertToText($varValue, $options);
+        return \Haste\Util\StringUtil::convertToText($varValue, $options);
     }
 }
