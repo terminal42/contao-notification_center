@@ -12,7 +12,16 @@
  */
 
 define('TL_MODE', 'FE');
-require __DIR__ . '/../../../initialize.php';
+
+if (file_exists(__DIR__ . '/../../../initialize.php')) {
+    // Regular way
+    require_once(__DIR__ . '/../../../initialize.php');
+} else {
+    // Try composer location (see #77)
+    require_once(__DIR__ . '/../../../../../system/initialize.php');
+}
+
+
 $queueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
 
 $queueManager->sendFromQueue($argv[2], $argv[4]);

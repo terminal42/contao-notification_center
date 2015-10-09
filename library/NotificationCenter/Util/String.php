@@ -11,6 +11,8 @@
 namespace NotificationCenter\Util;
 
 
+use Haste\Haste;
+
 class String
 {
     /**
@@ -23,106 +25,44 @@ class String
 
     /**
      * Recursively replace simple tokens and insert tags
-     * @param   string $strText
-     * @param   array  $arrTokens Array of Tokens
-     * @param   int    $intTextFlags Filters the tokens and the text for a given set of options
      *
-     * @return  string
+     * @param string $strText
+     * @param array  $arrTokens    Array of Tokens
+     * @param int    $intTextFlags Filters the tokens and the text for a given set of options
+     *
+     * @return string
+     *
+     * @deprecated Deprecated since version 1.3.1, to be removed in version 2.
+     *             Use Haste\Util\StringUtil::recursiveReplaceTokensAndTags() instead.
      */
     public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags = 0)
     {
-        if ($intTextFlags > 0) {
-            $arrTokens = static::convertToText($arrTokens, $intTextFlags);
-        }
-
-        // Must decode, tokens could be encoded
-        $strText = \String::decodeEntities($strText);
-
-        // Replace all opening and closing tags with a hash so they don't get stripped
-        // by parseSimpleTokens() - this is useful e.g. for XML content
-        $strHash                = md5($strText);
-        $strTagOpenReplacement  = 'NC-TAG-OPEN-' . $strHash;
-        $strTagCloseReplacement = 'NC-TAG-CLOSE-' . $strHash;
-        $arrOriginal            = array('<', '>');
-        $arrReplacement         = array($strTagOpenReplacement, $strTagCloseReplacement);
-
-        $strText = str_replace($arrOriginal, $arrReplacement, $strText);
-
-        // first parse the tokens as they might have if-else clauses
-        $strBuffer = \String::parseSimpleTokens($strText, $arrTokens);
-
-        $strBuffer = str_replace($arrReplacement, $arrOriginal, $strBuffer);
-
-        // then replace the insert tags
-        $strBuffer = \Haste\Haste::getInstance()->call('replaceInsertTags', array($strBuffer, false));
-
-        // check if the inserttags have returned a simple token or an insert tag to parse
-        if ((strpos($strBuffer, '##') !== false || strpos($strBuffer, '{{') !== false) && $strBuffer != $strText) {
-            $strBuffer = static::recursiveReplaceTokensAndTags($strBuffer, $arrTokens, $intTextFlags);
-        }
-
-        $strBuffer = \String::restoreBasicEntities($strBuffer);
-
-        if ($intTextFlags > 0) {
-            $strBuffer = static::convertToText($strBuffer, $intTextFlags);
-        }
-
-        return $strBuffer;
+        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
     }
 
     /**
      * Convert the given array or string to plain text using given options
-     * @param   mixed
-     * @param   int
-     * @return  mixed
+     *
+     * @deprecated Deprecated since version 1.3.1, to be removed in version 2.
+     *             Use Haste\Util\StringUtil::convertToText() instead.
+     *
+     * @param mixed $varValue
+     * @param int   $options
+     *
+     * @return mixed
      */
     public static function convertToText($varValue, $options)
     {
-        if (is_array($varValue)) {
-            foreach ($varValue as $k => $v) {
-                $varValue[$k] = static::convertToText($v, $options);
-            }
-
-            return $varValue;
-        }
-
-        // Replace friendly email before stripping tags
-        if (!($options & static::NO_EMAILS)) {
-            $arrEmails = array();
-            preg_match_all('{<.+@.+\.[A-Za-z]{2,6}>}', $varValue, $arrEmails);
-
-            if (!empty($arrEmails[0])) {
-                foreach ($arrEmails[0] as $k => $v) {
-                    $varValue = str_replace($v, '%email' . $k . '%', $varValue);
-                }
-            }
-        }
-
-        // Remove HTML tags but keep line breaks for <br> and <p>
-        if ($options & static::NO_TAGS) {
-            $varValue = strip_tags(preg_replace('{(?!^)<(br|p|/p).*?/?>\n?(?!$)}is', "\n", $varValue));
-        }
-
-        // Remove line breaks (e.g. for subject)
-        if ($options & static::NO_BREAKS) {
-            $varValue = str_replace(array("\r", "\n"), '', $varValue);
-        }
-
-        // Restore friendly email after stripping tags
-        if (!($options & static::NO_EMAILS) && !empty($arrEmails[0])) {
-            foreach ($arrEmails[0] as $k => $v) {
-                $varValue = str_replace('%email' . $k . '%', $v, $varValue);
-            }
-        }
-
-        return $varValue;
+        return \Haste\Util\StringUtil::convertToText($varValue, $options);
     }
 
     /**
      * Gets an array of valid attachments of a token field
-     * @param   string
-     * @param   array Tokens
-     * @return  array
+     *
+     * @param string $strAttachmentTokens
+     * @param array  $arrTokens
+     *
+     * @return array
      */
     public static function getTokenAttachments($strAttachmentTokens, array $arrTokens)
     {
@@ -145,18 +85,20 @@ class String
 
     /**
      * Generate CC or BCC recipients from comma separated string
-     * @param string
+     *
+     * @param string $strRecipients
+     * @param array  $arrTokens
+     *
+     * @return array
      */
     public static function compileRecipients($strRecipients, $arrTokens)
     {
         // Replaces tokens first so that tokens can contain a list of recipients.
-        $strRecipients = static::recursiveReplaceTokensAndTags($strRecipients, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
+        $strRecipients = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strRecipients, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
         $arrRecipients = array();
 
         foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
-                $strAddress = static::recursiveReplaceTokensAndTags($strAddress, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
-
                 list($strName, $strEmail) = \String::splitFriendlyEmail($strAddress);
 
                 // Address could become empty through invalid insert tag
