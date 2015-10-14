@@ -7,6 +7,7 @@ Version 1.3.2 (2015-10-14)
 
 ### Fixed
 - Dependencies could not be resolved due to missing \_autoload module (#82)
+- Support getInstance method handling for sendNotificationMessage hook (#79)
 
 
 Version 1.3.1 (2015-10-09)

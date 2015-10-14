@@ -28,6 +28,7 @@ class Message extends \Model
      */
     public function send(array $arrTokens, $strLanguage = '')
     {
+        /** @var Gateway $objGatewayModel */
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
             \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
 
@@ -42,7 +43,7 @@ class Message extends \Model
 
         if (isset($GLOBALS['TL_HOOKS']['sendNotificationMessage']) && is_array($GLOBALS['TL_HOOKS']['sendNotificationMessage'])) {
             foreach ($GLOBALS['TL_HOOKS']['sendNotificationMessage'] as $arrCallback) {
-                $blnSuccess = \Controller::importStatic($arrCallback[0])->$arrCallback[1]($this, $arrTokens, $strLanguage, $objGatewayModel);
+                $blnSuccess = \System::importStatic($arrCallback[0])->$arrCallback[1]($this, $arrTokens, $strLanguage, $objGatewayModel);
 
                 if (!$blnSuccess) {
                     return false;
