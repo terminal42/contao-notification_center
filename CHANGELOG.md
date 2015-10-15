@@ -1,6 +1,11 @@
 Notification Center Changelog
 ===========================
 
+Version 1.4.0-rc1 (????-??-??)
+--------------------------
+
+### New
+- Added a verification for valid token characters (#68)
 
 Version 1.3.2 (2015-10-14)
 --------------------------

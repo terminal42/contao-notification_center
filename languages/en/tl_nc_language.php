@@ -59,3 +59,4 @@ $GLOBALS['TL_LANG']['tl_nc_language']['content_legend']             = 'Content';
  * Errors
  */
 $GLOBALS['TL_LANG']['tl_nc_language']['token_error']                = 'The following tokens you have used are not supported by this notification type: %s.';
+$GLOBALS['TL_LANG']['tl_nc_language']['token_character_error']      = 'Your content contains invalid tokens. Simple Tokens only allow a certain set of characters. Those are: "A-z", "a-z", "0-9" and "_".';
