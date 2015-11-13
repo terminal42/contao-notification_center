@@ -59,6 +59,25 @@ if (null !== $objNotificationCollection) {
 }
 ```
 
+## Sending a personalized notification
+
+Extension developers can also send a personalized notification. Messages which supports personalization will be sent
+for each personalized contact.
+
+```php
+$arrTokens             = array('receiver_email' => 'admin@example.com', 'message' => 'text');
+$arrPersonalizedTokens = array(
+    array('receiver_email' => 'foo@example.com'),
+    array('receiver_email' => 'bar@example.com'),
+);
+    
+$objNotification = NotificationCenter\Model\Notification::findByPk($intNotificationId);
+if (null !== $objNotification) {
+    // Each personalized record get merged before sending personalized message
+    $objNotification->sendPersonalized($arrTokens, $arrPersonalizedTokens, $strLanguage); // Language is optional
+}
+```
+
 ## Hooks
 
 If you want to enrich each message being sent by some meta data or want to disable some messages being sent, you can

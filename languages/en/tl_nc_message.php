@@ -18,6 +18,7 @@ $GLOBALS['TL_LANG']['tl_nc_message']['email_priority']          = array('Priorit
 $GLOBALS['TL_LANG']['tl_nc_message']['email_template']          = array('Template file', 'Please choose a template file.');
 $GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']            = array('Tag', 'Here you can enter the tag.');
 $GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']     = array('Enable open tracking', 'Here you can enable open tracking.');
+$GLOBALS['TL_LANG']['tl_nc_message']['personalized']            = array('Support personalization', 'If enabled and a personalized notification is sent, send this message for each personalized contact.');
 $GLOBALS['TL_LANG']['tl_nc_message']['published']               = array('Publish message', 'Include this message when a notification is being sent.');
 
 /**
