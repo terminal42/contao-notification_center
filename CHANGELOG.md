@@ -1,6 +1,12 @@
 Notification Center Changelog
 ===========================
 
+Version 1.3.3 (2015-??-??)
+--------------------------
+
+### Improved
+- Developers can now easier extend the existing tokens
+
 
 Version 1.3.2 (2015-10-14)
 --------------------------
