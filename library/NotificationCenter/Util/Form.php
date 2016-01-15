@@ -26,10 +26,9 @@ class Form
         if (!is_uploaded_file($file['tmp_name'])) {
 
             if(file_exists($file['tmp_name'])) {
-                $basePath = \Environment::get('documentRoot') . TL_PATH . "/";
-                return str_replace($basePath, '', str_replace('\\', '/',$file['tmp_name'] ));
+                $basePath = TL_ROOT . "/";
+                return str_replace($basePath, '', $file['tmp_name'] );
             }
-
             return null;
         }
 
