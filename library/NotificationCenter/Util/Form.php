@@ -23,6 +23,19 @@ class Form
      */
     public static function getFileUploadPathForToken(array $file)
     {
+        // Check if it has been saved by Contao and thus moved to it's final destination already
+        if (isset($file['uploaded']) && $file['uploaded'] === true) {
+            $basePath = TL_ROOT . '/';
+            if (preg_match('/^' . preg_quote($basePath, '/') . '/', $file['tmp_name'])
+                && file_exists($file['tmp_name'])
+            ) {
+
+                return str_replace($basePath, '', $file['tmp_name']);
+            }
+
+            return null;
+        }
+
         if (!is_uploaded_file($file['tmp_name'])) {
 
             return null;
@@ -30,10 +43,8 @@ class Form
 
         $tmpDir   = 'system/tmp';
         $filePath = $tmpDir . '/' . $file['name'];
-
         \Files::getInstance()->move_uploaded_file($file['tmp_name'], $filePath);
         \Files::getInstance()->chmod($filePath, $GLOBALS['TL_CONFIG']['defaultFileChmod']);
-
 
         return $filePath;
     }
