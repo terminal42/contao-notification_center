@@ -1,6 +1,13 @@
 Notification Center Changelog
 ===========================
 
+Version 1.3.3 (2016-01-15)
+--------------------------
+
+### Improved
+- Developers can now easier extend the existing tokens
+- Attachment tokens in form notifications now also work when "save file" was enabled (#80)
+
 
 Version 1.3.2 (2015-10-14)
 --------------------------

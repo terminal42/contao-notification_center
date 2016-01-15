@@ -88,7 +88,7 @@ $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
 /**
  * Notification Center Notification Types
  */
-$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge(
+$GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
     (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'],
     array(
          'contao' => array(
