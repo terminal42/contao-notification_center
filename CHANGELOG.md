@@ -8,6 +8,13 @@ Version 1.4.0-rc1 (????-??-??)
 - Added a verification for valid token characters (#68)
 
 
+Version 1.3.5 (2016-03-02)
+--------------------------
+
+### Fixed
+- The extension is now compatible with PHP7 (see #86)
+
+
 Version 1.3.3 (2016-01-15)
 --------------------------
 

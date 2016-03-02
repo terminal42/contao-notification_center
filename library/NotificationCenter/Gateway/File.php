@@ -12,7 +12,7 @@ namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
-use NotificationCenter\Util\String;
+use NotificationCenter\Util\StringUtil;
 
 
 class File extends Base implements GatewayInterface
@@ -47,7 +47,7 @@ class File extends Base implements GatewayInterface
         $strFileName = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags(
             $objLanguage->file_name,
             $arrTokens,
-            String::NO_TAGS | String::NO_BREAKS
+            StringUtil::NO_TAGS | StringUtil::NO_BREAKS
         );
 
         // Escape quotes and line breaks for CSV files
