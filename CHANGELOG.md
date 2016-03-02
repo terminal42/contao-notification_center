@@ -1,6 +1,13 @@
 Notification Center Changelog
 ===========================
 
+Version 1.3.5 (????-??-??)
+--------------------------
+
+### Fixed
+- The extension is now compatible with PHP7 (see #86)
+
+
 Version 1.3.3 (2016-01-15)
 --------------------------
 
