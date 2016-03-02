@@ -11,7 +11,7 @@
 namespace NotificationCenter\Gateway;
 
 use NotificationCenter\Model\Gateway;
-use NotificationCenter\Util\String;
+use NotificationCenter\Util\StringUtil;
 
 /**
  * No need no extend Controller but left here for BC
@@ -52,19 +52,19 @@ abstract class Base extends \Controller
     }
 
     /**
-     * @deprecated Use String::getTokenAttachments()
+     * @deprecated Use StringUtil::getTokenAttachments()
      */
     protected function getTokenAttachments($strAttachmentTokens, array $arrTokens)
     {
-        return String::getTokenAttachments($strAttachmentTokens, $arrTokens);
+        return StringUtil::getTokenAttachments($strAttachmentTokens, $arrTokens);
     }
 
     /**
-     * @deprecated Use String::compileRecipients()
+     * @deprecated Use StringUtil::compileRecipients()
      */
     protected function compileRecipients($strRecipients, $arrTokens)
     {
-        return String::compileRecipients($strRecipients, $arrTokens);
+        return StringUtil::compileRecipients($strRecipients, $arrTokens);
     }
 
     /**

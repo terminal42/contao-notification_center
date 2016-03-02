@@ -13,7 +13,7 @@ namespace NotificationCenter\MessageDraft;
 
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
-use NotificationCenter\Util\String;
+use NotificationCenter\Util\StringUtil;
 
 class EmailMessageDraft implements MessageDraftInterface
 {
@@ -56,7 +56,7 @@ class EmailMessageDraft implements MessageDraftInterface
     {
         $strSenderAddress = $this->objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
 
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
+        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
 
     /**
@@ -67,7 +67,7 @@ class EmailMessageDraft implements MessageDraftInterface
     {
         $strSenderName = $this->objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
 
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
+        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
 
     /**
@@ -76,7 +76,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getRecipientEmails()
     {
-        return String::compileRecipients($this->objLanguage->recipients, $this->arrTokens);
+        return StringUtil::compileRecipients($this->objLanguage->recipients, $this->arrTokens);
     }
 
     /**
@@ -85,7 +85,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getCcRecipientEmails()
     {
-        return String::compileRecipients($this->objLanguage->email_recipient_cc, $this->arrTokens);
+        return StringUtil::compileRecipients($this->objLanguage->email_recipient_cc, $this->arrTokens);
     }
 
     /**
@@ -94,7 +94,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getBccRecipientEmails()
     {
-        return String::compileRecipients($this->objLanguage->email_recipient_bcc, $this->arrTokens);
+        return StringUtil::compileRecipients($this->objLanguage->email_recipient_bcc, $this->arrTokens);
     }
 
     /**
@@ -104,7 +104,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getReplyToEmail()
     {
         if ($this->objLanguage->email_replyTo) {
-            return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
+            return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
         }
 
         return '';
@@ -116,7 +116,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSubject()
     {
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, String::NO_TAGS | String::NO_BREAKS);
+        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
 
     /**
@@ -140,7 +140,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getTextBody()
     {
         $strText = $this->objLanguage->email_text;
-        $strText = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strText, $this->arrTokens, String::NO_TAGS);
+        $strText = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strText, $this->arrTokens, StringUtil::NO_TAGS);
 
         return \Controller::convertRelativeUrls($strText, '', true);
     }
@@ -176,7 +176,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getAttachments()
     {
         // Token attachments
-        $arrAttachments = String::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
+        $arrAttachments = StringUtil::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
 
         // Add static attachments
         $arrStaticAttachments = deserialize($this->objLanguage->attachments, true);
