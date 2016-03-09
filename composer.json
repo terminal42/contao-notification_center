@@ -31,6 +31,9 @@
         "contao-legacy/notification_center": "self.version"
     },
     "extra":{
+        "branch-alias": {
+            "dev-develop": "1.4.x-dev"
+        },
         "contao": {
             "sources":{
                 "": "system/modules/notification_center"
