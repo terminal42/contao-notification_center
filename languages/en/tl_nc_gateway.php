@@ -50,8 +50,8 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['file_connection']['ftp']      = 'FTP';
  * Messages
  */
 $GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_confirm']       = 'Connection successful';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_class']   = 'Could not find FTP class!';
-$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect'] = 'Failed to connect to server: %s';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect'] = 'Could not connect to the FTP server!';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_login']   = 'Could not login to the FTP server!';
 
 /**
  * Buttons

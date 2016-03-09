@@ -34,19 +34,18 @@ class tl_nc_gateway extends \Backend
             return;
         }
 
-        $strClass = $GLOBALS['NOTIFICATION_CENTER']['FTP'][$dc->activeRecord->ftp_type];
+        // Try to connect
+        if (($ftp = @ftp_connect($dc->activeRecord->file_host, (int) ($dc->activeRecord->file_port ?: 21), 5)) === false) {
+            \Message::addError($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect']);
 
-        if (!class_exists($strClass)) {
-            \Message::addError($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_class']);
             return;
         }
 
-        $objHandler = new $strClass();
+        // Try to login
+        if (false === @ftp_login($ftp, $dc->activeRecord->file_username, $dc->activeRecord->file_password)) {
+            @ftp_close($ftp);
+            \Message::addError($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_login']);
 
-        try {
-            $objHandler->connect($dc->activeRecord);
-        } catch (\Exception $e) {
-            \Message::addError(sprintf($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect'], $e->getMessage()));
             return;
         }
 
@@ -56,10 +55,10 @@ class tl_nc_gateway extends \Backend
     /**
      * Gets the back end list label
      *
-     * @param array             $row
-     * @param string            $label
-     * @param \DataContainer    $dc
-     * @param array             $args
+     * @param array          $row
+     * @param string         $label
+     * @param \DataContainer $dc
+     * @param array          $args
      *
      * @return string
      */
