@@ -16,8 +16,12 @@ class tl_nc_queue extends \Backend
 {
     /**
      * label_callback
-     * @param   array
-     * @return  string
+     *
+     * @param array          $arrRow
+     * @param string         $label
+     * @param \DataContainer $dc
+     *
+     * @return string
      */
     public function listRows($arrRow, $label, $dc)
     {
@@ -40,13 +44,13 @@ class tl_nc_queue extends \Backend
             $strBuffer .= ' <div class="tl_gray">%s: %s <a href="%s" class="tl_gray">[%s]</a></div>';
             $arrValues[] = $GLOBALS['TL_LANG']['tl_nc_queue']['source'];
             $arrValues[] = $objMessage->title;
-            $arrValues[] =
-                sprintf('contao/main.php?do=nc_notifications&table=tl_nc_message&act=edit&id=%s&rt=%s&ref=9b33cf83',
-                    $objMessage->id,
-                    REQUEST_TOKEN,
-                    TL_REFERER_ID);
+            $arrValues[] = sprintf(
+                'contao/main.php?do=nc_notifications&table=tl_nc_message&act=edit&id=%s&rt=%s&ref=%s',
+                $objMessage->id,
+                REQUEST_TOKEN,
+                TL_REFERER_ID
+            );
             $arrValues[] = $objMessage->id;
-
         }
 
         return vsprintf($strBuffer, $arrValues);
@@ -54,7 +58,8 @@ class tl_nc_queue extends \Backend
 
     /**
      * Re-queue a queued message
-     * @param   \DataContainer
+     *
+     * @param \DataContainer $dc
      */
     public function reQueue(\DataContainer $dc)
     {
@@ -65,33 +70,37 @@ class tl_nc_queue extends \Backend
 
     /**
      * Return the re-queue button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function reQueueButton($row, $href, $label, $title, $icon, $attributes)
     {
         $objMessage = QueuedMessage::findByPk($row['id']);
-        return ($objMessage->getStatus() === 'error') ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return ($objMessage->getStatus() === 'error') ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
      * Return the delete button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
         $objMessage = QueuedMessage::findByPk($row['id']);
-        return ($objMessage->getStatus() !== 'sent') ? '<a href="' . $this->addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return ($objMessage->getStatus() !== 'sent') ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
     }
 }

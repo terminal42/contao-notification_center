@@ -25,11 +25,12 @@ class tl_nc_gateway extends \Backend
 
     /**
      * Check the FTP connection
-     * @param   \DataContainer
+     *
+     * @param \DataContainer $dc
      */
     public function checkFileServerConnection(\DataContainer $dc)
     {
-        if ($dc->activeRecord->type != 'ftp' || $dc->activeRecord->file_connection != 'ftp') {
+        if ('ftp' !== $dc->activeRecord->type || 'ftp' !== $dc->activeRecord->file_connection) {
             return;
         }
 
@@ -79,6 +80,8 @@ class tl_nc_gateway extends \Backend
      * Gets the cron job explanation
      *
      * @param \DataContainer $dc
+     *
+     * @return string
      */
     public function queueCronjobExplanation(\DataContainer $dc)
     {

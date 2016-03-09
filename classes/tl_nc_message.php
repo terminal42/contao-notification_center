@@ -28,21 +28,20 @@ class tl_nc_message extends \Backend
     protected $arrGateways = array();
 
     /**
-     * Modifies the palette for the queue gateway so it takes the one from the
-     * target gateway
+     * Modifies the palette for the queue gateway so it takes the one from the target gateway
      *
      * @param \DataContainer $dc
      */
     public function modifyPalette(\DataContainer $dc)
     {
-        if (\Input::get('act') != 'edit') {
+        if ('edit' !== \Input::get('act')) {
             return;
         }
 
         $message = Message::findByPk($dc->id);
         $gateway = $message->getRelated('gateway');
 
-        if ($gateway !== null && $gateway->type == 'queue') {
+        if ($gateway !== null && 'queue' === $gateway->type) {
             $targetGateway = Gateway::findByPk($gateway->queue_targetGateway);
             $GLOBALS['TL_DCA']['tl_nc_message']['palettes']['queue'] =
                 $GLOBALS['TL_DCA']['tl_nc_message']['palettes'][$targetGateway->type];
@@ -51,15 +50,17 @@ class tl_nc_message extends \Backend
 
     /**
      * child_record_callback
-     * @param   array
-     * @return  string
+     *
+     * @param array $arrRow
+     *
+     * @return string
      */
     public function listRows($arrRow)
     {
-        if (empty($this->arrTranslations)) {
+        if (0 === count($this->arrTranslations)) {
             $this->arrTranslations = \System::getLanguages();
         }
-        if (empty($this->arrGateways)) {
+        if (0 === count($this->arrGateways)) {
             $objGateways = \Database::getInstance()->execute('SELECT id,title FROM tl_nc_gateway');
             while ($objGateways->next()) {
                 $this->arrGateways[$objGateways->id] = $objGateways->title;
@@ -84,12 +85,14 @@ class tl_nc_message extends \Backend
 
     /**
      * Return the "toggle visibility" button
-     * @param array
-     * @param string
-     * @param string
-     * @param string
-     * @param string
-     * @param string
+     *
+     * @param array  $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
      * @return string
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
@@ -101,7 +104,7 @@ class tl_nc_message extends \Backend
                 exit;
             }
 
-            $this->redirect($this->getReferer());
+            \Controller::redirect(\System::getReferer());
         }
 
         $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . ($row['published'] ? '' : 1);
@@ -110,7 +113,7 @@ class tl_nc_message extends \Backend
             $icon = 'invisible.gif';
         }
 
-        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="' . \Backend::addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ';
     }
 
     /**
@@ -139,6 +142,6 @@ class tl_nc_message extends \Backend
             ->execute($intId);
 
         $objVersions->create();
-        $this->log('A new version of record "tl_nc_message.id=' . $intId . '" has been created', __METHOD__, TL_GENERAL);
+        \System::log('A new version of record "tl_nc_message.id=' . $intId . '" has been created', __METHOD__, TL_GENERAL);
     }
 }
