@@ -21,23 +21,24 @@ class ContaoHelper extends \Controller
         parent::__construct();
     }
 
-
     /**
      * Send a registration e-mail
-     * @param integer
-     * @param array
-     * @param object
+     *
+     * @param int    $intId
+     * @param array  $arrData
+     * @param object $objModule
      */
-    public function sendRegistrationEmail($intId, $arrData, &$objModule)
+    public function sendRegistrationEmail($intId, $arrData, $objModule)
     {
         if (!$objModule->nc_notification) {
             return;
         }
 
-        $arrTokens                = array();
-        $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrTokens['domain']      = \Environment::get('host');
-        $arrTokens['link']        = \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
+        $arrTokens = array(
+            'admin_email' => $GLOBALS['TL_ADMIN_EMAIL'],
+            'domain'      => \Environment::get('host'),
+            'link'        => \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation']
+        );
 
         // Support newsletters
         if (in_array('newsletter', \ModuleLoader::getActive())) {
@@ -69,9 +70,10 @@ class ContaoHelper extends \Controller
 
     /**
      * Send the personal data change e-mail
-     * @param object
-     * @param array
-     * @param object
+     *
+     * @param object $objUser
+     * @param array  $arrData
+     * @param object $objModule
      */
     public function sendPersonalDataEmail($objUser, $arrData, $objModule)
     {
@@ -79,9 +81,10 @@ class ContaoHelper extends \Controller
             return;
         }
 
-        $arrTokens                = array();
-        $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrTokens['domain']      = \Environment::get('host');
+        $arrTokens = array(
+            'admin_email' => $GLOBALS['TL_ADMIN_EMAIL'],
+            'domain'      => \Environment::get('host'),
+        );
 
         // Support newsletters
         if (in_array('newsletter', $this->Config->getActiveModules())) {
@@ -115,8 +118,8 @@ class ContaoHelper extends \Controller
     /**
      * Remove Queue from back end navigation if no queue gateway is available yet
      *
-     * @param array
-     * @param bool
+     * @param array $arrModules
+     * @param bool  $blnShowAll
      *
      * @return array
      */
@@ -124,7 +127,6 @@ class ContaoHelper extends \Controller
     {
         // Make sure there's no exception if notification_center has not been properly installed yet
         if (!\Database::getInstance()->tableExists('tl_nc_gateway')) {
-
             return $arrModules;
         }
 
