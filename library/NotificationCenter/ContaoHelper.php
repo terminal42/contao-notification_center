@@ -59,7 +59,7 @@ class ContaoHelper extends \Controller
         $objNotification = \NotificationCenter\Model\Notification::findByPk($objModule->nc_notification);
 
         if ($objNotification !== null) {
-            $objNotification->send($arrTokens);
+            $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
 
             // Disable the email to admin because no core notification has been sent
             $objModule->reg_activate = true;
@@ -108,7 +108,7 @@ class ContaoHelper extends \Controller
         $objNotification = \NotificationCenter\Model\Notification::findByPk($objModule->nc_notification);
 
         if ($objNotification !== null) {
-            $objNotification->send($arrTokens);
+            $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
         }
     }
 
