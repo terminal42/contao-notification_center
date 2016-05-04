@@ -1,7 +1,7 @@
 Notification Center Changelog
 ===========================
 
-Version 1.3.6 (????-??-??)
+Version 1.3.6 (2016-05-04)
 --------------------------
 
 ### Fixed
