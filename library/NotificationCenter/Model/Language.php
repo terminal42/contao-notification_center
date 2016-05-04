@@ -28,6 +28,9 @@ class Language extends \Model
     {
         $t = static::$strTable;
 
+        // Support the language variations (e.g. en-US)
+        $strLanguage = str_replace('-', '_', $strLanguage);
+
         $arrColumns = array("$t.pid=?", "($t.language=? OR $t.fallback=1)");
         $arrValues  = array($objMessage->id, $strLanguage);
         $arrOptions = array('order' => 'fallback');
