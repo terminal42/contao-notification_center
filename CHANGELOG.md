@@ -15,6 +15,13 @@ Version 1.3.5 (2016-03-02)
 - The extension is now compatible with PHP7 (see #86)
 
 
+Version 1.3.4 (2016-02-09)
+--------------------------
+
+### Improved
+- The extension is now compatible with Contao 4
+
+
 Version 1.3.3 (2016-01-15)
 --------------------------
 
