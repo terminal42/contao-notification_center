@@ -74,13 +74,17 @@ class StringUtil
 
         foreach (trimsplit(',', $strAttachmentTokens) as $strToken) {
             if (version_compare(VERSION . '.' . BUILD, '3.5.1', '<')) {
-                $strFile = TL_ROOT.'/'.\String::parseSimpleTokens($strToken, $arrTokens);
+                $strParsedToken = \String::parseSimpleTokens($strToken, $arrTokens);
             } else {
-                $strFile = TL_ROOT.'/'.\StringUtil::parseSimpleTokens($strToken, $arrTokens);
+                $strParsedToken = \StringUtil::parseSimpleTokens($strToken, $arrTokens);
             }
 
-            if (is_file($strFile)) {
-                $arrAttachments[$strToken] = $strFile;
+            foreach (trimsplit(',', $strParsedToken) as $strFile) {
+                $strFileFull = TL_ROOT . '/' . $strFile;
+
+                if (is_file($strFileFull)) {
+                    $arrAttachments[$strFile] = $strFileFull;
+                }
             }
         }
 
