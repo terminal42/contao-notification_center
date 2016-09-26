@@ -61,8 +61,10 @@ if (null !== $objNotificationCollection) {
 
 ## Hooks
 
+### `sendNotificationMessage`
+
 If you want to enrich each message being sent by some meta data or want to disable some messages being sent, you can
-use the sendNotificationMessage hook:
+use the `sendNotificationMessage` hook:
 
 ```php
 
@@ -74,20 +76,22 @@ class MyHook
 {
     public function execute($objMessage, $arrTokens, $language, $objGatewayModel)
     {
-         if (!$objMessage->regardUserSettings || !FE_USER_LOGGED_IN 
+        if (!$objMessage->regardUserSettings || !FE_USER_LOGGED_IN 
             || $objMessage->getRelated('pid')->type !== 'custom_notification') {
             return true;
-         }
+        }
          
-         $user = \MemberModel::findByPK($arrTokens['recipient']);     
-         if (!$user || !$user->disableEmailNotifications) {
+        $user = \MemberModel::findByPK($arrTokens['recipient']);     
+        if (!$user || !$user->disableEmailNotifications) {
             return true;
-         }
+        }
                       
-         return false;
+        return false;
     }
 }
 ```
+
+### `mapNotificationTokens`
 
 You can modify the tokens of a message via the `mapNotificationTokens` hook. It is executed before the `sendNotificationMessage` hook and receives the same parameters. The hook expects its listeners to return an array of modified tokens:
 
