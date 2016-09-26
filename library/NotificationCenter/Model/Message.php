@@ -41,6 +41,12 @@ class Message extends \Model
             return false;
         }
 
+        if (isset($GLOBALS['TL_HOOKS']['mapNotificationTokens']) && is_array($GLOBALS['TL_HOOKS']['mapNotificationTokens'])) {
+            foreach ($GLOBALS['TL_HOOKS']['mapNotificationTokens'] as $arrCallback) {
+                $arrTokens = \System::importStatic($arrCallback[0])->{$arrCallback[1]}($this, $arrTokens, $strLanguage, $objGatewayModel);
+            }
+        }
+
         if (isset($GLOBALS['TL_HOOKS']['sendNotificationMessage']) && is_array($GLOBALS['TL_HOOKS']['sendNotificationMessage'])) {
             foreach ($GLOBALS['TL_HOOKS']['sendNotificationMessage'] as $arrCallback) {
                 $blnSuccess = \System::importStatic($arrCallback[0])->{$arrCallback[1]}($this, $arrTokens, $strLanguage, $objGatewayModel);
