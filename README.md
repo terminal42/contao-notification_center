@@ -88,3 +88,28 @@ class MyHook
     }
 }
 ```
+
+You can modify the tokens of a message via the `mapNotificationTokens` hook. It is executed before the `sendNotificationMessage` hook and receives the same parameters. The hook expects its listeners to return an array of modified tokens:
+
+```php
+// Example: Escape all commas in tokens of a CSV export by wrapping the token in double quotes. Also escape existing double quotes inside the token.
+
+// config.php
+$GLOBALS['TL_HOOKS']['mapNotificationTokens'][] = array('MyHook', 'execute');
+
+// The hook
+class MyHook
+{
+    public function execute($objMessage, $arrTokens, $language, $objGatewayModel)
+    {
+        if ($objGatewayModel->type === 'file' && $objGatewayModel->file_type === 'csv') {
+            array_walk($arrTokens, function(&$varValue) {
+                if (strpos($varValue, ',') !== false)
+                    $varValue = '"' . str_replace('"', '""', $varValue) . '"';
+            });
+        }
+
+        return $arrTokens;
+    }
+}
+```
