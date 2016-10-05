@@ -41,9 +41,14 @@ class Message extends \Model
             return false;
         }
 
+        // Make sure the tokens and language can be changed for one message only
+        // (by reference affects subsequent messages)
+        $cpTokens   = $arrTokens;
+        $cpLanguage = $strLanguage;
+
         if (isset($GLOBALS['TL_HOOKS']['sendNotificationMessage']) && is_array($GLOBALS['TL_HOOKS']['sendNotificationMessage'])) {
             foreach ($GLOBALS['TL_HOOKS']['sendNotificationMessage'] as $arrCallback) {
-                $blnSuccess = \System::importStatic($arrCallback[0])->{$arrCallback[1]}($this, $arrTokens, $strLanguage, $objGatewayModel);
+                $blnSuccess = \System::importStatic($arrCallback[0])->{$arrCallback[1]}($this, $cpTokens, $cpLanguage, $objGatewayModel);
 
                 if (!$blnSuccess) {
                     return false;
@@ -51,7 +56,7 @@ class Message extends \Model
             }
         }
 
-        return $objGatewayModel->getGateway()->send($this, $arrTokens, $strLanguage);
+        return $objGatewayModel->getGateway()->send($this, $cpTokens, $cpLanguage);
     }
 
     /**
