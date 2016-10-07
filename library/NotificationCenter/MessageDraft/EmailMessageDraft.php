@@ -174,7 +174,7 @@ class EmailMessageDraft implements MessageDraftInterface
      * @return boolean
      */
     public function useExternalImages() {
-        return !!$this->objLanguage->email_external_images;
+        return (bool) $this->objLanguage->email_external_images;
     }
 
     /**
