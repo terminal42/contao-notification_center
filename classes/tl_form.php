@@ -77,14 +77,15 @@ class tl_form extends \Backend
     {
         $arrTokens = array();
         $arrTokens['raw_data'] = '';
+        $strPattern = $GLOBALS['NOTIFICATION_CENTER']['FLATTEN_PATTERN'] ?: ', ';
 
         foreach ($arrData as $k => $v) {
-            \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens);
-            $arrTokens['raw_data'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
+            \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens, $strPattern);
+            $arrTokens['raw_data'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode($strPattern, $v) : $v) . "\n";
         }
 
         foreach ($arrForm as $k => $v) {
-            \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens);
+            \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens, $strPattern);
         }
 
         // Administrator e-mail
@@ -108,7 +109,7 @@ class tl_form extends \Backend
      * @deprecated Deprecated since version 1.3.1, to be removed in version 2.
      *             Use Haste\Util\StringUtil::flatten() instead.
      */
-    public function flatten($varValue, $strKey, &$arrData)
+    public function flatten($varValue, $strKey, &$arrData, $strPattern = ', ')
     {
         if (is_object($varValue)) {
             return;
@@ -129,6 +130,6 @@ class tl_form extends \Backend
             }
         }
 
-        $arrData[$strKey] = implode(', ', $arrValues);
+        $arrData[$strKey] = implode($strPattern, $arrValues);
     }
 }
