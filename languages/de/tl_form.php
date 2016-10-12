@@ -11,6 +11,7 @@
  * last-updated: 2014-07-17T14:48:39+02:00
  */
 
-$GLOBALS['TL_LANG']['tl_form']['nc_notification']['0'] = 'Benachrichtigung';
-$GLOBALS['TL_LANG']['tl_form']['nc_notification']['1'] = 'Bitte wählen Sie eine Benachrichtigung aus.';
-
+$GLOBALS['TL_LANG']['tl_form']['nc_notification']['0']    = 'Benachrichtigung';
+$GLOBALS['TL_LANG']['tl_form']['nc_notification']['1']    = 'Bitte wählen Sie eine Benachrichtigung aus.';
+$GLOBALS['TL_LANG']['tl_form']['nc_flatten_pattern']['0'] = 'Trennzeichen einer Auflistung';
+$GLOBALS['TL_LANG']['tl_form']['nc_flatten_pattern']['1'] = 'Sie können das Muster der Auflistung von Werten ändern; der Standard ist `, `.';
