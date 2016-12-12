@@ -98,18 +98,18 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
     array(
          'contao' => array(
              'core_form' => array(
-                 'recipients'           => array('admin_email', 'form_*'),
+                 'recipients'           => array('admin_email', 'form_*', 'formconfig_*'),
                  'email_subject'        => array('form_*', 'formconfig_*', 'admin_email'),
                  'email_text'           => array('form_*', 'formconfig_*', 'formlabel_*', 'raw_data', 'admin_email'),
                  'email_html'           => array('form_*', 'formconfig_*', 'formlabel_*', 'raw_data', 'admin_email'),
                  'file_name'            => array('form_*', 'formconfig_*', 'admin_email'),
                  'file_content'         => array('form_*', 'formconfig_*', 'admin_email'),
-                 'email_sender_name'    => array('admin_email', 'form_*'),
-                 'email_sender_address' => array('admin_email', 'form_*'),
-                 'email_recipient_cc'   => array('admin_email', 'form_*'),
-                 'email_recipient_bcc'  => array('admin_email', 'form_*'),
-                 'email_replyTo'        => array('admin_email', 'form_*'),
-                 'attachment_tokens'    => array('form_*'),
+                 'email_sender_name'    => array('admin_email', 'form_*', 'formconfig_*'),
+                 'email_sender_address' => array('admin_email', 'form_*', 'formconfig_*'),
+                 'email_recipient_cc'   => array('admin_email', 'form_*', 'formconfig_*'),
+                 'email_recipient_bcc'  => array('admin_email', 'form_*', 'formconfig_*'),
+                 'email_replyTo'        => array('admin_email', 'form_*', 'formconfig_*'),
+                 'attachment_tokens'    => array('form_*', 'formconfig_*'),
              ),
              'member_activation' => array(
                  'recipients'           => array('member_email', 'admin_email'),
