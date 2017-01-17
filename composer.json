@@ -17,9 +17,6 @@
         "codefog/contao-haste":"^4.10.0",
         "terminal42/dcawizard":"2.*"
     },
-    "require-dev": {
-        "contao/manager-plugin": "~1.0"
-    },
     "autoload":{
         "psr-0": {
             "NotificationCenter\\": [
@@ -44,7 +41,6 @@
                 "languages_cto": "languages",
                 "languages_tx": ".tx"
             }
-        },
-        "contao-manager-plugin": "NotificationCenter\\ContaoManager\\Plugin"
+        }
     }
 }
