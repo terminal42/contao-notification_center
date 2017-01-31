@@ -205,28 +205,28 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         ),
         'email_smtpHost' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpHost'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpHost'],
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'nospace'=>true, 'tl_class'=>'long'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'email_smtpUser' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpUser'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpUser'],
             'inputType'               => 'text',
             'eval'                    => array('decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'email_smtpPass' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpPass'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpPass'],
             'inputType'               => 'textStore',
             'eval'                    => array('decodeEntities'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'email_smtpEnc' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpEnc'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpEnc'],
             'inputType'               => 'select',
             'options'                 => array(''=>'-', 'ssl'=>'SSL', 'tls'=>'TLS'),
             'eval'                    => array('tl_class'=>'w50'),
@@ -234,7 +234,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         ),
         'email_smtpPort' => array
         (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_settings']['smtpPort'],
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpPort'],
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(16) NOT NULL default ''"
