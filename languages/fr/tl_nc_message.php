@@ -8,12 +8,13 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:11+01:00
+ * last-updated: 2016-08-25T13:45:03+00:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']['0']                   = 'Copier les message';
-$GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Copier le message ID %s.';
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']['0']                   = 'Dupliquer le message';
+$GLOBALS['TL_LANG']['tl_nc_message']['copy']['1']                   = 'Dupliquer le message d\'ID %s';
+$GLOBALS['TL_LANG']['tl_nc_message']['cut']['0']                    = 'Déplacer le message';
+$GLOBALS['TL_LANG']['tl_nc_message']['cut']['1']                    = 'Déplacer le message d\'ID %s';
 $GLOBALS['TL_LANG']['tl_nc_message']['delete']['0']                 = 'Supprimer le message';
 $GLOBALS['TL_LANG']['tl_nc_message']['delete']['1']                 = 'Supprimer le message ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_message']['edit']['0']                   = 'Éditer le message';
@@ -37,6 +38,10 @@ $GLOBALS['TL_LANG']['tl_nc_message']['languages']['3']              = 'Fermer';
 $GLOBALS['TL_LANG']['tl_nc_message']['languages_legend']            = 'Langues';
 $GLOBALS['TL_LANG']['tl_nc_message']['new']['0']                    = 'Nouveau message';
 $GLOBALS['TL_LANG']['tl_nc_message']['new']['1']                    = 'Créer un nouveau message.';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']['0']           = 'Balise';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_tag']['1']           = 'Ici vous pouvez insérer la balise';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']['0']    = 'Autoriser le suivi de l\'ouverture';
+$GLOBALS['TL_LANG']['tl_nc_message']['postmark_trackOpens']['1']    = 'Ici vous pouvez autoriser le suivi de l\'ouverture';
 $GLOBALS['TL_LANG']['tl_nc_message']['publish_legend']              = 'Paramètres de publication';
 $GLOBALS['TL_LANG']['tl_nc_message']['published']['0']              = 'Publier le message';
 $GLOBALS['TL_LANG']['tl_nc_message']['published']['1']              = 'Inclure ce message quand une notification est envoyée.';

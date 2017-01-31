@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-03-12T13:42:08+01:00
+ * last-updated: 2016-08-25T13:45:03+00:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']                = 'Copier la passerelle';
@@ -43,6 +43,12 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect']        = 'Impossible d
 $GLOBALS['TL_LANG']['tl_nc_gateway']['gateway_legend']           = 'Paramètre de la passerelle';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['new']['0']                 = 'Nouvelle passerelle';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['new']['1']                 = 'Créer une nouvelle passerelle.';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key']['0']        = 'Clé d\'API Postmark';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key']['1']        = 'Veuillez insérer votre clé unique d\'API Postmark';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']['0']        = 'Autoriser le SSL';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']['1']        = 'Ici vous pouvez autoriser la connection SSL';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['0']       = 'Autoriser le mode de test';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['1']       = 'Ici vous pouvez activer le mode de test';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']                = 'Détails de la passerelle';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']                = 'Afficher les détails de la passerelle ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title']['0']               = 'Titre';
@@ -52,4 +58,5 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['0']                = 'Type';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['1']                = 'Sélectionner le type de cette passerelle.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['email']            = 'Passerelle de messagerie standard';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']['file']             = 'Écrire dans un fichier';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['type']['postmark']         = 'Postmark (postmarkapp.com)';
 
