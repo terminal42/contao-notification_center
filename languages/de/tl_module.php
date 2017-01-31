@@ -8,10 +8,11 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-02-28T08:54:08+01:00
+ * last-updated: 2016-08-25T13:45:03+00:00
  */
 
-
-$GLOBALS['TL_LANG']['tl_module']['nc_notification']['0'] = 'Benachrichtigung';
-$GLOBALS['TL_LANG']['tl_module']['nc_notification']['1'] = 'Bitte wählen Sie eine Benachrichtigung.';
+$GLOBALS['TL_LANG']['tl_module']['nc_activation_notification']['0'] = 'Aktivierungsbenachrichtigung';
+$GLOBALS['TL_LANG']['tl_module']['nc_activation_notification']['1'] = 'Bitte wählen Sie eine Aktivierungsbenachrichtigung.';
+$GLOBALS['TL_LANG']['tl_module']['nc_notification']['0']            = 'Benachrichtigung';
+$GLOBALS['TL_LANG']['tl_module']['nc_notification']['1']            = 'Bitte wählen Sie eine Benachrichtigung.';
 

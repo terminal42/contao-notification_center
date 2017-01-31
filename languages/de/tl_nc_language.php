@@ -23,6 +23,8 @@ $GLOBALS['TL_LANG']['tl_nc_language']['delete']['0']                   = 'Sprach
 $GLOBALS['TL_LANG']['tl_nc_language']['delete']['1']                   = 'Sprache mit ID %s löschen.';
 $GLOBALS['TL_LANG']['tl_nc_language']['edit']['0']                     = 'Sprache editieren';
 $GLOBALS['TL_LANG']['tl_nc_language']['edit']['1']                     = 'Sprache ID %s editieren.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_external_images']['0']    = 'Externe Bilder';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_external_images']['1']    = 'Bilder in HTML E-Mails nicht einbetten.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']['0']               = 'HTML';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']['1']               = 'Bitte HTML eingeben.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['0']               = 'Modus';
@@ -65,5 +67,6 @@ $GLOBALS['TL_LANG']['tl_nc_language']['recipients']['0']               = 'Empfä
 $GLOBALS['TL_LANG']['tl_nc_language']['recipients']['1']               = 'Bitte geben Sie eine <strong>Komma-separierte</strong> Liste der Empfänger in dieses Feld ein. Nutzen Sie die Autovervollständigung um die verfügbaren "Platzhalter" zu sehen. (Beginnen Sie mit ##)';
 $GLOBALS['TL_LANG']['tl_nc_language']['show']['0']                     = 'Sprach-Details';
 $GLOBALS['TL_LANG']['tl_nc_language']['show']['1']                     = 'Details für ID %s anzeigen.';
+$GLOBALS['TL_LANG']['tl_nc_language']['token_character_error']         = 'Der Inhalt enthält invalide Tokens. Simple Tokens können keines der folgenden Zeichen enthalten: "<>!=*". Sie werden entweder für if-Bedingungen oder als Platzhalter verwendet.';
 $GLOBALS['TL_LANG']['tl_nc_language']['token_error']                   = 'Die folgenden eingesetzten Tokens werden vom Notification-Typ nicht unterstützt: %s.';
 

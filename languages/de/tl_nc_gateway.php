@@ -60,6 +60,7 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['weekly']   = 'Jede W
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronMessages']['0']        = 'Anzahl Nachrichten';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronMessages']['1']        = 'Hier können Sie bestimmen wie viele Nachrichten pro Aurfruf gesendet werden.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway']['0']       = 'Ziel-Gateway';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway']['1']       = 'Dieses Gateway wird alle Nachrichten zuerst in die Warteschlange übertragen. Danach werden sie über das hier gewählte Ziel-Gateway übermittelt.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']                      = 'Gateway-Details';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']                      = 'Details des Gateways ID %s anzeigen.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['smtpEnc']['0']                   = 'SMTP-Verschlüsselung';
