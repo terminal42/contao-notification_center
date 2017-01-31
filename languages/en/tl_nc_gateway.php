@@ -28,6 +28,13 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['file_path']                   = array('Pat
 $GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_key']                = array('Postmark API key', 'Please enter your unique Postmark API key.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']               = array('Enable test mode', 'Here you can enable the test mode.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']                = array('Enable SSL', 'Here you can enable the SSL connection.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['useSMTP']                     = array('Send e-mails via SMTP', 'Use an SMTP server instead of the PHP mail() function to send e-mails.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpHost']                    = array('SMTP hostname', 'Please enter the host name of the SMTP server.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpUser']                    = array('SMTP username', 'Here you can enter the SMTP username.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpPass']                    = array('SMTP password', 'Here you can enter the SMTP password.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpEnc']                     = array('SMTP encryption', 'Here you can choose an encryption method (SSL or TLS).');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['smtpPort']                    = array('SMTP port number', 'Please enter the port number of the SMTP server.');
+
 
 /**
  * Reference

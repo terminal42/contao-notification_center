@@ -88,3 +88,31 @@ class MyHook
     }
 }
 ```
+
+
+## Note to self
+
+Updating language files:
+
+Generating the `en` base folder:
+```
+$ ./vendor/bin/ctb to-xliff 
+```
+
+Pushing `en` to transifex:
+
+```
+$ ./vendor/bin/ctb download-transifex en
+```
+
+Downloading translations:
+
+```
+$ ./vendor/bin/ctb download-transifex --mode=translated
+```
+
+Storing the language files:
+
+```
+$ ./vendor/bin/ctb from-xliff
+```
