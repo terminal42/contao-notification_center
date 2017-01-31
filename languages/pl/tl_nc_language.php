@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-03-12T13:42:08+01:00
+ * last-updated: 2017-01-31T15:36:46+00:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Załączniki z tokenów';

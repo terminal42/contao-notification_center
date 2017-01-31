@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-03-12T13:42:08+01:00
+ * last-updated: 2016-08-25T13:45:03+00:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']                    = 'Configuration';
@@ -36,5 +36,6 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']['1']           = 
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']                    = 'Passerelle de messagerie standard';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['file']                     = 'Écrire dans un fichier';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_password']['0']     = 'Mot de passe perdu';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_personaldata']['0'] = 'Données personnelles du membre';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration']['0'] = 'Inscription des membres';
 

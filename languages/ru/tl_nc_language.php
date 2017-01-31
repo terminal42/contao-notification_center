@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-07-17T14:48:39+02:00
+ * last-updated: 2017-01-31T15:36:46+00:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']    = 'Вложения через маркеры';
