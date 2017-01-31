@@ -96,6 +96,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     (
         '__selector__'                => array('type'),
         'default'                     => '{title_legend},title,type;',
+        'core_form'                   => '{title_legend},title,type;{config_legend},flatten_delimiter',
     ),
 
     // Fields
@@ -128,6 +129,15 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'reference'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(32) NOT NULL default ''"
+        ),
+        'flatten_delimiter' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['flatten_delimiter'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'default'                 => ',',
+            'eval'                    => array('doNotTrim'=>true),
+            'sql'                     => "varchar(255) NOT NULL default ','"
         )
     )
 );

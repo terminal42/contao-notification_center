@@ -7,6 +7,7 @@ Version 1.4.0 (????-??-??)
 ### New
 - Added a verification for valid token characters (#68)
 - Support embedding images in e-mails (#109)
+- Support for different flatten delimiter in core form notification (#111)
 
 
 Version 1.3.6 (2016-05-04)

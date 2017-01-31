@@ -51,13 +51,13 @@ class tl_form extends \Backend
             return;
         }
 
-        /** @var Model\Notification $objNotification */
         $objNotification->send(
             $this->generateTokens(
                 (array) $arrData,
                 (array) $arrForm,
                 (array) $arrFiles,
-                (array) $arrLabels
+                (array) $arrLabels,
+                $objNotification->flatten_delimiter ?: ','
             ),
             $GLOBALS['TL_LANGUAGE']
         );
@@ -70,22 +70,23 @@ class tl_form extends \Backend
      * @param array $arrForm
      * @param array $arrFiles
      * @param array $arrLabels
+     * @param string $delimiter
      *
      * @return array
      */
-    public function generateTokens(array $arrData, array $arrForm, array $arrFiles, array $arrLabels)
+    public function generateTokens(array $arrData, array $arrForm, array $arrFiles, array $arrLabels, $delimiter)
     {
         $arrTokens = array();
         $arrTokens['raw_data'] = '';
 
         foreach ($arrData as $k => $v) {
-            \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens);
+            \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens, $delimiter);
             $arrTokens['formlabel_'.$k] = isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k);
             $arrTokens['raw_data'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
         }
 
         foreach ($arrForm as $k => $v) {
-            \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens);
+            \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens, $delimiter);
         }
 
         // Administrator e-mail

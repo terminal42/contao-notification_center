@@ -13,6 +13,7 @@
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title']                   = array('Title', 'Please enter a title for this notification.');
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Type', 'Please select a type for this notification.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['flatten_delimiter']       = array('Delimiter for lists', 'When list values (array values) are submitted, the Notification Center flattens them automatically by using a comma (",") by default. Change this here if you like.');
 
 /**
  * Reference
