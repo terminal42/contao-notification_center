@@ -106,7 +106,7 @@ window.addEvent('domready', function() {
         }
 
         foreach ($matches[1] as $match) {
-            if (!preg_match('/^[A-Za-z0-9_]+$/', $match)) {
+            if (preg_match('/[<>!=*]+/', $match)) {
                 $objWidget->addError($GLOBALS['TL_LANG']['tl_nc_language']['token_character_error']);
 
                 return true;
