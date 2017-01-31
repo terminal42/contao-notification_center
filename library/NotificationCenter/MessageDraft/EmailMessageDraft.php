@@ -170,6 +170,14 @@ class EmailMessageDraft implements MessageDraftInterface
     }
 
     /**
+     * Returns true if images should not be embedded
+     * @return boolean
+     */
+    public function useExternalImages() {
+        return (bool) $this->objLanguage->email_external_images;
+    }
+
+    /**
      * Returns the paths to attachments as an array
      * @return  array
      */

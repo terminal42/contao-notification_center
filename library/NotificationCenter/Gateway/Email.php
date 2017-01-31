@@ -101,6 +101,9 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
             $objEmail->imageDir = TL_ROOT . '/';
         }
 
+        // Set image embedding
+        $objEmail->embedImages = !$objDraft->useExternalImages();
+
         // Add attachments
         $arrAttachments = $objDraft->getAttachments();
         if (!empty($arrAttachments)) {

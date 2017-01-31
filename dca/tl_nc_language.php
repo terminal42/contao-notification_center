@@ -110,7 +110,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     'subpalettes' => array
     (
         'email_mode_textOnly'         => 'email_text',
-        'email_mode_textAndHtml'      => 'email_text,email_html',
+        'email_mode_textAndHtml'      => 'email_text,email_html,email_external_images',
     ),
 
     // Fields
@@ -280,6 +280,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'inputType'               => 'textarea',
             'eval'                    => array('rgxp'=>'nc_tokens', 'tl_class'=>'clr', 'rte'=>'tinyMCE', 'decodeEntities'=>true, 'allowHtml'=>true, 'mandatory'=>true),
             'sql'                     => "text NULL"
+        ),
+        'email_external_images' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['email_external_images'],
+            'exclude'                 => true,
+            'inputType'               => 'checkbox',
+            'eval'                    => array('tl_class'=>'w50'),
+            'sql'                     => "char(1) NOT NULL default ''"
         ),
         'file_name' => array
         (
