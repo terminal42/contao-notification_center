@@ -17,6 +17,9 @@
         "codefog/contao-haste":"^4.10.0",
         "terminal42/dcawizard":"2.*"
     },
+    "require-dev": {
+        "cyberspectrum/contao-toolbox": "^0.7.2"
+    },
     "autoload":{
         "psr-0": {
             "NotificationCenter\\": [
