@@ -1,11 +1,12 @@
 Notification Center Changelog
 ===========================
 
-Version 1.4.0-rc1 (????-??-??)
+Version 1.4.0 (????-??-??)
 --------------------------
 
 ### New
 - Added a verification for valid token characters (#68)
+- Support embedding images in e-mails (#109)
 
 
 Version 1.3.6 (2016-05-04)
