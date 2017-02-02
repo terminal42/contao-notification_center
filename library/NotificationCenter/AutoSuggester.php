@@ -94,6 +94,26 @@ window.addEvent('domready', function() {
             return false;
         }
 
+        // Check if tokens contain invalid characters
+        preg_match_all('@##([^##]+)##@', $strText, $matches);
+
+        if (!is_array($matches) || empty($matches)) {
+            return true;
+        }
+
+        if (empty($matches[1])) {
+            return true;
+        }
+
+        foreach ($matches[1] as $match) {
+            if (preg_match('/[<>!=*]+/', $match)) {
+                $objWidget->addError($GLOBALS['TL_LANG']['tl_nc_language']['token_character_error']);
+
+                return true;
+            }
+        }
+
+        // Check if tokens are valid in terms of characters but are not allowed here
         $strGroup       = NotificationModel::findGroupForType(static::$strType);
         $arrValidTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
 

@@ -25,6 +25,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_subject']              = array('Sub
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']                 = array('Mode', 'Choose the mode you would like to be used for this email.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']                 = array('Raw text', 'Please enter the text.');
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']                 = array('HTML', 'Please enter the HTML.');
+$GLOBALS['TL_LANG']['tl_nc_language']['email_external_images']      = array('External images', 'Do not embed images in HTML emails.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_name']                  = array('File name', 'Please enter the file name.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']          = array('Storage mode', 'Here you can choose whether you want to override the existing file or append to an existing file if present.');
 $GLOBALS['TL_LANG']['tl_nc_language']['file_content']               = array('File content', 'Please enter the file content.');
@@ -59,3 +60,4 @@ $GLOBALS['TL_LANG']['tl_nc_language']['content_legend']             = 'Content';
  * Errors
  */
 $GLOBALS['TL_LANG']['tl_nc_language']['token_error']                = 'The following tokens you have used are not supported by this notification type: %s.';
+$GLOBALS['TL_LANG']['tl_nc_language']['token_character_error']      = 'Your content contains invalid tokens. Simple Tokens cannot contain one of those characters: <>!=*. They are either used for comparisons in if statements or as wildcard.';

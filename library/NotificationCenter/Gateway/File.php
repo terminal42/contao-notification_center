@@ -27,10 +27,11 @@ class File extends Base implements GatewayInterface
     /**
      * Create file
      *
-     * @param   Message
-     * @param   array
-     * @param   string
-     * @return  bool
+     * @param Message $objMessage
+     * @param array   $arrTokens
+     * @param string  $strLanguage
+     *
+     * @return bool
      */
     public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
@@ -51,7 +52,7 @@ class File extends Base implements GatewayInterface
         );
 
         // Escape quotes and line breaks for CSV files
-        if ($this->objModel->file_type == 'csv') {
+        if ('csv' === $this->objModel->file_type) {
             array_walk($arrTokens, function (&$varValue) {
                 $varValue = str_replace(array('"', "\r\n", "\r"), array('""', "\n", "\n"), $varValue);
             });
@@ -76,7 +77,9 @@ class File extends Base implements GatewayInterface
     /**
      * Test connection to the given server
      *
-     * @return  bool
+     * @return bool
+     *
+     * @throws \UnexpectedValueException
      */
     public function testConnection()
     {
@@ -96,11 +99,13 @@ class File extends Base implements GatewayInterface
     /**
      * Save file to the server
      *
-     * @param   string
-     * @param   string
-     * @param   string
-     * @return  bool
-     * @throws  \UnexpectedValueException
+     * @param string $strFileName
+     * @param string $strContent
+     * @param string $strStorageMode
+     *
+     * @return bool
+     *
+     * @throws \UnexpectedValueException
      */
     protected function save($strFileName, $strContent, $strStorageMode)
     {
@@ -120,9 +125,10 @@ class File extends Base implements GatewayInterface
     /**
      * Generate a unique filename based on folder content
      *
-     * @param   string
-     * @param   array
-     * @return  string
+     * @param string $strFile
+     * @param array  $arrFiles
+     *
+     * @return string
      */
     protected function getUniqueFileName($strFile, $arrFiles)
     {
@@ -140,7 +146,7 @@ class File extends Base implements GatewayInterface
         foreach ($arrFiles as $file) {
             if (preg_match('/__[0-9]+\.' . preg_quote($pathinfo['extension'], '/') . '$/', $file)) {
                 $file     = str_replace('.' . $pathinfo['extension'], '', $file);
-                $intValue = intval(substr($file, (strrpos($file, '__') + 2)));
+                $intValue = (int) substr($file, (strrpos($file, '__') + 2));
 
                 $offset = max($offset, $intValue);
             }
@@ -152,10 +158,11 @@ class File extends Base implements GatewayInterface
     /**
      * Save file to local server
      *
-     * @param   string
-     * @param   string
-     * @param   string
-     * @return  bool
+     * @param string $strFileName
+     * @param string $strContent
+     * @param string $strStorageMode
+     *
+     * @return bool
      */
     protected function saveToLocal($strFileName, $strContent, $strStorageMode)
     {
@@ -190,15 +197,17 @@ class File extends Base implements GatewayInterface
     /**
      * Save file to FTP server
      *
-     * @param   string
-     * @param   string
-     * @param   string
-     * @return  bool
-     * @throws  \RuntimeException
+     * @param string $strFileName
+     * @param string $strContent
+     * @param string $strStorageMode
+     *
+     * q@return bool
+     *
+     * @throws \RuntimeException
      */
     protected function saveToFTP($strFileName, $strContent, $strStorageMode)
     {
-        if (($resConnection = ftp_connect($this->objModel->file_host, intval($this->objModel->file_port ?: 21), 5)) === false) {
+        if (($resConnection = ftp_connect($this->objModel->file_host, (int) ($this->objModel->file_port ?: 21), 5)) === false) {
             throw new \RuntimeException('Could not connect to the FTP server');
         }
 

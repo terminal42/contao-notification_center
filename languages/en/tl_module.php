@@ -11,4 +11,5 @@
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_module']['nc_notification']     = array('Notification', 'Please select a notification.');
+$GLOBALS['TL_LANG']['tl_module']['nc_notification']            = array('Notification', 'Please select a notification.');
+$GLOBALS['TL_LANG']['tl_module']['nc_activation_notification'] = array('Activation notification', 'Please select an activation notification.');

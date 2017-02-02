@@ -14,8 +14,10 @@ class tl_module extends \Backend
 {
     /**
      * Get notification choices
-     * @param   \DataContainer
-     * @return  array
+     *
+     * @param \DataContainer $dc
+     *
+     * @return array
      */
     public function getNotificationChoices(\DataContainer $dc)
     {

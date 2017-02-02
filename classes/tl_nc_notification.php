@@ -14,15 +14,16 @@ class tl_nc_notification extends \Backend
 {
     /**
      * Get all registered notification types
-     * @return  array
+     *
+     * @return array
      */
     public function getNotificationTypes()
     {
         $arrNotificationTypes = array();
 
         if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'])) {
-            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $k=>$v) {
-                foreach (array_keys($v) as $kk) {
+            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $k => $v) {
+                foreach ($v as $kk => $vv) {
                     $arrNotificationTypes[$k][] = $kk;
                 }
             }
@@ -33,12 +34,14 @@ class tl_nc_notification extends \Backend
 
     /**
      * Label callback
-     * @param   string
-     * @param   int
-     * @param   string
-     * @param   array
-     * @param   DataContainer
-     * @return  string
+     *
+     * @param string         $strLabel
+     * @param int            $intMode
+     * @param string         $strField
+     * @param array          $arrRow
+     * @param \DataContainer $dc
+     *
+     * @return string
      */
     public function getGroupLabel($strLabel, $intMode, $strField, $arrRow, $dc)
     {
@@ -46,8 +49,8 @@ class tl_nc_notification extends \Backend
         $strType = '';
 
         if (!empty($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']) && is_array($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'])) {
-            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $k=>$v) {
-                foreach (array_keys($v) as $kk) {
+            foreach ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] as $k => $v) {
+                foreach ($v as $kk => $vv) {
 
                     if ($kk == $arrRow['type']) {
                         $strGroup = $GLOBALS['TL_LANG']['tl_nc_notification']['type'][$k];

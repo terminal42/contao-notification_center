@@ -17,14 +17,13 @@ class tl_nc_language extends \Backend
 {
 
     /**
-     * Modifies the palette for the queue gateway so it takes the one from the
-     * target gateway
+     * Modifies the palette for the queue gateway so it takes the one from the target gateway
      *
      * @param \DataContainer $dc
      */
     public function modifyPalette(\DataContainer $dc)
     {
-        if (\Input::get('act') != 'edit') {
+        if ('edit' !== \Input::get('act')) {
             return;
         }
 
@@ -32,7 +31,7 @@ class tl_nc_language extends \Backend
         $message = $language->getRelated('pid');
         $gateway = $message->getRelated('gateway');
 
-        if ($gateway !== null && $gateway->type == 'queue') {
+        if ($gateway !== null && 'queue' === $gateway->type) {
             $targetGateway = Gateway::findByPk($gateway->queue_targetGateway);
             $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['queue'] =
                 $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$targetGateway->type];
@@ -41,14 +40,15 @@ class tl_nc_language extends \Backend
 
     /**
      * Save gateway type in language when creating new record
-     * @param   string
-     * @param   int
-     * @param   array
-     * @param   DataContainer
+     *
+     * @param string         $strTable
+     * @param int            $insertID
+     * @param array          $arrSet
+     * @param \DataContainer $dc
      */
     public function insertGatewayType($strTable, $insertID, $arrSet, $dc)
     {
-        if ($strTable == 'tl_nc_language') {
+        if ('tl_nc_language' === $strTable) {
             \Database::getInstance()->prepare("
                 UPDATE tl_nc_language SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=(SELECT gateway FROM tl_nc_message WHERE id=?)) WHERE id=?
             ")->execute($arrSet['pid'], $insertID);
@@ -57,9 +57,12 @@ class tl_nc_language extends \Backend
 
     /**
      * Generate a list for the dcaWizard displaying the languages
-     * @param   \Database_Result
-     * @param   string
-     * @return  string
+     *
+     * @param \Database\Result $objRecords
+     * @param string           $strId
+     * @param \DcaWizard       $widget
+     *
+     * @return string
      */
     public function generateWizardList($objRecords, $strId, $widget)
     {
@@ -96,8 +99,10 @@ class tl_nc_language extends \Backend
 
     /**
      * Check if the language field is unique per message
-     * @param mixed
-     * @param \DataContainer
+     *
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -118,8 +123,10 @@ class tl_nc_language extends \Backend
 
     /**
      * Make sure the fallback field is a fallback per message
-     * @param mixed
-     * @param \DataContainer
+     *
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
+     *
      * @return mixed
      * @throws \Exception
      */
@@ -142,8 +149,10 @@ class tl_nc_language extends \Backend
 
     /**
      * Validate e-mail addresses in the comma separated list
-     * @param mixed
-     * @param \DataContainer
+     *
+     * @param mixed          $varValue
+     * @param \DataContainer $dc
+     *
      * @return mixed
      * @throws \Exception
      */
