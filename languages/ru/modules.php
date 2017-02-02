@@ -8,9 +8,8 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-05-28T09:43:34+02:00
+ * last-updated: 2016-08-25T13:45:03+00:00
  */
-
 
 $GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter']['0'] = 'Забытый пароль (Центр уведомлений)';
 $GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter']['1'] = 'Создает форму запроса нового пароля и отправляет уведомление с помощью центра уведомлений.';
@@ -18,5 +17,7 @@ $GLOBALS['TL_LANG']['MOD']['nc_gateways']['0']                    = 'Шлюзы'
 $GLOBALS['TL_LANG']['MOD']['nc_gateways']['1']                    = 'Управление шлюзами';
 $GLOBALS['TL_LANG']['MOD']['nc_notifications']['0']               = 'Уведомления';
 $GLOBALS['TL_LANG']['MOD']['nc_notifications']['1']               = 'Управление уведомлениями.';
+$GLOBALS['TL_LANG']['MOD']['nc_queue']['0']                       = 'Очередь';
+$GLOBALS['TL_LANG']['MOD']['nc_queue']['1']                       = 'Посмотреть очередь сообщений.';
 $GLOBALS['TL_LANG']['MOD']['notification_center']                 = 'Центр уведомлений';
 

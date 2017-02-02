@@ -54,6 +54,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['file_name']['1']                = 'Bitte 
 $GLOBALS['TL_LANG']['tl_nc_language']['file_override']['0']            = 'Bestehende Datei überschreiben';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_override']['1']            = 'Überschreibt die bestehende Datei.';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['0']        = 'Speichermodus';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['1']        = 'Hier können Sie wählen, ob Sie die bestehende Datei überschreiben, oder an sie anhängen wollen.';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['append']   = 'Zu einer existierenden Datei hinzufügen';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['create']   = 'Neue Datei erstellen';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['override'] = 'Ein existierende Datei überschreiben';

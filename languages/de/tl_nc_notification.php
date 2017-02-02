@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-07-17T14:48:39+02:00
+ * last-updated: 2016-08-25T13:45:03+00:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']                    = 'Konfiguration';
@@ -20,6 +20,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['edit']['0']                        = 
 $GLOBALS['TL_LANG']['tl_nc_notification']['edit']['1']                        = 'Benachrichtigung ID %s editieren.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['0']                  = 'Benachrichtigung bearbeiten';
 $GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['1']                  = 'Benachrichtigung ID %s editieren.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['flatten_delimiter']['0']           = 'Trennzeichen für Listen';
 $GLOBALS['TL_LANG']['tl_nc_notification']['new']['0']                         = 'Neue Benachrichtigung';
 $GLOBALS['TL_LANG']['tl_nc_notification']['new']['1']                         = 'Neue Benachrichtigung erstellen.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['show']['0']                        = 'Benachrichtigungsdetails';
@@ -34,6 +35,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']['0']           = 
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']['1']           = 'Dieser Benachrichtigungstyp wird nach erfolgreicher Formularübertragung versendet.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']                    = 'Standard eMail Gateway';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['file']                     = 'In Datei schreiben';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_activation']['0']   = 'Mitglied: Aktivierung';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_password']['0']     = 'Mitglied: Passwort vergessen';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_personaldata']['0'] = 'Mitglied: Persönliche Daten';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration']['0'] = 'Mitglieds Registration';
