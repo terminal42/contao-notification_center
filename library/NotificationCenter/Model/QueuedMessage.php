@@ -26,7 +26,7 @@ class QueuedMessage extends \Model
      */
     public function setTokens($arrTokens)
     {
-        $this->tokens = json_encode($arrTokens);
+        $this->tokens = json_encode($arrTokens, JSON_UNESCAPED_UNICODE);
 
         return $this;
     }
