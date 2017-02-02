@@ -60,6 +60,30 @@ class Message extends \Model
     }
 
     /**
+     * Send this message personalized if supported using its gateway
+     * @param   array
+     * @param   array
+     * @param   string
+     * @return  array
+     */
+    public function sendPersonalized(array $arrTokens, array $arrPersonalized, $strLanguage = '')
+    {
+        $arrSuccess = array();
+
+        if ($this->personalized == '') {
+            $arrSuccess[] = $this->send($arrTokens, $strLanguage);
+        } else {
+            foreach ($arrPersonalized as $arrPerson) {
+                $arrPersonalizedTokens = array_merge($arrTokens, $arrPerson);
+
+                $arrSuccess[] = $this->send($arrPersonalizedTokens, $strLanguage);
+            }
+        }
+
+        return $arrSuccess;
+    }
+
+    /**
      * Find all published by notification
      * @param   Notification
      * @return  Message|null

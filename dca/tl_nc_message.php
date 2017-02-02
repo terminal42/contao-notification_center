@@ -112,10 +112,10 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
     'palettes' => array
     (
         '__selector__'                => array('gateway_type'),
-        'default'                     => '{title_legend},title,gateway;',
-        'email'                       => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template;{publish_legend},published',
-        'file'                        => '{title_legend},title,gateway;{languages_legend},languages;{publish_legend},published',
-        'postmark'                    => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},postmark_tag,postmark_trackOpens;{publish_legend},published',
+        'default'                     => '{title_legend},title,gateway,personalized;',
+        'email'                       => '{title_legend},title,gateway,personalized;{languages_legend},languages;{expert_legend:hide},email_priority,email_template;{publish_legend},published',
+        'file'                        => '{title_legend},title,gateway,personalized;{languages_legend},languages;{publish_legend},published',
+        'postmark'                    => '{title_legend},title,gateway,personalized;{languages_legend},languages;{expert_legend:hide},postmark_tag,postmark_trackOpens;{publish_legend},published',
     ),
 
     // Fields
@@ -219,6 +219,14 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             'exclude'                 => true,
             'inputType'               => 'checkbox',
             'eval'                    => array('tl_class'=>'w50 m12'),
+            'sql'                     => "char(1) NOT NULL default ''"
+        ),
+        'personalized' => array
+        (
+            'exclude'                 => true,
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_message']['personalized'],
+            'inputType'               => 'checkbox',
+            'eval'                    => array('tl_class'=>'w50'),
             'sql'                     => "char(1) NOT NULL default ''"
         ),
         'published' => array

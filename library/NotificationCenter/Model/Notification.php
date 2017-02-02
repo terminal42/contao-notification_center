@@ -53,6 +53,31 @@ class Notification extends \Model
     }
 
     /**
+     * Sends a personalized notification
+     * @param   array   The tokens
+     * @param   array   List of personalized tokens
+     * @param   string  The language (optional)
+     * @return  array
+     */
+    public function sendPersonalized(array $arrTokens, array $arrPersonalized, $strLanguage = '')
+    {
+        // Check if there are valid messages
+        if (($objMessages = $this->getMessages()) === null) {
+            \System::log('Could not find any messages for notification ID ' . $this->id, __METHOD__, TL_ERROR);
+
+            return array();
+        }
+
+        $arrResult = array();
+
+        foreach ($objMessages as $objMessage) {
+            $arrResult[$objMessage->id] = $objMessage->sendPersonalized($arrTokens, $arrPersonalized, $strLanguage);
+        }
+
+        return $arrResult;
+    }
+
+    /**
      * Find notification group for type
      * @param   string Type
      * @return  string Class
