@@ -1,6 +1,12 @@
 Notification Center Changelog
 ===========================
 
+Version 1.4.1 (2017-??-??)
+--------------------------
+
+### Fixed
+- Not all member data available in registration notification (#118)
+
 Version 1.4.0 (2017-02-02)
 --------------------------
 
