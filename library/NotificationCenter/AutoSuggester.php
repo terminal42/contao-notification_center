@@ -28,7 +28,7 @@ class AutoSuggester extends \Controller
         }
 
         // @todo implement editAll and overrideAll
-        if (\Input::get('act') != 'edit') {
+        if ('edit' !== \Input::get('act')) {
             return;
         }
 
@@ -41,7 +41,7 @@ class AutoSuggester extends \Controller
         static::$strType  = \Database::getInstance()->prepare($GLOBALS['TL_DCA'][static::$strTable]['config']['nc_type_query'])->execute($dc->id)->type;
 
         foreach ($GLOBALS['TL_DCA'][static::$strTable]['fields'] as $field => $arrConfig) {
-            if ($arrConfig['eval']['rgxp'] == 'nc_tokens') {
+            if ('nc_tokens' === $arrConfig['eval']['rgxp']) {
                 $GLOBALS['TL_DCA'][static::$strTable]['fields'][$field]['wizard'][] = array('NotificationCenter\AutoSuggester', 'init');
             }
         }
@@ -50,8 +50,10 @@ class AutoSuggester extends \Controller
 
     /**
      * Initialize the auto suggester
-     * @param   \DataContainer
-     * @return  string
+     *
+     * @param \DataContainer $dc
+     *
+     * @return string
      */
     public function init(\DataContainer $dc)
     {
@@ -85,24 +87,44 @@ window.addEvent('domready', function() {
 
     /**
      * Verify tokens
-     * @param   string Text
-     * @param   \DataContainer
+     *
+     * @param string  $rgxp
+     * @param string  $strText
+     * @param \Widget $objWidget
+     *
+     * @return bool
      */
     public function verifyTokens($rgxp, $strText, $objWidget)
     {
-        if ($rgxp != 'nc_tokens') {
+        if ('nc_tokens' !== $rgxp) {
             return false;
         }
 
-        // Check if tokens contain invalid characters
-        preg_match_all('@##([^##]+)##@', $strText, $matches);
+        $strGroup = NotificationModel::findGroupForType(static::$strType);
 
-        if (!is_array($matches) || empty($matches)) {
-            return true;
+        $validTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
+
+        if (!$this->verifyHashes($strText, $objWidget, $validTokens)) {
+            $this->verifyConditions($strText, $objWidget, $validTokens);
         }
 
-        if (empty($matches[1])) {
-            return true;
+        return true;
+    }
+
+    /**
+     * @param string  $strText
+     * @param \Widget $objWidget
+     * @param array   $validTokens
+     *
+     * @return bool
+     */
+    private function verifyHashes($strText, $objWidget, array $validTokens)
+    {
+        // Check if tokens contain invalid characters
+        preg_match_all('@##(.+?)##@', $strText, $matches);
+
+        if (!is_array($matches) || empty($matches) || empty($matches[1])) {
+            return false;
         }
 
         foreach ($matches[1] as $match) {
@@ -113,12 +135,8 @@ window.addEvent('domready', function() {
             }
         }
 
-        // Check if tokens are valid in terms of characters but are not allowed here
-        $strGroup       = NotificationModel::findGroupForType(static::$strType);
-        $arrValidTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
-
         // Build regex pattern
-        $strPattern = '/##(' . implode('|', $arrValidTokens) . ')##/i';
+        $strPattern = '/##(' . implode('|', $validTokens) . ')##/i';
         $strPattern = str_replace('*', '[^##]*', $strPattern);
 
         preg_match_all($strPattern, $strText, $arrValidMatches);
@@ -129,8 +147,62 @@ window.addEvent('domready', function() {
         if (count($arrInvalidTokens)) {
             $strInvalidTokens = '##' . implode('##, ##', $arrInvalidTokens) . '##';
             $objWidget->addError(sprintf($GLOBALS['TL_LANG']['tl_nc_language']['token_error'], $strInvalidTokens));
+
+            return true;
         }
 
-        return true;
+        return false;
+    }
+
+    /**
+     * @param string  $strText
+     * @param \Widget $objWidget
+     * @param array   $validTokens
+     *
+     * @return bool
+     */
+    private function verifyConditions($strText, $objWidget, array $validTokens)
+    {
+        // Need to collect
+        if (!preg_match_all('/{(else)?if ([^=!<>\s]+)/i', $strText, $matches)) {
+            return false;
+        }
+
+        $foundTokens = $matches[2];
+        $invalidTokens = [];
+        foreach (array_diff($foundTokens, $validTokens) as $found) {
+            $invalid = true;
+
+            foreach ($validTokens as $valid) {
+                if ('*' === substr($valid, -1) && 0 === strpos($found, substr($valid, 0, -1))) {
+                    $invalid = false;
+                    break;
+                }
+            }
+
+            if ($invalid) {
+                $invalidTokens[] = $found;
+            }
+        }
+
+        if (count($invalidTokens) > 0) {
+            $objWidget->addError(sprintf($GLOBALS['TL_LANG']['tl_nc_language']['token_error'], implode(', ', $invalidTokens)));
+
+            return true;
+        }
+
+        try {
+            if (version_compare(VERSION . '.' . BUILD, '3.5.1', '>=')) {
+                \StringUtil::parseSimpleTokens($strText, array_flip($foundTokens));
+            } else {
+                \String::parseSimpleTokens($strText, array_flip($foundTokens));
+            }
+        } catch (\Exception $e) {
+            $objWidget->addError($e->getMessage());
+
+            return true;
+        }
+
+        return false;
     }
 }
