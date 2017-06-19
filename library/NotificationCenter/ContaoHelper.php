@@ -41,6 +41,11 @@ class ContaoHelper extends \Controller
         // Disable the email to admin because no core notification has been sent
         $objModule->reg_activate = true;
 
+        // Reload the data because $arrData does not contain all of it
+        if (($objMember = \MemberModel::findByPk($intId)) instanceof \MemberModel) {
+            $arrData = $objMember->row();
+        }
+
         $this->sendNotifications($objModule->nc_notification, $arrData, $objModule, $arrTokens);
     }
 
