@@ -168,7 +168,11 @@ class File extends Base implements GatewayInterface
     {
         // Make sure the directory exists
         if (!is_dir(TL_ROOT . '/' . $this->objModel->file_path)) {
-            new \Folder($this->objModel->file_path);
+            $folder = new \Folder($this->objModel->file_path);
+
+            if (\Config::get('defaultFolderChmod')) {
+                $folder->chmod(\Config::get('defaultFolderChmod'));
+            }
         }
 
         // Make sure we don't overwrite existing files
@@ -190,6 +194,7 @@ class File extends Base implements GatewayInterface
 
         $blnResult = $objFile->write($strContent);
         $objFile->close();
+        $objFile->chmod(\Config::get('defaultFileChmod'));
 
         return $blnResult;
     }
@@ -252,6 +257,7 @@ class File extends Base implements GatewayInterface
 
         // Delete temporary file and close FTP connection
         $objFile->delete();
+        @ftp_chmod($resConnection, \Config::get('defaultFileChmod'), $this->objModel->file_path . '/' . $strFileName);
         @ftp_close($resConnection);
 
         return $blnResult;
