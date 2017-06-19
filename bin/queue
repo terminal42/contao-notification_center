@@ -11,6 +11,7 @@
  */
 
 define('TL_MODE', 'FE');
+define('TL_SCRIPT', 'system/modules/notification_center/bin/queue');
 
 if (file_exists(__DIR__ . '/../../../initialize.php')) {
     // Regular way
