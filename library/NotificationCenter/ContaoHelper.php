@@ -42,14 +42,11 @@ class ContaoHelper extends \Controller
         $objModule->reg_activate = true;
 
         // Reload the data because $arrData does not contain all of it
-        $objMember = \MemberModel::findByPk($intId);
-
-        // Shouldn't happen but defensive first
-        if (null === $objMember) {
-            return;
+        if (($objMember = \MemberModel::findByPk($intId)) instanceof \MemberModel) {
+            $arrData = $objMember->row();
         }
-        
-        $this->sendNotifications($objModule->nc_notification, $objMember->row(), $objModule, $arrTokens);
+
+        $this->sendNotifications($objModule->nc_notification, $arrData, $objModule, $arrTokens);
     }
 
     /**
