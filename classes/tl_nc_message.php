@@ -130,7 +130,7 @@ class tl_nc_message extends \Backend
         if (is_array($GLOBALS['TL_DCA']['tl_nc_message']['fields']['published']['save_callback'])) {
             foreach ($GLOBALS['TL_DCA']['tl_nc_message']['fields']['published']['save_callback'] as $callback) {
                 if (is_array($callback)) {
-                    $blnVisible = \System::importStatic($callback[0])->$callback[1]($blnVisible, $this);
+                    $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
                 } elseif (is_callable($callback)) {
                     $blnVisible = $callback($blnVisible, $this);
                 }
