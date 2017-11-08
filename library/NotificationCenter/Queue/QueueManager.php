@@ -41,8 +41,8 @@ class QueueManager implements QueueManagerInterface
         $objQueuedMessage->dateAdded     = time();
 
         // Add the delay date
-        if ($gateway->queue_delay) {
-            $objQueuedMessage->dateDelay = strtotime($gateway->queue_delay, $objQueuedMessage->dateAdded);
+        if ($gateway->queue_delay && ($dateDelay = strtotime($gateway->queue_delay, $objQueuedMessage->dateAdded)) !== false) {
+            $objQueuedMessage->dateDelay = $dateDelay;
         }
 
         $objQueuedMessage->setTokens($tokens);
