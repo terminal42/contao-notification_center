@@ -36,7 +36,11 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 
 // Load icon in Contao 4.2 backend
 if ('BE' === TL_MODE) {
-    $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/backend.css';
+    if (version_compare(VERSION, '4.4', '<')) {
+        $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/backend.css';
+    } else {
+        $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/backend_svg.css';
+    }
 }
 
 /**

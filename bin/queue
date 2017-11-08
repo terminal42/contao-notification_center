@@ -11,16 +11,21 @@
  */
 
 define('TL_MODE', 'FE');
+define('TL_SCRIPT', 'system/modules/notification_center/bin/queue');
 
 if (file_exists(__DIR__ . '/../../../initialize.php')) {
     // Regular way
     require_once(__DIR__ . '/../../../initialize.php');
-} else {
-    // Try composer location (see #77)
+} elseif (file_exists(__DIR__ . '/../../../../../system/initialize.php')) {
+    // Try composer location in Contao 3 (see #77)
     require_once(__DIR__ . '/../../../../../system/initialize.php');
+} elseif (file_exists(__DIR__ . '/../../../../system/initialize.php')) {
+    // Try composer location in Contao 4 (see #120)
+    require_once(__DIR__ . '/../../../../system/initialize.php');
+} else {
+    throw new \RuntimeException('Contao initialize.php not found');
 }
 
-
+/** @var \NotificationCenter\Queue\QueueManager $queueManager */
 $queueManager = $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'];
-
 $queueManager->sendFromQueue($argv[2], $argv[4]);

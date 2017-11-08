@@ -137,7 +137,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'inputType'               => 'text',
             'default'                 => ',',
             'eval'                    => array('doNotTrim'=>true),
-            'sql'                     => "varchar(255) NOT NULL default ','"
+            'sql'                     => "varchar(255) NOT NULL default ''"
         )
     )
 );
