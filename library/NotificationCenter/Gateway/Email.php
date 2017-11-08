@@ -69,9 +69,25 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         }
 
         // Override SMTP settings if desired
-        $this->overrideSMTPSettings();
-        $objEmail = new \Email();
-        $this->resetSMTPSettings();
+        if (version_compare(VERSION, '4.4', '>=') && $this->objModel->email_overrideSmtp) {
+            $transport = \Swift_SmtpTransport::newInstance($this->objModel->email_smtpHost, $this->objModel->email_smtpPort);
+
+            // Encryption
+            if ($this->objModel->email_smtpEnc === 'ssl' || $this->objModel->email_smtpEnc === 'tls') {
+                $transport->setEncryption($this->objModel->email_smtpEnc);
+            }
+
+            // Authentication
+            if ($this->objModel->email_smtpUser) {
+                $transport->setUsername($this->objModel->email_smtpUser)->setPassword($this->objModel->email_smtpPass);
+            }
+
+            $objEmail = new \Email(new \Swift_Mailer($transport));
+        } else {
+            $this->overrideSMTPSettings();
+            $objEmail = new \Email();
+            $this->resetSMTPSettings();
+        }
 
         // Set priority
         $objEmail->priority = $objDraft->getPriority();
