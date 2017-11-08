@@ -110,10 +110,11 @@ class QueuedMessage extends \Model
     {
         $t           = static::getTable();
         $sourceQueue = (int) $sourceQueue;
+        $time        = time();
 
         $options = array_merge(
             array(
-                'column' => array("$t.sourceQueue=$sourceQueue", "$t.dateSent=''", "$t.error!=1"),
+                'column' => array("$t.sourceQueue=$sourceQueue", "$t.dateSent=''", "$t.error!=1", "($t.dateDelay IS NULL OR $t.dateDelay<=$time)"),
                 'order'  => "$t.dateAdded",
                 'limit'  => $numberOfMsgs
             ),

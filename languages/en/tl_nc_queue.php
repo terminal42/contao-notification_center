@@ -15,6 +15,7 @@ $GLOBALS['TL_LANG']['tl_nc_queue']['sourceQueue'][0]    = 'Source queue gateway'
 $GLOBALS['TL_LANG']['tl_nc_queue']['targetGateway'][0]  = 'Target gateway';
 $GLOBALS['TL_LANG']['tl_nc_queue']['message'][0]        = 'Source message';
 $GLOBALS['TL_LANG']['tl_nc_queue']['dateAdded'][0]      = 'Date added to queue';
+$GLOBALS['TL_LANG']['tl_nc_queue']['dateDelay'][0]      = 'Date delayed in queue';
 $GLOBALS['TL_LANG']['tl_nc_queue']['dateSent'][0]       = 'Date sent from queue';
 $GLOBALS['TL_LANG']['tl_nc_queue']['error'][0]          = 'Had an error during delivery process';
 $GLOBALS['TL_LANG']['tl_nc_queue']['tokens'][0]         = 'Tokens';

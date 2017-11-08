@@ -116,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['dateDelay'],
             'flag'                    => 6,
-            'sql'                     => "int(10) unsigned NOT NULL default '0'"
+            'sql'                     => "int(10) unsigned NULL"
         ),
         'dateSent' => array
         (

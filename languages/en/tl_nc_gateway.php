@@ -14,7 +14,7 @@
 $GLOBALS['TL_LANG']['tl_nc_gateway']['title']                       = array('Title', 'Please enter a title for this gateway.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['type']                        = array('Type', 'Please select a type for this gateway.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway']         = array('Target gateway', 'This gateway will queue all the messages and then send them over the gateway you define here.');
-$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_delay']                 = array('Delayed delivery', 'Enter a <a href="https://php.net/strtotime" target="_blank"><i>strtotime</i></a> time interval to delay message delivery.');
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_delay']                 = array('Delayed delivery', 'Enter a <a href="https://php.net/strtotime" target="_blank"><i>strtotime</i></a> time interval to delay message delivery (e.g. <em>+1 day</em>).');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronEnable']            = array('Enable poor man\'s cronjob', 'This will register this queue gateway to the poor man\'s cronjob.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']          = array('Interval', 'Choose the interval you would like to have this queue gateway be invoked.');
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronMessages']          = array('Number of messages', 'Here you can enter the number of messages that should be sent per invocation.');

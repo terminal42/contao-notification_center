@@ -170,7 +170,11 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'exclude'                 => true,
             'inputType'               => 'text',
             'eval'                    => array('maxlength' => 64, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(64) NOT NULL default ''"
+            'sql'                     => "varchar(64) NOT NULL default ''",
+            'save_callback'           => array
+            (
+                array('NotificationCenter\tl_nc_gateway', 'validateQueueDelay')
+            ),
         ),
         'queue_cronExplanation' => array
         (
