@@ -26,10 +26,12 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
 
     /**
      * Returns a MessageDraft
-     * @param   Message
-     * @param   array
-     * @param   string
-     * @return  MessageDraftInterface|null (if no draft could be found)
+     *
+     * @param Message $objMessage
+     * @param array   $arrTokens
+     * @param string  $strLanguage
+     *
+     * @return  EmailMessageDraft|null (if no draft could be found)
      */
     public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
@@ -47,27 +49,10 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
     }
 
     /**
-     * Send email message
-     * @param   Message
-     * @param   array
-     * @param   string
-     * @return  bool
+     * @param EmailMessageDraft $objDraft
      */
-    public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
+    public function sendDraft(EmailMessageDraft $objDraft)
     {
-        /**
-         * @var $objDraft \NotificationCenter\MessageDraft\EmailMessageDraft
-         */
-        $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
-
-        // return false if no language found for BC
-        if ($objDraft === null) {
-
-            \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
         // Override SMTP settings if desired
         if (version_compare(VERSION, '4.4', '>=') && $this->objModel->email_overrideSmtp) {
             $transport = \Swift_SmtpTransport::newInstance($this->objModel->email_smtpHost, $this->objModel->email_smtpPort);
@@ -147,6 +132,33 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         }
 
         return false;
+    }
+
+    /**
+     * Send email message
+     *
+     * @param Message $objMessage
+     * @param array   $arrTokens
+     * @param string  $strLanguage
+     *
+     * @return  bool
+     */
+    public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
+    {
+        /**
+         * @var $objDraft \NotificationCenter\MessageDraft\EmailMessageDraft
+         */
+        $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
+
+        // return false if no language found for BC
+        if ($objDraft === null) {
+
+            \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
+
+            return false;
+        }
+
+        return $this->sendDraft($objDraft);
     }
 
     /**

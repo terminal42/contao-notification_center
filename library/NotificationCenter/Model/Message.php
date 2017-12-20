@@ -66,6 +66,14 @@ class Message extends \Model
 
         if ($objGateway instanceof Email && null !== $arrAttachments) {
             $objDraft = $objGateway->createDraft($this, $cpTokens, $cpLanguage);
+
+            // return false if no language found for BC
+            if ($objDraft === null) {
+                \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $this->id), __METHOD__, TL_ERROR);
+
+                return false;
+            }
+
             $objDraft->setAttachments($arrAttachments);
 
             return $objGateway->sendDraft($objDraft);
