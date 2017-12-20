@@ -77,7 +77,7 @@ class Message extends \Model
 
             $objDraft->setAttachments($arrAttachments);
 
-            return $objGateway->sendDraft($objDraft, $this->id);
+            return $objGateway->sendDraft($objDraft);
         }
 
         return $objGateway->send($this, $cpTokens, $cpLanguage);
