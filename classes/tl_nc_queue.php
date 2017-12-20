@@ -11,9 +11,24 @@
 namespace NotificationCenter;
 
 use NotificationCenter\Model\QueuedMessage;
+use NotificationCenter\Queue\QueueManager;
 
 class tl_nc_queue extends \Backend
 {
+    /**
+     * On delete callback.
+     *
+     * @param \DataContainer $dc
+     */
+    public function onDeleteCallback(\DataContainer $dc)
+    {
+        $queueManager = new $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER']();
+
+        if ($queueManager instanceof QueueManager) {
+            $queueManager->removeMessageFiles($dc->id);
+        }
+    }
+
     /**
      * label_callback
      *

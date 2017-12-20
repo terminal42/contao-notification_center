@@ -22,6 +22,9 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
         'notEditable'                 => true,
         'notCopyable'                 => true,
         'notSortable'                 => true,
+        'ondelete_callback' => [
+            ['NotificationCenter\tl_nc_queue', 'onDeleteCallback'],
+        ],
         'sql' => array
         (
             'keys' => array

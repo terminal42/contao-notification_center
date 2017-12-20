@@ -11,6 +11,12 @@
 namespace NotificationCenter\Queue;
 
 
+use Contao\Files;
+use Contao\Folder;
+use NotificationCenter\Gateway\GatewayInterface;
+use NotificationCenter\MessageDraft\EmailMessageDraft;
+use NotificationCenter\MessageDraft\MessageDraftFactoryInterface;
+use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Model\QueuedMessage;
 
@@ -48,6 +54,14 @@ class QueueManager implements QueueManagerInterface
         $objQueuedMessage->setTokens($tokens);
         $objQueuedMessage->language = $language;
         $objQueuedMessage->save();
+
+        // Store the files in temporary folder
+        if (($targetGatewayModel = Gateway::findByPk($gateway->queue_targetGateway)) !== null
+            && isset($GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$targetGatewayModel->type])
+        ) {
+            $targetGateway = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$targetGatewayModel->type];
+            $this->storeFiles(new $targetGateway($targetGatewayModel), $objQueuedMessage, $message, $language);
+        }
 
         return $this;
     }
@@ -93,9 +107,96 @@ class QueueManager implements QueueManagerInterface
                 $msg->dateSent = time();
             }
 
+            // Remove the temporary message files
+            $this->removeMessageFiles($msg->id);
+
             $msg->save();
         }
 
         return $this;
+    }
+
+    /**
+     * Remove the message files
+     *
+     * @param int $messageId
+     */
+    public function removeMessageFiles($messageId)
+    {
+        $folder = $this->getTemporaryFolderPath($messageId);
+
+        if (is_dir(TL_ROOT . '/' . $folder)) {
+            Files::getInstance()->rrdir($folder);
+        }
+    }
+
+    /**
+     * Store files in the temporary folder
+     *
+     * @param GatewayInterface $gateway
+     * @param QueuedMessage    $queuedMessage
+     * @param Message          $message
+     * @param string           $language
+     */
+    protected function storeFiles(GatewayInterface $gateway, QueuedMessage $queuedMessage, Message $message, $language)
+    {
+        if (!($gateway instanceof MessageDraftFactoryInterface)) {
+            return;
+        }
+
+        $tokens = $queuedMessage->getTokens();
+        $draft = $gateway->createDraft($message, $tokens, $language);
+
+        // Return if the draft is not an e-mail draft
+        if (!($draft instanceof EmailMessageDraft)) {
+            return;
+        }
+
+        $attachments = $draft->getAttachments();
+
+        // Return if there are no attachments
+        if (count($attachments) === 0) {
+            return;
+        }
+
+        $folder = new Folder($this->getTemporaryFolderPath($queuedMessage->id));
+
+        // Copy the attachments to the temporary folder
+        foreach ($attachments as $originalPath) {
+            $originalPath = str_replace(TL_ROOT . '/', '', $originalPath);
+            $clonePath = $folder->path . '/' . basename($originalPath);
+
+            // Update the tokens if copy was successful
+            if (Files::getInstance()->copy($originalPath, $clonePath)) {
+                foreach ($tokens as $k => $v) {
+                    if (is_array($v)) {
+                        foreach ($v as $kk => $vv) {
+                            $tokens[$k][$kk] = str_replace($originalPath, $clonePath, $vv);
+                        }
+                    } else {
+                        $tokens[$k] = str_replace($originalPath, $clonePath, $v);
+                    }
+                }
+            }
+        }
+
+        $queuedMessage->setTokens($tokens);
+        $queuedMessage->save();
+    }
+
+    /**
+     * Get the temporary folder path
+     *
+     * @param int $messageId
+     *
+     * @return string
+     */
+    protected function getTemporaryFolderPath($messageId)
+    {
+        if (version_compare(VERSION, '4.4', '>=')) {
+            return 'var/notification_center/' . $messageId;
+        }
+
+        return 'system/notification_center_tmp/' . $messageId;
     }
 } 
