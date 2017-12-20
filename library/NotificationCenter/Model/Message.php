@@ -10,6 +10,8 @@
 
 namespace NotificationCenter\Model;
 
+use NotificationCenter\Gateway\Email;
+
 class Message extends \Model
 {
 
@@ -22,11 +24,15 @@ class Message extends \Model
 
     /**
      * Send this message using its gateway
-     * @param   array
-     * @param   string
+     *
+     * @param array      $arrTokens
+     * @param string     $strLanguage
+     * @param array|null $arrAttachments
+     *
      * @return  bool
+     * @throws \Exception
      */
-    public function send(array $arrTokens, $strLanguage = '')
+    public function send(array $arrTokens, $strLanguage = '', array $arrAttachments = null)
     {
         /** @var Gateway $objGatewayModel */
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
@@ -56,7 +62,16 @@ class Message extends \Model
             }
         }
 
-        return $objGatewayModel->getGateway()->send($this, $cpTokens, $cpLanguage);
+        $objGateway = $objGatewayModel->getGateway();
+
+        if ($objGateway instanceof Email && null !== $arrAttachments) {
+            $objDraft = $objGateway->createDraft($this, $cpTokens, $cpLanguage);
+            $objDraft->setAttachments($arrAttachments);
+
+            return $objGateway->sendDraft($objDraft);
+        }
+
+        return $objGateway->send($this, $cpTokens, $cpLanguage);
     }
 
     /**
