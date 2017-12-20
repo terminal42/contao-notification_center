@@ -32,7 +32,7 @@ class Message extends \Model
      * @return  bool
      * @throws \Exception
      */
-    public function send(array $arrTokens, $strLanguage = '', array $arrAttachments = null)
+    public function send(array $arrTokens, $strLanguage = '', array $arrAttachments = [])
     {
         /** @var Gateway $objGatewayModel */
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
@@ -64,7 +64,8 @@ class Message extends \Model
 
         $objGateway = $objGatewayModel->getGateway();
 
-        if ($objGateway instanceof Email && null !== $arrAttachments) {
+        // Send the draft with updated attachments (likely originating from queue)
+        if ($objGateway instanceof Email && count($arrAttachments) > 0) {
             $objDraft = $objGateway->createDraft($this, $cpTokens, $cpLanguage);
 
             // return false if no language found for BC
@@ -76,7 +77,7 @@ class Message extends \Model
 
             $objDraft->setAttachments($arrAttachments);
 
-            return $objGateway->sendDraft($objDraft);
+            return $objGateway->sendDraft($objDraft, $this->id);
         }
 
         return $objGateway->send($this, $cpTokens, $cpLanguage);

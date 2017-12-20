@@ -41,6 +41,30 @@ class QueuedMessage extends \Model
     }
 
     /**
+     * Set the attachments
+     *
+     * @param array $attachments
+     *
+     * @return $this
+     */
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = json_encode($attachments);
+
+        return $this;
+    }
+
+    /**
+     * Get the $attachments
+     *
+     * @return array
+     */
+    public function getAttachments()
+    {
+        return json_decode($this->attachments, true);
+    }
+
+    /**
      * Get the status
      * @return string
      */
@@ -88,7 +112,7 @@ class QueuedMessage extends \Model
             // Temporarily set gateway to target gateway
             $message->gateway = $this->targetGateway;
 
-            $result = $message->send($this->getTokens(), $this->language);
+            $result = $message->send($this->getTokens(), $this->language, $this->getAttachments());
 
             // Reset gateway
             $message->gateway = $this->sourceQueue;

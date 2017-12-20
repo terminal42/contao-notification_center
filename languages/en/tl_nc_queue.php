@@ -20,6 +20,7 @@ $GLOBALS['TL_LANG']['tl_nc_queue']['dateSent'][0]       = 'Date sent from queue'
 $GLOBALS['TL_LANG']['tl_nc_queue']['error'][0]          = 'Had an error during delivery process';
 $GLOBALS['TL_LANG']['tl_nc_queue']['tokens'][0]         = 'Tokens';
 $GLOBALS['TL_LANG']['tl_nc_queue']['language'][0]       = 'Language';
+$GLOBALS['TL_LANG']['tl_nc_queue']['attachments'][0]    = 'Attachments';
 
 /**
  * Status

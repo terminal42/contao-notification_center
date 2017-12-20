@@ -144,8 +144,7 @@ class QueueManager implements QueueManagerInterface
             return;
         }
 
-        $tokens = $queuedMessage->getTokens();
-        $draft = $gateway->createDraft($message, $tokens, $language);
+        $draft = $gateway->createDraft($message, $queuedMessage->getTokens(), $language);
 
         // Return if the draft is not an e-mail draft
         if (!($draft instanceof EmailMessageDraft)) {
@@ -162,25 +161,17 @@ class QueueManager implements QueueManagerInterface
         $folder = new Folder($this->getTemporaryFolderPath($queuedMessage->id));
 
         // Copy the attachments to the temporary folder
-        foreach ($attachments as $originalPath) {
+        foreach ($attachments as $index => $originalPath) {
             $originalPath = str_replace(TL_ROOT . '/', '', $originalPath);
             $clonePath = $folder->path . '/' . basename($originalPath);
 
             // Update the tokens if copy was successful
             if (Files::getInstance()->copy($originalPath, $clonePath)) {
-                foreach ($tokens as $k => $v) {
-                    if (is_array($v)) {
-                        foreach ($v as $kk => $vv) {
-                            $tokens[$k][$kk] = str_replace($originalPath, $clonePath, $vv);
-                        }
-                    } else {
-                        $tokens[$k] = str_replace($originalPath, $clonePath, $v);
-                    }
-                }
+                $attachments[$index] = TL_ROOT . '/' . $clonePath;
             }
         }
 
-        $queuedMessage->setTokens($tokens);
+        $queuedMessage->setAttachments($attachments);
         $queuedMessage->save();
     }
 

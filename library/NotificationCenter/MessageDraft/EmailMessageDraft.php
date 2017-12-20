@@ -36,6 +36,12 @@ class EmailMessageDraft implements MessageDraftInterface
     protected $arrTokens = array();
 
     /**
+     * Attachments
+     * @var array
+     */
+    protected $attachments = null;
+
+    /**
      * Construct the object
      * @param Message  $objMessage
      * @param Language $objLanguage
@@ -185,25 +191,35 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getAttachments()
     {
-        // Token attachments
-        $arrAttachments = StringUtil::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
+        if ($this->attachments === null) {
+            // Token attachments
+            $this->attachments = StringUtil::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
 
-        // Add static attachments
-        $arrStaticAttachments = deserialize($this->objLanguage->attachments, true);
+            // Add static attachments
+            $arrStaticAttachments = deserialize($this->objLanguage->attachments, true);
 
-        if (!empty($arrStaticAttachments)) {
-            $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
+            if (!empty($arrStaticAttachments)) {
+                $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
 
-            if ($objFiles === null) {
-                return $arrAttachments;
-            }
-
-            while ($objFiles->next()) {
-                $arrAttachments[] = TL_ROOT . '/' . $objFiles->path;
+                if ($objFiles !== null) {
+                    while ($objFiles->next()) {
+                        $this->attachments[] = TL_ROOT . '/' . $objFiles->path;
+                    }
+                }
             }
         }
 
-        return $arrAttachments;
+        return $this->attachments;
+    }
+
+    /**
+     * Set the attachments
+     *
+     * @param array $attachments
+     */
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = $attachments;
     }
 
     /**

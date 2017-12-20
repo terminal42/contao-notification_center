@@ -145,6 +145,11 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['language'],
             'filter'                  => true,
             'sql'                     => "varchar(5) NOT NULL default ''"
-        )
+        ),
+        'attachments' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_queue']['attachments'],
+            'sql'                     => "blob NULL"
+        ),
     )
 );

@@ -50,8 +50,9 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
 
     /**
      * @param EmailMessageDraft $objDraft
+     * @param int               $messageId
      */
-    public function sendDraft(EmailMessageDraft $objDraft)
+    public function sendDraft(EmailMessageDraft $objDraft, $messageId)
     {
         // Override SMTP settings if desired
         if (version_compare(VERSION, '4.4', '>=') && $this->objModel->email_overrideSmtp) {
@@ -128,7 +129,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         try {
             return $objEmail->sendTo($objDraft->getRecipientEmails());
         } catch (\Exception $e) {
-            \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not send email for message ID %s: %s', $messageId, $e->getMessage()), __METHOD__, TL_ERROR);
         }
 
         return false;
@@ -158,7 +159,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
             return false;
         }
 
-        return $this->sendDraft($objDraft);
+        return $this->sendDraft($objDraft, $objMessage->id);
     }
 
     /**
