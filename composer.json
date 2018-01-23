@@ -3,7 +3,7 @@
     "description":"Notification Center extension for Contao Open Source CMS",
     "keywords":["contao", "notification", "center"],
     "type":"contao-module",
-    "license":"LGPL-3.0+",
+    "license":"LGPL-3.0-or-later",
     "authors":[
         {
             "name":"terminal42 gmbh",
