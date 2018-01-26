@@ -61,7 +61,7 @@ class QueuedMessage extends \Model
      */
     public function getAttachments()
     {
-        return json_decode($this->attachments, true);
+        return (array) json_decode($this->attachments, true);
     }
 
     /**
