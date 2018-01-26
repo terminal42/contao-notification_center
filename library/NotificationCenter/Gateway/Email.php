@@ -55,7 +55,11 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
     {
         // Override SMTP settings if desired
         if (version_compare(VERSION, '4.4', '>=') && $this->objModel->email_overrideSmtp) {
-            $transport = \Swift_SmtpTransport::newInstance($this->objModel->email_smtpHost, $this->objModel->email_smtpPort);
+            if (method_exists(\Swift_SmtpTransport::class, 'newInstance')) {
+                $transport = \Swift_SmtpTransport::newInstance($this->objModel->email_smtpHost, $this->objModel->email_smtpPort);
+            } else {
+                $transport = new \Swift_SmtpTransport($this->objModel->email_smtpHost, $this->objModel->email_smtpPort);
+            }
 
             // Encryption
             if ($this->objModel->email_smtpEnc === 'ssl' || $this->objModel->email_smtpEnc === 'tls') {
