@@ -37,7 +37,7 @@ class QueuedMessage extends \Model
      */
     public function getTokens()
     {
-        return (array) json_decode($this->tokens);
+        return (array) json_decode($this->tokens, true);
     }
 
     /**
