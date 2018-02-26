@@ -46,11 +46,16 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 			return;
 		}
 
-		$confirmationId = md5(uniqid(mt_rand(), true));
+		$token = md5(uniqid(mt_rand(), true));
+		$contaoVersion = VERSION.'.'.BUILD;
+		if (version_compare($contaoVersion, '4.5.4', '>=')
+			|| (version_compare($contaoVersion, '4.5.0', '<') && version_compare($contaoVersion, '4.4.12', '>='))) {
+			$token = 'PW'.substr($token, 2);
+		}
 
-		// Store the confirmation ID
+		// Store the token
 		$objMember = \MemberModel::findByPk($objMember->id);
-		$objMember->activation = $confirmationId;
+		$objMember->activation = $token;
 		$objMember->save();
 
 		$arrTokens = array();
@@ -63,7 +68,7 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 
 		$arrTokens['recipient_email'] = $objMember->email;
 		$arrTokens['domain'] = \Idna::decode(\Environment::get('host'));
-		$arrTokens['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $confirmationId;
+		$arrTokens['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $token;
 
 		$objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
 		$this->log('A new password has been requested for user ID ' . $objMember->id . ' (' . $objMember->email . ')', __METHOD__, TL_ACCESS);
