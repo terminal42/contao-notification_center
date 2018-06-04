@@ -34,11 +34,10 @@ class tl_nc_message extends \Backend
      */
     public function modifyPalette(\DataContainer $dc)
     {
-        if ('edit' !== \Input::get('act')) {
+        if ('edit' !== \Input::get('act') || !$dc->id || ($message = Message::findByPk($dc->id)) === null) {
             return;
         }
 
-        $message = Message::findByPk($dc->id);
         $gateway = $message->getRelated('gateway');
 
         if ($gateway !== null && 'queue' === $gateway->type) {
