@@ -11,6 +11,7 @@
 namespace NotificationCenter\MessageDraft;
 
 
+use Contao\File;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Util\StringUtil;
@@ -36,10 +37,16 @@ class EmailMessageDraft implements MessageDraftInterface
     protected $arrTokens = array();
 
     /**
-     * Attachments
+     * File path attachments
      * @var array
      */
     protected $attachments = null;
+
+    /**
+     * String attachments
+     * @var array
+     */
+    protected $stringAttachments = null;
 
     /**
      * Construct the object
@@ -210,6 +217,36 @@ class EmailMessageDraft implements MessageDraftInterface
         }
 
         return $this->attachments;
+    }
+
+    /**
+     * Returns the contents of attachments as an array (the key being the desired file name).
+     * @return  array
+     */
+    public function getStringAttachments()
+    {
+        if ($this->stringAttachments === null) {
+
+            // Add attachment templates
+            $arrTemplateAttachments = deserialize($this->objLanguage->attachment_templates, true);
+
+            if (!empty($arrTemplateAttachments)) {
+                $objFiles = \FilesModel::findMultipleByUuids($arrTemplateAttachments);
+
+                if ($objFiles !== null) {
+                    while ($objFiles->next()) {
+                        $file = new File($objFiles->path, true);
+                        if (!$file->exists()) {
+                            continue;
+                        }
+
+                        $this->stringAttachments[$objFiles->name] = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($file->getContent(), $this->arrTokens);
+                    }
+                }
+            }
+        }
+
+        return $this->stringAttachments;
     }
 
     /**
