@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2017-01-31T15:57:04+00:00
+ * last-updated: 2017-07-26T09:13:30+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_language']['attachment_tokens']['0']        = 'Dateianhänge via Tokens';
@@ -24,7 +24,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['delete']['1']                   = 'Sprach
 $GLOBALS['TL_LANG']['tl_nc_language']['edit']['0']                     = 'Sprache editieren';
 $GLOBALS['TL_LANG']['tl_nc_language']['edit']['1']                     = 'Sprache ID %s editieren.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_external_images']['0']    = 'Externe Bilder';
-$GLOBALS['TL_LANG']['tl_nc_language']['email_external_images']['1']    = 'Bilder in HTML E-Mails nicht einbetten.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_external_images']['1']    = 'Bilder in HTML-E-Mails nicht einbetten.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']['0']               = 'HTML';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_html']['1']               = 'Bitte HTML eingeben.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['0']               = 'Modus';
@@ -32,9 +32,9 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['1']               = 'Bitte 
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textAndHtml']     = 'HTML und Text';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_mode']['textOnly']        = 'Nur Text';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']['0']      = 'BCC-Empfänger';
-$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']['1']      = 'Empfänger die eine Blindkopie des Mails erhalten sollten. Mehrere Adressen per Komma separieren.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_bcc']['1']      = 'Empfänger die eine Kopie der E-Mail erhalten. Mehrere Adressen per Komma separieren.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']['0']       = 'CC-Empfänger';
-$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']['1']       = 'Emptänger die eine Kopie des Mails erhalten sollten. Mehrere Adressen per Komma separieren.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_recipient_cc']['1']       = 'Empfänger die eine Kopie der E-Mail erhalten. Mehrere Adressen per Komma separieren.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo']['0']            = 'Antwort an (Reply-To)';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_replyTo']['1']            = 'Optionale "Antwort an" E-Mail-Adresse.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']['0']     = 'Absender-E-Mail';
@@ -42,7 +42,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_address']['1']     = 'Bitte 
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']['0']        = 'Absendername';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_sender_name']['1']        = 'Bitte geben Sie den Absender ein.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_subject']['0']            = 'Subject';
-$GLOBALS['TL_LANG']['tl_nc_language']['email_subject']['1']            = 'Bite den Betreff für das Email eingeben.';
+$GLOBALS['TL_LANG']['tl_nc_language']['email_subject']['1']            = 'Bitte geben Sie den Betreff der E-Mail ein.';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']['0']               = 'Rohtext';
 $GLOBALS['TL_LANG']['tl_nc_language']['email_text']['1']               = 'Bitte den Text eingeben.';
 $GLOBALS['TL_LANG']['tl_nc_language']['fallback']['0']                 = 'Fallback-Sprache';
@@ -57,7 +57,7 @@ $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['0']        = 'Speich
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['1']        = 'Hier können Sie wählen, ob Sie die bestehende Datei überschreiben, oder an sie anhängen wollen.';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['append']   = 'Zu einer existierenden Datei hinzufügen';
 $GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['create']   = 'Neue Datei erstellen';
-$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['override'] = 'Ein existierende Datei überschreiben';
+$GLOBALS['TL_LANG']['tl_nc_language']['file_storage_mode']['override'] = 'Eine existierende Datei überschreiben';
 $GLOBALS['TL_LANG']['tl_nc_language']['general_legend']                = 'Generelle Spracheinstellungen';
 $GLOBALS['TL_LANG']['tl_nc_language']['language']['0']                 = 'Sprache';
 $GLOBALS['TL_LANG']['tl_nc_language']['language']['1']                 = 'Bitte wählen Sie eine Sprache.';

@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2016-08-25T13:45:03+00:00
+ * last-updated: 2017-07-26T09:13:30+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_gateway']['copy']['0']                      = 'Копировать шлюз';
@@ -51,6 +51,7 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_ssl']['1']              = 'Вы �
 $GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['0']             = 'Включить тестовый режим';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['postmark_test']['1']             = 'Вы можете включить тестовый режим.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['0']        = 'Интервал';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['1']        = 'Выберите интервал, который хотите использовать для вызова этого шлюза.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['daily']    = 'Каждый день';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['hourly']   = 'Каждый час';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['minutely'] = 'Каждую минуту';
@@ -59,6 +60,7 @@ $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronInterval']['weekly']   = 'Каж
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronMessages']['0']        = 'Количество сообщений';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_cronMessages']['1']        = 'Вы можете указать количество сообщений, которые должны быть отправлены на вызов.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway']['0']       = 'Целевой шлюз';
+$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_targetGateway']['1']       = 'Этот шлюз будет ставить в очередь все сообщения, а затем отправлять их через шлюз, который вы определите.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['0']                      = 'Детали шлюза';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['show']['1']                      = 'Показать детали шлюза ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_gateway']['smtpEnc']['0']                   = 'Шифрование SMTP';
