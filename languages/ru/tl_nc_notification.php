@@ -8,7 +8,7 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-07-17T14:48:39+02:00
+ * last-updated: 2016-10-03T15:22:43+02:00
  */
 
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']                    = 'Конфигурация';
@@ -20,6 +20,8 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['edit']['0']                        = 
 $GLOBALS['TL_LANG']['tl_nc_notification']['edit']['1']                        = 'Управление сообщениями для уведомления ID %s.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['0']                  = 'Редактировать уведомление';
 $GLOBALS['TL_LANG']['tl_nc_notification']['editheader']['1']                  = 'Редактировать уведомление ID %s.';
+$GLOBALS['TL_LANG']['tl_nc_notification']['flatten_delimiter']['0']           = 'Разделитель для списков';
+$GLOBALS['TL_LANG']['tl_nc_notification']['flatten_delimiter']['1']           = 'При отправке значений списка (значений массива), Центр уведомлений автоматически выравнивает их по умолчанию с помощью запятой (","). Измените это, если хотите.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['new']['0']                         = 'Новое уведомление';
 $GLOBALS['TL_LANG']['tl_nc_notification']['new']['1']                         = 'Создать новое уведомление.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['show']['0']                        = 'Детали уведомления';
@@ -35,6 +37,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']['0']           = 
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['core_form']['1']           = 'Тип уведомления может быть отправлен при отправке формы.';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['email']                    = 'Стандарт почтового шлюза';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['file']                     = 'Запись в файл';
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_activation']['0']   = 'Активация участников';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_password']['0']     = 'Забытый пароль участника';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_personaldata']['0'] = 'Персональные данные участника';
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration']['0'] = 'Регистрация участника';
