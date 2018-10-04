@@ -22,7 +22,6 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'ptable'                      => 'tl_nc_message',
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
-        'nc_type_query'               => "SELECT type FROM tl_nc_notification WHERE id=(SELECT pid FROM tl_nc_message WHERE id=(SELECT pid FROM tl_nc_language WHERE id=?))",
         'oncreate_callback' => array
         (
             array('NotificationCenter\tl_nc_language', 'insertGatewayType'),

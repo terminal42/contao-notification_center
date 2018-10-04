@@ -43,6 +43,7 @@ class Notification extends \Model
             return array();
         }
 
+        $arrTokens = $this->addTemplateTokens($arrTokens);
         $arrResult = array();
 
         foreach ($objMessages as $objMessage) {
@@ -66,5 +67,23 @@ class Notification extends \Model
         }
 
         return '';
+    }
+
+    private function addTemplateTokens(array $tokens)
+    {
+        $templates = deserialize($this->templates, true);
+
+        foreach ($templates as $name) {
+            try {
+                $template = new \FrontendTemplate($name);
+                $template->setData($tokens);
+
+                $tokens['template_'.substr($name, 13)] = $template->parse();
+            } catch (\Exception $e) {
+                \System::log('Could not generate token template "'.$name.'"', __METHOD__, TL_ERROR);
+            }
+        }
+
+        return $tokens;
     }
 }

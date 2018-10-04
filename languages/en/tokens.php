@@ -11,6 +11,7 @@
 /**
  * Tokens
  */
+$GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['template']                 = 'Output of template "%s"';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['core_form']['admin_email'] = 'E-mail address of administrator of the current page.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['core_form']['form_*']      = 'All the form fields.';
 $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['core_form']['formlabel_*'] = 'All the form field labels.';

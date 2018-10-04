@@ -14,6 +14,7 @@
 $GLOBALS['TL_LANG']['tl_nc_notification']['title']                   = array('Title', 'Please enter a title for this notification.');
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']                    = array('Type', 'Please select a type for this notification.');
 $GLOBALS['TL_LANG']['tl_nc_notification']['flatten_delimiter']       = array('Delimiter for lists', 'When list values (array values) are submitted, the Notification Center flattens them automatically by using a comma (",") by default. Change this here if you like.');
+$GLOBALS['TL_LANG']['tl_nc_notification']['templates']               = array('Token Templates', 'Choose templates to generate tokens from their output. Each template name must start with notification_xxx and its token will be converted to a ##template_xxx## token.');
 
 /**
  * Reference
@@ -36,6 +37,7 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['show']                    = array('No
  */
 $GLOBALS['TL_LANG']['tl_nc_notification']['title_legend']            = 'Title & type';
 $GLOBALS['TL_LANG']['tl_nc_notification']['config_legend']           = 'Configuration';
+$GLOBALS['TL_LANG']['tl_nc_notification']['templates_legend']        = 'Templates';
 
 /**
  * Notification types
