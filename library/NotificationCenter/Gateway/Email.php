@@ -109,11 +109,19 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         // Set image embedding
         $objEmail->embedImages = !$objDraft->useExternalImages();
 
-        // Add attachments
+        // Add file attachments
         $arrAttachments = $objDraft->getAttachments();
         if (!empty($arrAttachments)) {
             foreach ($arrAttachments as $strFile) {
                 $objEmail->attachFile($strFile);
+            }
+        }
+
+        // Add string attachments
+        $arrAttachments = $objDraft->getStringAttachments();
+        if (!empty($arrAttachments)) {
+            foreach ($arrAttachments as $strFilename => $strContent) {
+                $objEmail->attachFileFromString($strContent, $strFilename);
             }
         }
 
