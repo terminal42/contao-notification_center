@@ -11,6 +11,8 @@
 namespace NotificationCenter;
 
 
+use NotificationCenter\Model\Notification;
+
 class ContaoHelper extends \Controller
 {
     /**
@@ -85,6 +87,69 @@ class ContaoHelper extends \Controller
         }
 
         $this->sendNotifications($objModule->nc_notification, $arrData, $objModule, $arrTokens);
+    }
+
+    /**
+     * Send notification for activated recipient
+     *
+     * @param $strEmail
+     * @param $arrRecipients
+     * @param $arrChannels
+     */
+    public function sendActivateRecipientNotification($strEmail, $arrRecipients, $arrChannels)
+    {
+        $this->sendNewsletterNotification('activate', $strEmail, $arrChannels);
+    }
+
+    /**
+     * Send notification for removed recipient
+     *
+     * @param $strEmail
+     * @param $arrChannels
+     */
+    public function sendRemoveRecipientNotification($strEmail, $arrChannels)
+    {
+        $this->sendNewsletterNotification('remove', $strEmail, $arrChannels);
+    }
+
+    /**
+     * Send newsletter notification
+     *
+     * @param $strAction
+     * @param $strEmail
+     * @param $arrChannels
+     */
+    private function sendNewsletterNotification($strAction, $strEmail, $arrChannels)
+    {
+        $objChannels = \NewsletterChannelModel::findMultipleByIds((array) $arrChannels);
+        if (!$objChannels) {
+            return;
+        }
+
+        foreach ($objChannels as $objChannel) {
+            $strNotificationField = 'nc_' . $strAction . '_notification';
+            if (!$objChannel->$strNotificationField) {
+                continue;
+            }
+
+            $objNotification = Notification::findByPk($objChannel->nc_activate_notification);
+            if (!$objNotification) {
+                continue;
+            }
+
+            $arrTokens = array(
+                'admin_email'     => $GLOBALS['TL_ADMIN_EMAIL'],
+                'domain'          => \Environment::get('host'),
+                'action'          => $strAction,
+                'recipient_email' => $strEmail,
+            );
+
+            foreach($objNotification->row() as $strFieldName => $strFieldValue) {
+                $arrTokens['channel_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
+            }
+
+            $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
+        }
     }
 
     /**

@@ -3,7 +3,7 @@
 /**
  * notification_center extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2015, terminal42
+ * @copyright  Copyright (c) 2008-2018, terminal42
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
@@ -46,3 +46,4 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_activation']      = ar
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration']    = array('Member registration');
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_personaldata']    = array('Member personal data');
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_password']        = array('Member lost password');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['newsletter']             = array('Newsletter', 'This notification type can be sent when a recipient activated or removed its subscription from a channel.');

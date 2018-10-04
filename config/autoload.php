@@ -26,6 +26,7 @@ if (class_exists('NamespaceClassLoader')) {
         'NotificationCenter\tl_form'                => 'system/modules/notification_center/classes/tl_form.php',
         'NotificationCenter\tl_member'              => 'system/modules/notification_center/classes/tl_member.php',
         'NotificationCenter\tl_module'              => 'system/modules/notification_center/classes/tl_module.php',
+        'NotificationCenter\tl_newsletter_channel'  => 'system/modules/notification_center/classes/tl_newsletter_channel.php',
         'NotificationCenter\tl_nc_gateway'          => 'system/modules/notification_center/classes/tl_nc_gateway.php',
         'NotificationCenter\tl_nc_notification'     => 'system/modules/notification_center/classes/tl_nc_notification.php',
         'NotificationCenter\tl_nc_language'         => 'system/modules/notification_center/classes/tl_nc_language.php',

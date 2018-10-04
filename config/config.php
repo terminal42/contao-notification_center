@@ -3,7 +3,7 @@
 /**
  * notification_center extension for Contao Open Source CMS
  *
- * @copyright  Copyright (c) 2008-2015, terminal42
+ * @copyright  Copyright (c) 2008-2018, terminal42
  * @author     terminal42 gmbh <info@terminal42.ch>
  * @license    LGPL
  */
@@ -75,6 +75,8 @@ $GLOBALS['TL_HOOKS']['createNewUser'][]         = array('NotificationCenter\Cont
 $GLOBALS['TL_HOOKS']['updatePersonalData'][]    = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
 $GLOBALS['TL_HOOKS']['getUserNavigation'][]     = array('NotificationCenter\ContaoHelper', 'addQueueToUserNavigation');
 $GLOBALS['TL_HOOKS']['activateAccount'][]       = array('NotificationCenter\ContaoHelper', 'sendActivationEmail');
+$GLOBALS['TL_HOOKS']['activateRecipient'][]     = array('NotificationCenter\ContaoHelper', 'sendActivateRecipientNotification');
+$GLOBALS['TL_HOOKS']['removeRecipient'][]       = array('NotificationCenter\ContaoHelper', 'sendRemoveRecipientNotification');
 
 /**
  * Queue manager
@@ -164,6 +166,19 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
                  'email_recipient_cc'   => array('recipient_email'),
                  'email_recipient_bcc'  => array('recipient_email'),
                  'email_replyTo'        => array('recipient_email'),
+             ),
+             'newsletter'           => array(
+                 'recipients'           => array('recipient_email', 'admin_email'),
+                 'email_subject'        => array('domain', 'channel_*', 'recipient_email', 'action'),
+                 'email_text'           => array('domain', 'channel_*', 'recipient_email', 'action'),
+                 'email_html'           => array('domain', 'channel_*', 'recipient_email', 'action'),
+                 'file_name'            => array('domain', 'channel_*', 'recipient_email', 'action'),
+                 'file_content'         => array('domain', 'channel_*', 'recipient_email', 'action'),
+                 'email_sender_name'    => array('recipient_email', 'admin_email'),
+                 'email_sender_address' => array('recipient_email', 'admin_email'),
+                 'email_recipient_cc'   => array('recipient_email', 'admin_email'),
+                 'email_recipient_bcc'  => array('recipient_email', 'admin_email'),
+                 'email_replyTo'        => array('recipient_email', 'admin_email'),
              )
          )
     )
