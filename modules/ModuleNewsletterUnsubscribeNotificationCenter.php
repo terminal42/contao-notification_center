@@ -112,23 +112,51 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
             $this->redirect($objTarget->getFrontendUrl());
         }
 
-        \System::getContainer()->get('session')->getFlashBag()->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed']);
+        if (version_compare(VERSION, '4.1', '>='))
+        {
+            \System::getContainer()->get('session')->getFlashBag()->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed']);
+        }
+        else
+        {
+            $_SESSION['UNSUBSCRIBE_CONFIRM'] = $GLOBALS['TL_LANG']['MSC']['nl_removed'];
+        }
 
         $this->reload();
     }
 
     protected function compileConfirmationMessage()
     {
-        $session = \System::getContainer()->get('session');
-        $flashBag = $session->getFlashBag();
+        if (version_compare(VERSION, '4.1', '>='))
+        {
+            $session = \System::getContainer()->get('session');
+            $flashBag = $session->getFlashBag();
+
+            // Confirmation message
+            if ($session->isStarted() && $flashBag->has('nl_removed'))
+            {
+                $arrMessages = $flashBag->get('nl_removed');
+
+                $this->Template->mclass = 'confirm';
+                $this->Template->message = $arrMessages[0];
+            }
+
+            return;
+        }
+
+        // Error message
+        if (strlen($_SESSION['UNSUBSCRIBE_ERROR']))
+        {
+            $this->Template->mclass = 'error';
+            $this->Template->message = $_SESSION['UNSUBSCRIBE_ERROR'];
+            $_SESSION['UNSUBSCRIBE_ERROR'] = '';
+        }
 
         // Confirmation message
-        if ($session->isStarted() && $flashBag->has('nl_removed'))
+        if (strlen($_SESSION['UNSUBSCRIBE_CONFIRM']))
         {
-            $arrMessages = $flashBag->get('nl_removed');
-
             $this->Template->mclass = 'confirm';
-            $this->Template->message = $arrMessages[0];
+            $this->Template->message = $_SESSION['UNSUBSCRIBE_CONFIRM'];
+            $_SESSION['UNSUBSCRIBE_CONFIRM'] = '';
         }
     }
 }
