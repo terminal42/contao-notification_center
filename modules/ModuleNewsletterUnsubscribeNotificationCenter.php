@@ -234,8 +234,8 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $arrData = array();
         $arrData['recipient_email'] = $strEmail;
         $arrData['domain'] = \Idna::decode(\Environment::get('host'));
-        $arrData['channel'] = $arrData['channels'] = $arrChannels;
-        $arrData['channel_ids'] = $arrRemove;
+        $arrData['channels'] = implode(', ', $arrChannels);
+        $arrData['channel_ids'] = implode(', ', $arrRemove);
         $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
         $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
         $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));

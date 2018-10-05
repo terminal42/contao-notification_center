@@ -126,8 +126,8 @@ class ModuleNewsletterActivateNotificationCenter extends Module
         $arrData = array();
         $arrData['recipient_email'] = $strEmail;
         $arrData['domain'] = \Idna::decode(\Environment::get('host'));
-        $arrData['channel'] = $arrData['channels'] = $arrChannels;
-        $arrData['channel_ids'] = $arrCids;
+        $arrData['channels'] = implode(', ', $arrChannels);
+        $arrData['channel_ids'] = implode(', ', $arrCids);
         $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
         $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
         $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));

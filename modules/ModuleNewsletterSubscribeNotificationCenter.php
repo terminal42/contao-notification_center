@@ -241,8 +241,8 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         $arrData['token'] = $strToken;
         $arrData['domain'] = \Idna::decode(\Environment::get('host'));
         $arrData['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . ((strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $strToken;
-        $arrData['channel'] = $arrData['channels'] = $arrChannels;
-        $arrData['channel_ids'] = $arrNew;
+        $arrData['channels'] = implode(', ', $arrChannels);
+        $arrData['channel_ids'] = implode(', ', $arrNew);
         $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
         $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
         $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
