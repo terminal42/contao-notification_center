@@ -46,7 +46,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         $this->Template->captcha = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
         $this->Template->channels = $this->compileChannels();
         $this->Template->showChannels = !$this->nl_hideChannels;
-        $this->Template->submit = \StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['subscribe']);
+        $this->Template->submit = specialchars($GLOBALS['TL_LANG']['MSC']['subscribe']);
         $this->Template->channelsLabel = $GLOBALS['TL_LANG']['MSC']['nl_channels'];
         $this->Template->emailLabel = $GLOBALS['TL_LANG']['MSC']['emailAddress'];
         $this->Template->action = \Environment::get('indexFreeRequest');

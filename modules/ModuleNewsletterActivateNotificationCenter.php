@@ -37,7 +37,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             return $objTemplate->parse();
         }
 
-        $this->nl_channels = \StringUtil::deserialize($this->nl_channels);
+        $this->nl_channels = deserialize($this->nl_channels);
 
         // Return if there are no channels
         if (empty($this->nl_channels) || !\is_array($this->nl_channels))
@@ -45,16 +45,17 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             return '';
         }
 
+        if (!\Input::get('token')) {
+            return '';
+        }
+
+        $this->activateRecipient();
+
         return parent::generate();
     }
 
     protected function compile()
     {
-        // Activate e-mail address
-        if (\Input::get('token'))
-        {
-            $this->activateRecipient();
-        }
     }
 
     /**
