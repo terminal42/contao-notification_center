@@ -154,7 +154,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         }
     }
 
-    private function compileChannels()
+    protected function compileChannels()
     {
         $arrChannels = array();
         $objChannel = \NewsletterChannelModel::findByIds($this->nl_channels);
