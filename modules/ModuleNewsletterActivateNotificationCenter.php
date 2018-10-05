@@ -10,9 +10,43 @@
 
 namespace Contao;
 
-final class ModuleNewsletterActivateNotificationCenter extends Module
+use NotificationCenter\Model\Notification;
+
+class ModuleNewsletterActivateNotificationCenter extends Module
 {
-    protected $strTemplate = 'nl_default';
+    use NewsletterModuleTrait;
+
+    protected $strTemplate = 'mod_newsletter';
+
+    /**
+     * Display a wildcard in the back end
+     *
+     * @return string
+     */
+    public function generate()
+    {
+        if (TL_MODE == 'BE')
+        {
+            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['newsletterActivateNotificationCenter'][0]) . ' ###';
+            $objTemplate->title = $this->headline;
+            $objTemplate->id = $this->id;
+            $objTemplate->link = $this->name;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+
+            return $objTemplate->parse();
+        }
+
+        $this->nl_channels = \StringUtil::deserialize($this->nl_channels);
+
+        // Return if there are no channels
+        if (empty($this->nl_channels) || !\is_array($this->nl_channels))
+        {
+            return '';
+        }
+
+        return parent::generate();
+    }
 
     protected function compile()
     {
@@ -20,8 +54,6 @@ final class ModuleNewsletterActivateNotificationCenter extends Module
         if (\Input::get('token'))
         {
             $this->activateRecipient();
-
-            return;
         }
     }
 
@@ -30,8 +62,6 @@ final class ModuleNewsletterActivateNotificationCenter extends Module
      */
     protected function activateRecipient()
     {
-        $this->Template = new \FrontendTemplate('mod_newsletter');
-
         // Check the token
         $objRecipient = \NewsletterRecipientsModel::findByToken(\Input::get('token'));
 
@@ -73,8 +103,34 @@ final class ModuleNewsletterActivateNotificationCenter extends Module
             }
         }
 
+        $this->sendNotification($objRecipient->id, $arrCids);
+        $this->redirectToJumpToPage();
+
         // Confirm activation
         $this->Template->mclass = 'confirm';
         $this->Template->message = $GLOBALS['TL_LANG']['MSC']['nl_activate'];
+    }
+
+    protected function sendNotification($strEmail, array $arrCids)
+    {
+        $objNotification = Notification::findByPk($this->nc_notification);
+        if (!$objNotification) {
+            return;
+        }
+
+        $objChannel = \NewsletterChannelModel::findByIds($arrCids);
+        $arrChannels = $objChannel ? $objChannel->fetchEach('title') : [];
+
+        // Prepare the simple token data
+        $arrData = array();
+        $arrData['email'] = $strEmail;
+        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
+        $arrData['channel'] = $arrData['channels'] = $arrChannels;
+        $arrData['channelIds'] = $arrCids;
+        $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
+        $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
+        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
+
+        $objNotification->send($arrData);
     }
 }

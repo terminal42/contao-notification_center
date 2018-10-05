@@ -97,13 +97,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         }
 
         $this->sendNotification($strToken, $strEmail, $arrNew);
-
-        // Redirect to the jumpTo page
-        if ($this->jumpTo && ($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel)
-        {
-            /** @var PageModel $objTarget */
-            $this->redirect($objTarget->getFrontendUrl());
-        }
+        $this->redirectToJumpToPage();
 
         if (version_compare(VERSION, '4.1', '>='))
         {
