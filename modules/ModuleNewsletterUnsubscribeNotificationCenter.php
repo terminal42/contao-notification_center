@@ -10,8 +10,6 @@
 
 namespace Contao;
 
-use Patchwork\Utf8;
-
 /**
  * Front end module "newsletter unsubscribe".
  *
@@ -22,45 +20,8 @@ use Patchwork\Utf8;
  *
  * @author Leo Feyer <https://github.com/leofeyer>
  */
-class ModuleNewsletterUnsubscribeNotificationCenter extends Module
+class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 {
-
-	/**
-	 * Template
-	 * @var string
-	 */
-	protected $strTemplate = 'nl_default';
-
-	/**
-	 * Display a wildcard in the back end
-	 *
-	 * @return string
-	 */
-	public function generate()
-	{
-		if (TL_MODE == 'BE')
-		{
-			$objTemplate = new \BackendTemplate('be_wildcard');
-			$objTemplate->wildcard = '### ' . Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['unsubscribe'][0]) . ' ###';
-			$objTemplate->title = $this->headline;
-			$objTemplate->id = $this->id;
-			$objTemplate->link = $this->name;
-			$objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
-
-			return $objTemplate->parse();
-		}
-
-		$this->nl_channels = \StringUtil::deserialize($this->nl_channels);
-
-		// Return if there are no channels
-		if (empty($this->nl_channels) || !\is_array($this->nl_channels))
-		{
-			return '';
-		}
-
-		return parent::generate();
-	}
-
 	/**
 	 * Generate the module
 	 */
@@ -149,83 +110,6 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends Module
 	}
 
 	/**
-	 * Validate the subscription form
-	 *
-	 * @param Widget $objWidget
-	 *
-	 * @return array|bool
-	 */
-	protected function validateForm(Widget $objWidget=null)
-	{
-		// Validate the e-mail address
-		$varInput = \Idna::encodeEmail(\Input::post('email', true));
-
-		if (!\Validator::isEmail($varInput))
-		{
-			$this->Template->mclass = 'error';
-			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['email'];
-
-			return false;
-		}
-
-		$this->Template->email = $varInput;
-
-		// Validate the channel selection
-		$arrChannels = \Input::post('channels');
-
-		if (!\is_array($arrChannels))
-		{
-			$this->Template->mclass = 'error';
-			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
-
-			return false;
-		}
-
-		$arrChannels = array_intersect($arrChannels, $this->nl_channels); // see #3240
-
-		if (empty($arrChannels) || !\is_array($arrChannels))
-		{
-			$this->Template->mclass = 'error';
-			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
-
-			return false;
-		}
-
-		$this->Template->selectedChannels = $arrChannels;
-
-		// Check if there are any new subscriptions
-		$arrSubscriptions = array();
-
-		if (($objSubscription = \NewsletterRecipientsModel::findBy(array("email=? AND active=1"), $varInput)) !== null)
-		{
-			$arrSubscriptions = $objSubscription->fetchEach('pid');
-		}
-
-		$arrRemove = array_intersect($arrChannels, $arrSubscriptions);
-
-		if (empty($arrRemove) || !\is_array($arrRemove))
-		{
-			$this->Template->mclass = 'error';
-			$this->Template->message = $GLOBALS['TL_LANG']['ERR']['unsubscribed'];
-
-			return false;
-		}
-
-		// Validate the captcha
-		if ($objWidget !== null)
-		{
-			$objWidget->validate();
-
-			if ($objWidget->hasErrors())
-			{
-				return false;
-			}
-		}
-
-		return array($varInput, $arrRemove);
-	}
-
-	/**
 	 * Remove the recipient
 	 *
 	 * @param string $strEmail
@@ -292,5 +176,3 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends Module
 		$this->reload();
 	}
 }
-
-class_alias(ModuleNewsletterUnsubscribeNotificationCenter::class, 'ModuleUnsubscribe');
