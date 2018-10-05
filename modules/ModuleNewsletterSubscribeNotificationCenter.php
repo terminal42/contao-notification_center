@@ -32,33 +32,15 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 	{
         $this->setCustomTemplate();
 
-        $this->Template->email = '';
-		$this->Template->captcha = '';
-
         $objCaptchaWidget = $this->createCaptchaWidgetIfEnabled();
 
         $strFormId = 'tl_subscribe_' . $this->id;
 
-		// Validate the form
-		if (\Input::post('FORM_SUBMIT') == $strFormId)
-		{
-			$varSubmitted = $this->validateForm($objCaptchaWidget);
+        $this->processForm($strFormId, $objCaptchaWidget);
+        $this->compileConfirmationMessage();
 
-			if ($varSubmitted !== false)
-			{
-				\call_user_func_array(array($this, 'addRecipient'), $varSubmitted);
-			}
-		}
-
-		// Add the captcha widget to the template
-		if ($objCaptchaWidget !== null)
-		{
-			$this->Template->captcha = $objCaptchaWidget->parse();
-		}
-
-		$this->compileConfirmationMessage();
-
-		// Default template variables
+        $this->Template->email = '';
+        $this->Template->captcha = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
 		$this->Template->channels = $this->compileChannels();
 		$this->Template->showChannels = !$this->nl_hideChannels;
 		$this->Template->submit = \StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['subscribe']);
@@ -202,5 +184,21 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         }
 
         return $arrChannels;
+    }
+
+    /**
+     * @param $strFormId
+     * @param $objCaptchaWidget
+     */
+    protected function processForm($strFormId, $objCaptchaWidget)
+    {
+// Validate the form
+        if (\Input::post('FORM_SUBMIT') == $strFormId) {
+            $varSubmitted = $this->validateForm($objCaptchaWidget);
+
+            if ($varSubmitted !== false) {
+                \call_user_func_array([$this, 'addRecipient'], $varSubmitted);
+            }
+        }
     }
 }
