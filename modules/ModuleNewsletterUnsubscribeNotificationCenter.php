@@ -155,9 +155,10 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 
         // Prepare the simple token data
         $arrData = array();
-        $arrData['email'] = $strEmail;
+        $arrData['recipient_email'] = $strEmail;
         $arrData['domain'] = \Idna::decode(\Environment::get('host'));
-        $arrData['channel'] = $arrData['channels'] = implode("\n", $arrChannels);
+        $arrData['channel'] = $arrData['channels'] = $arrChannels;
+        $arrData['channel_ids'] = $arrRemove;
         $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
         $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
         $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
