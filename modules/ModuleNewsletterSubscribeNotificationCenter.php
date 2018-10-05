@@ -103,7 +103,14 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             $this->redirect($objTarget->getFrontendUrl());
         }
 
-        \System::getContainer()->get('session')->getFlashBag()->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm']);
+        if (version_compare(VERSION, '4.1', '>='))
+        {
+            \System::getContainer()->get('session')->getFlashBag()->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm']);
+        }
+        else
+        {
+            $_SESSION['SUBSCRIBE_CONFIRM'] = $GLOBALS['TL_LANG']['MSC']['nl_confirm'];
+        }
 
         $this->reload();
     }
@@ -121,36 +128,55 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
      */
     protected function createCaptchaWidgetIfEnabled()
     {
-        $objWidget = null;
-
-        // Set up the captcha widget
-        if (!$this->disableCaptcha) {
-            $arrField = [
-                'name'      => 'subscribe_' . $this->id,
-                'label'     => $GLOBALS['TL_LANG']['MSC']['securityQuestion'],
-                'inputType' => 'captcha',
-                'eval'      => ['mandatory' => true]
-            ];
-
-            /** @var Widget $objWidget */
-            $objWidget = new \FormCaptcha(\FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
+        if (version_compare(VERSION, '4.1', '<') || $this->disableCaptcha)
+        {
+            return null;
         }
 
-        return $objWidget;
+        $arrField = [
+            'name'      => 'subscribe_' . $this->id,
+            'label'     => $GLOBALS['TL_LANG']['MSC']['securityQuestion'],
+            'inputType' => 'captcha',
+            'eval'      => ['mandatory' => true]
+        ];
+
+        return new \FormCaptcha(\FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
     }
 
     protected function compileConfirmationMessage()
     {
-        $session = \System::getContainer()->get('session');
-        $flashBag = $session->getFlashBag();
+        if (version_compare(VERSION, '4.1', '>='))
+        {
+            $session = \System::getContainer()->get('session');
+            $flashBag = $session->getFlashBag();
+
+            if ($session->isStarted() && $flashBag->has('nl_confirm'))
+            {
+                $arrMessages = $flashBag->get('nl_confirm');
+
+                $this->Template->mclass = 'confirm';
+                $this->Template->message = $arrMessages[0];
+            }
+
+            return;
+        }
+
+        // Error message
+        if (strlen($_SESSION['SUBSCRIBE_ERROR']))
+        {
+            $this->Template->mclass = 'error';
+            $this->Template->message = $_SESSION['SUBSCRIBE_ERROR'];
+            $this->Template->hasError = true;
+            $_SESSION['SUBSCRIBE_ERROR'] = '';
+        }
 
         // Confirmation message
-        if ($session->isStarted() && $flashBag->has('nl_confirm'))
+        if (strlen($_SESSION['SUBSCRIBE_CONFIRM']))
         {
-            $arrMessages = $flashBag->get('nl_confirm');
-
             $this->Template->mclass = 'confirm';
-            $this->Template->message = $arrMessages[0];
+            $this->Template->message = $_SESSION['SUBSCRIBE_CONFIRM'];
+            $this->Template->hasError = false;
+            $_SESSION['SUBSCRIBE_CONFIRM'] = '';
         }
     }
 
