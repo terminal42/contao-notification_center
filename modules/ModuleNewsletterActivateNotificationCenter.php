@@ -49,13 +49,12 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             return '';
         }
 
-        $this->activateRecipient();
-
         return parent::generate();
     }
 
     protected function compile()
     {
+        $this->activateRecipient();
     }
 
     /**
@@ -104,7 +103,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             }
         }
 
-        $this->sendNotification($objRecipient->id, $arrCids);
+        $this->sendNotification($objRecipient->email, $arrCids);
         $this->redirectToJumpToPage();
 
         // Confirm activation
