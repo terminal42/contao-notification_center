@@ -1,16 +1,14 @@
 <?php
 
-/*
- * This file is part of Contao.
+/**
+ * notification_center extension for Contao Open Source CMS
  *
- * (c) Leo Feyer
- *
- * @license LGPL-3.0-or-later
+ * @copyright  Copyright (c) 2008-2018, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
+ * @license    LGPL
  */
 
 namespace Contao;
-
-use Patchwork\Utf8;
 
 /**
  * Front end module "newsletter subscribe".
@@ -25,11 +23,11 @@ use Patchwork\Utf8;
  */
 class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 {
-	/**
-	 * Generate the module
-	 */
-	protected function compile()
-	{
+    /**
+     * Generate the module
+     */
+    protected function compile()
+    {
         $this->setCustomTemplate();
 
         $objCaptchaWidget = $this->createCaptchaWidgetIfEnabled();
@@ -41,87 +39,87 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 
         $this->Template->email = '';
         $this->Template->captcha = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
-		$this->Template->channels = $this->compileChannels();
-		$this->Template->showChannels = !$this->nl_hideChannels;
-		$this->Template->submit = \StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['subscribe']);
-		$this->Template->channelsLabel = $GLOBALS['TL_LANG']['MSC']['nl_channels'];
-		$this->Template->emailLabel = $GLOBALS['TL_LANG']['MSC']['emailAddress'];
-		$this->Template->action = \Environment::get('indexFreeRequest');
-		$this->Template->formId = $strFormId;
-		$this->Template->id = $this->id;
-		$this->Template->text = $this->nl_text;
-	}
+        $this->Template->channels = $this->compileChannels();
+        $this->Template->showChannels = !$this->nl_hideChannels;
+        $this->Template->submit = \StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['subscribe']);
+        $this->Template->channelsLabel = $GLOBALS['TL_LANG']['MSC']['nl_channels'];
+        $this->Template->emailLabel = $GLOBALS['TL_LANG']['MSC']['emailAddress'];
+        $this->Template->action = \Environment::get('indexFreeRequest');
+        $this->Template->formId = $strFormId;
+        $this->Template->id = $this->id;
+        $this->Template->text = $this->nl_text;
+    }
 
-	/**
-	 * Add a new recipient
-	 *
-	 * @param string $strEmail
-	 * @param array  $arrNew
-	 */
-	protected function addRecipient($strEmail, $arrNew)
-	{
-		// Remove old subscriptions that have not been activated yet
-		if (($objOld = \NewsletterRecipientsModel::findOldSubscriptionsByEmailAndPids($strEmail, $arrNew)) !== null)
-		{
-			while ($objOld->next())
-			{
-				$objOld->delete();
-			}
-		}
+    /**
+     * Add a new recipient
+     *
+     * @param string $strEmail
+     * @param array  $arrNew
+     */
+    protected function addRecipient($strEmail, $arrNew)
+    {
+        // Remove old subscriptions that have not been activated yet
+        if (($objOld = \NewsletterRecipientsModel::findOldSubscriptionsByEmailAndPids($strEmail, $arrNew)) !== null)
+        {
+            while ($objOld->next())
+            {
+                $objOld->delete();
+            }
+        }
 
-		$time = time();
-		$strToken = md5(uniqid(mt_rand(), true));
+        $time = time();
+        $strToken = md5(uniqid(mt_rand(), true));
 
-		// Add the new subscriptions
-		foreach ($arrNew as $id)
-		{
-			$objRecipient = new \NewsletterRecipientsModel();
-			$objRecipient->pid = $id;
-			$objRecipient->tstamp = $time;
-			$objRecipient->email = $strEmail;
-			$objRecipient->active = '';
-			$objRecipient->addedOn = $time;
-			$objRecipient->ip = \Environment::get('ip');
-			$objRecipient->token = $strToken;
-			$objRecipient->confirmed = '';
-			$objRecipient->save();
+        // Add the new subscriptions
+        foreach ($arrNew as $id)
+        {
+            $objRecipient = new \NewsletterRecipientsModel();
+            $objRecipient->pid = $id;
+            $objRecipient->tstamp = $time;
+            $objRecipient->email = $strEmail;
+            $objRecipient->active = '';
+            $objRecipient->addedOn = $time;
+            $objRecipient->ip = \Environment::get('ip');
+            $objRecipient->token = $strToken;
+            $objRecipient->confirmed = '';
+            $objRecipient->save();
 
-			// Remove the blacklist entry (see #4999)
-			if (($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null)
-			{
-				$objBlacklist->delete();
-			}
-		}
+            // Remove the blacklist entry (see #4999)
+            if (($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null)
+            {
+                $objBlacklist->delete();
+            }
+        }
 
-		// Get the channels
-		$objChannel = \NewsletterChannelModel::findByIds($arrNew);
+        // Get the channels
+        $objChannel = \NewsletterChannelModel::findByIds($arrNew);
 
-		// Prepare the simple token data
-		$arrData = array();
-		$arrData['token'] = $strToken;
-		$arrData['domain'] = \Idna::decode(\Environment::get('host'));
-		$arrData['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . ((strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $strToken;
-		$arrData['channel'] = $arrData['channels'] = implode("\n", $objChannel->fetchEach('title'));
+        // Prepare the simple token data
+        $arrData = array();
+        $arrData['token'] = $strToken;
+        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
+        $arrData['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . ((strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $strToken;
+        $arrData['channel'] = $arrData['channels'] = implode("\n", $objChannel->fetchEach('title'));
 
-		// Activation e-mail
-		$objEmail = new \Email();
-		$objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
-		$objEmail->fromName = $GLOBALS['TL_ADMIN_NAME'];
-		$objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
-		$objEmail->text = \StringUtil::parseSimpleTokens($this->nl_subscribe, $arrData);
-		$objEmail->sendTo($strEmail);
+        // Activation e-mail
+        $objEmail = new \Email();
+        $objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
+        $objEmail->fromName = $GLOBALS['TL_ADMIN_NAME'];
+        $objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
+        $objEmail->text = \StringUtil::parseSimpleTokens($this->nl_subscribe, $arrData);
+        $objEmail->sendTo($strEmail);
 
-		// Redirect to the jumpTo page
-		if ($this->jumpTo && ($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel)
-		{
-			/** @var PageModel $objTarget */
-			$this->redirect($objTarget->getFrontendUrl());
-		}
+        // Redirect to the jumpTo page
+        if ($this->jumpTo && ($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel)
+        {
+            /** @var PageModel $objTarget */
+            $this->redirect($objTarget->getFrontendUrl());
+        }
 
-		\System::getContainer()->get('session')->getFlashBag()->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm']);
+        \System::getContainer()->get('session')->getFlashBag()->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm']);
 
-		$this->reload();
-	}
+        $this->reload();
+    }
 
     protected function setCustomTemplate()
     {
@@ -192,7 +190,6 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
      */
     protected function processForm($strFormId, $objCaptchaWidget)
     {
-// Validate the form
         if (\Input::post('FORM_SUBMIT') == $strFormId) {
             $varSubmitted = $this->validateForm($objCaptchaWidget);
 
