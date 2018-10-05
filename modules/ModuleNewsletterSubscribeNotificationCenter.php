@@ -30,39 +30,19 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 	 */
 	protected function compile()
 	{
-		// Overwrite default template
-		if ($this->nl_template)
-		{
-			$this->Template = new \FrontendTemplate($this->nl_template);
-			$this->Template->setData($this->arrData);
-		}
+        $this->setCustomTemplate();
 
-		$this->Template->email = '';
+        $this->Template->email = '';
 		$this->Template->captcha = '';
 
-		$objWidget = null;
+        $objCaptchaWidget = $this->createCaptchaWidgetIfEnabled();
 
-		// Set up the captcha widget
-		if (!$this->disableCaptcha)
-		{
-			$arrField = array
-			(
-				'name' => 'subscribe_'.$this->id,
-				'label' => $GLOBALS['TL_LANG']['MSC']['securityQuestion'],
-				'inputType' => 'captcha',
-				'eval' => array('mandatory'=>true)
-			);
-
-			/** @var Widget $objWidget */
-			$objWidget = new \FormCaptcha(\FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
-		}
-
-		$strFormId = 'tl_subscribe_' . $this->id;
+        $strFormId = 'tl_subscribe_' . $this->id;
 
 		// Validate the form
 		if (\Input::post('FORM_SUBMIT') == $strFormId)
 		{
-			$varSubmitted = $this->validateForm($objWidget);
+			$varSubmitted = $this->validateForm($objCaptchaWidget);
 
 			if ($varSubmitted !== false)
 			{
@@ -71,9 +51,9 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 		}
 
 		// Add the captcha widget to the template
-		if ($objWidget !== null)
+		if ($objCaptchaWidget !== null)
 		{
-			$this->Template->captcha = $objWidget->parse();
+			$this->Template->captcha = $objCaptchaWidget->parse();
 		}
 
 		$session = \System::getContainer()->get('session');
@@ -182,4 +162,35 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 
 		$this->reload();
 	}
+
+    protected function setCustomTemplate()
+    {
+        if ($this->nl_template) {
+            $this->Template = new \FrontendTemplate($this->nl_template);
+            $this->Template->setData($this->arrData);
+        }
+    }
+
+    /**
+     * @return Widget|null
+     */
+    protected function createCaptchaWidgetIfEnabled()
+    {
+        $objWidget = null;
+
+        // Set up the captcha widget
+        if (!$this->disableCaptcha) {
+            $arrField = [
+                'name'      => 'subscribe_' . $this->id,
+                'label'     => $GLOBALS['TL_LANG']['MSC']['securityQuestion'],
+                'inputType' => 'captcha',
+                'eval'      => ['mandatory' => true]
+            ];
+
+            /** @var Widget $objWidget */
+            $objWidget = new \FormCaptcha(\FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
+        }
+
+        return $objWidget;
+    }
 }
