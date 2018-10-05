@@ -48,6 +48,12 @@ if ('BE' === TL_MODE) {
  */
 $GLOBALS['FE_MOD']['user']['lostPasswordNotificationCenter'] = 'ModulePasswordNotificationCenter';
 
+if (isset($GLOBALS['FE_MOD']['newsletter'])) {
+    $GLOBALS['FE_MOD']['newsletter']['newsletterSubscribeNotificationCenter']   = 'ModuleNewsletterSubscribeNotificationCenter';
+    $GLOBALS['FE_MOD']['newsletter']['newsletterActivateNotificationCenter']    = 'ModuleNewsletterSubscribeNotificationCenter';
+    $GLOBALS['FE_MOD']['newsletter']['newsletterUnsubscribeNotificationCenter'] = 'ModuleNewsletterUnSubscribeNotificationCenter';
+}
+
 /**
  * Models
  */

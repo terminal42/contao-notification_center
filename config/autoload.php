@@ -40,5 +40,9 @@ if (class_exists('NamespaceClassLoader')) {
  */
 ClassLoader::addClasses(array
 (
-	'Contao\ModulePasswordNotificationCenter' => 'system/modules/notification_center/modules/ModulePasswordNotificationCenter.php',
+    'Contao\ModulePasswordNotificationCenter'              => 'system/modules/notification_center/modules/ModulePasswordNotificationCenter.php',
+    'Contao\NewsletterModuleTrait'                         => 'system/modules/notification_center/modules/NewsletterModuleTrait.php',
+    'Contao\ModuleNewsletterSubscribeNotificationCenter'   => 'system/modules/notification_center/modules/ModuleNewsletterSubscribeNotificationCenter.php',
+    'Contao\ModuleNewsletterActivateNotificationCenter'    => 'system/modules/notification_center/modules/ModuleNewsletterActivateNotificationCenter.php',
+    'Contao\ModuleNewsletterUnSubscribeNotificationCenter' => 'system/modules/notification_center/modules/ModuleNewsletterUnSubscribeNotificationCenter.php',
 ));
