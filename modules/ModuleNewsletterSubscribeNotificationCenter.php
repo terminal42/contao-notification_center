@@ -167,7 +167,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             $objRecipient->save();
 
             // Remove the blacklist entry (see #4999)
-            if (($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null)
+            if (version_compare(VERSION, '4.1', '>=') && ($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null)
             {
                 $objBlacklist->delete();
             }

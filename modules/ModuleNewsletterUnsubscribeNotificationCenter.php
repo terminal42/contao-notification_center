@@ -146,7 +146,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
                 $strHash = md5($objRemove->email);
 
                 // Add a blacklist entry (see #4999)
-                if (($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid($strHash, $objRemove->pid)) === null)
+                if (version_compare(VERSION, '4.1', '>=') && $objBlacklist = (\NewsletterBlacklistModel::findByHashAndPid($strHash, $objRemove->pid)) === null)
                 {
                     $objBlacklist = new \NewsletterBlacklistModel();
                     $objBlacklist->pid = $objRemove->pid;
