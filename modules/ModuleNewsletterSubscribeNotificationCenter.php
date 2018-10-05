@@ -10,6 +10,8 @@
 
 namespace Contao;
 
+use NotificationCenter\Model\Notification;
+
 /**
  * Front end module "newsletter subscribe".
  *
@@ -18,6 +20,7 @@ namespace Contao;
  * @property string $nl_template
  * @property string $nl_text
  * @property bool   $nl_hideChannels
+ * @property int    $nc_notification
  *
  * @author Leo Feyer <https://github.com/leofeyer>
  */
@@ -91,23 +94,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             }
         }
 
-        // Get the channels
-        $objChannel = \NewsletterChannelModel::findByIds($arrNew);
-
-        // Prepare the simple token data
-        $arrData = array();
-        $arrData['token'] = $strToken;
-        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
-        $arrData['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . ((strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $strToken;
-        $arrData['channel'] = $arrData['channels'] = implode("\n", $objChannel->fetchEach('title'));
-
-        // Activation e-mail
-        $objEmail = new \Email();
-        $objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
-        $objEmail->fromName = $GLOBALS['TL_ADMIN_NAME'];
-        $objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
-        $objEmail->text = \StringUtil::parseSimpleTokens($this->nl_subscribe, $arrData);
-        $objEmail->sendTo($strEmail);
+        $this->sendNotification($strToken, $strEmail, $arrNew);
 
         // Redirect to the jumpTo page
         if ($this->jumpTo && ($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel)
@@ -197,5 +184,29 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
                 \call_user_func_array([$this, 'addRecipient'], $varSubmitted);
             }
         }
+    }
+
+    protected function sendNotification($strToken, $strEmail, array $arrNew)
+    {
+        $objNotification = Notification::findByPk($this->nc_notification);
+        if (!$objNotification) {
+            return;
+        }
+
+        $objChannel = \NewsletterChannelModel::findByIds($arrNew);
+        $arrChannels = $objChannel ? $objChannel->fetchEach('title') : [];
+
+        // Prepare the simple token data
+        $arrData = array();
+        $arrData['email'] = $strEmail;
+        $arrData['token'] = $strToken;
+        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
+        $arrData['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . ((strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $strToken;
+        $arrData['channel'] = $arrData['channels'] = implode("\n", $arrChannels);
+        $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
+        $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
+        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
+
+        $objNotification->send($arrData);
     }
 }
