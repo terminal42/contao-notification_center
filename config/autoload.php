@@ -44,5 +44,5 @@ ClassLoader::addClasses(array
     'Contao\NewsletterModuleTrait'                         => 'system/modules/notification_center/modules/NewsletterModuleTrait.php',
     'Contao\ModuleNewsletterSubscribeNotificationCenter'   => 'system/modules/notification_center/modules/ModuleNewsletterSubscribeNotificationCenter.php',
     'Contao\ModuleNewsletterActivateNotificationCenter'    => 'system/modules/notification_center/modules/ModuleNewsletterActivateNotificationCenter.php',
-    'Contao\ModuleNewsletterUnSubscribeNotificationCenter' => 'system/modules/notification_center/modules/ModuleNewsletterUnSubscribeNotificationCenter.php',
+    'Contao\ModuleNewsletterUnsubscribeNotificationCenter' => 'system/modules/notification_center/modules/ModuleNewsletterUnsubscribeNotificationCenter.php',
 ));

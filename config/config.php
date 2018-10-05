@@ -51,7 +51,7 @@ $GLOBALS['FE_MOD']['user']['lostPasswordNotificationCenter'] = 'ModulePasswordNo
 if (isset($GLOBALS['FE_MOD']['newsletter'])) {
     $GLOBALS['FE_MOD']['newsletter']['newsletterSubscribeNotificationCenter']   = 'ModuleNewsletterSubscribeNotificationCenter';
     $GLOBALS['FE_MOD']['newsletter']['newsletterActivateNotificationCenter']    = 'ModuleNewsletterSubscribeNotificationCenter';
-    $GLOBALS['FE_MOD']['newsletter']['newsletterUnsubscribeNotificationCenter'] = 'ModuleNewsletterUnSubscribeNotificationCenter';
+    $GLOBALS['FE_MOD']['newsletter']['newsletterUnsubscribeNotificationCenter'] = 'ModuleNewsletterUnsubscribeNotificationCenter';
 }
 
 /**
