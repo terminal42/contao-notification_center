@@ -54,6 +54,83 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
     }
 
     /**
+     * Validate the subscription form
+     *
+     * @param Widget $objWidget
+     *
+     * @return array|bool
+     */
+    protected function validateForm(Widget $objWidget=null)
+    {
+        // Validate the e-mail address
+        $varInput = \Idna::encodeEmail(\Input::post('email', true));
+
+        if (!\Validator::isEmail($varInput))
+        {
+            $this->Template->mclass = 'error';
+            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['email'];
+
+            return false;
+        }
+
+        $this->Template->email = $varInput;
+
+        // Validate the channel selection
+        $arrChannels = \Input::post('channels');
+
+        if (!\is_array($arrChannels))
+        {
+            $this->Template->mclass = 'error';
+            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
+
+            return false;
+        }
+
+        $arrChannels = array_intersect($arrChannels, $this->nl_channels); // see #3240
+
+        if (empty($arrChannels) || !\is_array($arrChannels))
+        {
+            $this->Template->mclass = 'error';
+            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
+
+            return false;
+        }
+
+        $this->Template->selectedChannels = $arrChannels;
+
+        // Check if there are any new subscriptions
+        $arrSubscriptions = array();
+
+        if (($objSubscription = \NewsletterRecipientsModel::findBy(array("email=? AND active=1"), $varInput)) !== null)
+        {
+            $arrSubscriptions = $objSubscription->fetchEach('pid');
+        }
+
+        $arrRemove = array_intersect($arrChannels, $arrSubscriptions);
+
+        if (empty($arrRemove) || !\is_array($arrRemove))
+        {
+            $this->Template->mclass = 'error';
+            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['unsubscribed'];
+
+            return false;
+        }
+
+        // Validate the captcha
+        if ($objWidget !== null)
+        {
+            $objWidget->validate();
+
+            if ($objWidget->hasErrors())
+            {
+                return false;
+            }
+        }
+
+        return array($varInput, $arrRemove);
+    }
+
+    /**
      * Remove the recipient
      *
      * @param string $strEmail
