@@ -10,6 +10,8 @@
 
 namespace Contao;
 
+use NotificationCenter\Model\Notification;
+
 /**
  * Front end module "newsletter unsubscribe".
  *
@@ -17,6 +19,7 @@ namespace Contao;
  * @property string $nl_unsubscribe
  * @property array  $nl_channels
  * @property string $nl_template
+ * @property int    $nc_notification
  *
  * @author Leo Feyer <https://github.com/leofeyer>
  */
@@ -78,10 +81,6 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
             }
         }
 
-        // Get the channels
-        $objChannels = \NewsletterChannelModel::findByIds($arrRemove);
-        $arrChannels = $objChannels->fetchEach('title');
-
         // HOOK: post unsubscribe callback
         if (isset($GLOBALS['TL_HOOKS']['removeRecipient']) && \is_array($GLOBALS['TL_HOOKS']['removeRecipient']))
         {
@@ -92,18 +91,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
             }
         }
 
-        // Prepare the simple token data
-        $arrData = array();
-        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
-        $arrData['channel'] = $arrData['channels'] = implode("\n", $arrChannels);
-
-        // Confirmation e-mail
-        $objEmail = new \Email();
-        $objEmail->from = $GLOBALS['TL_ADMIN_EMAIL'];
-        $objEmail->fromName = $GLOBALS['TL_ADMIN_NAME'];
-        $objEmail->subject = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
-        $objEmail->text = \StringUtil::parseSimpleTokens($this->nl_unsubscribe, $arrData);
-        $objEmail->sendTo($strEmail);
+        $this->sendNotification($strEmail, $arrRemove);
 
         // Redirect to the jumpTo page
         if ($this->jumpTo && ($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel)
@@ -158,5 +146,29 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
             $this->Template->message = $_SESSION['UNSUBSCRIBE_CONFIRM'];
             $_SESSION['UNSUBSCRIBE_CONFIRM'] = '';
         }
+    }
+
+    protected function sendNotification($strEmail, array $arrRemove)
+    {
+        $objNotification = Notification::findByPk($this->nc_notification);
+        if (!$objNotification) {
+            return;
+        }
+
+        // Get the channels
+        $objChannels = \NewsletterChannelModel::findByIds($arrRemove);
+        $arrChannels = $objChannels ? $objChannels->fetchEach('title') : [];
+
+        // Prepare the simple token data
+        $arrData = array();
+        $arrData['email'] = $strEmail;
+        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
+        $arrData['channel'] = $arrData['channels'] = implode("\n", $arrChannels);
+        $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
+        $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
+        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
+        $arrData['text'] = $this->nl_unsubscribe;
+
+        $objNotification->send($arrData);
     }
 }
