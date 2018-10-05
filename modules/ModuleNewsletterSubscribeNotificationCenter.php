@@ -26,6 +26,8 @@ use NotificationCenter\Model\Notification;
  */
 class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 {
+    use NewsletterModuleTrait;
+
     /**
      * Generate the module
      */
@@ -37,7 +39,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 
         $strFormId = 'tl_subscribe_' . $this->id;
 
-        $this->processForm($strFormId, $objCaptchaWidget);
+        $this->processForm($strFormId, $objCaptchaWidget, 'addRecipient');
         $this->compileConfirmationMessage();
 
         $this->Template->email = '';
@@ -115,34 +117,6 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         $this->reload();
     }
 
-    protected function setCustomTemplate()
-    {
-        if ($this->nl_template) {
-            $this->Template = new \FrontendTemplate($this->nl_template);
-            $this->Template->setData($this->arrData);
-        }
-    }
-
-    /**
-     * @return Widget|null
-     */
-    protected function createCaptchaWidgetIfEnabled()
-    {
-        if (version_compare(VERSION, '4.1', '<') || $this->disableCaptcha)
-        {
-            return null;
-        }
-
-        $arrField = [
-            'name'      => 'subscribe_' . $this->id,
-            'label'     => $GLOBALS['TL_LANG']['MSC']['securityQuestion'],
-            'inputType' => 'captcha',
-            'eval'      => ['mandatory' => true]
-        ];
-
-        return new \FormCaptcha(\FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
-    }
-
     protected function compileConfirmationMessage()
     {
         if (version_compare(VERSION, '4.1', '>='))
@@ -177,38 +151,6 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             $this->Template->message = $_SESSION['SUBSCRIBE_CONFIRM'];
             $this->Template->hasError = false;
             $_SESSION['SUBSCRIBE_CONFIRM'] = '';
-        }
-    }
-
-    protected function compileChannels()
-    {
-        $arrChannels = array();
-        $objChannel = \NewsletterChannelModel::findByIds($this->nl_channels);
-
-        // Get the titles
-        if ($objChannel !== null)
-        {
-            while ($objChannel->next())
-            {
-                $arrChannels[$objChannel->id] = $objChannel->title;
-            }
-        }
-
-        return $arrChannels;
-    }
-
-    /**
-     * @param $strFormId
-     * @param $objCaptchaWidget
-     */
-    protected function processForm($strFormId, $objCaptchaWidget)
-    {
-        if (\Input::post('FORM_SUBMIT') == $strFormId) {
-            $varSubmitted = $this->validateForm($objCaptchaWidget);
-
-            if ($varSubmitted !== false) {
-                \call_user_func_array([$this, 'addRecipient'], $varSubmitted);
-            }
         }
     }
 

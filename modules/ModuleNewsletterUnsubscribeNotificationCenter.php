@@ -22,55 +22,28 @@ namespace Contao;
  */
 class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 {
+    use NewsletterModuleTrait;
+
 	/**
 	 * Generate the module
 	 */
 	protected function compile()
 	{
-		// Overwrite default template
-		if ($this->nl_template)
-		{
-			$this->Template = new \FrontendTemplate($this->nl_template);
-			$this->Template->setData($this->arrData);
-		}
+	    $this->setCustomTemplate();
 
 		$this->Template->email = '';
 		$this->Template->captcha = '';
 
-		$objWidget = null;
-
-		// Set up the captcha widget
-		if (!$this->disableCaptcha)
-		{
-			$arrField = array
-			(
-				'name' => 'unsubscribe_'.$this->id,
-				'label' => $GLOBALS['TL_LANG']['MSC']['securityQuestion'],
-				'inputType' => 'captcha',
-				'eval' => array('mandatory'=>true)
-			);
-
-			/** @var Widget $objWidget */
-			$objWidget = new \FormCaptcha(\FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
-		}
+		$objCaptchaWidget = $this->createCaptchaWidgetIfEnabled();
 
 		$strFormId = 'tl_unsubscribe_' . $this->id;
 
-		// Unsubscribe
-		if (\Input::post('FORM_SUBMIT') == $strFormId)
-		{
-			$varSubmitted = $this->validateForm($objWidget);
-
-			if ($varSubmitted !== false)
-			{
-				\call_user_func_array(array($this, 'removeRecipient'), $varSubmitted);
-			}
-		}
+		$this->processForm($strFormId, $objCaptchaWidget, 'removeRecipient');
 
 		// Add the captcha widget to the template
-		if ($objWidget !== null)
+		if ($objCaptchaWidget !== null)
 		{
-			$this->Template->captcha = $objWidget->parse();
+			$this->Template->captcha = $objCaptchaWidget->parse();
 		}
 
 		$session = \System::getContainer()->get('session');
@@ -85,20 +58,8 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 			$this->Template->message = $arrMessages[0];
 		}
 
-		$arrChannels = array();
-		$objChannel = \NewsletterChannelModel::findByIds($this->nl_channels);
-
-		// Get the titles
-		if ($objChannel !== null)
-		{
-			while ($objChannel->next())
-			{
-				$arrChannels[$objChannel->id] = $objChannel->title;
-			}
-		}
-
 		// Default template variables
-		$this->Template->channels = $arrChannels;
+		$this->Template->channels = $this->compileChannels();
 		$this->Template->showChannels = !$this->nl_hideChannels;
 		$this->Template->email = \Input::get('email');
 		$this->Template->submit = \StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['unsubscribe']);
