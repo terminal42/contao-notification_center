@@ -31,34 +31,14 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
     {
         $this->setCustomTemplate();
 
-        $this->Template->email = '';
-        $this->Template->captcha = '';
-
         $objCaptchaWidget = $this->createCaptchaWidgetIfEnabled();
-
         $strFormId = 'tl_unsubscribe_' . $this->id;
 
         $this->processForm($strFormId, $objCaptchaWidget, 'removeRecipient');
-
-        // Add the captcha widget to the template
-        if ($objCaptchaWidget !== null)
-        {
-            $this->Template->captcha = $objCaptchaWidget->parse();
-        }
-
-        $session = \System::getContainer()->get('session');
-        $flashBag = $session->getFlashBag();
-
-        // Confirmation message
-        if ($session->isStarted() && $flashBag->has('nl_removed'))
-        {
-            $arrMessages = $flashBag->get('nl_removed');
-
-            $this->Template->mclass = 'confirm';
-            $this->Template->message = $arrMessages[0];
-        }
+        $this->compileConfirmationMessage();
 
         // Default template variables
+        $this->Template->captach  = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
         $this->Template->channels = $this->compileChannels();
         $this->Template->showChannels = !$this->nl_hideChannels;
         $this->Template->email = \Input::get('email');
@@ -135,5 +115,20 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         \System::getContainer()->get('session')->getFlashBag()->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed']);
 
         $this->reload();
+    }
+
+    protected function compileConfirmationMessage()
+    {
+        $session = \System::getContainer()->get('session');
+        $flashBag = $session->getFlashBag();
+
+        // Confirmation message
+        if ($session->isStarted() && $flashBag->has('nl_removed'))
+        {
+            $arrMessages = $flashBag->get('nl_removed');
+
+            $this->Template->mclass = 'confirm';
+            $this->Template->message = $arrMessages[0];
+        }
     }
 }
