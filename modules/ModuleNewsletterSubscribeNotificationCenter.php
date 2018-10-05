@@ -56,32 +56,10 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 			$this->Template->captcha = $objCaptchaWidget->parse();
 		}
 
-		$session = \System::getContainer()->get('session');
-		$flashBag = $session->getFlashBag();
-
-		// Confirmation message
-		if ($session->isStarted() && $flashBag->has('nl_confirm'))
-		{
-			$arrMessages = $flashBag->get('nl_confirm');
-
-			$this->Template->mclass = 'confirm';
-			$this->Template->message = $arrMessages[0];
-		}
-
-		$arrChannels = array();
-		$objChannel = \NewsletterChannelModel::findByIds($this->nl_channels);
-
-		// Get the titles
-		if ($objChannel !== null)
-		{
-			while ($objChannel->next())
-			{
-				$arrChannels[$objChannel->id] = $objChannel->title;
-			}
-		}
+		$this->compileConfirmationMessage();
 
 		// Default template variables
-		$this->Template->channels = $arrChannels;
+		$this->Template->channels = $this->compileChannels();
 		$this->Template->showChannels = !$this->nl_hideChannels;
 		$this->Template->submit = \StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['subscribe']);
 		$this->Template->channelsLabel = $GLOBALS['TL_LANG']['MSC']['nl_channels'];
@@ -192,5 +170,37 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         }
 
         return $objWidget;
+    }
+
+    protected function compileConfirmationMessage()
+    {
+        $session = \System::getContainer()->get('session');
+        $flashBag = $session->getFlashBag();
+
+        // Confirmation message
+        if ($session->isStarted() && $flashBag->has('nl_confirm'))
+        {
+            $arrMessages = $flashBag->get('nl_confirm');
+
+            $this->Template->mclass = 'confirm';
+            $this->Template->message = $arrMessages[0];
+        }
+    }
+
+    private function compileChannels()
+    {
+        $arrChannels = array();
+        $objChannel = \NewsletterChannelModel::findByIds($this->nl_channels);
+
+        // Get the titles
+        if ($objChannel !== null)
+        {
+            while ($objChannel->next())
+            {
+                $arrChannels[$objChannel->id] = $objChannel->title;
+            }
+        }
+
+        return $arrChannels;
     }
 }
