@@ -1,11 +1,11 @@
 <?php
 
-/*
- * This file is part of Contao.
+/**
+ * notification_center extension for Contao Open Source CMS
  *
- * (c) Leo Feyer
- *
- * @license LGPL-3.0-or-later
+ * @copyright  Copyright (c) 2008-2018, terminal42
+ * @author     terminal42 gmbh <info@terminal42.ch>
+ * @license    LGPL
  */
 
 namespace Contao;
@@ -20,8 +20,6 @@ use NotificationCenter\Model\Notification;
  * @property array  $nl_channels
  * @property string $nl_template
  * @property int    $nc_notification
- *
- * @author Leo Feyer <https://github.com/leofeyer>
  */
 class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 {

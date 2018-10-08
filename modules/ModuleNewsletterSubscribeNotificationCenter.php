@@ -21,8 +21,6 @@ use NotificationCenter\Model\Notification;
  * @property string $nl_text
  * @property bool   $nl_hideChannels
  * @property int    $nc_notification
- *
- * @author Leo Feyer <https://github.com/leofeyer>
  */
 class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 {
