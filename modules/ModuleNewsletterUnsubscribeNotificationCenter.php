@@ -39,7 +39,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->compileConfirmationMessage();
 
         // Default template variables
-        $this->Template->captach  = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
+        $this->Template->captcha  = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
         $this->Template->channels = $this->compileChannels();
         $this->Template->showChannels = !$this->nl_hideChannels;
         $this->Template->email = \Input::get('email');
