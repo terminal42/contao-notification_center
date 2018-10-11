@@ -12,16 +12,6 @@ namespace Contao;
 
 use NotificationCenter\Model\Notification;
 
-/**
- * Front end module "newsletter subscribe".
- *
- * @property string $nl_subscribe
- * @property array  $nl_channels
- * @property string $nl_template
- * @property string $nl_text
- * @property bool   $nl_hideChannels
- * @property int    $nc_notification
- */
 class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 {
     use NewsletterModuleTrait;
@@ -60,13 +50,12 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
      *
      * @return array|bool
      */
-    protected function validateForm(Widget $objWidget=null)
+    protected function validateForm(Widget $objWidget = null)
     {
         // Validate the e-mail address
         $varInput = \Idna::encodeEmail(\Input::post('email', true));
 
-        if (!\Validator::isEmail($varInput))
-        {
+        if (!\Validator::isEmail($varInput)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['email'];
 
@@ -78,8 +67,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         // Validate the channel selection
         $arrChannels = \Input::post('channels');
 
-        if (!\is_array($arrChannels))
-        {
+        if (!\is_array($arrChannels)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
 
@@ -88,8 +76,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 
         $arrChannels = array_intersect($arrChannels, $this->nl_channels); // see #3240
 
-        if (empty($arrChannels) || !\is_array($arrChannels))
-        {
+        if (empty($arrChannels) || !\is_array($arrChannels)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
 
@@ -101,15 +88,13 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         // Check if there are any new subscriptions
         $arrSubscriptions = array();
 
-        if (($objSubscription = \NewsletterRecipientsModel::findBy(array("email=? AND active=1"), $varInput)) !== null)
-        {
+        if (($objSubscription = \NewsletterRecipientsModel::findBy(array("email=? AND active=1"), $varInput)) !== null) {
             $arrSubscriptions = $objSubscription->fetchEach('pid');
         }
 
         $arrNew = array_diff($arrChannels, $arrSubscriptions);
 
-        if (empty($arrNew) || !\is_array($arrNew))
-        {
+        if (empty($arrNew) || !\is_array($arrNew)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['subscribed'];
 
@@ -117,12 +102,10 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         }
 
         // Validate the captcha
-        if ($objWidget !== null)
-        {
+        if ($objWidget !== null) {
             $objWidget->validate();
 
-            if ($objWidget->hasErrors())
-            {
+            if ($objWidget->hasErrors()) {
                 return false;
             }
         }
@@ -139,10 +122,8 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
     protected function addRecipient($strEmail, $arrNew)
     {
         // Remove old subscriptions that have not been activated yet
-        if (($objOld = \NewsletterRecipientsModel::findOldSubscriptionsByEmailAndPids($strEmail, $arrNew)) !== null)
-        {
-            while ($objOld->next())
-            {
+        if (($objOld = \NewsletterRecipientsModel::findOldSubscriptionsByEmailAndPids($strEmail, $arrNew)) !== null) {
+            while ($objOld->next()) {
                 $objOld->delete();
             }
         }
@@ -151,8 +132,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         $strToken = md5(uniqid(mt_rand(), true));
 
         // Add the new subscriptions
-        foreach ($arrNew as $id)
-        {
+        foreach ($arrNew as $id) {
             $objRecipient = new \NewsletterRecipientsModel();
             $objRecipient->pid = $id;
             $objRecipient->tstamp = $time;
@@ -165,8 +145,9 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             $objRecipient->save();
 
             // Remove the blacklist entry (see #4999)
-            if (version_compare(VERSION, '4.1', '>=') && ($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null)
-            {
+            if (version_compare(VERSION, '4.1', '>=')
+                && ($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null
+            ) {
                 $objBlacklist->delete();
             }
         }
@@ -174,12 +155,13 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         $this->sendNotification($strToken, $strEmail, $arrNew);
         $this->redirectToJumpToPage();
 
-        if (version_compare(VERSION, '4.1', '>='))
-        {
-            \System::getContainer()->get('session')->getFlashBag()->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm']);
-        }
-        else
-        {
+        if (version_compare(VERSION, '4.1', '>=')) {
+            \System::getContainer()
+                   ->get('session')
+                   ->getFlashBag()
+                   ->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm'])
+            ;
+        } else {
             $_SESSION['SUBSCRIBE_CONFIRM'] = $GLOBALS['TL_LANG']['MSC']['nl_confirm'];
         }
 
@@ -188,13 +170,11 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 
     protected function compileConfirmationMessage()
     {
-        if (version_compare(VERSION, '4.1', '>='))
-        {
+        if (version_compare(VERSION, '4.1', '>=')) {
             $session = \System::getContainer()->get('session');
             $flashBag = $session->getFlashBag();
 
-            if ($session->isStarted() && $flashBag->has('nl_confirm'))
-            {
+            if ($session->isStarted() && $flashBag->has('nl_confirm')) {
                 $arrMessages = $flashBag->get('nl_confirm');
 
                 $this->Template->mclass = 'confirm';
@@ -205,8 +185,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         }
 
         // Error message
-        if (strlen($_SESSION['SUBSCRIBE_ERROR']))
-        {
+        if (strlen($_SESSION['SUBSCRIBE_ERROR'])) {
             $this->Template->mclass = 'error';
             $this->Template->message = $_SESSION['SUBSCRIBE_ERROR'];
             $this->Template->hasError = true;
@@ -214,8 +193,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         }
 
         // Confirmation message
-        if (strlen($_SESSION['SUBSCRIBE_CONFIRM']))
-        {
+        if (strlen($_SESSION['SUBSCRIBE_CONFIRM'])) {
             $this->Template->mclass = 'confirm';
             $this->Template->message = $_SESSION['SUBSCRIBE_CONFIRM'];
             $this->Template->hasError = false;
