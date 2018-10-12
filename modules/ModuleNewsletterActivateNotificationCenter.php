@@ -25,10 +25,9 @@ class ModuleNewsletterActivateNotificationCenter extends Module
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
-            $objTemplate->wildcard = '### ' . utf8_strtoupper($GLOBALS['TL_LANG']['FMD']['newsletterActivateNotificationCenter'][0]) . ' ###';
+            $objTemplate->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FMD']['newsletterActivateNotificationCenter'][0]) . ' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
@@ -40,8 +39,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
         $this->nl_channels = deserialize($this->nl_channels);
 
         // Return if there are no channels
-        if (empty($this->nl_channels) || !\is_array($this->nl_channels))
-        {
+        if (empty($this->nl_channels) || !\is_array($this->nl_channels)) {
             return '';
         }
 
@@ -65,8 +63,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
         // Check the token
         $objRecipient = \NewsletterRecipientsModel::findByToken(\Input::get('token'));
 
-        if ($objRecipient === null)
-        {
+        if ($objRecipient === null) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['invalidToken'];
 
@@ -78,8 +75,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
         $arrCids = array();
 
         // Update the subscriptions
-        while ($objRecipient->next())
-        {
+        while ($objRecipient->next()) {
             /** @var NewsletterChannelModel $objChannel */
             $objChannel = $objRecipient->getRelated('pid');
 
@@ -94,10 +90,8 @@ class ModuleNewsletterActivateNotificationCenter extends Module
         }
 
         // HOOK: post activation callback
-        if (isset($GLOBALS['TL_HOOKS']['activateRecipient']) && \is_array($GLOBALS['TL_HOOKS']['activateRecipient']))
-        {
-            foreach ($GLOBALS['TL_HOOKS']['activateRecipient'] as $callback)
-            {
+        if (isset($GLOBALS['TL_HOOKS']['activateRecipient']) && \is_array($GLOBALS['TL_HOOKS']['activateRecipient'])) {
+            foreach ($GLOBALS['TL_HOOKS']['activateRecipient'] as $callback) {
                 $this->import($callback[0]);
                 $this->{$callback[0]}->{$callback[1]}($objRecipient->email, $arrAdd, $arrCids);
             }

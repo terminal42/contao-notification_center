@@ -12,15 +12,6 @@ namespace Contao;
 
 use NotificationCenter\Model\Notification;
 
-/**
- * Front end module "newsletter unsubscribe".
- *
- * @property bool   $nl_hideChannels
- * @property string $nl_unsubscribe
- * @property array  $nl_channels
- * @property string $nl_template
- * @property int    $nc_notification
- */
 class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 {
     use NewsletterModuleTrait;
@@ -39,7 +30,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->compileConfirmationMessage();
 
         // Default template variables
-        $this->Template->captcha  = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
+        $this->Template->captcha = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
         $this->Template->channels = $this->compileChannels();
         $this->Template->showChannels = !$this->nl_hideChannels;
         $this->Template->email = \Input::get('email');
@@ -58,13 +49,12 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
      *
      * @return array|bool
      */
-    protected function validateForm(Widget $objWidget=null)
+    protected function validateForm(Widget $objWidget = null)
     {
         // Validate the e-mail address
         $varInput = \Idna::encodeEmail(\Input::post('email', true));
 
-        if (!\Validator::isEmail($varInput))
-        {
+        if (!\Validator::isEmail($varInput)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['email'];
 
@@ -76,8 +66,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         // Validate the channel selection
         $arrChannels = \Input::post('channels');
 
-        if (!\is_array($arrChannels))
-        {
+        if (!\is_array($arrChannels)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
 
@@ -86,8 +75,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 
         $arrChannels = array_intersect($arrChannels, $this->nl_channels); // see #3240
 
-        if (empty($arrChannels) || !\is_array($arrChannels))
-        {
+        if (empty($arrChannels) || !\is_array($arrChannels)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['noChannels'];
 
@@ -99,15 +87,16 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         // Check if there are any new subscriptions
         $arrSubscriptions = array();
 
-        if (($objSubscription = \NewsletterRecipientsModel::findBy(array("email=? AND active=1"), $varInput)) !== null)
-        {
+        if (($objSubscription = \NewsletterRecipientsModel::findBy(
+                array("email=? AND active=1"),
+                $varInput
+            )) !== null) {
             $arrSubscriptions = $objSubscription->fetchEach('pid');
         }
 
         $arrRemove = array_intersect($arrChannels, $arrSubscriptions);
 
-        if (empty($arrRemove) || !\is_array($arrRemove))
-        {
+        if (empty($arrRemove) || !\is_array($arrRemove)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['unsubscribed'];
 
@@ -115,17 +104,18 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         }
 
         // Validate the captcha
-        if ($objWidget !== null)
-        {
+        if ($objWidget !== null) {
             $objWidget->validate();
 
-            if ($objWidget->hasErrors())
-            {
+            if ($objWidget->hasErrors()) {
                 return false;
             }
         }
 
-        return array($varInput, $arrRemove);
+        return array(
+            $varInput,
+            $arrRemove,
+        );
     }
 
     /**
@@ -137,15 +127,14 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
     protected function removeRecipient($strEmail, $arrRemove)
     {
         // Remove the subscriptions
-        if (($objRemove = \NewsletterRecipientsModel::findByEmailAndPids($strEmail, $arrRemove)) !== null)
-        {
-            while ($objRemove->next())
-            {
+        if (($objRemove = \NewsletterRecipientsModel::findByEmailAndPids($strEmail, $arrRemove)) !== null) {
+            while ($objRemove->next()) {
                 $strHash = md5($objRemove->email);
 
                 // Add a blacklist entry (see #4999)
-                if (version_compare(VERSION, '4.1', '>=') && $objBlacklist = (\NewsletterBlacklistModel::findByHashAndPid($strHash, $objRemove->pid)) === null)
-                {
+                if (version_compare(VERSION, '4.1', '>=')
+                    && $objBlacklist = (\NewsletterBlacklistModel::findByHashAndPid($strHash, $objRemove->pid)) === null
+                ) {
                     $objBlacklist = new \NewsletterBlacklistModel();
                     $objBlacklist->pid = $objRemove->pid;
                     $objBlacklist->hash = $strHash;
@@ -157,10 +146,8 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         }
 
         // HOOK: post unsubscribe callback
-        if (isset($GLOBALS['TL_HOOKS']['removeRecipient']) && \is_array($GLOBALS['TL_HOOKS']['removeRecipient']))
-        {
-            foreach ($GLOBALS['TL_HOOKS']['removeRecipient'] as $callback)
-            {
+        if (isset($GLOBALS['TL_HOOKS']['removeRecipient']) && \is_array($GLOBALS['TL_HOOKS']['removeRecipient'])) {
+            foreach ($GLOBALS['TL_HOOKS']['removeRecipient'] as $callback) {
                 $this->import($callback[0]);
                 $this->{$callback[0]}->{$callback[1]}($strEmail, $arrRemove);
             }
@@ -169,12 +156,13 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->sendNotification($strEmail, $arrRemove);
         $this->redirectToJumpToPage();
 
-        if (version_compare(VERSION, '4.1', '>='))
-        {
-            \System::getContainer()->get('session')->getFlashBag()->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed']);
-        }
-        else
-        {
+        if (version_compare(VERSION, '4.1', '>=')) {
+            \System::getContainer()
+                   ->get('session')
+                   ->getFlashBag()
+                   ->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed'])
+            ;
+        } else {
             $_SESSION['UNSUBSCRIBE_CONFIRM'] = $GLOBALS['TL_LANG']['MSC']['nl_removed'];
         }
 
@@ -183,14 +171,12 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 
     protected function compileConfirmationMessage()
     {
-        if (version_compare(VERSION, '4.1', '>='))
-        {
+        if (version_compare(VERSION, '4.1', '>=')) {
             $session = \System::getContainer()->get('session');
             $flashBag = $session->getFlashBag();
 
             // Confirmation message
-            if ($session->isStarted() && $flashBag->has('nl_removed'))
-            {
+            if ($session->isStarted() && $flashBag->has('nl_removed')) {
                 $arrMessages = $flashBag->get('nl_removed');
 
                 $this->Template->mclass = 'confirm';
@@ -201,16 +187,14 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         }
 
         // Error message
-        if (strlen($_SESSION['UNSUBSCRIBE_ERROR']))
-        {
+        if (strlen($_SESSION['UNSUBSCRIBE_ERROR'])) {
             $this->Template->mclass = 'error';
             $this->Template->message = $_SESSION['UNSUBSCRIBE_ERROR'];
             $_SESSION['UNSUBSCRIBE_ERROR'] = '';
         }
 
         // Confirmation message
-        if (strlen($_SESSION['UNSUBSCRIBE_CONFIRM']))
-        {
+        if (strlen($_SESSION['UNSUBSCRIBE_CONFIRM'])) {
             $this->Template->mclass = 'confirm';
             $this->Template->message = $_SESSION['UNSUBSCRIBE_CONFIRM'];
             $_SESSION['UNSUBSCRIBE_CONFIRM'] = '';

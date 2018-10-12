@@ -48,7 +48,7 @@ if ('BE' === TL_MODE) {
  */
 $GLOBALS['FE_MOD']['user']['lostPasswordNotificationCenter'] = 'ModulePasswordNotificationCenter';
 
-if (in_array('newsletter', \ModuleLoader::getActive())) {
+if (in_array('newsletter', \ModuleLoader::getActive(), true)) {
     $GLOBALS['FE_MOD']['newsletter']['newsletterSubscribeNotificationCenter']   = 'ModuleNewsletterSubscribeNotificationCenter';
     $GLOBALS['FE_MOD']['newsletter']['newsletterActivateNotificationCenter']    = 'ModuleNewsletterActivateNotificationCenter';
     $GLOBALS['FE_MOD']['newsletter']['newsletterUnsubscribeNotificationCenter'] = 'ModuleNewsletterUnsubscribeNotificationCenter';
