@@ -26,7 +26,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $objCaptchaWidget = $this->createCaptchaWidgetIfEnabled();
         $strFormId = 'tl_unsubscribe_' . $this->id;
 
-        $this->processForm($strFormId, $objCaptchaWidget, 'removeRecipient');
+        $this->processForm($strFormId, $objCaptchaWidget, 'removeNewsletterRecipient');
         $this->compileConfirmationMessage();
 
         // Default template variables
@@ -124,7 +124,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
      * @param string $strEmail
      * @param array  $arrRemove
      */
-    protected function removeRecipient($strEmail, $arrRemove)
+    protected function removeNewsletterRecipient($strEmail, $arrRemove)
     {
         // Remove the subscriptions
         if (($objRemove = \NewsletterRecipientsModel::findByEmailAndPids($strEmail, $arrRemove)) !== null) {
