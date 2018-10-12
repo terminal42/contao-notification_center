@@ -37,7 +37,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 
         $strFormId = 'tl_subscribe_' . $this->id;
 
-        $this->processForm($strFormId, $objCaptchaWidget, 'addRecipient');
+        $this->processForm($strFormId, $objCaptchaWidget, 'addNewsletterRecipient');
         $this->compileConfirmationMessage();
 
         $this->Template->email = '';
@@ -136,7 +136,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
      * @param string $strEmail
      * @param array  $arrNew
      */
-    protected function addRecipient($strEmail, $arrNew)
+    protected function addNewsletterRecipient($strEmail, $arrNew)
     {
         // Remove old subscriptions that have not been activated yet
         if (($objOld = \NewsletterRecipientsModel::findOldSubscriptionsByEmailAndPids($strEmail, $arrNew)) !== null)
