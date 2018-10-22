@@ -48,3 +48,6 @@ $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_activation']      = ar
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_registration']    = array('Member registration');
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_personaldata']    = array('Member personal data');
 $GLOBALS['TL_LANG']['tl_nc_notification']['type']['member_password']        = array('Member lost password');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['newsletter_subscribe']   = array('Newsletter subscribed');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['newsletter_activate']    = array('Newsletter activation');
+$GLOBALS['TL_LANG']['tl_nc_notification']['type']['newsletter_unsubscribe'] = array('Newsletter unsubscribed');

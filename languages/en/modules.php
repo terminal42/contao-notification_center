@@ -19,4 +19,7 @@ $GLOBALS['TL_LANG']['MOD']['nc_gateways']               = array('Gateways', 'Man
 /**
  * Front end modules
  */
-$GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter'] = array('Lost password (Notification Center)', 'Generates a form to request a new password and sends the notification using the notification center.');
+$GLOBALS['TL_LANG']['FMD']['lostPasswordNotificationCenter']          = array('Lost password (Notification Center)', 'Generates a form to request a new password and sends the notification using the notification center.');
+$GLOBALS['TL_LANG']['FMD']['newsletterSubscribeNotificationCenter']   = array('Subscribe (Notification Center)', 'Generates a form to subscribe to one or more channels and sends the notification using the notification center.');
+$GLOBALS['TL_LANG']['FMD']['newsletterActivateNotificationCenter']    = array('Activate (Notification Center)', 'Generates a form to activate subscription to one or more channels the notification using the notification center.');
+$GLOBALS['TL_LANG']['FMD']['newsletterUnsubscribeNotificationCenter'] = array('Unsubscribe (Notification Center)', 'Generates a form to unsubscribe from one or more channels and sends the notification using the notification center.');
