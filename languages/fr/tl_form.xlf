@@ -1,14 +1,15 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file datatype="php" date="2016-10-03T15:22:43+02:00" original="tl_form" source-language="en" target-language="fr">
     <body>
       <trans-unit id="tl_form.nc_notification.0">
         <source>Notification</source>
         <target>Notification</target>
+        
       </trans-unit>
       <trans-unit id="tl_form.nc_notification.1">
         <source>Please select a notification.</source>
         <target>Sélectionner une notification.</target>
+        
       </trans-unit>
     </body>
   </file>

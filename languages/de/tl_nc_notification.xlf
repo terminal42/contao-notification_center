@@ -1,139 +1,180 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file datatype="php" date="2017-07-26T09:13:30+02:00" original="tl_nc_notification" source-language="en" target-language="de">
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2018-10-22T10:57:28+02:00" original="tl_nc_notification" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_nc_notification.title.0">
         <source>Title</source>
         <target>Titel</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.title.1">
         <source>Please enter a title for this notification.</source>
         <target>Bitte geben Sie einen Namen für diese Benachrichtigung ein.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.0">
         <source>Type</source>
         <target>Benachrichtigungstyp</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.1">
         <source>Please select a type for this notification.</source>
         <target>Bitte wählen Sie einen Benachrichtigungstyp aus.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.flatten_delimiter.0">
         <source>Delimiter for lists</source>
         <target>Trennzeichen für Listen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.flatten_delimiter.1">
-        <source>When list values (array values) are submitted, the Notification Center flattens them automatically by using a comma (",") by default. Change this here if you like.</source>
+        <source>When list values (array values) are submitted, the Notification Center flattens them automatically by using a comma (&quot;,&quot;) by default. Change this here if you like.</source>
+        <target>Wenn mehrere Werte (Arrays) übermittelt werden, generiert das Benachrichtigungszentrum daraus automatisch eine kommaseparierte Liste (&quot;,&quot;). Wählen Sie hier ein anderes Trennzeichen falls nötig.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.email">
         <source>Standard eMail gateway</source>
         <target>Standard eMail Gateway</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.file">
         <source>Write to file</source>
         <target>In Datei schreiben</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.new.0">
         <source>New notification</source>
         <target>Neue Benachrichtigung</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.new.1">
         <source>Create a new notification.</source>
         <target>Neue Benachrichtigung erstellen.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.edit.0">
         <source>Manage notifications</source>
         <target>Benachrichtigung editieren</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.edit.1">
         <source>Manage messages for notification ID %s.</source>
         <target>Benachrichtigung ID %s editieren.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.editheader.0">
         <source>Edit notification</source>
         <target>Benachrichtigung bearbeiten</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.editheader.1">
         <source>Edit notification ID %s.</source>
         <target>Benachrichtigung ID %s editieren.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.copy.0">
         <source>Copy notification</source>
         <target>Benachrichtigung kopieren</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.copy.1">
         <source>Copy notification ID %s.</source>
         <target>Benachrichtigung ID %s kopieren.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.delete.0">
         <source>Delete notification</source>
         <target>Benachrichtigung löschen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.delete.1">
         <source>Delete notification ID %s.</source>
         <target>Benachrichtigung ID %s löschen.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.show.0">
         <source>Notification details</source>
         <target>Benachrichtigungsdetails</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.show.1">
         <source>Show details for notification ID %s.</source>
         <target>Details für Benachrichtigung ID %s anzeigen.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.title_legend">
         <source>Title &amp; type</source>
         <target>Titel &amp; Benachrichtigungstyp</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.config_legend">
         <source>Configuration</source>
         <target>Konfiguration</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.contao">
         <source>Contao</source>
         <target>Contao</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.core_form.0">
         <source>Form submission</source>
         <target>Formularübertragung</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.core_form.1">
         <source>This notification type can be sent when the form is submitted.</source>
         <target>Dieser Benachrichtigungstyp wird nach erfolgreicher Formularübertragung versendet.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_activation.0">
         <source>Member activation</source>
         <target>Mitglied: Aktivierung</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_registration.0">
         <source>Member registration</source>
         <target>Mitglieds Registration</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_personaldata.0">
         <source>Member personal data</source>
         <target>Mitglied: Persönliche Daten</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_password.0">
         <source>Member lost password</source>
         <target>Mitglied: Passwort vergessen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.templates.0">
         <source>Token Templates</source>
+        <target>Platzhalter Templates</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.templates.1">
         <source>Choose templates to generate tokens from their output. Each template name must start with notification_xxx and its token will be converted to a ##template_xxx## token.</source>
+        <target>Wählen Sie Templates um daraus ein Token zu generieren. Der Name des Templates muss mit notification_xxx beginnen und wird zum Token ##template_xxx## konvertiert.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.templates_legend">
         <source>Templates</source>
+        <target>Templates</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.newsletter_subscribe.0">
         <source>Newsletter subscribed</source>
+        <target>Newsletter abonniert</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.newsletter_activate.0">
         <source>Newsletter activation</source>
+        <target>Newsletter aktiviert</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.newsletter_unsubscribe.0">
         <source>Newsletter unsubscribed</source>
+        <target>Newsletter gekündigt</target>
+        
       </trans-unit>
     </body>
   </file>

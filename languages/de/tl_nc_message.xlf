@@ -1,170 +1,210 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file datatype="php" date="2016-10-03T15:22:43+02:00" original="tl_nc_message" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_nc_message.title.0">
         <source>Title</source>
         <target>Titel</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.title.1">
         <source>Please enter a title for this message.</source>
         <target>Bitte geben Sie einen Namen für diese Nachricht ein.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.gateway.0">
         <source>Gateway</source>
         <target>Gateway</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.gateway.1">
         <source>Please select a gateway for this message.</source>
         <target>Bitte wählen Sie einen Gateway für diese Nachricht.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.languages.0">
         <source>Languages</source>
         <target>Sprachen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.languages.1">
         <source>Here you can manage the different languages.</source>
         <target>Hier können Sie die verschiedenen Sprachen verwalten.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.languages.2">
         <source>Manage languages</source>
         <target>Sprachen verwalten</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.languages.3">
         <source>Close</source>
         <target>Schliessen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority.0">
         <source>Priority</source>
         <target>Priorität</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority.1">
         <source>Please select a priority.</source>
         <target>Bitte wählen Sie die Priorität aus.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_template.0">
         <source>Template file</source>
         <target>Template-Datei</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_template.1">
         <source>Please choose a template file.</source>
         <target>Bitte wählen Sie eine Template-Datei aus.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.postmark_tag.0">
         <source>Tag</source>
         <target>Schlagwort</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.postmark_tag.1">
         <source>Here you can enter the tag.</source>
         <target>Hier können Sie ein Schlagwort definieren.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.postmark_trackOpens.0">
         <source>Enable open tracking</source>
         <target>Open-Tracking aktivieren</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.postmark_trackOpens.1">
         <source>Here you can enable open tracking.</source>
-        <target>Hier können Sie das "Open-Tracking" aktivieren.</target>
+        <target>Hier können Sie das &quot;Open-Tracking&quot; aktivieren.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.published.0">
         <source>Publish message</source>
         <target>Nachricht veröffentlichen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.published.1">
         <source>Include this message when a notification is being sent.</source>
         <target>Diese Nachricht einfügen beim Versenden der Notification.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.new.0">
         <source>New message</source>
         <target>Neue Nachricht</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.new.1">
         <source>Create a new message.</source>
         <target>Eine neue Nachricht hinzufügen.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.edit.0">
         <source>Edit message</source>
         <target>Nachricht editieren</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.edit.1">
         <source>Edit message ID %s.</source>
         <target>Nachricht ID %s editieren.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.copy.0">
         <source>Duplicate message</source>
         <target>Nachricht kopieren</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.copy.1">
         <source>Duplicate message ID %s.</source>
         <target>Nachricht mit ID %s kopieren.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.cut.0">
         <source>Move message</source>
         <target>Nachricht verschieben</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.cut.1">
         <source>Move message ID %s.</source>
         <target>Nachricht mit ID %s verschieben.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.delete.0">
         <source>Delete message</source>
         <target>Nachricht löschen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.delete.1">
         <source>Delete message ID %s.</source>
         <target>Nachricht mit ID %s löschen.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.toggle.0">
         <source>Toggle visibility of message</source>
         <target>Nachricht ein-/ausblenden</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.toggle.1">
         <source>Toggle visibility of message ID %s.</source>
         <target>Blende die Nachricht ID %s ein/aus.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.show.0">
         <source>Gateway message</source>
         <target>Nachrichtendetails</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.show.1">
         <source>Show details for message ID %s.</source>
         <target>Details für Nachricht ID %s anzeigen.</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.title_legend">
         <source>Title &amp; Gateway</source>
         <target>Titel &amp; Gateway</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.languages_legend">
         <source>Languages</source>
         <target>Sprachen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.expert_legend">
         <source>Expert settings</source>
         <target>Experteneinstellungen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.publish_legend">
         <source>Publish settings</source>
         <target>Einstellungen veröffentlichen</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority_options.1">
         <source>very high</source>
         <target>sehr hoch</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority_options.2">
         <source>high</source>
         <target>hoch</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority_options.3">
         <source>normal</source>
         <target>normal</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority_options.4">
         <source>low</source>
         <target>tief</target>
+        
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority_options.5">
         <source>very low</source>
         <target>sehr tief</target>
+        
       </trans-unit>
     </body>
   </file>
