@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file datatype="php" date="2018-10-04T15:04:50+02:00" original="tl_nc_language" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_nc_language.language.0">
+        <source>Language</source>
+        <target>Язык</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.language.1">
+        <source>Please select a language.</source>
+        <target>Выберите язык.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.fallback.0">
+        <source>Fallback</source>
+        <target>Резервный</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.fallback.1">
+        <source>Activate this checkbox if this language should be your fallback.</source>
+        <target>Выберите чекбокс, если этот язык должен быть резервным.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.recipients.0">
+        <source>Recipients</source>
+        <target>Получатели</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.recipients.1">
+        <source>Please enter a &lt;strong&gt;comma-separated&lt;/strong&gt; list of recipients in this field. Use the autocompleter to see the available simple tokens.</source>
+        <target>Введите &lt;strong&gt;разделенный запятыми&lt;/strong&gt; список получателей. Используйте авто-завершение, чтобы увидеть доступные маркеры.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.attachment_tokens.0">
+        <source>Attachments via tokens</source>
+        <target>Вложения через маркеры</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.attachment_tokens.1">
+        <source>Please enter a &lt;strong&gt;comma-separated&lt;/strong&gt; list of attachment tokens in this field. Use the autocompleter to see the available simple tokens.</source>
+        <target>Введите &lt;strong&gt;разделенный запятыми&lt;/strong&gt; список маркеров в этой области. Используйте авто-завершение, чтобы увидеть доступные маркеры.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.attachments.0">
+        <source>Attachments from file system</source>
+        <target>Вложения из файловой системы</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.attachments.1">
+        <source>Please choose from the file picker if you would like to add static files.</source>
+        <target>Выберите при помощи файл-менеджера и добавьте статические файлы.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_sender_name.0">
+        <source>Sender name</source>
+        <target>Имя отправителя</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_sender_name.1">
+        <source>Please enter the sender name.</source>
+        <target>Введите имя отправителя.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_sender_address.0">
+        <source>Sender address</source>
+        <target>Адрес отправителя</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_sender_address.1">
+        <source>Please enter the sender email address.</source>
+        <target>Введите адрес электронной почты отправителя.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_recipient_cc.0">
+        <source>Send a CC to</source>
+        <target>Отправить CC</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_recipient_cc.1">
+        <source>Recipients that should receive a carbon copy of the mail. Separate multiple addresses with a comma.</source>
+        <target>Получатели, которые должны получить копию по электронной почте. Несколько адресов можно разделить запятой.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_recipient_bcc.0">
+        <source>Send a BCC to</source>
+        <target>Отправить СК</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_recipient_bcc.1">
+        <source>Recipients that should receive a blind carbon copy of the mail. Separate multiple addresses with a comma.</source>
+        <target>Получатели, которые должны получить скрытую копию по электронной почте. Несколько адресов можно разделить запятой.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_replyTo.0">
+        <source>Reply-to address</source>
+        <target>Адрес для ответа</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_replyTo.1">
+        <source>You can optionally set a reply-to address for this message.</source>
+        <target>При необходимости можно задать адрес для ответа на данное сообщение.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_subject.0">
+        <source>Subject</source>
+        <target>Тема</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_subject.1">
+        <source>Please enter the subject for the e-mail.</source>
+        <target>Введите тему сообщения.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_mode.0">
+        <source>Mode</source>
+        <target>Режим</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_mode.1">
+        <source>Choose the mode you would like to be used for this email.</source>
+        <target>Выберите используемый режим для этого письма.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_text.0">
+        <source>Raw text</source>
+        <target>Неформатированный текст</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_text.1">
+        <source>Please enter the text.</source>
+        <target>Введите текст.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_html.0">
+        <source>HTML</source>
+        <target>HTML</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_html.1">
+        <source>Please enter the HTML.</source>
+        <target>Введите HTML.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_external_images.0">
+        <source>External images</source>
+        <target>Внешние изображения</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_external_images.1">
+        <source>Do not embed images in HTML emails.</source>
+        <target>Не вставлять изображения в HTML-сообщения.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_name.0">
+        <source>File name</source>
+        <target>Имя файла</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_name.1">
+        <source>Please enter the file name.</source>
+        <target>Введите имя файла.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_storage_mode.0">
+        <source>Storage mode</source>
+        <target>Режим хранения</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_storage_mode.1">
+        <source>Here you can choose whether you want to override the existing file or append to an existing file if present.</source>
+        <target>Вы можете выбрать, переопределить или добавить существующий файл, если он есть.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_content.0">
+        <source>File content</source>
+        <target>Содержимое файла</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_content.1">
+        <source>Please enter the file content.</source>
+        <target>Введите содержимое файла.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_mode.textOnly">
+        <source>Text only</source>
+        <target>Только текст</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.email_mode.textAndHtml">
+        <source>HTML and text</source>
+        <target>HTML и текст</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_storage_mode.create">
+        <source>Create new file</source>
+        <target>Создать новый файл</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_storage_mode.override">
+        <source>Override existing file</source>
+        <target>Переопределить существующий файл</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.file_storage_mode.append">
+        <source>Append to existing file</source>
+        <target>Добавить в существующий файл</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.new.0">
+        <source>New language</source>
+        <target>Новый язык</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.new.1">
+        <source>Add a new language.</source>
+        <target>Добавить новый язык.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.edit.0">
+        <source>Edit language</source>
+        <target>Редактировать язык</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.edit.1">
+        <source>Edit language ID %s.</source>
+        <target>Редактировать язык ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.copy.0">
+        <source>Copy language</source>
+        <target>Копировать язык</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.copy.1">
+        <source>Copy language ID %s.</source>
+        <target>Копировать язык ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.delete.0">
+        <source>Delete language</source>
+        <target>Удалить язык</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.delete.1">
+        <source>Delete language ID %s.</source>
+        <target>Удалить язык ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.show.0">
+        <source>Language details</source>
+        <target>Детали языка</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.show.1">
+        <source>Show details for language ID %s.</source>
+        <target>Показать детали языка ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.general_legend">
+        <source>General language settings</source>
+        <target>Общие параметры языка</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.attachments_legend">
+        <source>Attachments</source>
+        <target>Вложения</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.meta_legend">
+        <source>Meta information</source>
+        <target>Мета информация</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.content_legend">
+        <source>Content</source>
+        <target>Контент</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.token_error">
+        <source>The following tokens you have used are not supported by this notification type: %s.</source>
+        <target>Используемые вами маркеры не поддерживают этот тип уведомлений: %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.token_character_error">
+        <source>Your content contains invalid tokens. Simple Tokens cannot contain one of those characters: &lt;&gt;!=*. They are either used for comparisons in if statements or as wildcard.</source>
+        <target>В вашем содержании указаны недопустимые токены. Простые токены не могут содержать любой из этих символов: &lt;&gt;!=*. Они либо используются для сравнения в операторах "if", либо в виде подстановочных знаков.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.attachment_templates.0">
+        <source>Attachments from templates</source>
+      </trans-unit>
+      <trans-unit id="tl_nc_language.attachment_templates.1">
+        <source>These files are used as templates for an attachment. Simple tokens inside these files are replaced and attached to the message.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

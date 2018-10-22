@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file datatype="php" date="2018-10-04T15:04:50+02:00" original="modules" source-language="en" target-language="cs">
+    <body>
+      <trans-unit id="MOD.notification_center">
+        <source>Notification Center</source>
+        <target>Oznamovací centrum</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_notifications.0">
+        <source>Notifications</source>
+        <target>Oznámení</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_notifications.1">
+        <source>Manage notifications.</source>
+        <target>Spravovat oznámení</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_queue.0">
+        <source>Queue</source>
+        <target>Fronta</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_queue.1">
+        <source>View the message queue.</source>
+        <target>Zobrazit zprávy ve frontě</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_gateways.0">
+        <source>Gateways</source>
+        <target>Způsoby rozesílání</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_gateways.1">
+        <source>Manage gateways</source>
+        <target>Spravovat způsoby rozesílání</target>
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.0">
+        <source>Lost password (Notification Center)</source>
+        <target>Poslední heslo (Oznamovací centrum)</target>
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.1">
+        <source>Generates a form to request a new password and sends the notification using the notification center.</source>
+        <target>Vytvoří formulář požadující nové heslo a zašle oznámení pomocí Oznamovacího centra.</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.0">
+        <source>Subscribe (Notification Center)</source>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.1">
+        <source>Generates a form to subscribe to one or more channels and sends the notification using the notification center.</source>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterActivateNotificationCenter.0">
+        <source>Activate (Notification Center)</source>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterActivateNotificationCenter.1">
+        <source>Generates a form to activate subscription to one or more channels the notification using the notification center.</source>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.0">
+        <source>Unsubscribe (Notification Center)</source>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.1">
+        <source>Generates a form to unsubscribe from one or more channels and sends the notification using the notification center.</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

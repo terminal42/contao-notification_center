@@ -18,8 +18,7 @@
         "terminal42/dcawizard":"2.*"
     },
     "require-dev": {
-        "contao/newsletter-bundle":"~3.5 || ~4.1",
-        "cyberspectrum/contao-toolbox": "^0.7.2"
+        "contao/newsletter-bundle":"~3.5 || ~4.1"
     },
     "autoload":{
         "psr-0": {
@@ -47,12 +46,6 @@
         "contao": {
             "sources":{
                 "": "system/modules/notification_center"
-            },
-            "transifex": {
-                "project": "notification_center",
-                "prefix": "master-notification_center-",
-                "languages_cto": "languages",
-                "languages_tx": ".tx"
             }
         }
     }
