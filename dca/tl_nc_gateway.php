@@ -97,7 +97,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     (
         '__selector__'                => array('type', 'queue_cronEnable', 'email', 'email_overrideSmtp', 'file_connection'),
         'default'                     => '{title_legend},title,type',
-        'queue'                       => '{title_legend},title,type;{gateway_legend},queue_targetGateway;{cronjob_legend},queue_cronExplanation,queue_cronEnable',
+        'queue'                       => '{title_legend},title,type;{gateway_legend},queue_targetGateway,queue_delay;{cronjob_legend},queue_cronExplanation,queue_cronEnable',
         'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
         'postmark'                    => '{title_legend},title,type;{gateway_legend},postmark_key,postmark_test,postmark_ssl',
@@ -163,6 +163,18 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             },
             'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'tl_class'=>'w50'),
             'sql'                     => "int(10) NOT NULL default '0'"
+        ),
+        'queue_delay' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_gateway']['queue_delay'],
+            'exclude'                 => true,
+            'inputType'               => 'text',
+            'eval'                    => array('maxlength' => 64, 'tl_class'=>'w50'),
+            'sql'                     => "varchar(64) NOT NULL default ''",
+            'save_callback'           => array
+            (
+                array('NotificationCenter\tl_nc_gateway', 'validateQueueDelay')
+            ),
         ),
         'queue_cronExplanation' => array
         (

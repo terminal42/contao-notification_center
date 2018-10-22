@@ -18,7 +18,7 @@
         "terminal42/dcawizard":"2.*"
     },
     "require-dev": {
-        "cyberspectrum/contao-toolbox": "^0.7.2"
+        "contao/newsletter-bundle":"~3.5 || ~4.1"
     },
     "autoload":{
         "psr-0": {
@@ -33,6 +33,12 @@
     "replace": {
         "contao-legacy/notification_center": "self.version"
     },
+    "suggest": {
+      "contao/newsletter-bundle": "Send notifications using the newsletter bundle of Contao"
+    },
+    "conflict": {
+      "contao/newsletter-bundle": "<3.5 || >= 5.0"
+    },
     "extra":{
         "branch-alias": {
             "dev-develop": "1.4.x-dev"
@@ -40,12 +46,6 @@
         "contao": {
             "sources":{
                 "": "system/modules/notification_center"
-            },
-            "transifex": {
-                "project": "notification_center",
-                "prefix": "master-notification_center-",
-                "languages_cto": "languages",
-                "languages_tx": ".tx"
             }
         }
     }

@@ -22,7 +22,6 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         'ptable'                      => 'tl_nc_message',
         'dataContainer'               => 'Table',
         'enableVersioning'            => true,
-        'nc_type_query'               => "SELECT type FROM tl_nc_notification WHERE id=(SELECT pid FROM tl_nc_message WHERE id=(SELECT pid FROM tl_nc_language WHERE id=?))",
         'oncreate_callback' => array
         (
             array('NotificationCenter\tl_nc_language', 'insertGatewayType'),
@@ -102,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     (
         '__selector__'                => array('gateway_type', 'email_mode'),
         'default'                     => '{general_legend},language,fallback',
-        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
+        'email'                       => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_templates,attachment_tokens',
         'file'                        => '{general_legend},language,fallback;{meta_legend},file_name,file_storage_mode;{content_legend},file_content',
         'postmark'                    => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode',
     ),
@@ -188,6 +187,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'exclude'                 => true,
             'inputType'               => 'fileTree',
             'eval'                    => array('multiple'=>true, 'fieldType'=>'checkbox', 'files'=>true, 'filesOnly'=>true, 'tl_class'=>'clr'),
+            'sql'                     => "blob NULL"
+        ),
+        'attachment_templates' => array
+        (
+            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['attachment_templates'],
+            'exclude'                 => true,
+            'inputType'               => 'fileTree',
+            'eval'                    => array('multiple'=>true, 'fieldType'=>'checkbox', 'files'=>true, 'filesOnly'=>true, 'tl_class'=>'clr', 'extensions'=>'xml,txt'),
             'sql'                     => "blob NULL"
         ),
         'email_sender_name' => array

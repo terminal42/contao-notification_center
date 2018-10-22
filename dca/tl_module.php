@@ -14,6 +14,14 @@
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,nc_notification,nc_activation_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
 $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPasswordNotificationCenter'] = str_replace('reg_password', 'nc_notification', $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPassword']);
+$GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterSubscribeNotificationCenter'] = '{title_legend},name,headline,type;{config_legend},nl_channels,nl_hideChannels,disableCaptcha;{text_legend},nl_text{notification_legend},nc_notification;{redirect_legend},jumpTo;{template_legend:hide},nl_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterActivateNotificationCenter'] = '{title_legend},name,headline,type;{config_legend},nl_channels,nl_hideChannels;{notification_legend},nc_notification;{redirect_legend},jumpTo;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+$GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterUnsubscribeNotificationCenter'] = '{title_legend},name,headline,type;{config_legend},nl_channels,nl_hideChannels,disableCaptcha;{notification_legend},nc_notification;{redirect_legend},jumpTo;{template_legend:hide},nl_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
+
+if (version_compare(VERSION, '4.1', '<')) {
+    $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterSubscribeNotificationCenter'] = str_replace(',disableCaptcha', '', $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterSubscribeNotificationCenter']);
+    $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterUnsubscribeNotificationCenter'] = str_replace(',disableCaptcha', '', $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterUnsubscribeNotificationCenter']);
+}
 
 if (strpos($GLOBALS['TL_DCA']['tl_module']['palettes']['personalData'], 'newsletters')) {
     $GLOBALS['TL_DCA']['tl_module']['palettes']['personalData'] = str_replace('newsletters;', 'newsletters,nc_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['personalData']);
@@ -44,4 +52,7 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification']['label']
  */
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['registration'] = array('member_registration');
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['lostPasswordNotificationCenter'] = array('member_password');
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['newsletterSubscribeNotificationCenter'] = array('newsletter_subscribe');
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['newsletterActivateNotificationCenter'] = array('newsletter_activate');
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['newsletterUnsubscribeNotificationCenter'] = array('newsletter_unsubscribe');
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification']['eval']['ncNotificationChoices']['registration'] = array('member_activation');

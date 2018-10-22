@@ -11,6 +11,7 @@
 namespace NotificationCenter\MessageDraft;
 
 
+use Contao\File;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Util\StringUtil;
@@ -34,6 +35,18 @@ class EmailMessageDraft implements MessageDraftInterface
      * @var array
      */
     protected $arrTokens = array();
+
+    /**
+     * File path attachments
+     * @var array
+     */
+    protected $attachments = null;
+
+    /**
+     * String attachments
+     * @var array
+     */
+    protected $stringAttachments = null;
 
     /**
      * Construct the object
@@ -185,25 +198,65 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getAttachments()
     {
-        // Token attachments
-        $arrAttachments = StringUtil::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
+        if ($this->attachments === null) {
+            // Token attachments
+            $this->attachments = StringUtil::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
 
-        // Add static attachments
-        $arrStaticAttachments = deserialize($this->objLanguage->attachments, true);
+            // Add static attachments
+            $arrStaticAttachments = deserialize($this->objLanguage->attachments, true);
 
-        if (!empty($arrStaticAttachments)) {
-            $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
+            if (!empty($arrStaticAttachments)) {
+                $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
 
-            if ($objFiles === null) {
-                return $arrAttachments;
-            }
-
-            while ($objFiles->next()) {
-                $arrAttachments[] = TL_ROOT . '/' . $objFiles->path;
+                if ($objFiles !== null) {
+                    while ($objFiles->next()) {
+                        $this->attachments[] = TL_ROOT . '/' . $objFiles->path;
+                    }
+                }
             }
         }
 
-        return $arrAttachments;
+        return $this->attachments;
+    }
+
+    /**
+     * Returns the contents of attachments as an array (the key being the desired file name).
+     * @return  array
+     */
+    public function getStringAttachments()
+    {
+        if ($this->stringAttachments === null) {
+
+            // Add attachment templates
+            $arrTemplateAttachments = deserialize($this->objLanguage->attachment_templates, true);
+
+            if (!empty($arrTemplateAttachments)) {
+                $objFiles = \FilesModel::findMultipleByUuids($arrTemplateAttachments);
+
+                if ($objFiles !== null) {
+                    while ($objFiles->next()) {
+                        $file = new File($objFiles->path, true);
+                        if (!$file->exists()) {
+                            continue;
+                        }
+
+                        $this->stringAttachments[$objFiles->name] = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($file->getContent(), $this->arrTokens);
+                    }
+                }
+            }
+        }
+
+        return $this->stringAttachments;
+    }
+
+    /**
+     * Set the attachments
+     *
+     * @param array $attachments
+     */
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = $attachments;
     }
 
     /**

@@ -37,7 +37,31 @@ class QueuedMessage extends \Model
      */
     public function getTokens()
     {
-        return (array) json_decode($this->tokens);
+        return (array) json_decode($this->tokens, true);
+    }
+
+    /**
+     * Set the attachments
+     *
+     * @param array $attachments
+     *
+     * @return $this
+     */
+    public function setAttachments(array $attachments)
+    {
+        $this->attachments = json_encode($attachments);
+
+        return $this;
+    }
+
+    /**
+     * Get the $attachments
+     *
+     * @return array
+     */
+    public function getAttachments()
+    {
+        return (array) json_decode($this->attachments, true);
     }
 
     /**
@@ -88,7 +112,7 @@ class QueuedMessage extends \Model
             // Temporarily set gateway to target gateway
             $message->gateway = $this->targetGateway;
 
-            $result = $message->send($this->getTokens(), $this->language);
+            $result = $message->send($this->getTokens(), $this->language, $this->getAttachments());
 
             // Reset gateway
             $message->gateway = $this->sourceQueue;
@@ -113,7 +137,7 @@ class QueuedMessage extends \Model
 
         $options = array_merge(
             array(
-                'column' => array("$t.sourceQueue=$sourceQueue", "$t.dateSent=''", "$t.error!=1"),
+                'column' => array("$t.sourceQueue=$sourceQueue", "$t.dateSent=''", "$t.error!=1", "($t.dateDelay IS NULL OR $t.dateDelay<=UNIX_TIMESTAMP())"),
                 'order'  => "$t.dateAdded",
                 'limit'  => $numberOfMsgs
             ),

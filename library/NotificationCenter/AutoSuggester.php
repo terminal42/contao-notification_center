@@ -15,8 +15,8 @@ use NotificationCenter\Model\Notification as NotificationModel;
 
 class AutoSuggester extends \Controller
 {
-
     protected static $strTable;
+    protected static $objNotification;
     protected static $strType;
 
     public static function load($dc)
@@ -38,7 +38,8 @@ class AutoSuggester extends \Controller
         $GLOBALS['TL_CSS'][]        = 'system/modules/notification_center/assets/autosuggester' . ($GLOBALS['TL_CONFIG']['debugMode'] ? '' : '.min') . '.css';
 
         static::$strTable = $dc->table;
-        static::$strType  = \Database::getInstance()->prepare($GLOBALS['TL_DCA'][static::$strTable]['config']['nc_type_query'])->execute($dc->id)->type;
+        static::$objNotification = \Database::getInstance()->prepare("SELECT * FROM tl_nc_notification WHERE id=(SELECT pid FROM tl_nc_message WHERE id=(SELECT pid FROM tl_nc_language WHERE id=?))")->execute($dc->id);
+        static::$strType = static::$objNotification->type;
 
         foreach ($GLOBALS['TL_DCA'][static::$strTable]['fields'] as $field => $arrConfig) {
             if ('nc_tokens' === $arrConfig['eval']['rgxp']) {
@@ -59,6 +60,7 @@ class AutoSuggester extends \Controller
     {
         $strGroup  = NotificationModel::findGroupForType(static::$strType);
         $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$dc->field];
+        $arrTokens = array_merge($arrTokens, $this->loadTemplateTokens());
 
         if (!is_array($arrTokens) || empty($arrTokens)) {
             return '';
@@ -67,11 +69,16 @@ class AutoSuggester extends \Controller
         $arrParsedTokens = array();
 
         foreach ($arrTokens as $strToken) {
-            $arrParsedTokens[] = array
-            (
+            $content = $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][static::$strType][$strToken] ?: '';
+
+            if (0 === strpos($strToken, 'template_')) {
+                $content = sprintf($GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['template'], 'notification_'.substr($strToken, 9));
+            }
+
+            $arrParsedTokens[] = [
                 'value'   => '##' . $strToken . '##',
-                'content' => $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][static::$strType][$strToken] ?: ''
-            );
+                'content' => $content,
+            ];
         }
 
         $GLOBALS['TL_MOOTOOLS'][] = "
@@ -103,6 +110,7 @@ window.addEvent('domready', function() {
         $strGroup = NotificationModel::findGroupForType(static::$strType);
 
         $validTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
+        $validTokens = array_merge($validTokens, $this->loadTemplateTokens());
 
         if (!$this->verifyHashes($strText, $objWidget, $validTokens)) {
             $this->verifyConditions($strText, $objWidget, $validTokens);
@@ -204,5 +212,21 @@ window.addEvent('domready', function() {
         }
 
         return false;
+    }
+
+    private function loadTemplateTokens()
+    {
+        if (!static::$objNotification) {
+            return [];
+        }
+
+        $tokens = [];
+        $templates = deserialize(static::$objNotification->templates, true);
+
+        foreach ($templates as $template) {
+            $tokens[] = 'template_'.substr($template, 13);
+        }
+
+        return $tokens;
     }
 }

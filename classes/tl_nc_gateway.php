@@ -24,6 +24,24 @@ class tl_nc_gateway extends \Backend
     }
 
     /**
+     * Validate the queue delay
+     *
+     * @param string $value
+     *
+     * @return string
+     *
+     * @throws \RuntimeException
+     */
+    public function validateQueueDelay($value)
+    {
+        if ($value && strtotime($value) === false) {
+            throw new \InvalidArgumentException(sprintf($GLOBALS['TL_LANG']['ERR']['invalidDate'], $value));
+        }
+
+        return $value;
+    }
+
+    /**
      * Check the FTP connection
      *
      * @param \DataContainer $dc

@@ -1,18 +1,2 @@
-# OS
-.DS_Store
-Thumbs.db
-
-# IDEs
-.buildpath
-.project
-.settings/
-.build/
-.idea/
-nbproject/
-
-# Transifex
-.tx/
-
-# Composer
-vendor/
-composer.lock
+/vendor/
+/composer.lock

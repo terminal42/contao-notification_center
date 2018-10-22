@@ -1,0 +1,205 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2016-10-03T15:22:43+02:00" original="tl_nc_message" source-language="en" target-language="pl">
+    <body>
+      <trans-unit id="tl_nc_message.title.0">
+        <source>Title</source>
+        <target>Nazwa</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.title.1">
+        <source>Please enter a title for this message.</source>
+        <target>Wprowadź nazwę dla tej wiadomości.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.gateway.0">
+        <source>Gateway</source>
+        <target>Bramka</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.gateway.1">
+        <source>Please select a gateway for this message.</source>
+        <target>Wybierz bramkę dla tej wiadomości.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.0">
+        <source>Languages</source>
+        <target>Języki</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.1">
+        <source>Here you can manage the different languages.</source>
+        <target>Tutaj możesz zarządzać różnymi językami.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.2">
+        <source>Manage languages</source>
+        <target>Zarządzaj językami</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.3">
+        <source>Close</source>
+        <target>Zamknij</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority.0">
+        <source>Priority</source>
+        <target>Priorytet</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority.1">
+        <source>Please select a priority.</source>
+        <target>Wybierz priorytet.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_template.0">
+        <source>Template file</source>
+        <target>Szablon</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_template.1">
+        <source>Please choose a template file.</source>
+        <target>Wybierz pliks zablonu.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_tag.0">
+        <source>Tag</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_tag.1">
+        <source>Here you can enter the tag.</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_trackOpens.0">
+        <source>Enable open tracking</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_trackOpens.1">
+        <source>Here you can enable open tracking.</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.published.0">
+        <source>Publish message</source>
+        <target>Publikuj wiadomość</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.published.1">
+        <source>Include this message when a notification is being sent.</source>
+        <target>Załącz tą wiadomość przy wysyłaniu powiadomienia.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.new.0">
+        <source>New message</source>
+        <target>Nowa wiadomość</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.new.1">
+        <source>Create a new message.</source>
+        <target>Utwórz nową wiadomość.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.edit.0">
+        <source>Edit message</source>
+        <target>Edytuj wiadomość</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.edit.1">
+        <source>Edit message ID %s.</source>
+        <target>Edytuj wiadomość ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.copy.0">
+        <source>Duplicate message</source>
+        <target>Kopiuj wiadomość</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.copy.1">
+        <source>Duplicate message ID %s.</source>
+        <target>Kopiuj wiadomość ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.cut.0">
+        <source>Move message</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.cut.1">
+        <source>Move message ID %s.</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.delete.0">
+        <source>Delete message</source>
+        <target>Usuń wiadomość</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.delete.1">
+        <source>Delete message ID %s.</source>
+        <target>Usuń wiadomość ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.toggle.0">
+        <source>Toggle visibility of message</source>
+        <target>Zmień widoczność wiadomości</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.toggle.1">
+        <source>Toggle visibility of message ID %s.</source>
+        <target>Zmień widoczność wiadomości ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.show.0">
+        <source>Gateway message</source>
+        <target>Bramka wiadomości</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.show.1">
+        <source>Show details for message ID %s.</source>
+        <target>Pokaż szczegóły wiadomości ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.title_legend">
+        <source>Title &amp; Gateway</source>
+        <target>Nazwa i bramka</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages_legend">
+        <source>Languages</source>
+        <target>Języki</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.expert_legend">
+        <source>Expert settings</source>
+        <target>Ustawienia zaawansowane</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.publish_legend">
+        <source>Publish settings</source>
+        <target>Ustawienia publikacji</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.1">
+        <source>very high</source>
+        <target>bardzo wysoki</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.2">
+        <source>high</source>
+        <target>wysoki</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.3">
+        <source>normal</source>
+        <target>normalny</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.4">
+        <source>low</source>
+        <target>niski</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.5">
+        <source>very low</source>
+        <target>bardzo niski</target>
+        
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

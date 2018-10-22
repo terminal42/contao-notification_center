@@ -48,6 +48,12 @@ if ('BE' === TL_MODE) {
  */
 $GLOBALS['FE_MOD']['user']['lostPasswordNotificationCenter'] = 'ModulePasswordNotificationCenter';
 
+if (in_array('newsletter', \ModuleLoader::getActive(), true)) {
+    $GLOBALS['FE_MOD']['newsletter']['newsletterSubscribeNotificationCenter']   = 'ModuleNewsletterSubscribeNotificationCenter';
+    $GLOBALS['FE_MOD']['newsletter']['newsletterActivateNotificationCenter']    = 'ModuleNewsletterActivateNotificationCenter';
+    $GLOBALS['FE_MOD']['newsletter']['newsletterUnsubscribeNotificationCenter'] = 'ModuleNewsletterUnsubscribeNotificationCenter';
+}
+
 /**
  * Models
  */
@@ -164,7 +170,46 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
                  'email_recipient_cc'   => array('recipient_email'),
                  'email_recipient_bcc'  => array('recipient_email'),
                  'email_replyTo'        => array('recipient_email'),
-             )
+             ),
+             'newsletter_subscribe'     => array(
+                 'recipients'           => array('recipient_email', 'admin_email'),
+                 'email_subject'        => array('domain', 'link', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'subject'),
+                 'email_text'           => array('domain', 'link', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'token'),
+                 'email_html'           => array('domain', 'link', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'token'),
+                 'file_name'            => array('domain', 'link', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'file_content'         => array('domain', 'link', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'token'),
+                 'email_sender_name'    => array('recipient_email', 'admin_email', 'admin_name'),
+                 'email_sender_address' => array('recipient_email', 'admin_email'),
+                 'email_recipient_cc'   => array('recipient_email', 'admin_email'),
+                 'email_recipient_bcc'  => array('recipient_email', 'admin_email'),
+                 'email_replyTo'        => array('recipient_email', 'admin_email'),
+             ),
+             'newsletter_activate'     => array(
+                 'recipients'           => array('recipient_email', 'admin_email'),
+                 'email_subject'        => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'subject'),
+                 'email_text'           => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'email_html'           => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'file_name'            => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'file_content'         => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'email_sender_name'    => array('recipient_email', 'admin_email', 'admin_name'),
+                 'email_sender_address' => array('recipient_email', 'admin_email'),
+                 'email_recipient_cc'   => array('recipient_email', 'admin_email'),
+                 'email_recipient_bcc'  => array('recipient_email', 'admin_email'),
+                 'email_replyTo'        => array('recipient_email', 'admin_email'),
+             ),
+             'newsletter_unsubscribe' => array(
+                 'recipients'           => array('recipient_email', 'admin_email'),
+                 'email_subject'        => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'subject'),
+                 'email_text'           => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'email_html'           => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'file_name'            => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'file_content'         => array('domain', 'recipient_email', 'admin_email', 'channels', 'channel_ids'),
+                 'email_sender_name'    => array('recipient_email', 'admin_email', 'admin_name'),
+                 'email_sender_address' => array('recipient_email', 'admin_email'),
+                 'email_recipient_cc'   => array('recipient_email', 'admin_email'),
+                 'email_recipient_bcc'  => array('recipient_email', 'admin_email'),
+                 'email_replyTo'        => array('recipient_email', 'admin_email'),
+             ),
          )
     )
 );

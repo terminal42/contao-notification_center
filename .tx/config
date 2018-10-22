@@ -1,0 +1,48 @@
+[main]
+host = https://www.transifex.com
+type = XLIFF
+
+[notification_center.master-notification_center-modules]
+source_file = languages/en/modules.xlf
+source_lang = en
+file_filter = languages/<lang>/modules.xlf
+
+[notification_center.master-notification_center-tl_form]
+source_file = languages/en/tl_form.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_form.xlf
+
+[notification_center.master-notification_center-tl_module]
+source_file = languages/en/tl_module.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_module.xlf
+
+[notification_center.master-notification_center-tl_nc_gateway]
+source_file = languages/en/tl_nc_gateway.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_nc_gateway.xlf
+
+[notification_center.master-notification_center-tl_nc_language]
+source_file = languages/en/tl_nc_language.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_nc_language.xlf
+
+[notification_center.master-notification_center-tl_nc_message]
+source_file = languages/en/tl_nc_message.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_nc_message.xlf
+
+[notification_center.master-notification_center-tl_nc_notification]
+source_file = languages/en/tl_nc_notification.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_nc_notification.xlf
+
+[notification_center.master-notification_center-tl_nc_queue]
+source_file = languages/en/tl_nc_queue.xlf
+source_lang = en
+file_filter = languages/<lang>/tl_nc_queue.xlf
+
+[notification_center.master-notification_center-tokens]
+source_file = languages/en/tokens.xlf
+source_lang = en
+file_filter = languages/<lang>/tokens.xlf

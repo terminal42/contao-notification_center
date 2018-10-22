@@ -1,0 +1,211 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2016-10-03T15:22:43+02:00" original="tl_nc_message" source-language="en" target-language="ru">
+    <body>
+      <trans-unit id="tl_nc_message.title.0">
+        <source>Title</source>
+        <target>Название</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.title.1">
+        <source>Please enter a title for this message.</source>
+        <target>Введите название данного сообщения.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.gateway.0">
+        <source>Gateway</source>
+        <target>Шлюз</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.gateway.1">
+        <source>Please select a gateway for this message.</source>
+        <target>Выберите шлюз для этого сообщения.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.0">
+        <source>Languages</source>
+        <target>Языки</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.1">
+        <source>Here you can manage the different languages.</source>
+        <target>Вы можете управлять различными языками.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.2">
+        <source>Manage languages</source>
+        <target>Управление языками</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages.3">
+        <source>Close</source>
+        <target>Закрыть</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority.0">
+        <source>Priority</source>
+        <target>Приоритет</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority.1">
+        <source>Please select a priority.</source>
+        <target>Выберите приоритет.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_template.0">
+        <source>Template file</source>
+        <target>Файл шаблона</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_template.1">
+        <source>Please choose a template file.</source>
+        <target>Выберите файл шаблона.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_tag.0">
+        <source>Tag</source>
+        <target>Тег</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_tag.1">
+        <source>Here you can enter the tag.</source>
+        <target>Вы можете ввести тег.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_trackOpens.0">
+        <source>Enable open tracking</source>
+        <target>Включить открытое отслеживание</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.postmark_trackOpens.1">
+        <source>Here you can enable open tracking.</source>
+        <target>Вы можете включить открытое отслеживание.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.published.0">
+        <source>Publish message</source>
+        <target>Опубликовать сообщение</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.published.1">
+        <source>Include this message when a notification is being sent.</source>
+        <target>Включить это сообщение при отправке уведомления.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.new.0">
+        <source>New message</source>
+        <target>Новое сообщение</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.new.1">
+        <source>Create a new message.</source>
+        <target>Создать новое сообщение.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.edit.0">
+        <source>Edit message</source>
+        <target>Редактировать сообщение</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.edit.1">
+        <source>Edit message ID %s.</source>
+        <target>Редактировать сообщение ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.copy.0">
+        <source>Duplicate message</source>
+        <target>Дублировать сообщение</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.copy.1">
+        <source>Duplicate message ID %s.</source>
+        <target>Дублировать сообщение ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.cut.0">
+        <source>Move message</source>
+        <target>Переместить сообщение</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.cut.1">
+        <source>Move message ID %s.</source>
+        <target>Переместить сообщение ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.delete.0">
+        <source>Delete message</source>
+        <target>Удалить сообщение</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.delete.1">
+        <source>Delete message ID %s.</source>
+        <target>Удалить сообщение ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.toggle.0">
+        <source>Toggle visibility of message</source>
+        <target>Переключить видимость сообщения</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.toggle.1">
+        <source>Toggle visibility of message ID %s.</source>
+        <target>Переключить видимость сообщения ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.show.0">
+        <source>Gateway message</source>
+        <target>Сообщение шлюза</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.show.1">
+        <source>Show details for message ID %s.</source>
+        <target>Показать детали для сообщения ID %s.</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.title_legend">
+        <source>Title &amp; Gateway</source>
+        <target>Название и шлюз</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.languages_legend">
+        <source>Languages</source>
+        <target>Языки</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.expert_legend">
+        <source>Expert settings</source>
+        <target>Экспертные настройки</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.publish_legend">
+        <source>Publish settings</source>
+        <target>Настройки публикации</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.1">
+        <source>very high</source>
+        <target>очень высокий</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.2">
+        <source>high</source>
+        <target>высокий</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.3">
+        <source>normal</source>
+        <target>нормальный</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.4">
+        <source>low</source>
+        <target>низкий</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_message.email_priority_options.5">
+        <source>very low</source>
+        <target>очень низкий</target>
+        
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

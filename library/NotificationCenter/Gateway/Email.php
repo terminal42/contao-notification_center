@@ -26,10 +26,12 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
 
     /**
      * Returns a MessageDraft
-     * @param   Message
-     * @param   array
-     * @param   string
-     * @return  MessageDraftInterface|null (if no draft could be found)
+     *
+     * @param Message $objMessage
+     * @param array   $arrTokens
+     * @param string  $strLanguage
+     *
+     * @return  EmailMessageDraft|null (if no draft could be found)
      */
     public function createDraft(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
@@ -47,27 +49,10 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
     }
 
     /**
-     * Send email message
-     * @param   Message
-     * @param   array
-     * @param   string
-     * @return  bool
+     * @param EmailMessageDraft $objDraft
      */
-    public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
+    public function sendDraft(EmailMessageDraft $objDraft)
     {
-        /**
-         * @var $objDraft \NotificationCenter\MessageDraft\EmailMessageDraft
-         */
-        $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
-
-        // return false if no language found for BC
-        if ($objDraft === null) {
-
-            \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
-
-            return false;
-        }
-
         // Override SMTP settings if desired
         if (version_compare(VERSION, '4.4', '>=') && $this->objModel->email_overrideSmtp) {
             if (method_exists(\Swift_SmtpTransport::class, 'newInstance')) {
@@ -124,11 +109,19 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         // Set image embedding
         $objEmail->embedImages = !$objDraft->useExternalImages();
 
-        // Add attachments
+        // Add file attachments
         $arrAttachments = $objDraft->getAttachments();
         if (!empty($arrAttachments)) {
             foreach ($arrAttachments as $strFile) {
                 $objEmail->attachFile($strFile);
+            }
+        }
+
+        // Add string attachments
+        $arrAttachments = $objDraft->getStringAttachments();
+        if (!empty($arrAttachments)) {
+            foreach ($arrAttachments as $strFilename => $strContent) {
+                $objEmail->attachFileFromString($strContent, $strFilename);
             }
         }
 
@@ -147,10 +140,37 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         try {
             return $objEmail->sendTo($objDraft->getRecipientEmails());
         } catch (\Exception $e) {
-            \System::log(sprintf('Could not send email for message ID %s: %s', $objMessage->id, $e->getMessage()), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not send email for message ID %s: %s', $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }
 
         return false;
+    }
+
+    /**
+     * Send email message
+     *
+     * @param Message $objMessage
+     * @param array   $arrTokens
+     * @param string  $strLanguage
+     *
+     * @return  bool
+     */
+    public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
+    {
+        /**
+         * @var $objDraft \NotificationCenter\MessageDraft\EmailMessageDraft
+         */
+        $objDraft = $this->createDraft($objMessage, $arrTokens, $strLanguage);
+
+        // return false if no language found for BC
+        if ($objDraft === null) {
+
+            \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
+
+            return false;
+        }
+
+        return $this->sendDraft($objDraft);
     }
 
     /**
