@@ -373,7 +373,7 @@
         <source>Cronjob settings</source>
         
       </trans-unit>
-      <trans-unit id="queueCronjobExplanation">
+      <trans-unit id="tl_nc_gateway.queueCronjobExplanation">
         <source>Queued messages will remain in the queue forever unless
 you trigger the sending mechanism by either using a real cron job or
 the Contao internal poor man's cronjob. The Notification Center is shipped
@@ -396,10 +396,12 @@ PHP configurations such as the maximum execution time. Thus, try to keep the num
       </trans-unit>
       <trans-unit id="tl_nc_gateway.queue_delay.0">
         <source>Delayed delivery</source>
+        <target>Отсрочка доставки</target>
         
       </trans-unit>
       <trans-unit id="tl_nc_gateway.queue_delay.1">
         <source>Enter a &lt;a href=&quot;https://php.net/strtotime&quot; target=&quot;_blank&quot;&gt;&lt;i&gt;strtotime&lt;/i&gt;&lt;/a&gt; time interval to delay message delivery (e.g. &lt;em&gt;+1 day&lt;/em&gt;).</source>
+        <target>Введите &lt;a href=&quot;https://php.net/strtotime&quot; target=&quot;_blank&quot;&gt;&lt;i&gt;strtotime&lt;/i&gt;&lt;/a&gt; временной интервал для задержки доставки сообщений (наприм. &lt;em&gt;+1 day&lt;/em&gt;).</target>
         
       </trans-unit>
     </body>

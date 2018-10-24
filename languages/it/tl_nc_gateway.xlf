@@ -318,7 +318,7 @@
         <source>Cronjob settings</source>
         
       </trans-unit>
-      <trans-unit id="queueCronjobExplanation">
+      <trans-unit id="tl_nc_gateway.queueCronjobExplanation">
         <source>Queued messages will remain in the queue forever unless
 you trigger the sending mechanism by either using a real cron job or
 the Contao internal poor man's cronjob. The Notification Center is shipped
