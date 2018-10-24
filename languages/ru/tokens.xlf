@@ -53,6 +53,7 @@
       </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.template">
         <source>Output of template &quot;%s&quot;</source>
+        <target>Вывод шаблона &quot;%s&quot;</target>
         
       </trans-unit>
     </body>
