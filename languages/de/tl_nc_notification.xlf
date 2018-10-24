@@ -133,7 +133,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_registration.0">
         <source>Member registration</source>
-        <target>Mitglieds Registration</target>
+        <target>Mitglied: Registrierung</target>
         
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_personaldata.0">

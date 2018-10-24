@@ -376,7 +376,7 @@
         <target>Cronjob-Einstellungen</target>
         
       </trans-unit>
-      <trans-unit id="queueCronjobExplanation">
+      <trans-unit id="tl_nc_gateway.queueCronjobExplanation">
         <source>Queued messages will remain in the queue forever unless
 you trigger the sending mechanism by either using a real cron job or
 the Contao internal poor man's cronjob. The Notification Center is shipped
@@ -401,11 +401,10 @@ oder falls Sie 30 Nachrichten immer am 5 nach jede Stunde senden wollen, sieht d
 &lt;br&gt;&lt;blockquote&gt;5 * * * * /path/to/contao/system/modules/notification_center/bin/queue -s {gateway_id} -n 30&lt;/blockquote&gt;&lt;br&gt;
 Sollten Sie keinen Zugang zu echten CronJobs haben, kann der Poor Man's CronJob verwendet werden. Beachten Sie dass dieser nicht dieselbe Flexibilität im Bezug auf Intervall-Einstellungen bietet und von der Weboberflächte beeinfluss ist, beispielsweise von der PHP-Konfiguration und -Laufzeit. Versuchen Sie daher die Anzahl Nachrichten pro Versand eher niedrig einzustellen.
 &lt;br&gt;&lt;br&gt;
-&lt;strong&gt;Anmerkung: &lt;/strong&gt;Wurde das Benachrichtigungszentrum per Composer installiert lautet der Pfad zum Programm wie folgt:
+&lt;strong&gt;Anmerkung:&lt;/strong&gt; Wurde das Benachrichtigungszentrum per Composer installiert lautet der Pfad zum Programm wie folgt:
 &lt;blockquote&gt;
 /path/to/contao/composer/vendor/terminal42/notification_center/bin/queue
-&lt;/blockquote&gt;
-</target>
+&lt;/blockquote&gt;</target>
         
       </trans-unit>
       <trans-unit id="tl_nc_gateway.queue_delay.0">
