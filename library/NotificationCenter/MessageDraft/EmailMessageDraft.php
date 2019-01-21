@@ -129,7 +129,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSubject()
     {
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
+        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS | \Haste\Util\StringUtil::NO_ENTITIES);
     }
 
     /**
