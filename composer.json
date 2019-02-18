@@ -37,6 +37,7 @@
       "contao/newsletter-bundle": "Send notifications using the newsletter bundle of Contao"
     },
     "conflict": {
+      "contao/core-bundle": "4.5.0",
       "contao/newsletter-bundle": "<3.5 || >= 5.0"
     },
     "extra":{
