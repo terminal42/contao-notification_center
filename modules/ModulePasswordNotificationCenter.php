@@ -48,15 +48,21 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 
 		$token = md5(uniqid(mt_rand(), true));
 		$contaoVersion = VERSION.'.'.BUILD;
-		if (version_compare($contaoVersion, '4.5.4', '>=')
-			|| (version_compare($contaoVersion, '4.5.0', '<') && version_compare($contaoVersion, '4.4.12', '>='))) {
-			$token = 'PW'.substr($token, 2);
+		if (version_compare($contaoVersion, '4.7.0', '>=')) {
+			/** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
+			$optIn = System::getContainer()->get('contao.opt-in');
+			$optInToken = $optIn->create('pw-', $objMember->email, array('tl_member'=>array($objMember->id)));
+			$token = $optInToken->getIdentifier();
+		} elseif (version_compare($contaoVersion, '4.4.12', '>=')) {
+			$token = 'PW' . substr($token, 2);
 		}
 
-		// Store the token
-		$objMember = \MemberModel::findByPk($objMember->id);
-		$objMember->activation = $token;
-		$objMember->save();
+		if (!version_compare($contaoVersion, '4.7.0', '>=')) {
+			// Store the token
+			$objMember = \MemberModel::findByPk($objMember->id);
+			$objMember->activation = $token;
+			$objMember->save();
+		}
 
 		$arrTokens = array();
 
