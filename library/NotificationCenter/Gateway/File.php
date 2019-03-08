@@ -253,7 +253,7 @@ class File extends Base implements GatewayInterface
         $objFile->close();
 
         // Copy the temporary file to the server
-        $blnResult = @ftp_put($resConnection, $this->objModel->file_path . '/' . $strFileName, $objFile->path, FTP_BINARY);
+        $blnResult = @ftp_put($resConnection, $this->objModel->file_path . '/' . $strFileName, TL_ROOT . '/' . $objFile->path, FTP_BINARY);
 
         // Delete temporary file and close FTP connection
         $objFile->delete();
