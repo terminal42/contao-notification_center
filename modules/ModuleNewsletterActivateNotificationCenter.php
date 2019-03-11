@@ -52,52 +52,89 @@ class ModuleNewsletterActivateNotificationCenter extends Module
 
     protected function compile()
     {
-        $this->activateRecipient();
+        $this->activateRecipient(\Input::get('token'));
     }
 
     /**
      * Activate a recipient
+     *
+     * @param string $token
      */
-    protected function activateRecipient()
+    protected function activateRecipient($token)
     {
         // Check the token
-        $objRecipient = \NewsletterRecipientsModel::findByToken(\Input::get('token'));
+        if (version_compare(VERSION, '4.7', '>=')) {
+            /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
+            $optIn = \System::getContainer()->get('contao.opt-in');
 
-        if ($objRecipient === null) {
-            $this->Template->mclass = 'error';
-            $this->Template->message = $GLOBALS['TL_LANG']['ERR']['invalidToken'];
+            if (!($optInToken = $optIn->find($token)) || $optInToken->isConfirmed() || \count($arrRelated = $optInToken->getRelatedRecords()) < 1)
+            {
+                $this->Template->type = 'error';
+                $this->Template->message = $GLOBALS['TL_LANG']['MSC']['accountError'];
 
-            return;
+                return;
+            }
+
+            $strEmail = $optInToken->getEmail();
+        } else {
+            $objRecipient = \NewsletterRecipientsModel::findByToken($token);
+
+            if ($objRecipient === null) {
+                $this->Template->mclass = 'error';
+                $this->Template->message = $GLOBALS['TL_LANG']['ERR']['invalidToken'];
+
+                return;
+            }
+
+            $strEmail = $objRecipient->email;
         }
 
         $time = time();
         $arrAdd = array();
         $arrCids = array();
 
-        // Update the subscriptions
-        while ($objRecipient->next()) {
-            /** @var NewsletterChannelModel $objChannel */
-            $objChannel = $objRecipient->getRelated('pid');
+        if (version_compare(VERSION, '4.7', '>=')) {
+            foreach ($arrRelated as $strTable=>$intId)
+            {
+                if ($strTable == 'tl_newsletter_recipients' && ($objRecipient = \NewsletterRecipientsModel::findByPk($intId)))
+                {
+                    $arrAdd[] = $objRecipient->id;
+                    $arrCids[] = $objRecipient->pid;
 
-            $arrAdd[] = $objRecipient->id;
-            $arrCids[] = $objChannel->id;
+                    $objRecipient->tstamp = $time;
+                    $objRecipient->active = '1';
+                    $objRecipient->save();
+                }
+            }
 
-            $objRecipient->active = 1;
-            $objRecipient->token = '';
-            $objRecipient->pid = $objChannel->id;
-            $objRecipient->confirmed = $time;
-            $objRecipient->save();
+            $optInToken->confirm();
+
+        } else {
+            // Update the subscriptions
+            while ($objRecipient->next()) {
+                /** @var NewsletterChannelModel $objChannel */
+                $objChannel = $objRecipient->getRelated('pid');
+
+                $arrAdd[] = $objRecipient->id;
+                $arrCids[] = $objChannel->id;
+
+                $objRecipient->active = 1;
+                $objRecipient->token = '';
+                $objRecipient->pid = $objChannel->id;
+                $objRecipient->confirmed = $time;
+                $objRecipient->save();
+            }
         }
 
         // HOOK: post activation callback
         if (isset($GLOBALS['TL_HOOKS']['activateRecipient']) && \is_array($GLOBALS['TL_HOOKS']['activateRecipient'])) {
             foreach ($GLOBALS['TL_HOOKS']['activateRecipient'] as $callback) {
                 $this->import($callback[0]);
-                $this->{$callback[0]}->{$callback[1]}($objRecipient->email, $arrAdd, $arrCids);
+                $this->{$callback[0]}->{$callback[1]}($strEmail, $arrAdd, $arrCids);
             }
         }
 
-        $this->sendNotification($objRecipient->email, $arrCids);
+        $this->sendNotification($strEmail, $arrCids);
         $this->redirectToJumpToPage();
 
         // Confirm activation

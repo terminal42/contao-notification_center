@@ -12,7 +12,10 @@
 /**
  * Palettes
  */
-$GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,nc_notification,nc_activation_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
+$GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,reg_jumpTo,nc_notification,nc_activation_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
+// Move the "reg_jumpTo" field from the sub palette into the main palette. See #166
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['reg_activate'] = str_replace('reg_jumpTo,', '', $GLOBALS['TL_DCA']['tl_module']['subpalettes']['reg_activate']);
+
 $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPasswordNotificationCenter'] = str_replace('reg_password', 'nc_notification', $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPassword']);
 $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterSubscribeNotificationCenter'] = '{title_legend},name,headline,type;{config_legend},nl_channels,nl_hideChannels,disableCaptcha;{text_legend},nl_text{notification_legend},nc_notification;{redirect_legend},jumpTo;{template_legend:hide},nl_template;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
 $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterActivateNotificationCenter'] = '{title_legend},name,headline,type;{config_legend},nl_channels,nl_hideChannels;{notification_legend},nc_notification;{redirect_legend},jumpTo;{template_legend:hide},customTpl;{protected_legend:hide},protected;{expert_legend:hide},guests,cssID';
