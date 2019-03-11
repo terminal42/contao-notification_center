@@ -130,6 +130,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
 
         $time = time();
         $strToken = md5(uniqid(mt_rand(), true));
+        $arrRelated = [];
 
         // Add the new subscriptions
         foreach ($arrNew as $id) {
@@ -139,10 +140,14 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             $objRecipient->email = $strEmail;
             $objRecipient->active = '';
             $objRecipient->addedOn = $time;
-            $objRecipient->ip = \Environment::get('ip');
-            $objRecipient->token = $strToken;
-            $objRecipient->confirmed = '';
+            if (version_compare(VERSION, '4.7', '<')) {
+                $objRecipient->ip = \Environment::get('ip');
+                $objRecipient->token = $strToken;
+                $objRecipient->confirmed = '';
+            }
             $objRecipient->save();
+
+            $arrRelated['tl_newsletter_recipients'][] = $objRecipient->id;
 
             // Remove the blacklist entry (see #4999)
             if (version_compare(VERSION, '4.1', '>=')
@@ -150,6 +155,12 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             ) {
                 $objBlacklist->delete();
             }
+        }
+
+        if (version_compare(VERSION, '4.7', '>=')) {
+            /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
+            $optIn = \System::getContainer()->get('contao.opt-in');
+            $strToken = $optIn->create('nl-', $strEmail, $arrRelated)->getIdentifier();
         }
 
         $this->sendNotification($strToken, $strEmail, $arrNew);
