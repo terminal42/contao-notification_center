@@ -34,6 +34,14 @@ class ContaoHelper extends \Controller
             return;
         }
 
+        if (version_compare(VERSION, '4.7', '>=')) {
+            /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
+            $optIn      = \Contao\System::getContainer()->get('contao.opt-in');
+            $optInToken = $optIn->create('reg-', $arrData['email'], array('tl_member' => array($arrData['id'])));
+
+            $arrData['activation'] = $optInToken->getIdentifier();
+        }
+
         $arrTokens = array(
             'link' => \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation']
         );
