@@ -87,6 +87,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             }
 
             $strEmail = $objRecipient->email;
+            $objRecipient->reset();
         }
 
         $time = time();
