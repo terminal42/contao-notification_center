@@ -64,6 +64,10 @@ class ModuleNewsletterActivateNotificationCenter extends Module
     {
         // Check the token
         if (version_compare(VERSION, '4.7', '>=')) {
+            if (0 !== strncmp($token, 'nl-', 3)) {
+                return;
+            }
+
             /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
             $optIn = \System::getContainer()->get('contao.opt-in');
 
