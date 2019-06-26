@@ -51,7 +51,7 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 		if (version_compare($contaoVersion, '4.7.0', '>=')) {
 			/** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
 			$optIn = System::getContainer()->get('contao.opt-in');
-			$optInToken = $optIn->create('pw-', $objMember->email, array('tl_member'=>array($objMember->id)));
+			$optInToken = $optIn->create('pw', $objMember->email, array('tl_member'=>array($objMember->id)));
 			$token = $optInToken->getIdentifier();
 		} elseif (version_compare($contaoVersion, '4.4.12', '>=')) {
 			$token = 'PW' . substr($token, 2);
