@@ -160,7 +160,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         if (version_compare(VERSION, '4.7', '>=')) {
             /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
             $optIn = \System::getContainer()->get('contao.opt-in');
-            $strToken = $optIn->create('nl-', $strEmail, $arrRelated)->getIdentifier();
+            $strToken = $optIn->create('nl', $strEmail, $arrRelated)->getIdentifier();
         }
 
         $this->sendNotification($strToken, $strEmail, $arrNew);

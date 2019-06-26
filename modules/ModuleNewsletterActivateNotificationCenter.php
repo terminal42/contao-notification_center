@@ -71,12 +71,40 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
             $optIn = \System::getContainer()->get('contao.opt-in');
 
-            if (!($optInToken = $optIn->find($token)) || $optInToken->isConfirmed() || \count($arrRelated = $optInToken->getRelatedRecords()) < 1)
+            if ((!$optInToken = $optIn->find($token)) || !$optInToken->isValid() || \count($arrRelated = $optInToken->getRelatedRecords()) < 1 || key($arrRelated) != 'tl_newsletter_recipients' || \count($arrIds = current($arrRelated)) < 1)
             {
                 $this->Template->type = 'error';
-                $this->Template->message = $GLOBALS['TL_LANG']['MSC']['accountError'];
+                $this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidToken'];
 
                 return;
+            }
+
+            if ($optInToken->isConfirmed())
+            {
+                $this->Template->type = 'error';
+                $this->Template->message = $GLOBALS['TL_LANG']['MSC']['tokenConfirmed'];
+
+                return;
+            }
+
+            $arrRecipients = array();
+
+            // Validate the token
+            foreach ($arrIds as $intId)
+            {
+                if (!$objRecipient = NewsletterRecipientsModel::findByPk($intId))
+                {
+                    $this->Template->type = 'error';
+                    $this->Template->message = $GLOBALS['TL_LANG']['MSC']['invalidToken'];
+                    return;
+                }
+                if ($optInToken->getEmail() != $objRecipient->email)
+                {
+                    $this->Template->type = 'error';
+                    $this->Template->message = $GLOBALS['TL_LANG']['MSC']['tokenEmailMismatch'];
+                    return;
+                }
+                $arrRecipients[] = $objRecipient;
             }
 
             $strEmail = $optInToken->getEmail();
@@ -99,17 +127,14 @@ class ModuleNewsletterActivateNotificationCenter extends Module
         $arrCids = array();
 
         if (version_compare(VERSION, '4.7', '>=')) {
-            foreach ($arrRelated as $strTable=>$intId)
+            // Activate the subscriptions
+            foreach ($arrRecipients as $objRecipient)
             {
-                if ($strTable == 'tl_newsletter_recipients' && ($objRecipient = \NewsletterRecipientsModel::findByPk($intId)))
-                {
-                    $arrAdd[] = $objRecipient->id;
-                    $arrCids[] = $objRecipient->pid;
-
-                    $objRecipient->tstamp = $time;
-                    $objRecipient->active = '1';
-                    $objRecipient->save();
-                }
+                $arrAdd[] = $objRecipient->id;
+                $arrCids[] = $objRecipient->pid;
+                $objRecipient->tstamp = $time;
+                $objRecipient->active = '1';
+                $objRecipient->save();
             }
 
             $optInToken->confirm();
