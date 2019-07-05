@@ -91,7 +91,12 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
 
         // Set reply-to address
         if ($strReplyTo = $objDraft->getReplyToEmail()) {
-            $objEmail->replyTo($strReplyTo);
+            try {
+                $objEmail->replyTo($strReplyTo);
+            } catch (\Exception $e) {
+                \System::log(sprintf('Could not send email for message ID %s: %s', $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
+                return false;
+            }
         }
 
         // Set email subject

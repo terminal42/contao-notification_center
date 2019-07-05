@@ -73,11 +73,7 @@ class StringUtil
         }
 
         foreach (trimsplit(',', $strAttachmentTokens) as $strToken) {
-            if (version_compare(VERSION . '.' . BUILD, '3.5.1', '<')) {
-                $strParsedToken = \String::parseSimpleTokens($strToken, $arrTokens);
-            } else {
-                $strParsedToken = \StringUtil::parseSimpleTokens($strToken, $arrTokens);
-            }
+            $strParsedToken = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strToken, $arrTokens);
 
             foreach (trimsplit(',', $strParsedToken) as $strFile) {
                 $strFileFull = TL_ROOT . '/' . $strFile;
