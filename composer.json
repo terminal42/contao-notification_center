@@ -10,6 +10,10 @@
             "homepage":"http://terminal42.ch"
         }
     ],
+    "support": {
+        "issues": "https://github.com/terminal42/contao-notification_center/issues",
+        "source": "https://github.com/terminal42/contao-notification_center"
+    },
     "require":{
         "php":">=5.4",
         "contao/core-bundle":"~3.2 || ~4.1",
