@@ -103,7 +103,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_language.email_subject.0">
         <source>Subject</source>
-        <target>Subject</target>
+        <target>Betreff</target>
         
       </trans-unit>
       <trans-unit id="tl_nc_language.email_subject.1">
@@ -263,7 +263,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_language.attachments_legend">
         <source>Attachments</source>
-        <target>Attachments</target>
+        <target>Anhänge</target>
         
       </trans-unit>
       <trans-unit id="tl_nc_language.meta_legend">
