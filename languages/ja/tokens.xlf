@@ -1,0 +1,61 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2018-10-17T16:46:52+02:00" original="tokens" source-language="en" target-language="ja">
+    <body>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.admin_email">
+        <source>E-mail address of administrator of the current page.</source>
+        <target>現在のページの管理者の電子メールアドレスです。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.form_*">
+        <source>All the form fields.</source>
+        <target>すべてのフォームの項目です。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.formlabel_*">
+        <source>All the form field labels.</source>
+        <target>すべてのフォームの項目のラベルです。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.raw_data">
+        <source>All the form fields and their raw values.</source>
+        <target>すべてのフォームの項目のそのままの値です。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.admin_email">
+        <source>E-mail address of administrator of the current page.</source>
+        <target>現在のページの管理者の電子メールアドレスです。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.recipients">
+        <source>E-mail address of the member.</source>
+        <target>メンバーの電子メールアドレスです。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.domain">
+        <source>The current domain.</source>
+        <target>現在のドメインです。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.member_*">
+        <source>Current member fields as submitted by the form. Use {{user::*}} insert tags if you need other properties.</source>
+        <target>フォームを提出した現在のメンバーの項目です。他の特性が必要な場合は{{user::*}}の挿入タグを使用してください。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.member_old_*">
+        <source>Member fields as they were before the changes.</source>
+        <target>変更する前のメンバーの項目です。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.changed_*">
+        <source>Flag (1 or 0) if a field has changed, to be used with if-conditions.</source>
+        <target>項目の変更の有無を示す(1または0)のフラッグで、ifの条件式で使用します。</target>
+        
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.template">
+        <source>Output of template &quot;%s&quot;</source>
+        <target>テンプレート&quot;%s&quot;の出力</target>
+        
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
