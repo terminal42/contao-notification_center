@@ -1,0 +1,81 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2018-10-22T10:57:28+02:00" original="modules" source-language="en" target-language="ja">
+    <body>
+      <trans-unit id="MOD.notification_center">
+        <source>Notification Center</source>
+        <target>通知センター</target>
+        
+      </trans-unit>
+      <trans-unit id="MOD.nc_notifications.0">
+        <source>Notifications</source>
+        <target>通知</target>
+        
+      </trans-unit>
+      <trans-unit id="MOD.nc_notifications.1">
+        <source>Manage notifications.</source>
+        <target>通知を管理</target>
+        
+      </trans-unit>
+      <trans-unit id="MOD.nc_queue.0">
+        <source>Queue</source>
+        <target>キュー</target>
+        
+      </trans-unit>
+      <trans-unit id="MOD.nc_queue.1">
+        <source>View the message queue.</source>
+        <target>メッセージキューを表示</target>
+        
+      </trans-unit>
+      <trans-unit id="MOD.nc_gateways.0">
+        <source>Gateways</source>
+        <target>ゲートウェイ</target>
+        
+      </trans-unit>
+      <trans-unit id="MOD.nc_gateways.1">
+        <source>Manage gateways</source>
+        <target>ゲートウェイを管理</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.0">
+        <source>Lost password (Notification Center)</source>
+        <target>パスワード忘れ(通知センター)</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.1">
+        <source>Generates a form to request a new password and sends the notification using the notification center.</source>
+        <target>通知センターを使用して新しいパスワードの要求と通知の送信を行うフォームを生成します。</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.0">
+        <source>Subscribe (Notification Center)</source>
+        <target>登録の申し込み(通知センター)</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.1">
+        <source>Generates a form to subscribe to one or more channels and sends the notification using the notification center.</source>
+        <target>通知センターを使用して1つ以上のチャネルの登録と通知の送信を行うフォームを生成します。</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.newsletterActivateNotificationCenter.0">
+        <source>Activate (Notification Center)</source>
+        <target>アクティベーション(通知センター)</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.newsletterActivateNotificationCenter.1">
+        <source>Generates a form to activate subscription to one or more channels the notification using the notification center.</source>
+        <target>通知センターを使用して1つ以上のチャネルのアクティベーションと通知の送信を行うフォームを生成します。</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.0">
+        <source>Unsubscribe (Notification Center)</source>
+        <target>解除の申し込み(通知センター)</target>
+        
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.1">
+        <source>Generates a form to unsubscribe from one or more channels and sends the notification using the notification center.</source>
+        <target>通知センターを使用して1つ以上のチャネルの登録の解除と通知の送信を行うフォームを生成します。</target>
+        
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

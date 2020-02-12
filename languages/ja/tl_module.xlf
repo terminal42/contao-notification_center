@@ -1,0 +1,31 @@
+<?xml version="1.0" ?><xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file datatype="php" date="2018-10-22T10:57:28+02:00" original="tl_module" source-language="en" target-language="ja">
+    <body>
+      <trans-unit id="tl_module.nc_notification.0">
+        <source>Notification</source>
+        <target>通知</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_module.nc_notification.1">
+        <source>Please select a notification.</source>
+        <target>通知を選択してください。</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_module.nc_activation_notification.0">
+        <source>Activation notification</source>
+        <target>アクティベーションの通知</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_module.nc_activation_notification.1">
+        <source>Please select an activation notification.</source>
+        <target>アクティベーションの通知を選択してください。</target>
+        
+      </trans-unit>
+      <trans-unit id="tl_module.notification_legend">
+        <source>Notification</source>
+        <target>通知</target>
+        
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
