@@ -40,7 +40,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
 Extension developers most likely want to send a single notification identified by ID,:
 
 ```php
-$objNotification = NotificationCenter\Model\Notification::findByPk($intNotificationId);
+$objNotification = \NotificationCenter\Model\Notification::findByPk($intNotificationId);
 if (null !== $objNotification) {
     $objNotification->send($arrTokens, $strLanguage); // Language is optional
 }
@@ -50,7 +50,7 @@ If you want to send all notifications of a certain type, you can send it like th
 
 ```php
 $strType = 'iso_order_status_change';
-$objNotificationCollection = NotificationCenter\Model\Notification::findByType($strType);
+$objNotificationCollection = \NotificationCenter\Model\Notification::findByType($strType);
 if (null !== $objNotificationCollection) {
     while ($objNotificationCollection->next()) {
         $objNotification = $objNotificationCollection->current();
