@@ -11,6 +11,7 @@
 namespace Contao;
 
 use NotificationCenter\Model\Notification;
+use Contao\MemberModel;
 
 class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 {
@@ -128,8 +129,12 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
     {
         // Remove the subscriptions
         if (($objRemove = \NewsletterRecipientsModel::findByEmailAndPids($strEmail, $arrRemove)) !== null) {
-            while ($objRemove->next()) {
-                $strHash = md5($objRemove->email);
+
+                while ($objRemove->next()) {
+
+	                $pid = $objRemove->pid;
+
+                  $strHash = md5($objRemove->email);
 
                 // Add a blacklist entry (see #4999)
                 if (version_compare(VERSION, '4.1', '>=')
@@ -142,8 +147,21 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
                 }
 
                 $objRemove->delete();
+
+								$objMember = MemberModel::findOneByEmail($strEmail);
+								$strNewsletter_uns = unserialize($objMember->newsletter);
+								if ($strNewsletter_uns)
+                {
+                  $key = array_search($pid, $strNewsletter_uns);
+									if (false !== $key)
+									{
+										unset($strNewsletter_uns[$key]);
+										$objMember->newsletter = serialize($strNewsletter_uns);
+										$objMember->save();
+									}	
+								}
             }
-        }
+          }
 
         // HOOK: post unsubscribe callback
         if (isset($GLOBALS['TL_HOOKS']['removeRecipient']) && \is_array($GLOBALS['TL_HOOKS']['removeRecipient'])) {
