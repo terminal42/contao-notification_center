@@ -11,6 +11,7 @@
 namespace Contao;
 
 use NotificationCenter\Model\Notification;
+use Contao\MemberModel;
 
 class ModuleNewsletterActivateNotificationCenter extends Module
 {
@@ -132,9 +133,32 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             {
                 $arrAdd[] = $objRecipient->id;
                 $arrCids[] = $objRecipient->pid;
+                
+                $pid = $objRecipient->pid;
+                
                 $objRecipient->tstamp = $time;
                 $objRecipient->active = '1';
                 $objRecipient->save();
+                
+				        $objMember = MemberModel::findOneByEmail($objRecipient->email);
+								$newsletter = $objMember->newsletter;
+				        $strNewsletter_uns = unserialize($newsletter);
+								if ($strNewsletter_uns)
+								{
+									if (!in_array($pid, $strNewsletter_uns))
+									{
+										$strNewsletter_uns[] = $pid;
+										$objMember->newsletter = serialize($strNewsletter_uns);
+										$objMember->save();
+									}
+								}
+								else
+								{
+										$strNewsletter_uns[] = $pid;
+										$objMember->newsletter = serialize($strNewsletter_uns);
+										$objMember->save();
+								}
+                
             }
 
             $optInToken->confirm();
