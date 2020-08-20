@@ -10,7 +10,9 @@
 
 namespace NotificationCenter\Model;
 
-class Notification extends \Model
+use Contao\Model;
+
+class Notification extends Model
 {
 
     /**
