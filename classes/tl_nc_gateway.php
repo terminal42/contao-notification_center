@@ -10,6 +10,7 @@
 
 namespace NotificationCenter;
 
+use Haste\Dca\PaletteManipulator;
 use NotificationCenter\Gateway\LabelCallbackInterface;
 use NotificationCenter\Model\Gateway;
 
@@ -21,6 +22,39 @@ class tl_nc_gateway extends \Backend
     public function loadSettingsLanguageFile()
     {
         \System::loadLanguageFile('tl_settings');
+    }
+
+    public function loadPalette($dc)
+    {
+        $paletteManipulator = PaletteManipulator::create();
+
+        $paletteManipulator->addLegend('gateway_legend', 'title_legend');
+
+        // Add the "email_overrideSmtp" field in Contao <4.10
+        if (version_compare(VERSION, '4.10', '<')) {
+            $paletteManipulator
+                ->addField('email_overrideSmtp', 'gateway_legend', PaletteManipulator::POSITION_APPEND)
+                ->applyToPalette('email', 'tl_nc_gateway')
+            ;
+            return;
+        }
+
+        // Show the legacy field "email_overrideSmtp" as long as it is configured
+        $gatewayModel = Gateway::findByPk($dc->id);
+        if (null !== $gatewayModel && 'email' === $gatewayModel->type && $gatewayModel->email_overrideSmtp) {
+            $paletteManipulator
+                ->addField('email_overrideSmtp', 'gateway_legend', PaletteManipulator::POSITION_APPEND)
+                ->addField('mailerTransport', 'gateway_legend', PaletteManipulator::POSITION_APPEND)
+                ->applyToPalette('email', 'tl_nc_gateway')
+            ;
+            return;
+        }
+
+        // Just show the "mailerTransport" field instead of the "email_overrideSmtp"
+        $paletteManipulator
+            ->addField('mailerTransport', 'gateway_legend', PaletteManipulator::POSITION_APPEND)
+            ->applyToPalette('email', 'tl_nc_gateway')
+        ;
     }
 
     /**

@@ -194,7 +194,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['attachment_templates'],
             'exclude'                 => true,
             'inputType'               => 'fileTree',
-            'eval'                    => array('multiple'=>true, 'fieldType'=>'checkbox', 'files'=>true, 'filesOnly'=>true, 'tl_class'=>'clr', 'extensions'=>'xml,txt'),
+            'eval'                    => array('multiple'=>true, 'fieldType'=>'checkbox', 'files'=>true, 'filesOnly'=>true, 'tl_class'=>'clr', 'extensions'=>'xml,txt,json'),
             'sql'                     => "blob NULL"
         ),
         'email_sender_name' => array

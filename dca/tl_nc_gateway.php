@@ -21,7 +21,8 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         'enableVersioning'            => true,
         'onload_callback' => array
         (
-            array('NotificationCenter\tl_nc_gateway', 'loadSettingsLanguageFile')
+            array('NotificationCenter\tl_nc_gateway', 'loadSettingsLanguageFile'),
+            array('NotificationCenter\tl_nc_gateway', 'loadPalette')
         ),
         'onsubmit_callback' => array
         (
@@ -98,7 +99,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
         '__selector__'                => array('type', 'queue_cronEnable', 'email', 'email_overrideSmtp', 'file_connection'),
         'default'                     => '{title_legend},title,type',
         'queue'                       => '{title_legend},title,type;{gateway_legend},queue_targetGateway,queue_delay;{cronjob_legend},queue_cronExplanation,queue_cronEnable',
-        'email'                       => '{title_legend},title,type;{gateway_legend},email_overrideSmtp,',
+        'email'                       => '{title_legend},title,type',
         'file'                        => '{title_legend},title,type;{gateway_legend},file_type,file_connection',
         'postmark'                    => '{title_legend},title,type;{gateway_legend},postmark_key,postmark_test,postmark_ssl',
     ),
@@ -250,6 +251,14 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'inputType'               => 'text',
             'eval'                    => array('mandatory'=>true, 'rgxp'=>'digit', 'nospace'=>true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(16) NOT NULL default ''"
+        ),
+        'mailerTransport' => array
+        (
+            'exclude'                 => true,
+            'inputType'               => 'select',
+            'eval'                    => array('tl_class'=>'w50', 'includeBlankOption'=>true),
+            'options_callback'        => array(\Contao\CoreBundle\Mailer\AvailableTransports::class, 'getTransportOptions'),
+            'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'file_type' => array
         (

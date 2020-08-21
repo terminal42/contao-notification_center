@@ -58,6 +58,14 @@
         <source>This gateway will take the Contao e-mail settings by default. If you want to override the SMTP settings for this specific gateway, activate this checkbox.</source>
         <target>This gateway will take the Contao e-mail settings by default. If you want to override the SMTP settings for this specific gateway, activate this checkbox.</target>
       </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.0">
+        <source>Mailer transport</source>
+        <target>Mailer transport</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.1">
+        <source>Here you can override the mailer transport used to send e-mails.</source>
+        <target>Here you can override the mailer transport used to send e-mails.</target>
+      </trans-unit>
       <trans-unit id="tl_nc_gateway.file_type.0">
         <source>File type</source>
         <target>File type</target>
