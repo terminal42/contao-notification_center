@@ -48,11 +48,17 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         return new EmailMessageDraft($objMessage, $objLanguage, $arrTokens);
     }
 
-    /**
-     * @param EmailMessageDraft $objDraft
-     */
-    public function sendDraft(EmailMessageDraft $objDraft)
+    private function instantiateEmail()
     {
+        if (version_compare(VERSION, '4.10', '>=')) {
+            $objEmail = new \Email();
+            if ($this->objModel->mailerTransport) {
+                $objEmail->addHeader('X-Transport', $this->objModel->mailerTransport);
+            }
+
+            return $objEmail;
+        }
+
         // Override SMTP settings if desired
         if (version_compare(VERSION, '4.4', '>=') && $this->objModel->email_overrideSmtp) {
             if (method_exists(\Swift_SmtpTransport::class, 'newInstance')) {
@@ -71,12 +77,22 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
                 $transport->setUsername($this->objModel->email_smtpUser)->setPassword($this->objModel->email_smtpPass);
             }
 
-            $objEmail = new \Email(new \Swift_Mailer($transport));
-        } else {
-            $this->overrideSMTPSettings();
-            $objEmail = new \Email();
-            $this->resetSMTPSettings();
+            return new \Email(new \Swift_Mailer($transport));
         }
+
+        $this->overrideSMTPSettings();
+        $objEmail = new \Email();
+        $this->resetSMTPSettings();
+
+        return $objEmail;
+    }
+
+    /**
+     * @param EmailMessageDraft $objDraft
+     */
+    public function sendDraft(EmailMessageDraft $objDraft)
+    {
+        $objEmail = $this->instantiateEmail();
 
         // Set priority
         $objEmail->priority = $objDraft->getPriority();

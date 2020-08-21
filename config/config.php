@@ -81,6 +81,7 @@ $GLOBALS['TL_HOOKS']['createNewUser'][]         = array('NotificationCenter\Cont
 $GLOBALS['TL_HOOKS']['updatePersonalData'][]    = array('NotificationCenter\ContaoHelper', 'sendPersonalDataEmail');
 $GLOBALS['TL_HOOKS']['getUserNavigation'][]     = array('NotificationCenter\ContaoHelper', 'addQueueToUserNavigation');
 $GLOBALS['TL_HOOKS']['activateAccount'][]       = array('NotificationCenter\ContaoHelper', 'sendActivationEmail');
+$GLOBALS['TL_HOOKS']['getSystemMessages'][]     = array('NotificationCenter\ContaoHelper', 'alertLegacySmtpSetting');
 
 /**
  * Queue manager

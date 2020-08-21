@@ -11,6 +11,8 @@
 namespace NotificationCenter;
 
 
+use NotificationCenter\Model\Gateway;
+
 class ContaoHelper extends \Controller
 {
     /**
@@ -165,5 +167,26 @@ class ContaoHelper extends \Controller
         }
 
         return $arrModules;
+    }
+
+    /**
+     * Show a warning if legacy SMTP settings are defined in Contao 4.10.
+     * Hook: getSystemMessages
+     */
+    public function alertLegacySmtpSetting()
+    {
+        if (version_compare(VERSION, '4.10', '<') && $this->objModel->email_overrideSmtp) {
+            return '';
+        }
+
+        $legacyGateways = Gateway::findBy(["type='email'", "email_overrideSmtp='1'"], []);
+        if (null === $legacyGateways) {
+            return '';
+        }
+
+        return sprintf(
+            '<p class="tl_error">%s</p>',
+            $GLOBALS['TL_LANG']['MSC']['notification_center']['warn_legacy_smtp']
+        );
     }
 }
