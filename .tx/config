@@ -2,6 +2,11 @@
 host = https://www.transifex.com
 type = XLIFF
 
+[notification_center.master-notification_center-default]
+file_filter = languages/<lang>/default.xlf
+source_file = languages/en/default.xlf
+source_lang = en
+
 [notification_center.master-notification_center-modules]
 file_filter = languages/<lang>/modules.xlf
 source_file = languages/en/modules.xlf
