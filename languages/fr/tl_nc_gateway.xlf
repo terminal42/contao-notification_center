@@ -63,6 +63,14 @@
         <target>Cette passerelle utilisera les paramètres de courrier électronique par défaut de Contao. Cocher pour surcharger les paramètres SMTP de cette passerelle.</target>
         
       </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.0">
+        <source>Mailer transport</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.1">
+        <source>Here you can override the mailer transport used to send e-mails.</source>
+        
+      </trans-unit>
       <trans-unit id="tl_nc_gateway.file_type.0">
         <source>File type</source>
         <target>Type de fichier</target>

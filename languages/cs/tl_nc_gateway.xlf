@@ -71,6 +71,14 @@
         <target>Tento druh rozesílání převezme výchozí nastavení rozesílání mailů. Pokud si přejete použít jiná nastavení SMTP pro tento druh, zaškrtněte toto políčko.</target>
         
       </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.0">
+        <source>Mailer transport</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.1">
+        <source>Here you can override the mailer transport used to send e-mails.</source>
+        
+      </trans-unit>
       <trans-unit id="tl_nc_gateway.file_type.0">
         <source>File type</source>
         <target>Druh souboru</target>
