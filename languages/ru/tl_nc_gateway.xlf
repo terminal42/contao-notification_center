@@ -69,6 +69,14 @@
         <target>Этот шлюз будет использовать параметры электронной почты Contao по умолчанию. Если вы хотите переопределить параметры SMTP для конкретного шлюза, активируйте этот чекбокс.</target>
         
       </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.0">
+        <source>Mailer transport</source>
+        
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.1">
+        <source>Here you can override the mailer transport used to send e-mails.</source>
+        
+      </trans-unit>
       <trans-unit id="tl_nc_gateway.file_type.0">
         <source>File type</source>
         <target>Тип файла</target>

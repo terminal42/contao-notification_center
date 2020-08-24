@@ -175,7 +175,7 @@ class ContaoHelper extends \Controller
      */
     public function alertLegacySmtpSetting()
     {
-        if (version_compare(VERSION, '4.10', '<') && $this->objModel->email_overrideSmtp) {
+        if (version_compare(VERSION, '4.10', '<')) {
             return '';
         }
 
