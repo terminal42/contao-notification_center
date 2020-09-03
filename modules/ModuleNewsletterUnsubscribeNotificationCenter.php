@@ -132,7 +132,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 
                 while ($objRemove->next()) {
 
-	                $pid = $objRemove->pid;
+                  $pid = $objRemove->pid;
 
                   $strHash = md5($objRemove->email);
 
@@ -148,99 +148,99 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 
                 $objRemove->delete();
 
-								$objMember = MemberModel::findOneByEmail($strEmail);
-								$strNewsletter_uns = unserialize($objMember->newsletter);
-								if ($strNewsletter_uns)
+                $objMember = MemberModel::findOneByEmail($strEmail);
+                $strNewsletter_uns = unserialize($objMember->newsletter);
+                if ($strNewsletter_uns)
                 {
                   $key = array_search($pid, $strNewsletter_uns);
-									if (false !== $key)
-									{
-										unset($strNewsletter_uns[$key]);
-										$objMember->newsletter = serialize($strNewsletter_uns);
-										$objMember->save();
-									}	
-								}
-            }
-          }
+                  if (false !== $key)
+                  {
+                    unset($strNewsletter_uns[$key]);
+                    $objMember->newsletter = serialize($strNewsletter_uns);
+                    $objMember->save();
+                  }	
+                }
+                            }
+                          }
 
-        // HOOK: post unsubscribe callback
-        if (isset($GLOBALS['TL_HOOKS']['removeRecipient']) && \is_array($GLOBALS['TL_HOOKS']['removeRecipient'])) {
-            foreach ($GLOBALS['TL_HOOKS']['removeRecipient'] as $callback) {
-                $this->import($callback[0]);
-                $this->{$callback[0]}->{$callback[1]}($strEmail, $arrRemove);
-            }
-        }
+                        // HOOK: post unsubscribe callback
+                        if (isset($GLOBALS['TL_HOOKS']['removeRecipient']) && \is_array($GLOBALS['TL_HOOKS']['removeRecipient'])) {
+                            foreach ($GLOBALS['TL_HOOKS']['removeRecipient'] as $callback) {
+                                $this->import($callback[0]);
+                                $this->{$callback[0]}->{$callback[1]}($strEmail, $arrRemove);
+                            }
+                        }
 
-        $this->sendNotification($strEmail, $arrRemove);
-        $this->redirectToJumpToPage();
+                        $this->sendNotification($strEmail, $arrRemove);
+                        $this->redirectToJumpToPage();
 
-        if (version_compare(VERSION, '4.1', '>=')) {
-            \System::getContainer()
-                   ->get('session')
-                   ->getFlashBag()
-                   ->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed'])
-            ;
-        } else {
-            $_SESSION['UNSUBSCRIBE_CONFIRM'] = $GLOBALS['TL_LANG']['MSC']['nl_removed'];
-        }
+                        if (version_compare(VERSION, '4.1', '>=')) {
+                            \System::getContainer()
+                                   ->get('session')
+                                   ->getFlashBag()
+                                   ->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed'])
+                            ;
+                        } else {
+                            $_SESSION['UNSUBSCRIBE_CONFIRM'] = $GLOBALS['TL_LANG']['MSC']['nl_removed'];
+                        }
 
-        $this->reload();
-    }
+                        $this->reload();
+                    }
 
-    protected function compileConfirmationMessage()
-    {
-        if (version_compare(VERSION, '4.1', '>=')) {
-            $session = \System::getContainer()->get('session');
-            $flashBag = $session->getFlashBag();
+                    protected function compileConfirmationMessage()
+                    {
+                        if (version_compare(VERSION, '4.1', '>=')) {
+                            $session = \System::getContainer()->get('session');
+                            $flashBag = $session->getFlashBag();
 
-            // Confirmation message
-            if ($session->isStarted() && $flashBag->has('nl_removed')) {
-                $arrMessages = $flashBag->get('nl_removed');
+                            // Confirmation message
+                            if ($session->isStarted() && $flashBag->has('nl_removed')) {
+                                $arrMessages = $flashBag->get('nl_removed');
 
-                $this->Template->mclass = 'confirm';
-                $this->Template->message = $arrMessages[0];
-            }
+                                $this->Template->mclass = 'confirm';
+                                $this->Template->message = $arrMessages[0];
+                            }
 
-            return;
-        }
+                            return;
+                        }
 
-        // Error message
-        if (strlen($_SESSION['UNSUBSCRIBE_ERROR'])) {
-            $this->Template->mclass = 'error';
-            $this->Template->message = $_SESSION['UNSUBSCRIBE_ERROR'];
-            $_SESSION['UNSUBSCRIBE_ERROR'] = '';
-        }
+                        // Error message
+                        if (strlen($_SESSION['UNSUBSCRIBE_ERROR'])) {
+                            $this->Template->mclass = 'error';
+                            $this->Template->message = $_SESSION['UNSUBSCRIBE_ERROR'];
+                            $_SESSION['UNSUBSCRIBE_ERROR'] = '';
+                        }
 
-        // Confirmation message
-        if (strlen($_SESSION['UNSUBSCRIBE_CONFIRM'])) {
-            $this->Template->mclass = 'confirm';
-            $this->Template->message = $_SESSION['UNSUBSCRIBE_CONFIRM'];
-            $_SESSION['UNSUBSCRIBE_CONFIRM'] = '';
-        }
-    }
+                        // Confirmation message
+                        if (strlen($_SESSION['UNSUBSCRIBE_CONFIRM'])) {
+                            $this->Template->mclass = 'confirm';
+                            $this->Template->message = $_SESSION['UNSUBSCRIBE_CONFIRM'];
+                            $_SESSION['UNSUBSCRIBE_CONFIRM'] = '';
+                        }
+                    }
 
-    protected function sendNotification($strEmail, array $arrRemove)
-    {
-        $objNotification = Notification::findByPk($this->nc_notification);
-        if (!$objNotification) {
-            return;
-        }
+                    protected function sendNotification($strEmail, array $arrRemove)
+                    {
+                        $objNotification = Notification::findByPk($this->nc_notification);
+                        if (!$objNotification) {
+                            return;
+                        }
 
-        // Get the channels
-        $objChannels = \NewsletterChannelModel::findByIds($arrRemove);
-        $arrChannels = $objChannels ? $objChannels->fetchEach('title') : [];
+                        // Get the channels
+                        $objChannels = \NewsletterChannelModel::findByIds($arrRemove);
+                        $arrChannels = $objChannels ? $objChannels->fetchEach('title') : [];
 
-        // Prepare the simple token data
-        $arrData = array();
-        $arrData['recipient_email'] = $strEmail;
-        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
-        $arrData['channels'] = implode(', ', $arrChannels);
-        $arrData['channel_ids'] = implode(', ', $arrRemove);
-        $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
-        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
-        $arrData['text'] = $this->nl_unsubscribe;
+                        // Prepare the simple token data
+                        $arrData = array();
+                        $arrData['recipient_email'] = $strEmail;
+                        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
+                        $arrData['channels'] = implode(', ', $arrChannels);
+                        $arrData['channel_ids'] = implode(', ', $arrRemove);
+                        $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
+                        $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
+                        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
+                        $arrData['text'] = $this->nl_unsubscribe;
 
-        $objNotification->send($arrData);
-    }
+                        $objNotification->send($arrData);
+                    }
 }
