@@ -140,26 +140,26 @@ class ModuleNewsletterActivateNotificationCenter extends Module
                 $objRecipient->active = '1';
                 $objRecipient->save();
                 
-				        $objMember = MemberModel::findOneByEmail($objRecipient->email);
-								$newsletter = $objMember->newsletter;
-				        $strNewsletter_uns = unserialize($newsletter);
-								if ($strNewsletter_uns)
-								{
-									if (!in_array($pid, $strNewsletter_uns))
-									{
-										$strNewsletter_uns[] = $pid;
-										$objMember->newsletter = serialize($strNewsletter_uns);
-										$objMember->save();
-									}
-								}
-								else
-								{
-										$strNewsletter_uns[] = $pid;
-										$objMember->newsletter = serialize($strNewsletter_uns);
-										$objMember->save();
-								}
-                
-            }
+		$objMember = MemberModel::findOneByEmail($objRecipient->email);
+		$newsletter = $objMember->newsletter;
+		$strNewsletter_uns = unserialize($newsletter);
+		if ($strNewsletter_uns)
+		{
+			if (!in_array($pid, $strNewsletter_uns))
+			{
+				$strNewsletter_uns[] = $pid;
+				$objMember->newsletter = serialize($strNewsletter_uns);
+				$objMember->save();
+			}
+		}
+		else
+		{
+			$strNewsletter_uns[] = $pid;
+			$objMember->newsletter = serialize($strNewsletter_uns);
+			$objMember->save();
+		}
+
+	}
 
             $optInToken->confirm();
 
