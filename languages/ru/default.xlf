@@ -3,6 +3,7 @@
     <body>
       <trans-unit id="MSC.notification_center.warn_legacy_smtp">
         <source>[Notification Center]: Using custom SMTP settings has been changed in Contao 4.10. Please visit &lt;a href=&quot;https://docs.contao.org/manual/en/system/settings/#different-e-mail-configurations-and-sender-addresses&quot;&gt;the documentation&lt;/a&gt; to learn how to define SMTP settings. Then, please update all email gateways that need this feature and disable &quot;Override SMTP settings&quot;.</source>
+        <target>[Центр уведомлений]: Использование пользовательских настроек SMTP было изменено в Contao 4.10. Пожалуйста, посетите &lt;a href=&quot;https://docs.contao.org/manual/en/system/settings/#different-e-mail-configurations-and-sender-addresses&quot;&gt;документация&lt;/a&gt; чтобы узнать, как определить настройки SMTP. Затем обновите все шлюзы электронной почты, которым нужна эта функция, и отключите параметр &quot;Переопределить настройки SMTP&quot;.</target>
       </trans-unit>
     </body>
   </file>

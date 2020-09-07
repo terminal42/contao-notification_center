@@ -71,10 +71,12 @@
       </trans-unit>
       <trans-unit id="tl_nc_gateway.mailerTransport.0">
         <source>Mailer transport</source>
+        <target>Почтовый транспорт</target>
         
       </trans-unit>
       <trans-unit id="tl_nc_gateway.mailerTransport.1">
         <source>Here you can override the mailer transport used to send e-mails.</source>
+        <target>Вы можете переопределить почтовый транспорт, используемый для отправки электронной почты.</target>
         
       </trans-unit>
       <trans-unit id="tl_nc_gateway.file_type.0">
