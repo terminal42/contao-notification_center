@@ -36,13 +36,6 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             return $objTemplate->parse();
         }
 
-        $this->nl_channels = deserialize($this->nl_channels);
-
-        // Return if there are no channels
-        if (empty($this->nl_channels) || !\is_array($this->nl_channels)) {
-            return '';
-        }
-
         if (!\Input::get('token')) {
             return '';
         }
