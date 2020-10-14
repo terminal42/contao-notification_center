@@ -71,7 +71,7 @@ class Message extends \Model
 
         // Switch to the language of the notification
         $currentLanguage = $GLOBALS['TL_LANGUAGE'];
-        $this->switchFrameworkLanguage($objLanguage->language);
+        $this->setFrameworkLanguage($objLanguage->language);
 
         $objGateway = $objGatewayModel->getGateway();
 
@@ -90,16 +90,14 @@ class Message extends \Model
 
             $return = $objGateway->sendDraft($objDraft);
 
-            // Switch back to the current language
-            $this->switchFrameworkLanguage($currentLanguage);
+            $this->setFrameworkLanguage($currentLanguage);
 
             return $return;
         }
 
         $return = $objGateway->send($this, $cpTokens, $cpLanguage);
 
-        // Switch back to the current language
-        $this->switchFrameworkLanguage($currentLanguage);
+        $this->setFrameworkLanguage($currentLanguage);
 
         return $return;
     }
@@ -122,7 +120,7 @@ class Message extends \Model
     /**
      * @param string $language
      */
-    private function switchFrameworkLanguage($language)
+    private function setFrameworkLanguage($language)
     {
         $GLOBALS['TL_LANGUAGE'] = $language;
         if (version_compare(VERSION, '4.4', '>=')) {
