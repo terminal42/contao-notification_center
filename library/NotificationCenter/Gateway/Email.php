@@ -178,6 +178,12 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
      */
     public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
+        // Switch to the language of the notification
+        $GLOBALS['TL_LANGUAGE'] = $this->getLanguage();
+        if (version_compare(VERSION, '4.4', '>=')) {
+            \Contao\System::getContainer()->get('translator')->setLocale($this->getLanguage());
+        }
+
         /**
          * @var $objDraft \NotificationCenter\MessageDraft\EmailMessageDraft
          */

@@ -165,18 +165,6 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getHtmlBody()
     {
         if ($this->objLanguage->email_mode == 'textAndHtml') {
-            // Switch the email template language for the notification
-            if ($GLOBALS['TL_LANGUAGE'] !== $this->getLanguage()) {
-                $GLOBALS['TL_LANGUAGE'] = $this->getLanguage();
-            }
-            if (interface_exists(\Symfony\Contracts\Translation\TranslatorInterface::class)
-                || interface_exists(\Symfony\Component\Translation\TranslatorInterface::class)) {
-                $translator = \Contao\System::getContainer()->get('translator');
-                if ($translator->getLocale() !== $this->getLanguage()) {
-                    $translator->setLocale($this->getLanguage());
-                }
-            }
-
             $objTemplate          = new \FrontendTemplate($this->objMessage->email_template);
             $objTemplate->body    = $this->objLanguage->email_html;
             $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
