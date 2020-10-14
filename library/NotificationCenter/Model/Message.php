@@ -62,6 +62,19 @@ class Message extends \Model
             }
         }
 
+        $cpLanguage = $cpLanguage === '' ? $GLOBALS['TL_LANGUAGE'] : $cpLanguage;
+        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $strLanguage)) === null) {
+            \Contao\System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $this->id, $cpLanguage), __METHOD__, TL_ERROR);
+
+            return false;
+        }
+
+        // Switch to the language of the notification
+        $GLOBALS['TL_LANGUAGE'] = $objLanguage->language;
+        if (version_compare(VERSION, '4.4', '>=')) {
+            \Contao\System::getContainer()->get('translator')->setLocale($objLanguage->language);
+        }
+
         $objGateway = $objGatewayModel->getGateway();
 
         // Send the draft with updated attachments (likely originating from queue)
