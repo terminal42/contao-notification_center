@@ -70,10 +70,8 @@ class Message extends \Model
         }
 
         // Switch to the language of the notification
-        $GLOBALS['TL_LANGUAGE'] = $objLanguage->language;
-        if (version_compare(VERSION, '4.4', '>=')) {
-            \Contao\System::getContainer()->get('translator')->setLocale($objLanguage->language);
-        }
+        $currentLanguage = $GLOBALS['TL_LANGUAGE'];
+        $this->switchFrameworkLanguage($objLanguage->language);
 
         $objGateway = $objGatewayModel->getGateway();
 
@@ -93,7 +91,12 @@ class Message extends \Model
             return $objGateway->sendDraft($objDraft);
         }
 
-        return $objGateway->send($this, $cpTokens, $cpLanguage);
+        $return = $objGateway->send($this, $cpTokens, $cpLanguage);
+
+        // Switch back to the current language
+        $this->switchFrameworkLanguage($currentLanguage);
+
+        return $return;
     }
 
     /**
@@ -109,5 +112,16 @@ class Message extends \Model
         $arrValues  = array($objNotification->id);
 
         return static::findBy($arrColumns, $arrValues, $arrOptions);
+    }
+
+    /**
+     * @param string $language
+     */
+    private function switchFrameworkLanguage($language)
+    {
+        $GLOBALS['TL_LANGUAGE'] = $language;
+        if (version_compare(VERSION, '4.4', '>=')) {
+            \Contao\System::getContainer()->get('translator')->setLocale($language);
+        }
     }
 }
