@@ -88,7 +88,12 @@ class Message extends \Model
 
             $objDraft->setAttachments($arrAttachments);
 
-            return $objGateway->sendDraft($objDraft);
+            $return = $objGateway->sendDraft($objDraft);
+
+            // Switch back to the current language
+            $this->switchFrameworkLanguage($currentLanguage);
+
+            return $return;
         }
 
         $return = $objGateway->send($this, $cpTokens, $cpLanguage);
