@@ -122,6 +122,10 @@ class Message extends \Model
      */
     private function setFrameworkLanguage($language)
     {
+        if (!$language) {
+            return;
+        }
+
         $GLOBALS['TL_LANGUAGE'] = $language;
         if (version_compare(VERSION, '4.4', '>=')) {
             \Contao\System::getContainer()->get('translator')->setLocale($language);
