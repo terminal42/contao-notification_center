@@ -62,7 +62,7 @@ class Message extends \Model
             }
         }
 
-        $cpLanguage = $cpLanguage === '' ? $GLOBALS['TL_LANGUAGE'] : $cpLanguage;
+        $cpLanguage = $cpLanguage ?: $GLOBALS['TL_LANGUAGE'];
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $strLanguage)) === null) {
             \Contao\System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $this->id, $cpLanguage), __METHOD__, TL_ERROR);
 
