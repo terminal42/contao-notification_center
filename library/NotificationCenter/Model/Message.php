@@ -21,6 +21,16 @@ class Message extends \Model
      */
     protected static $strTable = 'tl_nc_message';
 
+    /**
+     * @var string|null
+     */
+    private $currentLanguage = null;
+
+    /**
+     * @var string|null
+     */
+    private $currentLocale = null;
+
 
     /**
      * Send this message using its gateway
@@ -62,6 +72,17 @@ class Message extends \Model
             }
         }
 
+        $cpLanguage = $cpLanguage ?: $GLOBALS['TL_LANGUAGE'];
+        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $cpLanguage)) === null) {
+            \Contao\System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $this->id, $cpLanguage), __METHOD__, TL_ERROR);
+
+            return false;
+        }
+
+        // Switch to the language of the notification
+        $this->saveCurrentFrameworkLanguage();
+        $this->setFrameworkLanguage($objLanguage->language, str_replace('-', '_', $objLanguage->language));
+
         $objGateway = $objGatewayModel->getGateway();
 
         // Send the draft with updated attachments (likely originating from queue)
@@ -77,10 +98,18 @@ class Message extends \Model
 
             $objDraft->setAttachments($arrAttachments);
 
-            return $objGateway->sendDraft($objDraft);
+            $return = $objGateway->sendDraft($objDraft);
+
+            $this->setFrameworkLanguage($this->currentLanguage, $this->currentLocale);
+
+            return $return;
         }
 
-        return $objGateway->send($this, $cpTokens, $cpLanguage);
+        $return = $objGateway->send($this, $cpTokens, $cpLanguage);
+
+        $this->setFrameworkLanguage($this->currentLanguage, $this->currentLocale);
+
+        return $return;
     }
 
     /**
@@ -96,5 +125,29 @@ class Message extends \Model
         $arrValues  = array($objNotification->id);
 
         return static::findBy($arrColumns, $arrValues, $arrOptions);
+    }
+
+    private function saveCurrentFrameworkLanguage()
+    {
+        $this->currentLanguage = $GLOBALS['TL_LANGUAGE'];
+        $this->currentLocale = str_replace('-', '_', $this->currentLanguage);
+        if (version_compare(VERSION, '4.4', '>=')) {
+            $this->currentLocale = \Contao\System::getContainer()->get('translator')->getLocale();
+        }
+    }
+
+    /**
+     * @param string $language
+     */
+    private function setFrameworkLanguage($language, $locale)
+    {
+        if (!$language || !$locale) {
+            return;
+        }
+
+        $GLOBALS['TL_LANGUAGE'] = $language;
+        if (version_compare(VERSION, '4.4', '>=')) {
+            \Contao\System::getContainer()->get('translator')->setLocale($locale);
+        }
     }
 }
