@@ -83,17 +83,13 @@ class File extends Base implements GatewayInterface
      */
     public function testConnection()
     {
-        switch ($this->objModel->file_connection) {
-
-            case 'local':
-                break;
-
-            case 'ftp':
-                break;
-
-            default:
-                throw new \UnexpectedValueException('Unknown server connection of type "' . $this->objModel->file_connection . '"');
+        if (in_array($this->objModel->file_connection, ['local', 'ftp'], true)) {
+            return true;
         }
+
+        throw new \UnexpectedValueException(
+            sprintf('Unknown server connection of type "%s"', $this->objModel->file_connection)
+        );
     }
 
     /**
@@ -116,10 +112,11 @@ class File extends Base implements GatewayInterface
 
             case 'ftp':
                 return $this->saveToFTP($strFileName, $strContent, $strStorageMode);
-
-            default:
-                throw new \UnexpectedValueException('Unknown server connection of type "' . $this->objModel->file_connection . '"');
         }
+
+        throw new \UnexpectedValueException(
+            sprintf('Unknown server connection of type "%s"', $this->objModel->file_connection)
+        );
     }
 
     /**
@@ -167,7 +164,7 @@ class File extends Base implements GatewayInterface
     protected function saveToLocal($strFileName, $strContent, $strStorageMode)
     {
         // Make sure the directory exists
-        if (!is_dir(TL_ROOT . '/' . $this->objModel->file_path)) {
+        if (!is_dir(sprintf('%s/%s', TL_ROOT, $this->objModel->file_path))) {
             $folder = new \Folder($this->objModel->file_path);
 
             if (\Config::get('defaultFolderChmod')) {
