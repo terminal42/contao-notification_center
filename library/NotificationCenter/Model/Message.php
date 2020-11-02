@@ -73,15 +73,11 @@ class Message extends \Model
         }
 
         $cpLanguage = $cpLanguage ?: $GLOBALS['TL_LANGUAGE'];
-        if (($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $cpLanguage)) === null) {
-            \Contao\System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $this->id, $cpLanguage), __METHOD__, TL_ERROR);
-
-            return false;
+        if (null !== ($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $cpLanguage))) {
+             // Switch to the language of the notification
+            $this->saveCurrentFrameworkLanguage();
+            $this->setFrameworkLanguage($objLanguage->language, str_replace('-', '_', $objLanguage->language));
         }
-
-        // Switch to the language of the notification
-        $this->saveCurrentFrameworkLanguage();
-        $this->setFrameworkLanguage($objLanguage->language, str_replace('-', '_', $objLanguage->language));
 
         $objGateway = $objGatewayModel->getGateway();
 
