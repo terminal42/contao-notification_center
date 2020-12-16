@@ -10,12 +10,20 @@
             "homepage":"http://terminal42.ch"
         }
     ],
+    "funding": [{
+        "type": "github",
+        "url": "https://github.com/terminal42"
+    }, {
+        "type": "other",
+        "url": "https://ko-fi.com/terminal42"
+    }],
     "support": {
         "issues": "https://github.com/terminal42/contao-notification_center/issues",
-        "source": "https://github.com/terminal42/contao-notification_center"
+        "source": "https://github.com/terminal42/contao-notification_center",
+        "forum": "https://community.contao.org"
     },
     "require":{
-        "php":">=5.4",
+        "php":"^5.4 || ^7.0 || ^8.0",
         "contao/core-bundle":"~3.2 || ~4.1",
         "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "codefog/contao-haste":"^4.14.1",
