@@ -91,6 +91,9 @@ $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'] = new \NotificationCenter\Queue
 /**
  * Notification Center Gateways
  */
+if (!isset($GLOBALS['NOTIFICATION_CENTER']['GATEWAY'])) {
+    $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = [];
+}
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
     (array) $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'],
     array(
@@ -104,6 +107,9 @@ $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
 /**
  * Notification Center Notification Types
  */
+if (!isset($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'])) {
+    $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = [];
+}
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
     (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'],
     array(
