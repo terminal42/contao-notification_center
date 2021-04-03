@@ -42,7 +42,7 @@ class AutoSuggester extends \Controller
         static::$strType = static::$objNotification->type;
 
         foreach ($GLOBALS['TL_DCA'][static::$strTable]['fields'] as $field => $arrConfig) {
-            if ('nc_tokens' === $arrConfig['eval']['rgxp']) {
+            if (isset($arrConfig['eval']['rgxp']) && 'nc_tokens' === $arrConfig['eval']['rgxp']) {
                 $GLOBALS['TL_DCA'][static::$strTable]['fields'][$field]['wizard'][] = array('NotificationCenter\AutoSuggester', 'init');
             }
         }
@@ -69,7 +69,11 @@ class AutoSuggester extends \Controller
         $arrParsedTokens = array();
 
         foreach ($arrTokens as $strToken) {
-            $content = $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][static::$strType][$strToken] ?: '';
+            $content = '';
+
+            if (isset($GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][static::$strType][$strToken])) {
+                $content = $GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN'][static::$strType][$strToken] ?: '';
+            }
 
             if (0 === strpos($strToken, 'template_')) {
                 $content = sprintf($GLOBALS['TL_LANG']['NOTIFICATION_CENTER_TOKEN']['template'], 'notification_'.substr($strToken, 9));
