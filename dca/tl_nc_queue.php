@@ -8,6 +8,8 @@
  * @license    LGPL
  */
 
+\Contao\System::loadLanguageFile('tl_nc_queue');
+
 /**
  * Table tl_nc_queue
  */
