@@ -34,7 +34,6 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['isotope'] = array
 );
 ```
 
-
 ## Sending a notification
 
 Extension developers most likely want to send a single notification identified by ID,:
@@ -58,6 +57,14 @@ if (null !== $objNotificationCollection) {
     }
 }
 ```
+
+## Queue
+
+It is possible to save the messages in a queue before sending them. The queue is available
+as a gateway. The queue can be processed via a "Poor man cron" or via a console call - see
+https://github.com/terminal42/contao-notification_center/blob/main/bin/queue
+
+`$ queue -s <queue_gateway_id> -n <number of messages to be sent>`
 
 ## Hooks
 
