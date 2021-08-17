@@ -124,21 +124,23 @@ class Message extends \Model
     }
 
     /**
-     * Checks whether this message has a given token.
+     * Checks whether this message has a given token in any of its languages.
      * @param string $token
      * @return bool
      */
     public function hasToken($token)
     {
-        $language = Language::findByMessageAndLanguageOrFallback($this, $GLOBALS['TL_LANGUAGE']);
+        $languages = Language::findByPid($this->id);
 
-        if (null === $language) {
+        if (null === $languages) {
             return false;
         }
 
-        foreach ($language->row() as $value) {
-            if (false !== strpos($value, '##'.$token.'##')) {
-                return true;
+        foreach ($languages as $language) {
+            foreach ($language->row() as $value) {
+                if (false !== strpos($value, '##'.$token.'##')) {
+                    return true;
+                }
             }
         }
 
