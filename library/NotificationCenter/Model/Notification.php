@@ -71,6 +71,28 @@ class Notification extends Model
         return '';
     }
 
+    /**
+     * Checks whether the notification has a specific token in any of its messages.
+     * @param string $token
+     * @return bool
+     */
+    public function hasToken($token)
+    {
+        $messages = Message::findPublishedByNotification($this);
+
+        if (null === $messages) {
+            return false;
+        }
+
+        foreach ($messages as $message) {
+            if ($message->hasToken($token)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function addTemplateTokens(array $tokens)
     {
         $templates = deserialize($this->templates, true);

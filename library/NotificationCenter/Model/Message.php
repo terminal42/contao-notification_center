@@ -123,6 +123,28 @@ class Message extends \Model
         return static::findBy($arrColumns, $arrValues, $arrOptions);
     }
 
+    /**
+     * Checks whether this message has a given token.
+     * @param string $token
+     * @return bool
+     */
+    public function hasToken($token)
+    {
+        $language = Language::findByMessageAndLanguageOrFallback($this, $GLOBALS['TL_LANGUAGE']);
+
+        if (null === $language) {
+            return false;
+        }
+
+        foreach ($language->row() as $value) {
+            if (false !== strpos($value, '##'.$token.'##')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private function saveCurrentFrameworkLanguage()
     {
         $this->currentLanguage = $GLOBALS['TL_LANGUAGE'];
