@@ -12,6 +12,7 @@ namespace NotificationCenter;
 
 
 use NotificationCenter\Model\Gateway;
+use NotificationCenter\Model\Notification;
 
 class ContaoHelper extends \Controller
 {
@@ -37,16 +38,23 @@ class ContaoHelper extends \Controller
         }
 
         if (version_compare(VERSION, '4.7', '>=')) {
-            /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
-            $optIn      = \Contao\System::getContainer()->get('contao.opt-in');
-            $optInToken = $optIn->create('reg-', $arrData['email'], array('tl_member' => array($arrData['id'])));
+            $notification = Notification::findByPk($objModule->nc_notification);
 
-            $arrData['activation'] = $optInToken->getIdentifier();
+            // Only create opt-in token if the ##link## simple token is in use (#237)
+            if (null !== $notification && $notification->hasToken('link')) {
+                /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
+                $optIn      = \Contao\System::getContainer()->get('contao.opt-in');
+                $optInToken = $optIn->create('reg-', $arrData['email'], array('tl_member' => array($arrData['id'])));
+
+                $arrData['activation'] = $optInToken->getIdentifier();
+            }
         }
 
-        $arrTokens = array(
-            'link' => \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation']
-        );
+        $arrTokens = [];
+
+        if (!empty($arrData['activation'])) {
+            $arrTokens['link'] = \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
+        }
 
         // Disable the email to admin because no core notification has been sent
         $objModule->reg_activate = true;
