@@ -80,6 +80,7 @@ class tl_form extends \Backend
         $arrTokens['raw_data'] = '';
         $arrTokens['raw_data_filled'] = '';
 
+        // Data to use in message
         foreach ($arrData as $k => $v) {
             \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens, $delimiter);
             $arrTokens['formlabel_'.$k] = isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k);
@@ -89,6 +90,7 @@ class tl_form extends \Backend
             }
         }
 
+        // Add formconfig
         foreach ($arrForm as $k => $v) {
             \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens, $delimiter);
         }
@@ -96,9 +98,37 @@ class tl_form extends \Backend
         // Administrator e-mail
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
+        // Delimiter
+        $arrTokens['delimiter'] = $delimiter;
+
         // Upload fields
         foreach ($arrFiles as $fieldName => $file) {
             $arrTokens['form_' . $fieldName] = Form::getFileUploadPathForToken($file);
+            $arrTokens['template_data']['file'][$fieldName] = Form::getFileUploadPathForToken($file);
+        }
+
+        // Data to use in template
+        $fields = [];
+        foreach (\FormFieldModel::findByPid($arrForm['id']) as $field) {
+            $fields[$field->name] = $field;
+        }
+
+        foreach ($arrData as $k => $v) {
+            $arrTokens['template_data']['name'][]      = $k;
+            $arrTokens['template_data']['value'][$k]   = $v;
+            $arrTokens['template_data']['label'][$k]   = isset($arrLabels[$k]) ? $arrLabels[$k] : $k;
+            $arrTokens['template_data']['type'][$k]    = $fields[$k]->type;
+            $arrTokens['template_data']['options'][$k] = null;
+            if (null !== $fields[$k]->options) {
+                foreach (StringUtil::deserialize($fields[$k]->options, true) as $option) {
+                    if (is_array($v) && in_array($option['value'], $v)) {
+                        $arrTokens['template_data']['options'][$k][$option['value']] = $option['label'];
+                    }
+                    if (!is_array($v) && $option['value'] == $v) {
+                        $arrTokens['template_data']['options'][$k] = $option['label'];
+                    }
+                }
+            }
         }
 
         return $arrTokens;
