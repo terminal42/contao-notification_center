@@ -10,6 +10,7 @@
 
 namespace NotificationCenter;
 
+use Contao\StringUtil;
 use NotificationCenter\Model\Notification as NotificationModel;
 
 
@@ -111,6 +112,8 @@ window.addEvent('domready', function() {
 
         $validTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
         $validTokens = array_merge($validTokens, $this->loadTemplateTokens());
+
+        $strText = StringUtil::decodeEntities(StringUtil::restoreBasicEntities($strText));
 
         if (!$this->verifyHashes($strText, $objWidget, $validTokens)) {
             $this->verifyConditions($strText, $objWidget, $validTokens);
