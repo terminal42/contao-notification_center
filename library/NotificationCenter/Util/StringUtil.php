@@ -73,7 +73,7 @@ class StringUtil
         }
 
         foreach (trimsplit(',', $strAttachmentTokens) as $strToken) {
-            $strParsedToken = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strToken, $arrTokens);
+            $strParsedToken = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strToken, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
 
             foreach (trimsplit(',', $strParsedToken) as $strFile) {
                 $strFileFull = TL_ROOT . '/' . $strFile;
