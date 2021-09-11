@@ -8,7 +8,6 @@
  * @license    LGPL
  */
 
-
 /**
  * Table tl_nc_queue
  */
