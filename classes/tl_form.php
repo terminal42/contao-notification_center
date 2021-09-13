@@ -82,10 +82,10 @@ class tl_form extends \Backend
 
         foreach ($arrData as $k => $v) {
             \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens, $delimiter);
-            $arrTokens['formlabel_'.$k] = isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k);
-            $arrTokens['raw_data'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
+            $arrTokens['formlabel_'.$k] = $arrLabels[$k] ?? ucfirst($k);
+            $arrTokens['raw_data'] .= ($arrLabels[$k] ?? ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
             if (is_array($v) || strlen($v)) {
-                $arrTokens['raw_data_filled'] .= (isset($arrLabels[$k]) ? $arrLabels[$k] : ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
+                $arrTokens['raw_data_filled'] .= ($arrLabels[$k] ?? ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
             }
         }
 
