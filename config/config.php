@@ -92,7 +92,7 @@ $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER'] = new \NotificationCenter\Queue
  * Notification Center Gateways
  */
 $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
-    (array) $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'],
+    (array) ($GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] ?? []),
     array(
          'queue'    => 'NotificationCenter\Gateway\Queue',
          'email'    => 'NotificationCenter\Gateway\Email',
@@ -105,7 +105,7 @@ $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'] = array_merge(
  * Notification Center Notification Types
  */
 $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
-    (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'],
+    (array) ($GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] ?? []),
     array(
          'contao' => array(
              'core_form' => array(

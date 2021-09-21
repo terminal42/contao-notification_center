@@ -58,7 +58,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
                 'label'               => &$GLOBALS['TL_LANG']['tl_nc_queue']['re-queue'],
                 'href'                => 'key=re-queue',
                 'icon'                => 'system/modules/notification_center/assets/re-queue.png',
-                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['tl_nc_queue']['re-queueConfirmation'] . '\'))return false;Backend.getScrollOffset()"',
+                'attributes'          => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['tl_nc_queue']['re-queueConfirmation'] ?? null) . '\'))return false;Backend.getScrollOffset()"',
                 'button_callback'     => array('NotificationCenter\tl_nc_queue', 'reQueueButton')
             ),
             'delete' => array
