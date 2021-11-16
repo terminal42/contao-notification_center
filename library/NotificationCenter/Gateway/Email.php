@@ -110,7 +110,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
             try {
                 $objEmail->replyTo($strReplyTo);
             } catch (\Exception $e) {
-                \System::log(sprintf('Could not send email for message ID %s: %s', $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
+                \System::log(sprintf('Could not set reply-to address "%s" for message ID %s: %s', $strReplyTo, $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
                 return false;
             }
         }
@@ -161,7 +161,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         try {
             return $objEmail->sendTo($objDraft->getRecipientEmails());
         } catch (\Exception $e) {
-            \System::log(sprintf('Could not send email for message ID %s: %s', $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not send email to "%s" for message ID %s: %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }
 
         return false;
