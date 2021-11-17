@@ -96,6 +96,9 @@ class MyHook
 }
 ```
 
+## Community Extensions
+
+* [Slack Gateway](https://github.com/presprog/contao-slack-notification) by [Present Progressive](https://www.presentprogressive.de): Send notifications to Slack channels or users.
 
 ## Note to self
 
