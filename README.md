@@ -105,6 +105,7 @@ class MyHook
 * [Mailjet Gateway](https://extensions.contao.org/?p=mindbird%2Fcontao-notification_center-mailjet) by [mindbird](https://www.mindbird.de)
 * [Mailjet SMS Gateway](https://extensions.contao.org/?p=richardhj%2Fcontao-nc-mailjet-sms) by [Richard Henkenjohan](https://github.com/richardhj)
 * [ClockWork SMS Gateway](https://extensions.contao.org/?p=richardhj%2Fcontao-notification_center_clockworksms) by [Richard Henkenjohan](https://github.com/richardhj)
+
 ## Note to self
 
 Managing translations files.
