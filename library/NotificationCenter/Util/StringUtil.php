@@ -76,6 +76,11 @@ class StringUtil
             $strParsedToken = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strToken, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
 
             foreach (trimsplit(',', $strParsedToken) as $strFile) {
+                if (is_file($strFile)) {
+                    $arrAttachments[$strFile] = $strFile;
+                    continue;
+                }
+
                 $strFileFull = TL_ROOT . '/' . $strFile;
 
                 if (is_file($strFileFull)) {

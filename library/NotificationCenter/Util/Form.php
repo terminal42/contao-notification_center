@@ -25,12 +25,8 @@ class Form
     {
         // Check if it has been saved by Contao and thus moved to it's final destination already
         if (isset($file['uploaded']) && $file['uploaded'] === true) {
-            $basePath = TL_ROOT . '/';
-            if (preg_match('/^' . preg_quote($basePath, '/') . '/', $file['tmp_name'])
-                && file_exists($file['tmp_name'])
-            ) {
-
-                return str_replace($basePath, '', $file['tmp_name']);
+            if (file_exists($file['tmp_name'])) {
+                return $file['tmp_name'];
             }
 
             return null;
