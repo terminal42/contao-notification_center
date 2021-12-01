@@ -41,8 +41,7 @@ class Form
             return null;
         }
 
-        $tmpDir   = 'system/tmp';
-        $filePath = $tmpDir . '/' . $file['name'];
+        $filePath = sys_get_temp_dir() . '/' . $file['name'];
         \Files::getInstance()->move_uploaded_file($file['tmp_name'], $filePath);
         \Files::getInstance()->chmod($filePath, $GLOBALS['TL_CONFIG']['defaultFileChmod']);
 

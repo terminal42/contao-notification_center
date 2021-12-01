@@ -245,7 +245,7 @@ class File extends Base implements GatewayInterface
         }
 
         // Write content to temporary file
-        $objFile = new \File('system/tmp/' . md5(uniqid(mt_rand(), true)));
+        $objFile = new \File(sys_get_temp_dir() . '/' . md5(uniqid(mt_rand(), true)));
         $objFile->write($strContent);
         $objFile->close();
 
