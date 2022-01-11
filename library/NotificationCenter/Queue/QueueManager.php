@@ -10,8 +10,6 @@
 
 namespace NotificationCenter\Queue;
 
-
-use Contao\Files;
 use Contao\Folder;
 use NotificationCenter\Gateway\GatewayInterface;
 use NotificationCenter\MessageDraft\EmailMessageDraft;
@@ -19,6 +17,7 @@ use NotificationCenter\MessageDraft\MessageDraftFactoryInterface;
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Model\QueuedMessage;
+use Symfony\Component\Filesystem\Filesystem;
 
 class QueueManager implements QueueManagerInterface
 {
@@ -126,7 +125,7 @@ class QueueManager implements QueueManagerInterface
         $folder = $this->getTemporaryFolderPath($messageId);
 
         if (is_dir(TL_ROOT . '/' . $folder)) {
-            Files::getInstance()->rrdir($folder);
+            (new Filesystem())->remove(TL_ROOT . '/' . $folder);
         }
     }
 
@@ -162,12 +161,15 @@ class QueueManager implements QueueManagerInterface
 
         // Copy the attachments to the temporary folder
         foreach ($attachments as $index => $originalPath) {
-            $originalPath = str_replace(TL_ROOT . '/', '', $originalPath);
-            $clonePath = $folder->path . '/' . basename($originalPath);
+            $originalPath = '/' === $originalPath[0] ? $originalPath : str_replace(TL_ROOT . '/', '', $originalPath);
+            $clonePath = TL_ROOT . '/' . $folder->path . '/' . basename($originalPath);
 
             // Update the tokens if copy was successful
-            if (Files::getInstance()->copy($originalPath, $clonePath)) {
-                $attachments[$index] = TL_ROOT . '/' . $clonePath;
+            try {
+                (new Filesystem())->copy($originalPath, $clonePath);
+                $attachments[$index] = $clonePath;
+            } catch (\Exception $exception) {
+                // noop
             }
         }
 

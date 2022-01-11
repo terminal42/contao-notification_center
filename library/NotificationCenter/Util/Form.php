@@ -12,6 +12,9 @@
 namespace NotificationCenter\Util;
 
 
+use Contao\Validator;
+use Symfony\Component\Filesystem\Filesystem;
+
 class Form
 {
     /**
@@ -23,7 +26,7 @@ class Form
      */
     public static function getFileUploadPathForToken(array $file)
     {
-        // Check if it has been saved by Contao and thus moved to it's final destination already
+        // Check if it has been saved by Contao and thus moved to its final destination already
         if (isset($file['uploaded']) && $file['uploaded'] === true) {
             if (file_exists($file['tmp_name'])) {
                 return $file['tmp_name'];
@@ -37,9 +40,14 @@ class Form
             return null;
         }
 
+        if (Validator::isInsecurePath($file['tmp_name'])) {
+
+            return null;
+        }
+
         $filePath = sys_get_temp_dir() . '/' . $file['name'];
-        \Files::getInstance()->move_uploaded_file($file['tmp_name'], $filePath);
-        \Files::getInstance()->chmod($filePath, $GLOBALS['TL_CONFIG']['defaultFileChmod']);
+        move_uploaded_file($file['tmp_name'], $filePath);
+        (new Filesystem())->chmod($filePath,$GLOBALS['TL_CONFIG']['defaultFileChmod']);
 
         return $filePath;
     }

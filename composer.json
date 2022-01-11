@@ -24,7 +24,7 @@
     },
     "require":{
         "php":"^7.0 || ^8.0",
-        "contao/core-bundle":"~3.2 || ~4.1",
+        "contao/core-bundle":"~4.4",
         "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "codefog/contao-haste":"^4.14.1",
         "terminal42/dcawizard":"2.*"
@@ -60,6 +60,13 @@
             "sources":{
                 "": "system/modules/notification_center"
             }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "contao-components/installer": true,
+            "composer/package-versions-deprecated": true,
+            "contao-community-alliance/composer-plugin": true
         }
     }
 }
