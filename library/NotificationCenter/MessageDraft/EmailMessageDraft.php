@@ -11,6 +11,7 @@
 namespace NotificationCenter\MessageDraft;
 
 
+use Contao\Config;
 use Contao\File;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
@@ -67,7 +68,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderEmail()
     {
-        $strSenderAddress = $this->objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
+        $strSenderAddress = $this->objLanguage->email_sender_address ?: ($GLOBALS['TL_ADMIN_EMAIL'] ?? Config::get('adminEmail'));
 
         return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
@@ -78,7 +79,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderName()
     {
-        $strSenderName = $this->objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
+        $strSenderName = $this->objLanguage->email_sender_name ?: ($GLOBALS['TL_ADMIN_NAME'] ?? '');
 
         return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
