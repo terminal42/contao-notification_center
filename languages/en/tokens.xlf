@@ -10,6 +10,10 @@
         <source>All the form fields.</source>
         <target>All the form fields.</target>
       </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.formconfig_*">
+        <source>All the form configurations.</source>
+        <target>All the form configurations.</target>
+      </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.formlabel_*">
         <source>All the form field labels.</source>
         <target>All the form field labels.</target>
@@ -21,6 +25,10 @@
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.raw_data_filled">
         <source>All filled in form fields and their raw values.</source>
         <target>All filled in form fields and their raw values.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.filenames">
+        <source>All the uploaded files names.</source>
+        <target>All the uploaded files names.</target>
       </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.admin_email">
         <source>E-mail address of administrator of the current page.</source>
