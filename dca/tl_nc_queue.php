@@ -66,7 +66,7 @@ $GLOBALS['TL_DCA']['tl_nc_queue'] = array
                 'label'               => &$GLOBALS['TL_LANG']['tl_nc_queue']['delete'],
                 'href'                => 'act=delete',
                 'icon'                => 'delete.gif',
-                'attributes'          => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
+                'attributes'          => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null) . '\'))return false;Backend.getScrollOffset()"',
                 'button_callback'     => array('NotificationCenter\tl_nc_queue', 'deleteButton')
             ),
             // @todo: maybe format the json encoded tokens for better usability?
