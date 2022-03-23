@@ -42,7 +42,7 @@ class AutoSuggester extends \Controller
         static::$strType = static::$objNotification->type;
 
         foreach ($GLOBALS['TL_DCA'][static::$strTable]['fields'] as $field => $arrConfig) {
-            if ('nc_tokens' === $arrConfig['eval']['rgxp'] ?? null) {
+            if ('nc_tokens' === ($arrConfig['eval']['rgxp'] ?? null)) {
                 $GLOBALS['TL_DCA'][static::$strTable]['fields'][$field]['wizard'][] = array('NotificationCenter\AutoSuggester', 'init');
             }
         }
