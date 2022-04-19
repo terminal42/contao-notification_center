@@ -40,6 +40,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->Template->action = \Environment::get('indexFreeRequest');
         $this->Template->formId = $strFormId;
         $this->Template->id = $this->id;
+        $this->Template->requestToken = REQUEST_TOKEN;
     }
 
     /**

@@ -41,6 +41,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         $this->Template->formId = $strFormId;
         $this->Template->id = $this->id;
         $this->Template->text = $this->nl_text;
+        $this->Template->requestToken = REQUEST_TOKEN;
     }
 
     /**
