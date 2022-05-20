@@ -126,7 +126,7 @@ class tl_nc_message extends \Backend
         $objVersions->initialize();
 
         // Trigger the save_callback
-        if (is_array($GLOBALS['TL_DCA']['tl_nc_message']['fields']['published']['save_callback'])) {
+        if (is_array($GLOBALS['TL_DCA']['tl_nc_message']['fields']['published']['save_callback'] ?? null)) {
             foreach ($GLOBALS['TL_DCA']['tl_nc_message']['fields']['published']['save_callback'] as $callback) {
                 if (is_array($callback)) {
                     $blnVisible = \System::importStatic($callback[0])->{$callback[1]}($blnVisible, $this);
