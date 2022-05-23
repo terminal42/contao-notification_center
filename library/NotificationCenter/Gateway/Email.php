@@ -60,7 +60,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         }
 
         // Override SMTP settings if desired
-        if (version_compare(VERSION, '4.4', '>=') && $this->objModel->email_overrideSmtp) {
+        if ($this->objModel->email_overrideSmtp) {
             if (method_exists(\Swift_SmtpTransport::class, 'newInstance')) {
                 $transport = \Swift_SmtpTransport::newInstance($this->objModel->email_smtpHost, $this->objModel->email_smtpPort);
             } else {
@@ -80,7 +80,6 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
             return new \Email(new \Swift_Mailer($transport));
         }
 
-        $this->overrideSMTPSettings();
         $objEmail = new \Email();
         $this->resetSMTPSettings();
 
@@ -196,21 +195,11 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
 
     /**
      * Override SMTP settings
+     * @deprecated
      */
     protected function overrideSMTPSettings()
     {
-        if (!$this->objModel->email_overrideSmtp) {
-            return;
-        }
-
-        $this->arrSMTPCache['useSMTP']   = $GLOBALS['TL_CONFIG']['useSMTP'];
-        $GLOBALS['TL_CONFIG']['useSMTP'] = true;
-
-        foreach (array('smtpHost', 'smtpUser', 'smtpPass', 'smtpEnc', 'smtpPort') as $strKey) {
-            $this->arrSMTPCache[$strKey]   = $GLOBALS['TL_CONFIG'][$strKey];
-            $strEmailKey                   = 'email_' . $strKey;
-            $GLOBALS['TL_CONFIG'][$strKey] = $this->objModel->{$strEmailKey};
-        }
+        // Does nothing
     }
 
     /**

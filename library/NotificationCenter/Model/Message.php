@@ -147,11 +147,7 @@ class Message extends \Model
 
     private function saveCurrentFrameworkLanguage()
     {
-        $this->currentLanguage = $GLOBALS['TL_LANGUAGE'];
-        $this->currentLocale = str_replace('-', '_', $this->currentLanguage);
-        if (version_compare(VERSION, '4.4', '>=')) {
-            $this->currentLocale = \Contao\System::getContainer()->get('translator')->getLocale();
-        }
+        $this->currentLocale = \Contao\System::getContainer()->get('translator')->getLocale();
     }
 
     /**
@@ -164,8 +160,6 @@ class Message extends \Model
         }
 
         $GLOBALS['TL_LANGUAGE'] = $language;
-        if (version_compare(VERSION, '4.4', '>=')) {
-            \Contao\System::getContainer()->get('translator')->setLocale($locale);
-        }
+        \Contao\System::getContainer()->get('translator')->setLocale($locale);
     }
 }

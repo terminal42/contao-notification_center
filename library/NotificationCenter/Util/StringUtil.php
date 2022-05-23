@@ -108,11 +108,7 @@ class StringUtil
 
         foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
-                if (version_compare(VERSION . '.' . BUILD, '3.5.1', '<')) {
-                    list($strName, $strEmail) = \String::splitFriendlyEmail($strAddress);
-                } else {
-                    list($strName, $strEmail) = \StringUtil::splitFriendlyEmail($strAddress);
-                }
+                list($strName, $strEmail) = \StringUtil::splitFriendlyEmail($strAddress);
 
                 // Address could become empty through invalid insert tag
                 if ($strAddress == '' || !\Validator::isEmail($strEmail)) {

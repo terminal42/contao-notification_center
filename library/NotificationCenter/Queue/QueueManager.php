@@ -186,10 +186,6 @@ class QueueManager implements QueueManagerInterface
      */
     protected function getTemporaryFolderPath($messageId)
     {
-        if (version_compare(VERSION, '4.4', '>=')) {
-            return 'var/notification_center/' . $messageId;
-        }
-
-        return 'system/notification_center_tmp/' . $messageId;
+        return 'var/notification_center/' . $messageId;
     }
 } 

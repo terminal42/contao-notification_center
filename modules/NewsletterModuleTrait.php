@@ -26,8 +26,7 @@ trait NewsletterModuleTrait
      */
     protected function createCaptchaWidgetIfEnabled()
     {
-        if (version_compare(VERSION, '4.1', '<') || $this->disableCaptcha)
-        {
+        if ($this->disableCaptcha) {
             return null;
         }
 

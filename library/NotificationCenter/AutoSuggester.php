@@ -203,11 +203,7 @@ window.addEvent('domready', function() {
         }
 
         try {
-            if (version_compare(VERSION . '.' . BUILD, '3.5.1', '>=')) {
-                \StringUtil::parseSimpleTokens($strText, array_flip($foundTokens));
-            } else {
-                \String::parseSimpleTokens($strText, array_flip($foundTokens));
-            }
+            \StringUtil::parseSimpleTokens($strText, array_flip($foundTokens));
         } catch (\Exception $e) {
             $objWidget->addError($e->getMessage());
 

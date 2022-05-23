@@ -151,9 +151,7 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
             $arrRelated['tl_newsletter_recipients'][] = $objRecipient->id;
 
             // Remove the blacklist entry (see #4999)
-            if (version_compare(VERSION, '4.1', '>=')
-                && ($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null
-            ) {
+            if (($objBlacklist = \NewsletterBlacklistModel::findByHashAndPid(md5($strEmail), $id)) !== null) {
                 $objBlacklist->delete();
             }
         }
@@ -167,49 +165,25 @@ class ModuleNewsletterSubscribeNotificationCenter extends ModuleSubscribe
         $this->sendNotification($strToken, $strEmail, $arrNew);
         $this->redirectToJumpToPage();
 
-        if (version_compare(VERSION, '4.1', '>=')) {
-            \System::getContainer()
-                   ->get('session')
-                   ->getFlashBag()
-                   ->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm'])
-            ;
-        } else {
-            $_SESSION['SUBSCRIBE_CONFIRM'] = $GLOBALS['TL_LANG']['MSC']['nl_confirm'];
-        }
+        \System::getContainer()
+               ->get('session')
+               ->getFlashBag()
+               ->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm'])
+        ;
 
         $this->reload();
     }
 
     protected function compileConfirmationMessage()
     {
-        if (version_compare(VERSION, '4.1', '>=')) {
-            $session = \System::getContainer()->get('session');
-            $flashBag = $session->getFlashBag();
+        $session = \System::getContainer()->get('session');
+        $flashBag = $session->getFlashBag();
 
-            if ($session->isStarted() && $flashBag->has('nl_confirm')) {
-                $arrMessages = $flashBag->get('nl_confirm');
+        if ($session->isStarted() && $flashBag->has('nl_confirm')) {
+            $arrMessages = $flashBag->get('nl_confirm');
 
-                $this->Template->mclass = 'confirm';
-                $this->Template->message = $arrMessages[0];
-            }
-
-            return;
-        }
-
-        // Error message
-        if (strlen($_SESSION['SUBSCRIBE_ERROR'])) {
-            $this->Template->mclass = 'error';
-            $this->Template->message = $_SESSION['SUBSCRIBE_ERROR'];
-            $this->Template->hasError = true;
-            $_SESSION['SUBSCRIBE_ERROR'] = '';
-        }
-
-        // Confirmation message
-        if (strlen($_SESSION['SUBSCRIBE_CONFIRM'])) {
             $this->Template->mclass = 'confirm';
-            $this->Template->message = $_SESSION['SUBSCRIBE_CONFIRM'];
-            $this->Template->hasError = false;
-            $_SESSION['SUBSCRIBE_CONFIRM'] = '';
+            $this->Template->message = $arrMessages[0];
         }
     }
 

@@ -18,29 +18,22 @@ array_insert($GLOBALS['BE_MOD'], 1, array
         'nc_notifications' => array
         (
             'tables'        => array('tl_nc_notification', 'tl_nc_message', 'tl_nc_language'),
-            'icon'          => 'system/modules/notification_center/assets/notification.png',
         ),
         'nc_queue' => array
         (
             'tables'        => array('tl_nc_queue'),
-            'icon'          => 'system/modules/notification_center/assets/queue.png',
             're-queue'      => array('NotificationCenter\tl_nc_queue', 'reQueue')
         ),
         'nc_gateways' => array
         (
             'tables'        => array('tl_nc_gateway'),
-            'icon'          => 'system/modules/notification_center/assets/gateway.png'
         )
     )
 ));
 
 // Load icon in Contao 4.2 backend
 if ('BE' === TL_MODE) {
-    if (version_compare(VERSION, '4.4', '<')) {
-        $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/backend.css';
-    } else {
-        $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/backend_svg.css';
-    }
+    $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/backend.css';
 }
 
 /**
