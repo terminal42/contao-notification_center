@@ -99,7 +99,7 @@ class MyHook
 ## Community Extensions
 
 * [Slack Gateway](https://extensions.contao.org/?p=presprog%2Fcontao-slack-notification) by [Present Progressive](https://www.presentprogressive.de): Send notifications to Slack channels or users.
-* [AWS SNS Gateway](https://extensions.contao.org/?p=numero2%2Fcontao-notification_center-aws-sns) by [Numero2](https://www.numero2.de): Send notifications via Amazon Simple Notification Services.
+* [AWS SNS Gateway](https://extensions.contao.org/?p=numero2%2Fcontao-notification_center-aws-sns) by [numero2](https://www.numero2.de): Send notifications via Amazon Simple Notification Services.
 * [Zammad Gateway](https://extensions.contao.org/?p=contaoacademy%2Fcontao-zammad-nc-api-bundle) by [Contao Academy](https://contao-academy.de): Send notifications to Zammad.
 * [KlickTipp Gateway](https://extensions.contao.org/?p=fenepedia%2Fcontao-klicktipp-gateway) by [FenePedia](https://www.fenepedia.de)
 * [Mailjet Gateway](https://extensions.contao.org/?p=mindbird%2Fcontao-notification_center-mailjet) by [mindbird](https://www.mindbird.de)
