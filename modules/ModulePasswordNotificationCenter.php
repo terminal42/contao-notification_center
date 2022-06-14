@@ -74,7 +74,7 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 
 		$arrTokens['recipient_email'] = $objMember->email;
 		$arrTokens['domain'] = \Idna::decode(\Environment::get('host'));
-		$arrTokens['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $token;
+		$arrTokens['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . ((($GLOBALS['TL_CONFIG']['disableAlias'] ?? false) || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $token;
 
 		$objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
 		$this->log('A new password has been requested for user ID ' . $objMember->id . ' (' . $objMember->email . ')', __METHOD__, TL_ACCESS);

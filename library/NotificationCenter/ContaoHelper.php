@@ -53,7 +53,7 @@ class ContaoHelper extends \Controller
         $arrTokens = [];
 
         if (!empty($arrData['activation'])) {
-            $arrTokens['link'] = \Environment::get('base') . \Environment::get('request') . (($GLOBALS['TL_CONFIG']['disableAlias'] || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
+            $arrTokens['link'] = \Environment::get('base') . \Environment::get('request') . ((($GLOBALS['TL_CONFIG']['disableAlias'] ?? false) || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
         }
 
         // Disable the email to admin because no core notification has been sent
