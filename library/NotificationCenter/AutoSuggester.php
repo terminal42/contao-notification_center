@@ -60,7 +60,7 @@ class AutoSuggester extends \Controller
     public function init(\DataContainer $dc)
     {
         $strGroup  = NotificationModel::findGroupForType(static::$strType);
-        $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$dc->field];
+        $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$dc->field] ?? [];
         $arrTokens = array_merge((array) $arrTokens, $this->loadTemplateTokens());
 
         if (!is_array($arrTokens) || empty($arrTokens)) {
