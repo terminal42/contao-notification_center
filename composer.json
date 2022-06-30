@@ -39,7 +39,7 @@
             ]
         },
         "classmap": [
-            "classes/"
+            "classes/",
             "modules/"
         ]
     },
