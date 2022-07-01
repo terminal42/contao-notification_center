@@ -39,7 +39,8 @@
             ]
         },
         "classmap": [
-            "classes/"
+            "classes/",
+            "modules/"
         ]
     },
     "replace": {
