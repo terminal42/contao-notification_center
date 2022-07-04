@@ -147,6 +147,7 @@ class Message extends \Model
 
     private function saveCurrentFrameworkLanguage()
     {
+        $this->currentLanguage = $GLOBALS['TL_LANGUAGE'];
         $this->currentLocale = \Contao\System::getContainer()->get('translator')->getLocale();
     }
 
