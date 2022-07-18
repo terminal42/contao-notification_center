@@ -182,7 +182,8 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
                 'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_nc_message']['languages'][2],
                 'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_nc_message']['languages'][3],
                 'tl_class'          =>'clr'
-            )
+            ),
+            'sql'                   => null
         ),
         'email_priority' => array
         (
