@@ -138,7 +138,7 @@ class ContaoHelper extends \Controller
         foreach ($arrData as $strFieldName => $strFieldValue) {
             $arrTokens['member_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
 
-            if ((string) $arrTokens['member_' . $strFieldName] !== (string) $arrTokens['member_old_' . $strFieldName]) {
+            if ((string) $arrTokens['member_' . $strFieldName] !== (string) ($arrTokens['member_old_' . $strFieldName] ?? '')) {
                 $arrTokens['changed_' . $strFieldName] = '1';
             } else {
                 $arrTokens['changed_' . $strFieldName] = '0';
