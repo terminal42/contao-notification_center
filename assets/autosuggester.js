@@ -161,7 +161,7 @@ var AutoSuggester = new Class({
         // Add the events to tinyMCE
         if (this.tinyMCE) {
 
-            if (window.tinyMCE.majorVersion == '4') {
+            if (typeof this.tinyMCE.on === 'function') {
                 this.tinyMCE.on('keyUp', function(event) {
                    this.eventKeyUp.call(this, event);
                 }.bind(this));
