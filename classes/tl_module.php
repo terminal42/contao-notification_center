@@ -23,7 +23,7 @@ class tl_module extends \Backend
     {
         $strWhere = '';
         $arrValues = array();
-        $arrTypes = $GLOBALS['TL_DCA']['tl_module']['fields'][$dc->field]['eval']['ncNotificationChoices'][$dc->activeRecord->type];
+        $arrTypes = $GLOBALS['TL_DCA']['tl_module']['fields'][$dc->field]['eval']['ncNotificationChoices'][$dc->activeRecord->type] ?? [];
 
         if (!empty($arrTypes) && is_array($arrTypes)) {
             $strWhere = ' WHERE ' . implode(' OR ', array_fill(0, count($arrTypes), 'type=?'));
