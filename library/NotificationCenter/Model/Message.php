@@ -76,7 +76,7 @@ class Message extends \Model
         if (null !== ($objLanguage = Language::findByMessageAndLanguageOrFallback($this, $cpLanguage))) {
              // Switch to the language of the notification
             $this->saveCurrentFrameworkLanguage();
-            $this->setFrameworkLanguage($objLanguage->language, str_replace('-', '_', $objLanguage->language));
+            $this->setFrameworkLanguage($objLanguage->language, $objLanguage->language);
         }
 
         $objGateway = $objGatewayModel->getGateway();
@@ -147,6 +147,7 @@ class Message extends \Model
 
     private function saveCurrentFrameworkLanguage()
     {
+        $this->currentLanguage = $GLOBALS['TL_LANGUAGE'];
         $this->currentLocale = \Contao\System::getContainer()->get('translator')->getLocale();
     }
 
@@ -158,6 +159,9 @@ class Message extends \Model
         if (!$language || !$locale) {
             return;
         }
+
+        $language = str_replace('_', '-', $language);
+        $locale = str_replace('-', '_', $locale);
 
         $GLOBALS['TL_LANGUAGE'] = $language;
         \Contao\System::getContainer()->get('translator')->setLocale($locale);
