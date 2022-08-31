@@ -143,7 +143,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
             'inputType'               => 'select',
             'options'                 => \System::getLanguages(),
             'eval'                    => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(5) NOT NULL default ''",
+            'sql'                     => "varchar(11) NOT NULL default ''",
             'save_callback' => array
             (
                 array('NotificationCenter\tl_nc_language', 'validateLanguageField')
