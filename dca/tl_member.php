@@ -11,7 +11,7 @@
 /**
  * Add the global callbacks
  */
-if ('FE' === TL_MODE)
+if (defined('TL_MODE') && 'FE' === TL_MODE)
 {
     $GLOBALS['TL_DCA']['tl_member']['config']['onload_callback'][] = array('NotificationCenter\tl_member', 'storePersonalData');
 }
