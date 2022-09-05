@@ -10,13 +10,14 @@
 
 namespace NotificationCenter\Gateway;
 
+use Contao\Controller;
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Util\StringUtil;
 
 /**
  * No need no extend Controller but left here for BC
  */
-abstract class Base extends \Controller
+abstract class Base extends Controller
 {
     /**
      * Text filter options

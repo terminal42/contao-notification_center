@@ -144,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['templates'],
             'exclude'                 => true,
             'inputType'               => 'select',
-            'options'                 => \Backend::getTemplateGroup('notification_'),
+            'options'                 => \Contao\Backend::getTemplateGroup('notification_'),
             'eval'                    => array('multiple'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr'),
             'sql'                     => "blob NULL",
         ),
