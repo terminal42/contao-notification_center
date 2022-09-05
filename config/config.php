@@ -170,7 +170,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
 );
 
 // Add the newsletter tokens only if the extension is active
-if (in_array('newsletter', \Contao\ModuleLoader::getActive(), true)) {
+if (class_exists(Contao\NewsletterBundle\ContaoNewsletterBundle::class)) {
     $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['newsletter_subscribe'] = array(
         'recipients'           => array('recipient_email', 'admin_email'),
         'email_subject'        => array('domain', 'link', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'subject'),
