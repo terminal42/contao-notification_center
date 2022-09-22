@@ -16,7 +16,9 @@ class Plugin implements BundlePluginInterface
     {
         return [
             (new BundleConfig(Terminal42NotificationCenterBundle::class))
-                ->setLoadAfter([ContaoCoreBundle::class]),
+                ->setLoadAfter([
+                    ContaoCoreBundle::class,
+                ]),
         ];
     }
 }

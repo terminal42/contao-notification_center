@@ -26,7 +26,9 @@
         "php": "^8.1",
         "contao/core-bundle": "^4.13 || ^5.0",
         "symfony/http-kernel": "^5.4 || ^6.0",
-        "terminal42/dcawizard": "dev-haste-5 as 2.6.0"
+        "terminal42/dcawizard": "dev-haste-5 as 2.6.0",
+        "symfony/asset": "^5.4 || ^6.0",
+        "doctrine/dbal": "^3.4"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0"
@@ -36,8 +38,15 @@
             "Terminal42\\NotificationCenterBundle\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Terminal42\\NotificationCenterBundle\\Test\\": "tests/"
+        }
+    },
     "scripts": {
-        "cs-fixer": "@php tools/ecs/vendor/bin/ecs check src/ --config tools/ecs/config.php --fix --ansi"
+        "cs-fixer": "@php tools/ecs/vendor/bin/ecs check config/ contao/ src/ tests/ --config tools/ecs/config.php --fix --ansi",
+        "unit-tests": "@php tools/phpunit/vendor/bin/phpunit -c tools/phpunit/phpunit.xml.dist",
+        "phpstan": "@php tools/phpstan/vendor/bin/phpstan analyse -l 9 src/ tests/"
     },
     "extra": {
         "contao-manager-plugin": "Terminal42\\NotificationCenterBundle\\ContaoManager\\Plugin"
@@ -45,8 +54,10 @@
     "config": {
         "allow-plugins": {
             "contao-components/installer": true,
-            "contao/manager-plugin": true
+            "contao/manager-plugin": true,
+            "contao-community-alliance/composer-plugin": true
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

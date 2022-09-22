@@ -1,152 +1,106 @@
 <?php
 
-/**
- * notification_center extension for Contao Open Source CMS
- *
- * @copyright  Copyright (c) 2008-2015, terminal42
- * @author     terminal42 gmbh <info@terminal42.ch>
- * @license    LGPL
- */
+declare(strict_types=1);
 
-/**
- * Table tl_nc_notification
- */
-$GLOBALS['TL_DCA']['tl_nc_notification'] = array
-(
+use Contao\DC_Table;
 
+$GLOBALS['TL_DCA']['tl_nc_notification'] = [
     // Config
-    'config' => array
-    (
-        'ctable'                      => array('tl_nc_message'),
-        'dataContainer'               => 'Table',
-        'switchToEdit'                => true,
-        'enableVersioning'            => true,
-        'sql' => array
-        (
-            'keys' => array
-            (
-                'id' => 'primary'
-            )
-        )
-    ),
+    'config' => [
+        'ctable' => ['tl_nc_message'],
+        'dataContainer' => DC_Table::class,
+        'switchToEdit' => true,
+        'enableVersioning' => true,
+        'sql' => [
+            'keys' => [
+                'id' => 'primary',
+            ],
+        ],
+    ],
 
     // List
-    'list' => array
-    (
-        'sorting' => array
-        (
-            'mode'                    => 1,
-            'fields'                  => array('type', 'title'),
-            'flag'                    => 1,
-            'panelLayout'             => 'filter;search,limit'
-        ),
-        'label' => array
-        (
-            'fields'                  => array('title'),
-            'group_callback'          => array('NotificationCenter\tl_nc_notification', 'getGroupLabel')
-        ),
-        'global_operations' => array
-        (
-            'all' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href'                => 'act=select',
-                'class'               => 'header_edit_all',
-                'attributes'          => 'onclick="Backend.getScrollOffset()" accesskey="e"'
-            )
-        ),
-        'operations' => array
-        (
-            'edit' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['edit'],
-                'href'                => 'table=tl_nc_message',
-                'icon'                => 'edit.gif'
-            ),
-            'editheader' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['editheader'],
-                'href'                => 'act=edit',
-                'icon'                => 'header.gif'
-            ),
-            'copy' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['copy'],
-                'href'                => 'act=copy',
-                'icon'                => 'copy.gif'
-            ),
-            'delete' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['delete'],
-                'href'                => 'act=delete',
-                'icon'                => 'delete.gif',
-                'attributes'          => 'onclick="if(!confirm(\'' . ($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null) . '\'))return false;Backend.getScrollOffset()"'
-            ),
-            'show' => array
-            (
-                'label'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['show'],
-                'href'                => 'act=show',
-                'icon'                => 'show.gif'
-            )
-        )
-    ),
+    'list' => [
+        'sorting' => [
+            'mode' => 1,
+            'fields' => ['type', 'title'],
+            'flag' => 1,
+            'panelLayout' => 'filter;search,limit',
+        ],
+        'label' => [
+            'fields' => ['title'],
+        ],
+        'global_operations' => [
+            'all' => [
+                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
+                'href' => 'act=select',
+                'class' => 'header_edit_all',
+                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"',
+            ],
+        ],
+        'operations' => [
+            'edit' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['edit'],
+                'href' => 'act=edit',
+                'icon' => 'edit.svg',
+            ],
+            'children' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['children'],
+                'href' => 'table=tl_nc_message',
+                'icon' => 'children.svg',
+            ],
+            'copy' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['copy'],
+                'href' => 'act=copy',
+                'icon' => 'copy.svg',
+            ],
+            'delete' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['delete'],
+                'href' => 'act=delete',
+                'icon' => 'delete.svg',
+                'attributes' => 'onclick="if(!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null).'\'))return false;Backend.getScrollOffset()"',
+            ],
+            'show' => [
+                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['show'],
+                'href' => 'act=show',
+                'icon' => 'show.svg',
+            ],
+        ],
+    ],
 
     // Palettes
-    'palettes' => array
-    (
-        '__selector__'                => array('type'),
-        'default'                     => '{title_legend},title,type;',
-        'core_form'                   => '{title_legend},title,type;{config_legend},flatten_delimiter;{templates_legend:hide},templates',
-    ),
+    'palettes' => [
+        '__selector__' => ['type'],
+        'default' => '{title_legend},title,type;{config_legend},token_transformer',
+    ],
 
     // Fields
-    'fields' => array
-    (
-        'id' => array
-        (
-            'sql'                     => "int(10) unsigned NOT NULL auto_increment"
-        ),
-        'tstamp' => array
-        (
-            'sql'                     => "int(10) unsigned NOT NULL default '0'"
-        ),
-        'title' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['title'],
-            'exclude'                 => true,
-            'search'                  => true,
-            'inputType'               => 'text',
-            'eval'                    => array('mandatory'=>true, 'maxlength'=>255, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'type' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
-            'exclude'                 => true,
-            'filter'                  => true,
-            'inputType'               => 'select',
-            'options_callback'        => array('NotificationCenter\tl_nc_notification', 'getNotificationTypes'),
-            'reference'               => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
-            'eval'                    => array('mandatory'=>true, 'includeBlankOption'=>true, 'submitOnChange'=>true, 'tl_class'=>'w50'),
-            'sql'                     => "varchar(128) NOT NULL default ''"
-        ),
-        'flatten_delimiter' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['flatten_delimiter'],
-            'exclude'                 => true,
-            'inputType'               => 'text',
-            'default'                 => ',',
-            'eval'                    => array('doNotTrim'=>true),
-            'sql'                     => "varchar(255) NOT NULL default ''"
-        ),
-        'templates' => array
-        (
-            'label'                   => &$GLOBALS['TL_LANG']['tl_nc_notification']['templates'],
-            'exclude'                 => true,
-            'inputType'               => 'select',
-            'options'                 => \Backend::getTemplateGroup('notification_'),
-            'eval'                    => array('multiple'=>true, 'includeBlankOption'=>true, 'chosen'=>true, 'tl_class'=>'clr'),
-            'sql'                     => "blob NULL",
-        ),
-    )
-);
+    'fields' => [
+        'id' => [
+            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+        ],
+        'tstamp' => [
+            'sql' => "int(10) unsigned NOT NULL default '0'",
+        ],
+        'title' => [
+            'exclude' => true,
+            'search' => true,
+            'inputType' => 'text',
+            'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
+            'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        'type' => [
+            'exclude' => true,
+            'filter' => true,
+            'inputType' => 'select',
+            'reference' => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
+            'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
+            'sql' => "varchar(128) NOT NULL default ''",
+        ],
+        'token_transformer' => [
+            'exclude' => true,
+            'inputType' => 'select',
+            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'],
+            'sql' => 'blob NULL',
+        ],
+    ],
+];
