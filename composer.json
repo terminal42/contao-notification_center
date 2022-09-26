@@ -28,7 +28,8 @@
         "symfony/http-kernel": "^5.4 || ^6.0",
         "terminal42/dcawizard": "dev-haste-5 as 2.6.0",
         "symfony/asset": "^5.4 || ^6.0",
-        "doctrine/dbal": "^3.4"
+        "doctrine/dbal": "^3.4",
+        "soundasleep/html2text": "^2.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0"
@@ -46,7 +47,7 @@
     "scripts": {
         "cs-fixer": "@php tools/ecs/vendor/bin/ecs check config/ contao/ src/ tests/ --config tools/ecs/config.php --fix --ansi",
         "unit-tests": "@php tools/phpunit/vendor/bin/phpunit -c tools/phpunit/phpunit.xml.dist",
-        "phpstan": "@php tools/phpstan/vendor/bin/phpstan analyse -l 9 src/ tests/"
+        "phpstan": "@php tools/phpstan/vendor/bin/phpstan analyse -c tools/phpstan/phpstan.neon.dist"
     },
     "extra": {
         "contao-manager-plugin": "Terminal42\\NotificationCenterBundle\\ContaoManager\\Plugin"

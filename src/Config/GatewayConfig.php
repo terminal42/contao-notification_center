@@ -8,11 +8,11 @@ class GatewayConfig extends AbstractConfig
 {
     public function getType(): string
     {
-        return $this->get('type', '');
+        return $this->getString('type');
     }
 
     public function getTitle(): string
     {
-        return $this->get('title', '');
+        return $this->getString('title');
     }
 }

@@ -82,14 +82,15 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ConfigLoader::class)
         ->args([
             service('database_connection'),
-            service('event_dispatcher'),
         ])
+        ->tag('kernel.event_listener', ['event' => 'kernel.reset'])
     ;
 
     $services->set(MailerGateway::class)
         ->args([
             service('mailer'),
             service('contao.string.simple_token_parser'),
+            service('contao.framework'),
         ])
     ;
 

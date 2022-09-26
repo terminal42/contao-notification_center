@@ -72,7 +72,6 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = [
     'fields' => [
         'id' => [
             'sql' => ['type' => 'integer', 'unsigned' => true, 'autoincrement' => true],
-
         ],
         'tstamp' => [
             'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],

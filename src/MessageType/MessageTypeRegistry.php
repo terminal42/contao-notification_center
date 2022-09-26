@@ -11,10 +11,13 @@ class MessageTypeRegistry
      */
     private array $types = [];
 
-    public function __construct(iterable $gateways)
+    /**
+     * @param iterable<MessageTypeInterface> $messageTypes
+     */
+    public function __construct(iterable $messageTypes)
     {
-        foreach ($gateways as $gateway) {
-            $this->add($gateway);
+        foreach ($messageTypes as $messageType) {
+            $this->add($messageType);
         }
     }
 
@@ -34,14 +37,6 @@ class MessageTypeRegistry
     }
 
     public function getByName(string $name): MessageTypeInterface|null
-    {
-        return $this->types[$name] ?? null;
-    }
-
-    /**
-     * @param class-string<MessageTypeInterface> $type
-     */
-    public function getByType(string $type): MessageTypeInterface|null
     {
         return $this->types[$name] ?? null;
     }

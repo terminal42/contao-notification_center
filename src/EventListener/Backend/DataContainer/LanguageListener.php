@@ -70,14 +70,14 @@ class LanguageListener
     {
         $tokens = [];
 
-        foreach ($this->notificationCenter->getTokenDefinitionsForType($messageType, $tokenTypes) as $token) {
+        foreach ($this->notificationCenter->getTokenDefinitionsForMessageType($messageType, $tokenTypes) as $token) {
             $label = '';
 
             if (($translationKey = $token->getTranslationKey()) !== null) {
                 $translationKey = 'nc_tokens.'.$translationKey;
                 $label = $this->translator->trans($translationKey, [], 'contao_nc_tokens');
 
-                // Missing label would return the key untranslated, we ignore in that caes
+                // Missing label would return the key untranslated, we ignore in that case
                 if ($label === $translationKey) {
                     $label = '';
                 }

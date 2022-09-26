@@ -82,6 +82,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
     'subpalettes' => [
         'email_mode_textOnly' => 'email_text',
         'email_mode_textAndHtml' => 'email_text,email_html',
+        'email_mode_htmlAndAutoText' => 'email_html',
     ],
 
     // Fields
@@ -205,7 +206,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
             'exclude' => true,
             'default' => 'textOnly',
             'inputType' => 'radio',
-            'options' => ['textOnly', 'textAndHtml'],
+            'options' => ['textOnly', 'htmlAndAutoText', 'textAndHtml'],
             'reference' => &$GLOBALS['TL_LANG']['tl_nc_language']['email_mode'],
             'eval' => ['tl_class' => 'clr', 'submitOnChange' => true],
             'sql' => "varchar(16) NOT NULL default ''",

@@ -4,17 +4,33 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token;
 
+use Terminal42\NotificationCenterBundle\MessageType\MessageTypeInterface;
+
 class TokenCollection
 {
+    /**
+     * @var array<TokenInterface>
+     */
     private $tokens = [];
 
-    public function __construct(array $tokens = [])
+    /**
+     * @param array<TokenInterface> $tokens
+     */
+    public function __construct(private MessageTypeInterface $messageType, array $tokens = [])
     {
         foreach ($tokens as $token) {
             $this->add($token);
         }
     }
 
+    public function getMessageType(): MessageTypeInterface
+    {
+        return $this->messageType;
+    }
+
+    /**
+     * @return array<TokenInterface>
+     */
     public function all(): array
     {
         return $this->tokens;
@@ -27,6 +43,9 @@ class TokenCollection
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function asRawKeyValue(): array
     {
         $values = [];
@@ -38,6 +57,9 @@ class TokenCollection
         return $values;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function asRawKeyValueWithStringsOnly(): array
     {
         $values = [];

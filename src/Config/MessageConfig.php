@@ -8,7 +8,12 @@ class MessageConfig extends AbstractConfig
 {
     public function getTitle(): string
     {
-        return $this->get('title', '');
+        return $this->getString('title');
+    }
+
+    public function getNotification(): int
+    {
+        return $this->getInt('pid');
     }
 
     public function getGateway(): int

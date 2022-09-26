@@ -8,7 +8,7 @@ use Terminal42\NotificationCenterBundle\Exception\InvalidTokenNameException;
 
 abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
-    public function __construct(private string $name, private string $translationKey)
+    final public function __construct(private string $name, private string $translationKey)
     {
         $this->validateToken($this->name);
     }

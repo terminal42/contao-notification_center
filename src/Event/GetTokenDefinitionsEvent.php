@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
+use Terminal42\NotificationCenterBundle\MessageType\MessageTypeInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
 class GetTokenDefinitionsEvent extends Event
@@ -14,16 +15,16 @@ class GetTokenDefinitionsEvent extends Event
      */
     private array $tokenDefinitions = [];
 
-    public function __construct(private string $notificationType, array $tokenDefinitions = [])
+    public function __construct(private MessageTypeInterface $messageType, array $tokenDefinitions = [])
     {
         foreach ($tokenDefinitions as $token) {
             $this->addTokenDefinition($token);
         }
     }
 
-    public function getNotificationType(): string
+    public function getMessageType(): MessageTypeInterface
     {
-        return $this->notificationType;
+        return $this->messageType;
     }
 
     public function addTokenDefinition(TokenDefinitionInterface $token): self
@@ -33,6 +34,11 @@ class GetTokenDefinitionsEvent extends Event
         return $this;
     }
 
+    /**
+     * @param array<string> $tokenDefinitionTypes
+     *
+     * @return array<string, TokenDefinitionInterface>
+     */
     public function getTokenDefinitions(array $tokenDefinitionTypes = []): array
     {
         if ([] === $tokenDefinitionTypes) {
@@ -42,7 +48,7 @@ class GetTokenDefinitionsEvent extends Event
         $definitions = [];
 
         foreach ($this->tokenDefinitions as $definition) {
-            if (\in_array(\get_class($definition), $tokenDefinitionTypes, true)) {
+            if (\in_array($definition::class, $tokenDefinitionTypes, true)) {
                 $definitions[$definition->getName()] = $definition;
             }
         }
