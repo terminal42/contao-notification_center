@@ -10,7 +10,7 @@ use Symfony\Contracts\Service\ResetInterface;
 class ConfigLoader implements ResetInterface
 {
     /**
-     * @var array<string, array<int, array>>
+     * @var array<string, array<int, array<string, mixed>>>
      */
     private array $cache = [];
 
@@ -33,6 +33,9 @@ class ConfigLoader implements ResetInterface
         return $this->loadConfig($id, 'tl_nc_message', MessageConfig::class);
     }
 
+    /**
+     * @return array<MessageConfig>
+     */
     public function loadMessagesForNotification(int $notificationId): array
     {
         $messages = [];
@@ -108,6 +111,9 @@ class ConfigLoader implements ResetInterface
         return $className::fromArray($parameters);
     }
 
+    /**
+     * @return array<string, mixed>|null
+     */
     private function loadParameters(int $id, string $table): array|null
     {
         if (isset($this->cache[$table][$id])) {

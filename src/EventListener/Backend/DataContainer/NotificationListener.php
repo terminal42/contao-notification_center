@@ -15,17 +15,23 @@ class NotificationListener
     {
     }
 
+    /**
+     * @return array<string>
+     */
     #[AsCallback(table: 'tl_nc_notification', target: 'fields.type.options')]
     public function onTypeOptionsCallback(): array
     {
         return array_keys($this->typeRegistry->all());
     }
 
+    /**
+     * @return array<string>
+     */
     #[AsCallback(table: 'tl_nc_notification', target: 'fields.token_transformer.options')]
     public function onTokenTransformerOptionsCallback(): array
     {
         $templates = $this->framework->getAdapter(Controller::class)->getTemplateGroup('nc_token_transformer_');
-        // TODO: fix me
+        // TODO: fix me as soon as 4.13 supports what we need here
         return [];
     }
 }

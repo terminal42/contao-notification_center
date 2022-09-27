@@ -14,12 +14,18 @@ class GatewayListener
     {
     }
 
+    /**
+     * @return array<string>
+     */
     #[AsCallback(table: 'tl_nc_gateway', target: 'fields.type.options')]
     public function onTypeOptionsCallback(): array
     {
         return array_keys($this->gatewayRegistry->all());
     }
 
+    /**
+     * @return array<string, string>
+     */
     #[AsCallback(table: 'tl_nc_gateway', target: 'fields.mailerTransport.options')]
     public function onMailerOptionsCallback(): array
     {

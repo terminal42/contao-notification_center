@@ -11,40 +11,35 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Asset\Packages;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class LanguageListener
 {
-    use OverrideDefaultPaletteTrait;
+    use GetCurrentRecordTrait;
 
-    public function __construct(private Connection $connection, private Locales $locales, private TranslatorInterface $translator, private Packages $packages, private NotificationCenter $notificationCenter)
+    public function __construct(private Connection $connection, private ConfigLoader $configLoader, private Locales $locales, private TranslatorInterface $translator, private Packages $packages, private NotificationCenter $notificationCenter)
     {
     }
 
     #[AsCallback(table: 'tl_nc_language', target: 'config.onload')]
     public function onLoadCallback(DataContainer $dc): void
     {
-        $currentRecord = $this->getCurrentRecord($dc);
-        $messageRecord = $this->queryRecord('tl_nc_message', (int) $currentRecord['pid']);
-
-        if ([] === $messageRecord) {
+        if (
+            null === ($message = $this->configLoader->loadMessage($dc->id))
+            || null === ($notification = $this->configLoader->loadNotification($message->getNotification()))
+            || null === ($gateway = $this->configLoader->loadGateway($message->getGateway()))
+        ) {
             return;
         }
 
-        $notificationRecord = $this->queryRecord('tl_nc_notification', (int) $messageRecord['pid']);
-
-        if ([] === $notificationRecord) {
-            return;
-        }
-
-        $this->overrideDefaultPaletteForGateway((int) $messageRecord['gateway'], 'tl_nc_language');
+        $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()];
 
         foreach ((array) $GLOBALS['TL_DCA']['tl_nc_language']['fields'] as $field => $fieldConfig) {
             if (!isset($fieldConfig['nc_token_types'])) {
                 continue;
             }
 
-            // TODO: put this in a template, man
             // Disable browser autocompletion based on historic values for the token fields as otherwise
             // one would get two suggestions
             $GLOBALS['TL_DCA']['tl_nc_language']['fields'][$field]['eval']['autocomplete'] = false;
@@ -53,6 +48,8 @@ class LanguageListener
                 'autosuggester.css',
                 'terminal42_notification_center'
             ), '/');
+
+            // TODO: put this in a template, man
             $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = sprintf(
                 '<script src="%s"></script>',
                 $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center')
@@ -61,16 +58,19 @@ class LanguageListener
             $GLOBALS['TL_MOOTOOLS'][] = sprintf(
                 "<script>(function(window){new window.ContaoNotificationCenterAutoSuggester('%s', %s)})(window);</script>",
                 'ctrl_'.$field,
-                $this->getTokenConfigForField($notificationRecord['type'], $fieldConfig['nc_token_types'])
+                $this->getTokenConfigForField($notification->getType(), $fieldConfig['nc_token_types'])
             );
         }
     }
 
-    private function getTokenConfigForField(string $messageType, array $tokenTypes): string
+    /**
+     * @param array<string> $tokenDefinitionTypes
+     */
+    private function getTokenConfigForField(string $messageType, array $tokenDefinitionTypes): string
     {
         $tokens = [];
 
-        foreach ($this->notificationCenter->getTokenDefinitionsForMessageType($messageType, $tokenTypes) as $token) {
+        foreach ($this->notificationCenter->getTokenDefinitionsForMessageType($messageType, $tokenDefinitionTypes) as $token) {
             $label = '';
 
             if (($translationKey = $token->getTranslationKey()) !== null) {
@@ -92,6 +92,9 @@ class LanguageListener
         return json_encode($tokens);
     }
 
+    /**
+     * @return array<string>
+     */
     #[AsCallback(table: 'tl_nc_language', target: 'fields.language.options')]
     public function onLanguageOptionsCallback(): array
     {
@@ -99,7 +102,7 @@ class LanguageListener
     }
 
     #[AsCallback(table: 'tl_nc_language', target: 'fields.language.save_callback')]
-    public function onSaveLanguage($value, DataContainer $dc)
+    public function onSaveLanguage(mixed $value, DataContainer $dc): mixed
     {
         $check = $this->connection->createQueryBuilder()
             ->select('id')
@@ -121,7 +124,7 @@ class LanguageListener
     }
 
     #[AsCallback(table: 'tl_nc_language', target: 'fields.fallback.save_callback')]
-    public function onSaveFallback($value, DataContainer $dc)
+    public function onSaveFallback(mixed $value, DataContainer $dc): mixed
     {
         if (!$value) {
             return $value;
@@ -142,6 +145,9 @@ class LanguageListener
         if (false !== $existingId) {
             $this->connection->update('tl_nc_language', ['fallback' => false], ['id' => $existingId], ['fallback' => Types::BOOLEAN]);
         }
+
+        // Reset config caches just to be sure
+        $this->configLoader->reset();
 
         return $value;
     }

@@ -72,4 +72,9 @@ class TokenCollection
 
         return $values;
     }
+
+    public function serialize(): string
+    {
+        return json_encode($this->asRawKeyValue());
+    }
 }

@@ -16,7 +16,11 @@ use Terminal42\NotificationCenterBundle\Exception\CouldNotDeliverParcelException
 use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeException;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
-use Terminal42\NotificationCenterBundle\Parcel\ParcelInterface;
+use Terminal42\NotificationCenterBundle\Parcel\Parcel;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\NotificationConfigStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
@@ -101,7 +105,7 @@ class NotificationCenter
     /**
      * @throw CannotCreateParcelException
      *
-     * @return array<ParcelInterface>
+     * @return array<Parcel>
      */
     public function createParcelsForNotification(int $id, TokenCollection $tokenCollection, string $locale = null): array
     {
@@ -120,22 +124,22 @@ class NotificationCenter
      *
      * @throw CannotCreateParcelException
      */
-    public function createParcelForMessage(int $id, TokenCollection $tokenCollection, string $locale = null): ParcelInterface
+    public function createParcelForMessage(int $id, TokenCollection $tokenCollection, string $locale = null): Parcel
     {
         if (null === ($messageConfig = $this->configLoader->loadMessage($id))) {
             throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
         }
 
-        if (null === ($notificationConfig = $this->configLoader->loadNotification($messageConfig->getNotification()))) {
-            throw CouldNotCreateParcelException::becauseOfNonExistentNotification($messageConfig->getNotification());
+        // Create a parcel with the token collection stamp
+        $parcel = new Parcel($messageConfig, [new TokenCollectionStamp($tokenCollection)]);
+
+        // Add additional stamps
+        if (null !== ($notificationConfig = $this->configLoader->loadNotification($messageConfig->getNotification()))) {
+            $parcel = $parcel->withStamp(new NotificationConfigStamp($notificationConfig));
         }
 
-        if (null === ($gatewayConfig = $this->configLoader->loadGateway($messageConfig->getGateway()))) {
-            throw CouldNotCreateParcelException::becauseOfNonExistentGateway($messageConfig->getGateway());
-        }
-
-        if (null === ($gateway = $this->gatewayRegistry->getByName($gatewayConfig->getType()))) {
-            throw CouldNotCreateParcelException::becauseOfNonExistentGatewayType($gatewayConfig->getType());
+        if (null !== ($gatewayConfig = $this->configLoader->loadGateway($messageConfig->getGateway()))) {
+            $parcel = $parcel->withStamp(new GatewayConfigStamp($gatewayConfig));
         }
 
         if (
@@ -150,23 +154,11 @@ class NotificationCenter
             $locale = $pageModel->language ? LocaleUtil::formatAsLocale($pageModel->language) : null;
         }
 
-        $languageConfig = $this->configLoader->loadLanguageForMessageAndLocale($messageConfig->getId(), $locale);
-        $parcel = $gateway->createParcelFromConfigs(
-            $tokenCollection,
-            $notificationConfig,
-            $messageConfig,
-            $gatewayConfig,
-            $languageConfig
-        );
+        if (null !== ($languageConfig = $this->configLoader->loadLanguageForMessageAndLocale($messageConfig->getId(), $locale))) {
+            $parcel = $parcel->withStamp(new LanguageConfigStamp($languageConfig));
+        }
 
-        $event = new CreateParcelEvent(
-            $parcel,
-            $tokenCollection,
-            $notificationConfig,
-            $messageConfig,
-            $gatewayConfig,
-            $languageConfig
-        );
+        $event = new CreateParcelEvent($parcel);
 
         $this->eventDispatcher->dispatch($event);
 
@@ -174,14 +166,21 @@ class NotificationCenter
     }
 
     /**
+     * @param string|null $gatewayName you can an either provide a gateway name directly or stick a GatewayConfigStamp
+     *                                 on your parcel
+     *
      * @throws CouldNotDeliverParcelException
      */
-    public function sendParcel(ParcelInterface $parcel): bool
+    public function sendParcel(Parcel $parcel, string $gatewayName = null): bool
     {
-        $gateway = $this->gatewayRegistry->getByParcel($parcel);
+        if (null === $gatewayName && null !== ($gatewayStamp = $parcel->getStamp(GatewayConfigStamp::class))) {
+            $gatewayName = $gatewayStamp->gatewayConfig->getType();
+        }
+
+        $gateway = $this->gatewayRegistry->getByName((string) $gatewayName);
 
         if (null === $gateway) {
-            throw CouldNotDeliverParcelException::becauseOfNoGatewayIsResponsibleForParcel($parcel::class);
+            throw CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel();
         }
 
         $gateway->sendParcel($parcel); // TODO: result?

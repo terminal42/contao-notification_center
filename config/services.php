@@ -42,6 +42,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(LanguageListener::class)
         ->args([
             service('database_connection'),
+            service(ConfigLoader::class),
             service('contao.intl.locales'),
             service(TranslatorInterface::class),
             service('assets.packages'),
@@ -51,7 +52,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(MessageListener::class)
         ->args([
-            service('database_connection'),
+            service(ConfigLoader::class),
             service('contao.framework'),
         ])
     ;
@@ -87,11 +88,11 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set(MailerGateway::class)
-        ->args([
-            service('mailer'),
-            service('contao.string.simple_token_parser'),
-            service('contao.framework'),
-        ])
+        ->args([service_locator([
+            'mailer' => service('mailer'),
+            'contao.string.simple_token_parser' => service('contao.string.simple_token_parser'),
+            'contao.framework' => service('contao.framework'),
+        ])])
     ;
 
     $services->set(CoreFormMessageType::class);

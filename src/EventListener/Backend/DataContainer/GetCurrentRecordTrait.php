@@ -6,30 +6,11 @@ namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContaine
 
 use Contao\DataContainer;
 
-trait OverrideDefaultPaletteTrait
+trait GetCurrentRecordTrait
 {
-    private function overrideDefaultPaletteForGateway(int $gatewayId, string $table): void
-    {
-        if (0 === $gatewayId) {
-            return;
-        }
-
-        $gatewayType = $this->connection->createQueryBuilder()
-            ->select('type')
-            ->from('tl_nc_gateway')
-            ->where('id = :id')
-            ->setParameter('id', $gatewayId)
-            ->executeQuery()
-            ->fetchOne()
-        ;
-
-        if (false === $gatewayType) {
-            return;
-        }
-
-        $GLOBALS['TL_DCA'][$table]['palettes']['default'] = $GLOBALS['TL_DCA'][$table]['palettes'][$gatewayType];
-    }
-
+    /**
+     * @return array<string, mixed>
+     */
     private function getCurrentRecord(DataContainer $dataContainer): array
     {
         // Contao 4.13 compat
@@ -40,6 +21,9 @@ trait OverrideDefaultPaletteTrait
         return $dataContainer->getCurrentRecord($dataContainer->id);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function queryRecord(string $table, int $id): array
     {
         $result = $this->connection->createQueryBuilder()

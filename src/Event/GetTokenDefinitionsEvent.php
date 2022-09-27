@@ -15,6 +15,9 @@ class GetTokenDefinitionsEvent extends Event
      */
     private array $tokenDefinitions = [];
 
+    /**
+     * @param array<TokenDefinitionInterface> $tokenDefinitions
+     */
     public function __construct(private MessageTypeInterface $messageType, array $tokenDefinitions = [])
     {
         foreach ($tokenDefinitions as $token) {

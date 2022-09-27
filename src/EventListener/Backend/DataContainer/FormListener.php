@@ -15,6 +15,9 @@ class FormListener
     {
     }
 
+    /**
+     * @return array<string>
+     */
     #[AsCallback(table: 'tl_form', target: 'fields.nc_notification.options')]
     public function onNotificationOptionsCallback(DataContainer $dc): array
     {
