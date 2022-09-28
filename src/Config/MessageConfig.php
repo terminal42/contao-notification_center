@@ -25,4 +25,27 @@ class MessageConfig extends AbstractConfig
     {
         return $this->getBoolean('published');
     }
+
+    public function getStart(): ?\DateTimeImmutable
+    {
+        if ('' === ($start = $this->getString('start'))) {
+            return null;
+        }
+
+        return new \DateTimeImmutable('@' . $start);
+    }
+
+    public function getStop(): ?\DateTimeImmutable
+    {
+        if ('' === ($stop = $this->getString('stop'))) {
+            return null;
+        }
+
+        return new \DateTimeImmutable('@' . $stop);
+    }
+
+    public function getCondition(): string
+    {
+        return $this->getString('condition');
+    }
 }

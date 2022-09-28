@@ -9,6 +9,8 @@ use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 
 class CreateParcelEvent extends Event
 {
+    private bool $shouldDeliver = true;
+
     public function __construct(private Parcel $parcel)
     {
     }
@@ -23,5 +25,24 @@ class CreateParcelEvent extends Event
         $this->parcel = $parcel;
 
         return $this;
+    }
+
+    public function disableDelivery(): self
+    {
+        $this->shouldDeliver = false;
+
+        return $this;
+    }
+
+    public function enableDelivery(): self
+    {
+        $this->shouldDeliver = true;
+
+        return $this;
+    }
+
+    public function shouldDeliver(): bool
+    {
+        return $this->shouldDeliver;
     }
 }

@@ -8,7 +8,7 @@ use Contao\CoreBundle\Event\MenuEvent;
 use Knp\Menu\Util\MenuManipulator;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class BackendMenuEventSubscriber implements EventSubscriberInterface
+class BackendMenuSubscriber implements EventSubscriberInterface
 {
     public function __invoke(MenuEvent $event): void
     {

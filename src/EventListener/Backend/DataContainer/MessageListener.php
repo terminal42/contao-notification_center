@@ -8,11 +8,12 @@ use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\DataContainer;
+use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 
 class MessageListener
 {
-    public function __construct(private ConfigLoader $configLoader, private ContaoFramework $framework)
+    public function __construct(private AutoSuggester $autoSuggester, private ConfigLoader $configLoader, private ContaoFramework $framework)
     {
     }
 
@@ -27,6 +28,13 @@ class MessageListener
         }
 
         $GLOBALS['TL_DCA']['tl_nc_message']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_message']['palettes'][$gateway->getType()];
+
+        if (
+            null !== ($notification = $this->configLoader->loadNotification($message->getNotification()))
+            && ($type = $notification->getType())
+        ) {
+            $this->autoSuggester->enableAutoSuggesterOnDca('tl_nc_message', $type);
+        }
     }
 
     /**

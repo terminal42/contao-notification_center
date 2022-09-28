@@ -9,16 +9,15 @@ use Contao\CoreBundle\Intl\Locales;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Asset\Packages;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
-use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class LanguageListener
 {
     use GetCurrentRecordTrait;
 
-    public function __construct(private Connection $connection, private ConfigLoader $configLoader, private Locales $locales, private TranslatorInterface $translator, private Packages $packages, private NotificationCenter $notificationCenter)
+    public function __construct(private AutoSuggester $autoSuggester, private Connection $connection, private ConfigLoader $configLoader, private Locales $locales, private TranslatorInterface $translator)
     {
     }
 
@@ -27,7 +26,6 @@ class LanguageListener
     {
         if (
             null === ($message = $this->configLoader->loadMessage((int) $dc->id))
-            || null === ($notification = $this->configLoader->loadNotification($message->getNotification()))
             || null === ($gateway = $this->configLoader->loadGateway($message->getGateway()))
         ) {
             return;
@@ -35,61 +33,12 @@ class LanguageListener
 
         $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()];
 
-        foreach ((array) $GLOBALS['TL_DCA']['tl_nc_language']['fields'] as $field => $fieldConfig) {
-            if (!isset($fieldConfig['nc_token_types'])) {
-                continue;
-            }
-
-            // Disable browser autocompletion based on historic values for the token fields as otherwise
-            // one would get two suggestions
-            $GLOBALS['TL_DCA']['tl_nc_language']['fields'][$field]['eval']['autocomplete'] = false;
-
-            $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = trim($this->packages->getUrl(
-                'autosuggester.css',
-                'terminal42_notification_center'
-            ), '/');
-
-            // TODO: put this in a template, man
-            $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = sprintf(
-                '<script src="%s"></script>',
-                $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center')
-            );
-
-            $GLOBALS['TL_MOOTOOLS'][] = sprintf(
-                "<script>(function(window){new window.ContaoNotificationCenterAutoSuggester('%s', %s)})(window);</script>",
-                'ctrl_'.$field,
-                $this->getTokenConfigForField($notification->getType(), $fieldConfig['nc_token_types'])
-            );
+        if (
+            null !== ($notification = $this->configLoader->loadNotification($message->getNotification()))
+            && ($type = $notification->getType())
+        ) {
+            $this->autoSuggester->enableAutoSuggesterOnDca('tl_nc_language', $type);
         }
-    }
-
-    /**
-     * @param array<string> $tokenDefinitionTypes
-     */
-    private function getTokenConfigForField(string $messageType, array $tokenDefinitionTypes): string
-    {
-        $tokens = [];
-
-        foreach ($this->notificationCenter->getTokenDefinitionsForMessageType($messageType, $tokenDefinitionTypes) as $token) {
-            $label = '';
-
-            if (($translationKey = $token->getTranslationKey()) !== null) {
-                $translationKey = 'nc_tokens.'.$translationKey;
-                $label = $this->translator->trans($translationKey, [], 'contao_nc_tokens');
-
-                // Missing label would return the key untranslated, we ignore in that case
-                if ($label === $translationKey) {
-                    $label = '';
-                }
-            }
-
-            $tokens[] = [
-                'name' => $token->getName(),
-                'label' => $label,
-            ];
-        }
-
-        return json_encode($tokens);
     }
 
     /**

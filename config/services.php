@@ -5,15 +5,18 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
-use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenEventSubscriber;
-use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuEventSubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenSubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\FormListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\GatewayListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\LanguageListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\MessageListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\NotificationListener;
+use Terminal42\NotificationCenterBundle\EventListener\Backend\LoadDataContainerListener;
+use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
@@ -25,6 +28,14 @@ return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->defaults()->autoconfigure();
+
+    $services->set(AutoSuggester::class)
+        ->args([
+            service('assets.packages'),
+            service(NotificationCenter::class),
+            service(TranslatorInterface::class),
+        ])
+    ;
 
     $services->set(FormListener::class)
         ->args([
@@ -41,17 +52,17 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(LanguageListener::class)
         ->args([
+            service(AutoSuggester::class),
             service('database_connection'),
             service(ConfigLoader::class),
             service('contao.intl.locales'),
             service(TranslatorInterface::class),
-            service('assets.packages'),
-            service(NotificationCenter::class),
         ])
     ;
 
     $services->set(MessageListener::class)
         ->args([
+            service(AutoSuggester::class),
             service(ConfigLoader::class),
             service('contao.framework'),
         ])
@@ -64,7 +75,7 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(BackendMenuEventSubscriber::class);
+    $services->set(BackendMenuSubscriber::class);
 
     $services->set(GatewayRegistry::class)
         ->args([
@@ -106,9 +117,16 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(AdminEmailTokenEventSubscriber::class)
+    $services->set(AdminEmailTokenSubscriber::class)
         ->args([
             service('request_stack'),
+        ])
+    ;
+
+    $services->set(DisableDeliverySubscriber::class)
+        ->args([
+            service('contao.string.simple_token_parser'),
+            service('contao.string.simple_token_expression_language'),
         ])
     ;
 

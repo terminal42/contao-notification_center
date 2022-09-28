@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle;
 
 use Contao\CoreBundle\Util\LocaleUtil;
+use Contao\PageModel;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -112,7 +113,9 @@ class NotificationCenter
         $parcels = [];
 
         foreach ($this->configLoader->loadMessagesForNotification($id) as $messageConfig) {
-            $parcels[] = $this->createParcelForMessage($messageConfig->getId(), $tokenCollection, $locale);
+            if (null !== ($parcel = $this->createParcelForMessage($messageConfig->getId(), $tokenCollection, $locale))) {
+                $parcels[] = $parcel;
+            }
         }
 
         return $parcels;
@@ -124,7 +127,7 @@ class NotificationCenter
      *
      * @throw CannotCreateParcelException
      */
-    public function createParcelForMessage(int $id, TokenCollection $tokenCollection, string $locale = null): Parcel
+    public function createParcelForMessage(int $id, TokenCollection $tokenCollection, string $locale = null): Parcel|null
     {
         if (null === ($messageConfig = $this->configLoader->loadMessage($id))) {
             throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
@@ -146,11 +149,13 @@ class NotificationCenter
             null === $locale
             && ($request = $this->requestStack->getCurrentRequest())
             && ($pageModel = $request->attributes->get('pageModel'))
+            && $pageModel instanceof PageModel
         ) {
             // We do not want to use $request->getLocale() here because this is never empty. If we're not on a Contao
             // page, $request->getLocale() would return the configured default locale which in Symfony always falls back
             // to English. But we want $locale to remain null in case we really have no Contao page language so that our
             // own fallback mechanism can kick in (loading the language marked as fallback by the user).
+            $pageModel->loadDetails();
             $locale = $pageModel->language ? LocaleUtil::formatAsLocale($pageModel->language) : null;
         }
 
@@ -158,14 +163,25 @@ class NotificationCenter
             $parcel = $parcel->withStamp(new LanguageConfigStamp($languageConfig));
         }
 
-        // TODO: Should dispatching this event happen in a separate method so it's easy for developers to call the
-        // event themselves, if the parcel is built manually?
+        return $this->dispatchCreateParcelEvent($parcel);
+    }
+
+    /**
+     * If you want to give third-party developers the chance to add stamps or modify your parcel using the
+     * CreateParcelEvent event, you can manually do so by calling this method. Note that the event also allows
+     * developers to disable delivery (e.g. based on day time, message settings, conditions etc.). In such a case,
+     * this method will return null.
+     */
+    public function dispatchCreateParcelEvent(Parcel $parcel): Parcel|null
+    {
         $event = new CreateParcelEvent($parcel);
 
         $this->eventDispatcher->dispatch($event);
 
-        // TODO: Should be nullable, maybe? So that we can disable sending a message using the publish field, conditions
-        // and the event?
+        if (!$event->shouldDeliver()) {
+            return null;
+        }
+
         return $event->getParcel();
     }
 

@@ -14,3 +14,6 @@
 
 * Notification Center can now automatically generate the text variant based on HTML for e-mails. It
   does try to be smart about converting links, lists etc.
+* The corresponding language does not need an exact match of the root page language settings
+  anymore. It will try to fall back to the general locale first, before taking the one that is
+  configured to be fallback. E.g. (`de_CH` first, then `de` and only then the fallback).
