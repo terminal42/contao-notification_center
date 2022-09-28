@@ -13,7 +13,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
 use Terminal42\NotificationCenterBundle\Token\Token;
 
-class AdminEmailTokenListener implements EventSubscriberInterface
+class AdminEmailTokenEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(private RequestStack $requestStack)
     {

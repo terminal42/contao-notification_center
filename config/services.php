@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Contao\CoreBundle\Event\ContaoCoreEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
-use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenListener;
-use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuListener;
+use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenEventSubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuEventSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\FormListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\GatewayListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\LanguageListener;
@@ -65,9 +64,7 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(BackendMenuListener::class)
-        ->tag('kernel.event_listener', ['event' => ContaoCoreEvents::BACKEND_MENU_BUILD])
-    ;
+    $services->set(BackendMenuEventSubscriber::class);
 
     $services->set(GatewayRegistry::class)
         ->args([
@@ -109,7 +106,7 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(AdminEmailTokenListener::class)
+    $services->set(AdminEmailTokenEventSubscriber::class)
         ->args([
             service('request_stack'),
         ])

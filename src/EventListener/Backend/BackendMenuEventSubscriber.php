@@ -6,8 +6,9 @@ namespace Terminal42\NotificationCenterBundle\EventListener\Backend;
 
 use Contao\CoreBundle\Event\MenuEvent;
 use Knp\Menu\Util\MenuManipulator;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class BackendMenuListener
+class BackendMenuEventSubscriber implements EventSubscriberInterface
 {
     public function __invoke(MenuEvent $event): void
     {
@@ -17,8 +18,15 @@ class BackendMenuListener
             return;
         }
 
-        // Moves the NC to seecond position
+        // Moves the NC to second position
         $manipulator = new MenuManipulator();
         $manipulator->moveToPosition($tree->getChild('notification_center'), 1);
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            MenuEvent::class => '__invoke',
+        ];
     }
 }
