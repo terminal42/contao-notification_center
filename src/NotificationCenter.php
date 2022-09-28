@@ -88,7 +88,7 @@ class NotificationCenter
             throw InvalidNotificationTypeException::becauseTypeDoesNotExist($messageTypeName);
         }
 
-        $collection = new TokenCollection($messageType);
+        $collection = new TokenCollection();
         $tokenDefinitions = $this->getTokenDefinitionsForMessageType($messageTypeName);
 
         foreach ($rawTokens as $rawTokenName => $rawTokenValue) {
@@ -158,10 +158,14 @@ class NotificationCenter
             $parcel = $parcel->withStamp(new LanguageConfigStamp($languageConfig));
         }
 
+        // TODO: Should dispatching this event happen in a separate method so it's easy for developers to call the
+        // event themselves, if the parcel is built manually?
         $event = new CreateParcelEvent($parcel);
 
         $this->eventDispatcher->dispatch($event);
 
+        // TODO: Should be nullable, maybe? So that we can disable sending a message using the publish field, conditions
+        // and the event?
         return $event->getParcel();
     }
 

@@ -20,13 +20,13 @@ class MessageListener
     public function onLoadCallback(DataContainer $dc): void
     {
         if (
-            null === ($message = $this->configLoader->loadMessage($dc->id))
+            null === ($message = $this->configLoader->loadMessage((int) $dc->id))
             || null === ($gateway = $this->configLoader->loadGateway($message->getGateway()))
         ) {
             return;
         }
 
-        $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()];
+        $GLOBALS['TL_DCA']['tl_nc_message']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_message']['palettes'][$gateway->getType()];
     }
 
     /**

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token;
 
-use Terminal42\NotificationCenterBundle\MessageType\MessageTypeInterface;
-
 class TokenCollection
 {
     /**
@@ -16,16 +14,11 @@ class TokenCollection
     /**
      * @param array<TokenInterface> $tokens
      */
-    public function __construct(private MessageTypeInterface $messageType, array $tokens = [])
+    public function __construct(array $tokens = [])
     {
         foreach ($tokens as $token) {
             $this->add($token);
         }
-    }
-
-    public function getMessageType(): MessageTypeInterface
-    {
-        return $this->messageType;
     }
 
     /**

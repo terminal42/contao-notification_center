@@ -44,6 +44,10 @@ class ProcessFormDataListener
             }
         }
 
+        foreach ($formData as $k => $v) {
+            $rawTokens['formconfig_'.$k] = $v;
+        }
+
         $rawTokens['raw_data'] = implode("\n", $rawData);
         $rawTokens['raw_data_filled'] = implode("\n", $rawDataFilled);
 

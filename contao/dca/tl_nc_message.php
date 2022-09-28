@@ -88,22 +88,21 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
     // Fields
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => 'integer', 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
             'foreignKey' => 'tl_nc_notification.title',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
+            'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'title' => [
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''", // TODO: correct but convert
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'gateway' => [
             'exclude' => true,
@@ -111,8 +110,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
             'inputType' => 'select',
             'foreignKey' => 'tl_nc_gateway.title',
             'eval' => ['mandatory' => true, 'submitOnChange' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+            'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'languages' => [
             'inputType' => 'dcaWizard',
@@ -128,19 +126,17 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
         ],
         'email_priority' => [
             'exclude' => true,
-            'default' => 3,
             'inputType' => 'select',
             'options' => [1, 2, 3, 4, 5],
             'reference' => &$GLOBALS['TL_LANG']['tl_nc_message']['email_priority_options'],
             'eval' => ['rgxp' => 'digit', 'tl_class' => 'w50'],
-            'sql' => "int(1) unsigned NOT NULL default '0'",
+            'sql' => ['type' => 'smallint', 'default' => 3, 'unsigned' => true],
         ],
         'email_template' => [
             'exclude' => true,
-            'default' => 'mail_default',
             'inputType' => 'select',
             'eval' => ['tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => 'mail_default', 'notnull' => false],
         ],
         'published' => [
             'exclude' => true,
@@ -148,7 +144,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
             'inputType' => 'checkbox',
             'toggle' => true,
             'eval' => ['doNotCopy' => true],
-            'sql' => "char(1) NOT NULL default ''",
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
     ],
 ];

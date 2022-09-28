@@ -26,7 +26,7 @@ class LanguageListener
     public function onLoadCallback(DataContainer $dc): void
     {
         if (
-            null === ($message = $this->configLoader->loadMessage($dc->id))
+            null === ($message = $this->configLoader->loadMessage((int) $dc->id))
             || null === ($notification = $this->configLoader->loadNotification($message->getNotification()))
             || null === ($gateway = $this->configLoader->loadGateway($message->getGateway()))
         ) {

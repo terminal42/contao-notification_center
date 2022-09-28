@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file datatype="php" date="2018-10-17T16:46:52+02:00" original="tl_nc_gateway" source-language="en" target-language="en">
+<xliff version="1.2">
+  <file datatype="php" source-language="en" target-language="en">
     <body>
       <trans-unit id="tl_nc_gateway.title.0">
         <source>Title</source>

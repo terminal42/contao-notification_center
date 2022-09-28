@@ -88,21 +88,20 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
     // Fields
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => 'integer', 'unsigned' => true, 'autoincrement' => true],
         ],
         'pid' => [
             'foreignKey' => 'tl_nc_message.title',
-            'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
+            'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'language' => [
             'exclude' => true,
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(5) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 5, 'default' => null, 'notnull' => false],
         ],
         'fallback' => [
             'exclude' => true,
@@ -118,7 +117,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 EmailToken::class,
             ],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'attachment_tokens' => [
             'exclude' => true,
@@ -128,19 +127,19 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 FileToken::class,
             ],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'attachments' => [
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr'],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
         ],
         'attachment_templates' => [
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr', 'extensions' => 'xml,txt,json'],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
         ],
         'email_sender_name' => [
             'exclude' => true,
@@ -150,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 TextToken::class,
             ],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_sender_address' => [
             'exclude' => true,
@@ -160,7 +159,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 EmailToken::class,
             ],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_recipient_cc' => [
             'exclude' => true,
@@ -170,7 +169,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 EmailToken::class,
             ],
-            'sql' => 'text NULL',
+            'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_recipient_bcc' => [
             'exclude' => true,
@@ -180,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 EmailToken::class,
             ],
-            'sql' => 'text NULL',
+            'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_replyTo' => [
             'exclude' => true,
@@ -190,7 +189,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 EmailToken::class,
             ],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_subject' => [
             'exclude' => true,
@@ -200,16 +199,15 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 WildcardToken::class,
                 TextToken::class,
             ],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_mode' => [
             'exclude' => true,
-            'default' => 'textOnly',
             'inputType' => 'radio',
             'options' => ['textOnly', 'htmlAndAutoText', 'textAndHtml'],
             'reference' => &$GLOBALS['TL_LANG']['tl_nc_language']['email_mode'],
             'eval' => ['tl_class' => 'clr', 'submitOnChange' => true],
-            'sql' => "varchar(16) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 16, 'default' => 'textOnly'],
         ],
         'email_text' => [
             'exclude' => true,
@@ -220,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 TextToken::class,
                 FileToken::class,
             ],
-            'sql' => 'text NULL',
+            'sql' => ['type' => 'text', 'default' => null],
         ],
         'email_html' => [
             'exclude' => true,
@@ -232,7 +230,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 HtmlToken::class,
                 FileToken::class,
             ],
-            'sql' => 'text NULL',
+            'sql' => ['type' => 'text', 'default' => null],
         ],
     ],
 ];

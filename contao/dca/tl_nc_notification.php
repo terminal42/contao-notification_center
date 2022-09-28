@@ -76,17 +76,17 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
     // Fields
     'fields' => [
         'id' => [
-            'sql' => 'int(10) unsigned NOT NULL auto_increment',
+            'sql' => ['type' => 'integer', 'unsigned' => true, 'autoincrement' => true],
         ],
         'tstamp' => [
-            'sql' => "int(10) unsigned NOT NULL default '0'",
+            'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'title' => [
             'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'sql' => "varchar(255) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'type' => [
             'exclude' => true,
@@ -94,13 +94,13 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
             'inputType' => 'select',
             'reference' => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
-            'sql' => "varchar(128) NOT NULL default ''",
+            'sql' => ['type' => 'string', 'length' => 128, 'default' => null, 'notnull' => false],
         ],
         'token_transformer' => [
             'exclude' => true,
             'inputType' => 'select',
             'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'],
-            'sql' => 'blob NULL',
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
     ],
 ];

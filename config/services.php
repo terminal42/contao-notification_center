@@ -8,6 +8,7 @@ use Contao\CoreBundle\Event\ContaoCoreEvents;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
+use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\FormListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\GatewayListener;
@@ -104,6 +105,12 @@ return static function (ContainerConfigurator $container): void {
             service(GatewayRegistry::class),
             service(ConfigLoader::class),
             service('event_dispatcher'),
+            service('request_stack'),
+        ])
+    ;
+
+    $services->set(AdminEmailTokenListener::class)
+        ->args([
             service('request_stack'),
         ])
     ;

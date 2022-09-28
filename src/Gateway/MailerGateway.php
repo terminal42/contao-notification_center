@@ -24,7 +24,7 @@ class MailerGateway extends AbstractGateway
     public function doSendParcel(Parcel $parcel): void
     {
         $email = $this->createEmail($parcel);
-
+        dd($email);
         $this->serviceLocator->get('mailer')->send($email); // TODO: exception handling
     }
 

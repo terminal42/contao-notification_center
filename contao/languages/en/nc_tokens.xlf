@@ -3,52 +3,28 @@
   <file datatype="php" source-language="en" target-language="en">
     <body>
       <trans-unit id="nc_tokens.admin_email">
-        <source>E-mail address of administrator of the current page.</source>
-        <target>E-mail address of administrator of the current page.</target>
+        <source>E-mail address of administrator of the current page (website root settings).</source>
+        <target>E-mail address of administrator of the current page (website root settings).</target>
       </trans-unit>
-      <trans-unit id="core_form.form_*">
+      <trans-unit id="nc_tokens.form.form_*">
         <source>All the form fields.</source>
         <target>All the form fields.</target>
       </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.formlabel_*">
+      <trans-unit id="nc_tokens.form.formlabel_*">
         <source>All the form field labels.</source>
         <target>All the form field labels.</target>
       </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.raw_data">
+    <trans-unit id="nc_tokens.form.formconfig_*">
+        <source>All the form generator configuration fields.</source>
+        <target>All the form generator configuration fields.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.form.raw_data">
         <source>All the form fields and their raw values.</source>
         <target>All the form fields and their raw values.</target>
       </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.raw_data_filled">
+      <trans-unit id="nc_tokens.form.raw_data_filled">
         <source>All filled in form fields and their raw values.</source>
         <target>All filled in form fields and their raw values.</target>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.admin_email">
-        <source>E-mail address of administrator of the current page.</source>
-        <target>E-mail address of administrator of the current page.</target>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.recipients">
-        <source>E-mail address of the member.</source>
-        <target>E-mail address of the member.</target>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.domain">
-        <source>The current domain.</source>
-        <target>The current domain.</target>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.member_*">
-        <source>Current member fields as submitted by the form. Use {{user::*}} insert tags if you need other properties.</source>
-        <target>Current member fields as submitted by the form. Use {{user::*}} insert tags if you need other properties.</target>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.member_old_*">
-        <source>Member fields as they were before the changes.</source>
-        <target>Member fields as they were before the changes.</target>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.member_personaldata.changed_*">
-        <source>Flag (1 or 0) if a field has changed, to be used with if-conditions.</source>
-        <target>Flag (1 or 0) if a field has changed, to be used with if-conditions.</target>
-      </trans-unit>
-      <trans-unit id="NOTIFICATION_CENTER_TOKEN.template">
-        <source>Output of template "%s"</source>
-        <target>Output of template "%s"</target>
       </trans-unit>
     </body>
   </file>
