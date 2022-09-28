@@ -50,22 +50,6 @@
         <source>Please choose a template file.</source>
         <target>Please choose a template file.</target>
       </trans-unit>
-      <trans-unit id="tl_nc_message.postmark_tag.0">
-        <source>Tag</source>
-        <target>Tag</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_message.postmark_tag.1">
-        <source>Here you can enter the tag.</source>
-        <target>Here you can enter the tag.</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_message.postmark_trackOpens.0">
-        <source>Enable open tracking</source>
-        <target>Enable open tracking</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_message.postmark_trackOpens.1">
-        <source>Here you can enable open tracking.</source>
-        <target>Here you can enable open tracking.</target>
-      </trans-unit>
       <trans-unit id="tl_nc_message.published.0">
         <source>Publish message</source>
         <target>Publish message</target>

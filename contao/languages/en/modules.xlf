@@ -14,14 +14,6 @@
         <source>Manage notifications.</source>
         <target>Manage notifications.</target>
       </trans-unit>
-      <trans-unit id="MOD.nc_queue.0">
-        <source>Queue</source>
-        <target>Queue</target>
-      </trans-unit>
-      <trans-unit id="MOD.nc_queue.1">
-        <source>View the message queue.</source>
-        <target>View the message queue.</target>
-      </trans-unit>
       <trans-unit id="MOD.nc_gateways.0">
         <source>Gateways</source>
         <target>Gateways</target>
@@ -29,38 +21,6 @@
       <trans-unit id="MOD.nc_gateways.1">
         <source>Manage gateways</source>
         <target>Manage gateways</target>
-      </trans-unit>
-      <trans-unit id="FMD.lostPasswordNotificationCenter.0">
-        <source>Lost password (Notification Center)</source>
-        <target>Lost password (Notification Center)</target>
-      </trans-unit>
-      <trans-unit id="FMD.lostPasswordNotificationCenter.1">
-        <source>Generates a form to request a new password and sends the notification using the notification center.</source>
-        <target>Generates a form to request a new password and sends the notification using the notification center.</target>
-      </trans-unit>
-      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.0">
-        <source>Subscribe (Notification Center)</source>
-        <target>Subscribe (Notification Center)</target>
-      </trans-unit>
-      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.1">
-        <source>Generates a form to subscribe to one or more channels and sends the notification using the notification center.</source>
-        <target>Generates a form to subscribe to one or more channels and sends the notification using the notification center.</target>
-      </trans-unit>
-      <trans-unit id="FMD.newsletterActivateNotificationCenter.0">
-        <source>Activate (Notification Center)</source>
-        <target>Activate (Notification Center)</target>
-      </trans-unit>
-      <trans-unit id="FMD.newsletterActivateNotificationCenter.1">
-        <source>Generates a form to activate subscription to one or more channels the notification using the notification center.</source>
-        <target>Generates a form to activate subscription to one or more channels the notification using the notification center.</target>
-      </trans-unit>
-      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.0">
-        <source>Unsubscribe (Notification Center)</source>
-        <target>Unsubscribe (Notification Center)</target>
-      </trans-unit>
-      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.1">
-        <source>Generates a form to unsubscribe from one or more channels and sends the notification using the notification center.</source>
-        <target>Generates a form to unsubscribe from one or more channels and sends the notification using the notification center.</target>
       </trans-unit>
     </body>
   </file>
