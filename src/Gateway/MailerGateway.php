@@ -7,10 +7,14 @@ namespace Terminal42\NotificationCenterBundle\Gateway;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\FrontendTemplate;
 use Soundasleep\Html2Text;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
+use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 class MailerGateway extends AbstractGateway
 {
@@ -21,11 +25,26 @@ class MailerGateway extends AbstractGateway
         return self::NAME;
     }
 
-    public function doSendParcel(Parcel $parcel): void
+    public function doSendParcel(Parcel $parcel): Receipt
     {
         $email = $this->createEmail($parcel);
-        dd($email);
-        $this->serviceLocator->get('mailer')->send($email); // TODO: exception handling
+
+        /** @var MailerInterface $mailer */
+        $mailer = $this->serviceLocator->get('mailer');
+
+        try {
+            $mailer->send($email);
+
+            return Receipt::createForSuccessfulDelivery($parcel);
+        } catch (TransportExceptionInterface $e) {
+            return Receipt::createForUnsuccessfulDelivery(
+                $parcel,
+                CouldNotDeliverParcelException::becauseOfGatewayException(
+                    self::NAME,
+                    $e
+                )
+            );
+        }
     }
 
     private function createEmail(Parcel $parcel): Email

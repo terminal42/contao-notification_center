@@ -20,6 +20,8 @@ class OptIn implements OptInInterface
 
     public function create(string $prefix, string $email, array $related): OptInTokenInterface
     {
+        dd(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 3));
+
         return $this->decorated->create($prefix, $email, $related);
 
         if ('pw' !== $prefix) {

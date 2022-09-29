@@ -30,7 +30,8 @@
         "symfony/asset": "^5.4 || ^6.0",
         "doctrine/dbal": "^3.4",
         "soundasleep/html2text": "^2.0",
-        "symfony/expression-language": "^5.4 || ^6.0"
+        "symfony/expression-language": "^5.4 || ^6.0",
+        "ramsey/collection": "^1.2"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0"

@@ -12,16 +12,20 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
-use Terminal42\NotificationCenterBundle\Exception\CouldNotCreateParcelException;
-use Terminal42\NotificationCenterBundle\Exception\CouldNotDeliverParcelException;
+use Terminal42\NotificationCenterBundle\Event\ReceiptEvent;
 use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeException;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
+use Terminal42\NotificationCenterBundle\Parcel\ParcelCollection;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\NotificationConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
+use Terminal42\NotificationCenterBundle\Receipt\Receipt;
+use Terminal42\NotificationCenterBundle\Receipt\ReceiptCollection;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
@@ -103,18 +107,13 @@ class NotificationCenter
         return $collection;
     }
 
-    /**
-     * @throw CannotCreateParcelException
-     *
-     * @return array<Parcel>
-     */
-    public function createParcelsForNotification(int $id, TokenCollection $tokenCollection, string $locale = null): array
+    public function createParcelsForNotification(int $id, TokenCollection $tokenCollection, string $locale = null): ParcelCollection
     {
-        $parcels = [];
+        $parcels = new ParcelCollection();
 
         foreach ($this->configLoader->loadMessagesForNotification($id) as $messageConfig) {
             if (null !== ($parcel = $this->createParcelForMessage($messageConfig->getId(), $tokenCollection, $locale))) {
-                $parcels[] = $parcel;
+                $parcels->add($parcel);
             }
         }
 
@@ -188,10 +187,8 @@ class NotificationCenter
     /**
      * @param string|null $gatewayName you can an either provide a gateway name directly or stick a GatewayConfigStamp
      *                                 on your parcel
-     *
-     * @throws CouldNotDeliverParcelException
      */
-    public function sendParcel(Parcel $parcel, string $gatewayName = null): bool
+    public function sendParcel(Parcel $parcel, string $gatewayName = null): Receipt
     {
         if (null === $gatewayName && null !== ($gatewayStamp = $parcel->getStamp(GatewayConfigStamp::class))) {
             $gatewayName = $gatewayStamp->gatewayConfig->getType();
@@ -200,12 +197,19 @@ class NotificationCenter
         $gateway = $this->gatewayRegistry->getByName((string) $gatewayName);
 
         if (null === $gateway) {
-            throw CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel();
+            $receipt = Receipt::createForUnsuccessfulDelivery(
+                $parcel,
+                CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel()
+            );
+        } else {
+            $receipt = $gateway->sendParcel($parcel);
         }
 
-        $gateway->sendParcel($parcel); // TODO: result?
+        // Readonly event so developers can do whatever they want with the receipt, whether it was successful
+        // or not. Use this to implement logging etc.
+        $this->eventDispatcher->dispatch(new ReceiptEvent($receipt));
 
-        return true;
+        return $receipt;
     }
 
     /**
@@ -213,16 +217,15 @@ class NotificationCenter
      *
      * @param string|null $locale The locale for the message. Passing none will try to automatically take
      *                            the one of the current request.
-     *
-     * @throws CouldNotCreateParcelException
-     * @throws CouldNotDeliverParcelException
      */
-    public function sendNotification(int $id, TokenCollection $tokenCollection, string $locale = null): bool
+    public function sendNotification(int $id, TokenCollection $tokenCollection, string $locale = null): ReceiptCollection
     {
+        $collection = new ReceiptCollection();
+
         foreach ($this->createParcelsForNotification($id, $tokenCollection, $locale) as $parcel) {
-            $this->sendParcel($parcel); // TODO result?
+            $collection->add($this->sendParcel($parcel));
         }
 
-        return true; // TODO: Convert to proper result object coming from the gateway
+        return $collection;
     }
 }

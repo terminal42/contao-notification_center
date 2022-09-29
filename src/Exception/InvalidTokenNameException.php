@@ -6,8 +6,8 @@ namespace Terminal42\NotificationCenterBundle\Exception;
 
 class InvalidTokenNameException extends \InvalidArgumentException implements ExceptionInterface
 {
-    public static function becauseMustEndWith(string $suffix): self
+    public static function becauseMustEndWith(string $suffix, int $code = null, \Throwable $previous = null): self
     {
-        return new self(sprintf('The token name is invalid because ist must end with "%s".', $suffix));
+        return new self(sprintf('The token name is invalid because ist must end with "%s".', $suffix), $code, $previous);
     }
 }

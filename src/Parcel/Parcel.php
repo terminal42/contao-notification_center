@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Parcel;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 
-class Parcel
+final class Parcel
 {
     /**
      * @param array<StampInterface> $stamps
@@ -109,7 +109,7 @@ class Parcel
     /**
      * @return array<string, string>
      */
-    protected function forSerialization(): array
+    private function forSerialization(): array
     {
         $data = [];
 

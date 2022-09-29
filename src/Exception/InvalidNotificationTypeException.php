@@ -6,8 +6,8 @@ namespace Terminal42\NotificationCenterBundle\Exception;
 
 class InvalidNotificationTypeException extends \InvalidArgumentException implements ExceptionInterface
 {
-    public static function becauseTypeDoesNotExist(string $notificationType): self
+    public static function becauseTypeDoesNotExist(string $notificationType, int $code = null, \Throwable $previous = null): self
     {
-        return new self(sprintf('The notification type "%s" does not exist.', $notificationType));
+        return new self(sprintf('The notification type "%s" does not exist.', $notificationType), $code, $previous);
     }
 }

@@ -4,38 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token;
 
-class TokenCollection
+use Ramsey\Collection\AbstractCollection;
+
+/**
+ * @extends AbstractCollection<TokenInterface>
+ */
+class TokenCollection extends AbstractCollection
 {
-    /**
-     * @var array<TokenInterface>
-     */
-    private $tokens = [];
-
-    /**
-     * @param array<TokenInterface> $tokens
-     */
-    public function __construct(array $tokens = [])
-    {
-        foreach ($tokens as $token) {
-            $this->add($token);
-        }
-    }
-
-    /**
-     * @return array<TokenInterface>
-     */
-    public function all(): array
-    {
-        return $this->tokens;
-    }
-
-    public function add(TokenInterface $token): self
-    {
-        $this->tokens[] = $token;
-
-        return $this;
-    }
-
     /**
      * @return array<string, mixed>
      */
@@ -43,7 +18,7 @@ class TokenCollection
     {
         $values = [];
 
-        foreach ($this->all() as $token) {
+        foreach ($this as $token) {
             $values[$token->getName()] = $token->getValue();
         }
 
@@ -69,5 +44,10 @@ class TokenCollection
     public function serialize(): string
     {
         return json_encode($this->asRawKeyValue());
+    }
+
+    public function getType(): string
+    {
+        return TokenInterface::class;
     }
 }

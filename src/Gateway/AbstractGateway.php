@@ -6,10 +6,11 @@ namespace Terminal42\NotificationCenterBundle\Gateway;
 
 use Contao\CoreBundle\String\SimpleTokenParser;
 use Psr\Container\ContainerInterface;
-use Terminal42\NotificationCenterBundle\Exception\CouldNotDeliverParcelException;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
+use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 abstract class AbstractGateway implements GatewayInterface
 {
@@ -17,13 +18,19 @@ abstract class AbstractGateway implements GatewayInterface
     {
     }
 
-    public function sendParcel(Parcel $parcel): void
+    public function sendParcel(Parcel $parcel): Receipt
     {
         if (!$parcel->hasStamps($this->getRequiredStamps())) {
-            throw CouldNotDeliverParcelException::becauseOfInsufficientStamps($parcel->getStampClasses(), $this->getRequiredStamps());
+            return Receipt::createForUnsuccessfulDelivery(
+                $parcel,
+                CouldNotDeliverParcelException::becauseOfInsufficientStamps(
+                    $parcel->getStampClasses(),
+                    $this->getRequiredStamps()
+                )
+            );
         }
 
-        $this->doSendParcel($parcel); // TODO: return
+        return $this->doSendParcel($parcel);
     }
 
     /**
@@ -31,7 +38,7 @@ abstract class AbstractGateway implements GatewayInterface
      */
     abstract protected function getRequiredStamps(): array;
 
-    abstract protected function doSendParcel(Parcel $parcel): void;
+    abstract protected function doSendParcel(Parcel $parcel): Receipt;
 
     protected function replaceTokens(Parcel $parcel, string $value): string
     {

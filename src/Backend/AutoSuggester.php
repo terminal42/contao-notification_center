@@ -30,7 +30,6 @@ class AutoSuggester
                 'terminal42_notification_center'
             ), '/');
 
-            // TODO: put this in a template, man
             $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = sprintf(
                 '<script src="%s"></script>',
                 $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center')
