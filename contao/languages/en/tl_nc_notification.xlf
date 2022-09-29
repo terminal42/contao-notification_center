@@ -82,6 +82,10 @@
         <source>This notification type can be sent when the form is submitted.</source>
         <target>This notification type can be sent when the form is submitted.</target>
       </trans-unit>
+      <trans-unit id="tl_nc_notification.type.member_password.0">
+        <source>Contao member lost password</source>
+        <target>Contao member lost password</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

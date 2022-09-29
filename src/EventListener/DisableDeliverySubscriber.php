@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\EventListener;
 
 use Contao\CoreBundle\String\SimpleTokenParser;
-use Contao\PageModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
-use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
-use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
-use Terminal42\NotificationCenterBundle\Token\Token;
 
 class DisableDeliverySubscriber implements EventSubscriberInterface
 {
-    public function __construct(private SimpleTokenParser $simpleTokenParser, private ExpressionLanguage $expressionLanguage) {}
+    public function __construct(private SimpleTokenParser $simpleTokenParser, private ExpressionLanguage $expressionLanguage)
+    {
+    }
 
     public static function getSubscribedEvents(): array
     {
@@ -32,6 +29,7 @@ class DisableDeliverySubscriber implements EventSubscriberInterface
 
         if (!$messageConfig->isPublished()) {
             $event->disableDelivery();
+
             return;
         }
 
@@ -39,15 +37,18 @@ class DisableDeliverySubscriber implements EventSubscriberInterface
 
         if (null !== ($start = $messageConfig->getStart()) && $now < $start) {
             $event->disableDelivery();
+
             return;
         }
 
         if (null !== ($stop = $messageConfig->getStop()) && $now >= $stop) {
             $event->disableDelivery();
+
             return;
         }
 
-        if ('' !== $messageConfig->getCondition() &&
+        if (
+            '' !== $messageConfig->getCondition() &&
             null !== ($tokenCollectionStamp = $event->getParcel()->getStamp(TokenCollectionStamp::class))
         ) {
             // We first replace tokens on the condition. So that e.g. "##form_email"## === 'foobar@foobar.com'" becomes

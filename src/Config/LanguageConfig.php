@@ -6,4 +6,8 @@ namespace Terminal42\NotificationCenterBundle\Config;
 
 class LanguageConfig extends AbstractConfig
 {
+    public function getMessage(): int
+    {
+        return $this->getInt('pid');
+    }
 }

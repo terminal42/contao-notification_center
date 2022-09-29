@@ -14,15 +14,18 @@ use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\Form
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\GatewayListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\LanguageListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\MessageListener;
+use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\ModuleListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\NotificationListener;
-use Terminal42\NotificationCenterBundle\EventListener\Backend\LoadDataContainerListener;
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\MessageTypeForModuleConfigSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
-use Terminal42\NotificationCenterBundle\MessageType\CoreFormMessageType;
+use Terminal42\NotificationCenterBundle\MessageType\FormGeneratorMessageType;
+use Terminal42\NotificationCenterBundle\MessageType\LostPasswordMessageType;
 use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Terminal42\NotificationCenterBundle\OptIn\OptIn;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -68,6 +71,14 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
+    $services->set(ModuleListener::class)
+        ->args([
+            service(ConfigLoader::class),
+            service('event_dispatcher'),
+            service(NotificationCenter::class),
+        ])
+    ;
+
     $services->set(NotificationListener::class)
         ->args([
             service(MessageTypeRegistry::class),
@@ -104,7 +115,8 @@ return static function (ContainerConfigurator $container): void {
         ])])
     ;
 
-    $services->set(CoreFormMessageType::class);
+    $services->set(FormGeneratorMessageType::class);
+    $services->set(LostPasswordMessageType::class);
 
     $services->set(NotificationCenter::class)
         ->args([
@@ -130,9 +142,19 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
+    $services->set(MessageTypeForModuleConfigSubscriber::class);
+
     $services->set(ProcessFormDataListener::class)
         ->args([
             service(NotificationCenter::class),
+        ])
+    ;
+
+    $services->set(OptIn::class)
+        ->decorate('contao.opt_in')
+        ->args([
+            service('.inner'),
+            service('contao.framework'),
         ])
     ;
 };

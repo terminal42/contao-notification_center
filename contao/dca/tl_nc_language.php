@@ -218,7 +218,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 TextToken::class,
                 FileToken::class,
             ],
-            'sql' => ['type' => 'text', 'default' => null],
+            'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_html' => [
             'exclude' => true,
@@ -230,7 +230,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 HtmlToken::class,
                 FileToken::class,
             ],
-            'sql' => ['type' => 'text', 'default' => null],
+            'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
     ],
 ];

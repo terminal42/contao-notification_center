@@ -167,7 +167,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
                 WildcardToken::class,
                 TextToken::class,
             ],
-            'sql' => ['type' => 'text', 'default' => null],
+            'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
     ],
 ];

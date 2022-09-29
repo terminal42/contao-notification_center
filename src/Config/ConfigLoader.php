@@ -33,6 +33,11 @@ class ConfigLoader implements ResetInterface
         return $this->loadConfig($id, 'tl_nc_message', MessageConfig::class);
     }
 
+    public function loadModule(int $id): ModuleConfig|null
+    {
+        return $this->loadConfig($id, 'tl_module', ModuleConfig::class);
+    }
+
     /**
      * @return array<MessageConfig>
      */

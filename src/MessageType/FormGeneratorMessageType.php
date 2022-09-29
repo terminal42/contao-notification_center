@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\MessageType;
 use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
 
-class CoreFormMessageType implements MessageTypeInterface
+class FormGeneratorMessageType implements MessageTypeInterface
 {
     public const NAME = 'core_form';
 

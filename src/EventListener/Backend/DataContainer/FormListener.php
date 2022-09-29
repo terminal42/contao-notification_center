@@ -6,7 +6,7 @@ namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContaine
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
-use Terminal42\NotificationCenterBundle\MessageType\CoreFormMessageType;
+use Terminal42\NotificationCenterBundle\MessageType\FormGeneratorMessageType;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class FormListener
@@ -21,6 +21,6 @@ class FormListener
     #[AsCallback(table: 'tl_form', target: 'fields.nc_notification.options')]
     public function onNotificationOptionsCallback(DataContainer $dc): array
     {
-        return $this->notificationCenter->getNotificationsForMessageType(CoreFormMessageType::NAME);
+        return $this->notificationCenter->getNotificationsForMessageType(FormGeneratorMessageType::NAME);
     }
 }

@@ -1,7 +1,8 @@
 # Upgrade from Notification Center 1.x to 2.x
 
-* The built-in Postmark Gateway has been removed.
-* The built-in Queue Gateway has been removed.
+* The built-in Postmark gateway has been removed.
+* The built-in queue gateway has been removed.
+* The built-in file gateway has been removed.
 * Embedding images in e-mails is not supported anymore.
 * The configurable flattening delimiter in the e-mail notification type has been removed in favor of
   a more general approach based on Twig. See README.
