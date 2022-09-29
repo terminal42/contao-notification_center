@@ -27,20 +27,20 @@
         <target>Create a new notification.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.edit.0">
-        <source>Manage notifications</source>
-        <target>Manage notifications</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_notification.edit.1">
-        <source>Manage messages for notification ID %s.</source>
-        <target>Manage messages for notification ID %s.</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_notification.editheader.0">
         <source>Edit notification</source>
         <target>Edit notification</target>
       </trans-unit>
-      <trans-unit id="tl_nc_notification.editheader.1">
+      <trans-unit id="tl_nc_notification.edit.1">
         <source>Edit notification ID %s.</source>
         <target>Edit notification ID %s.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.children.0">
+        <source>Manage notifications</source>
+        <target>Manage notifications</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.children.1">
+        <source>Manage messages for notification ID %s.</source>
+        <target>Manage messages for notification ID %s.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.copy.0">
         <source>Copy notification</source>

@@ -4,7 +4,6 @@
 * Make sure `member_old_*` tokens
 * Translate to German
 * Get Autosuggester to work in tinyMCE
-* Correct header icon 4.13 vs 5.0
 
 # To be discussed
 
