@@ -32,8 +32,8 @@
     "require": {
         "php": "^7.0 || ^8.0",
         "contao/core-bundle": "^4.13 || ^5.0",
-        "codefog/contao-haste": "5.x-dev@dev",
-        "terminal42/dcawizard": "dev-haste-5@dev"
+        "codefog/contao-haste": "^5.0",
+        "terminal42/dcawizard": "^2.5"
     },
     "require-dev": {
         "contao/newsletter-bundle": "^4.13 || ^5.0"
