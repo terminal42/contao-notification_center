@@ -6,6 +6,9 @@ namespace Terminal42\NotificationCenterBundle\Util\Stringable;
 
 use Ramsey\Collection\AbstractCollection;
 
+/**
+ * @extends AbstractCollection<mixed>
+ */
 class StringableArray extends AbstractCollection implements \Stringable
 {
     public function getType(): string

@@ -41,7 +41,7 @@ class MailerGateway extends AbstractGateway
                 $parcel,
                 CouldNotDeliverParcelException::becauseOfGatewayException(
                     self::NAME,
-                    null,
+                    0,
                     $e
                 )
             );

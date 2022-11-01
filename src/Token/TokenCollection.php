@@ -37,6 +37,7 @@ class TokenCollection extends AbstractCollection
     }
 
     /**
+     * @param array<string, mixed>            $rawTokens
      * @param array<TokenDefinitionInterface> $tokenDefinitions
      */
     public static function fromRawAndDefinitions(array $rawTokens, array $tokenDefinitions): self

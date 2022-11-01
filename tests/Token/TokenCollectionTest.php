@@ -11,6 +11,9 @@ use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 class TokenCollectionTest extends TestCase
 {
     /**
+     * @param array<string, mixed>  $input
+     * @param array<string, string> $expectedRawKeyValue
+     *
      * @dataProvider fromRawProvider
      */
     public function testFromRaw(array $input, array $expectedRawKeyValue): void
