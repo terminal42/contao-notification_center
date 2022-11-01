@@ -8,14 +8,14 @@ use Terminal42\NotificationCenterBundle\Exception\InvalidTokenNameException;
 
 abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
-    final public function __construct(private string $name, private string $translationKey)
+    final public function __construct(private string $tokenName, private string $translationKey)
     {
-        $this->validateToken($this->name);
+        $this->validateTokenName($this->tokenName);
     }
 
-    public function getName(): string
+    public function getTokenName(): string
     {
-        return $this->name;
+        return $this->tokenName;
     }
 
     public function getTranslationKey(): string
@@ -26,17 +26,20 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
     /**
      * @throws InvalidTokenNameException
      */
-    protected function validateToken(string $name): void
+    protected function validateTokenName(string $name): void
     {
+        if (str_ends_with($name, '_*')) {
+            throw InvalidTokenNameException::becauseMustNotEndWith('_*');
+        }
     }
 
-    public static function createWithTranslationKeyPrefix(string $name, string $prefix): static
+    public static function create(string $tokenName, string $translationKey): static
     {
-        return new static($name, $prefix.$name);
+        return new static($tokenName, $translationKey);
     }
 
     public function matchesTokenName(string $tokenName): bool
     {
-        return $tokenName === $this->name;
+        return $tokenName === $this->tokenName;
     }
 }

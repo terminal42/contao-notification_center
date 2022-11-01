@@ -80,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
     // Palettes
     'palettes' => [
         '__selector__' => ['type'],
-        'default' => '{title_legend},title,type;{config_legend},token_transformer',
+        'default' => '{title_legend},title,type;',
     ],
 
     // Fields
@@ -105,12 +105,6 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
             'reference' => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],
             'eval' => ['mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 128, 'default' => null, 'notnull' => false],
-        ],
-        'token_transformer' => [
-            'exclude' => true,
-            'inputType' => 'select',
-            'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
     ],
 ];

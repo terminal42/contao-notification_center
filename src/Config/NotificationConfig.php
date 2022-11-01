@@ -15,9 +15,4 @@ class NotificationConfig extends AbstractConfig
     {
         return $this->getString('title');
     }
-
-    public function getTokenTransformerTemplate(): string
-    {
-        return $this->getString('token_transformer');
-    }
 }

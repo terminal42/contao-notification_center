@@ -13,7 +13,7 @@ class TextTokenTest extends TestCase
     {
         $token = new TextToken('foobar', 'translation_key');
 
-        $this->assertSame('foobar', $token->getName());
+        $this->assertSame('foobar', $token->getTokenName());
         $this->assertSame('translation_key', $token->getTranslationKey());
 
         $this->assertTrue($token->matchesTokenName('foobar'));

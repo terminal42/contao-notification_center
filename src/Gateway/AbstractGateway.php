@@ -55,7 +55,7 @@ abstract class AbstractGateway implements GatewayInterface
 
         return $simpleTokenParser->parse(
             $value,
-            $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->asRawKeyValueWithStringsOnly()
+            $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->asKeyValue()
         );
     }
 }

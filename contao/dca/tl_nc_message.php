@@ -164,8 +164,8 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'clr', 'decodeEntities' => true],
             'nc_token_types' => [
-                WildcardToken::class,
-                TextToken::class,
+                WildcardToken::DEFINITION_NAME,
+                TextToken::DEFINITION_NAME,
             ],
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],

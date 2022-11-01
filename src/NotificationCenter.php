@@ -27,7 +27,6 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 use Terminal42\NotificationCenterBundle\Receipt\ReceiptCollection;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
-use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 class NotificationCenter
@@ -93,18 +92,9 @@ class NotificationCenter
             throw InvalidNotificationTypeException::becauseTypeDoesNotExist($messageTypeName);
         }
 
-        $collection = new TokenCollection();
         $tokenDefinitions = $this->getTokenDefinitionsForMessageType($messageTypeName);
 
-        foreach ($rawTokens as $rawTokenName => $rawTokenValue) {
-            foreach ($tokenDefinitions as $definition) {
-                if ($definition->matchesTokenName($rawTokenName)) {
-                    $collection->add(new Token($definition, $rawTokenName, $rawTokenValue));
-                }
-            }
-        }
-
-        return $collection;
+        return TokenCollection::fromRawAndDefinitions($rawTokens, $tokenDefinitions);
     }
 
     public function createParcelsForNotification(int $id, TokenCollection $tokenCollection, string $locale = null): ParcelCollection

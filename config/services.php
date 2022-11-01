@@ -25,7 +25,9 @@ use Terminal42\NotificationCenterBundle\MessageType\FormGeneratorMessageType;
 use Terminal42\NotificationCenterBundle\MessageType\LostPasswordMessageType;
 use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\OptIn\OptIn;
+use Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefinitionFactory;
+use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
+use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -82,7 +84,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(NotificationListener::class)
         ->args([
             service(MessageTypeRegistry::class),
-            service('contao.framework'),
         ])
     ;
 
@@ -100,6 +101,10 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
+    $services->set(ChainTokenDefinitionFactory::class);
+    $services->set(CoreTokenDefinitionFactory::class);
+    $services->alias(TokenDefinitionFactoryInterface::class, ChainTokenDefinitionFactory::class);
+
     $services->set(ConfigLoader::class)
         ->args([
             service('database_connection'),
@@ -115,8 +120,16 @@ return static function (ContainerConfigurator $container): void {
         ])])
     ;
 
-    $services->set(FormGeneratorMessageType::class);
-    $services->set(LostPasswordMessageType::class);
+    $services->set(FormGeneratorMessageType::class)
+        ->args([
+            service(TokenDefinitionFactoryInterface::class),
+        ])
+    ;
+    $services->set(LostPasswordMessageType::class)
+        ->args([
+            service(TokenDefinitionFactoryInterface::class),
+        ])
+    ;
 
     $services->set(NotificationCenter::class)
         ->args([
@@ -147,14 +160,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ProcessFormDataListener::class)
         ->args([
             service(NotificationCenter::class),
-        ])
-    ;
-
-    $services->set(OptIn::class)
-        ->decorate('contao.opt_in')
-        ->args([
-            service('.inner'),
-            service('contao.framework'),
         ])
     ;
 };

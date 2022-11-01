@@ -8,10 +8,17 @@ use Terminal42\NotificationCenterBundle\Exception\InvalidTokenNameException;
 
 class WildcardToken extends AbstractTokenDefinition
 {
+    public const DEFINITION_NAME = 'wildcard';
+
+    public function getDefinitionName(): string
+    {
+        return self::DEFINITION_NAME;
+    }
+
     /**
      * @throws InvalidTokenNameException
      */
-    protected function validateToken(string $name): void
+    protected function validateTokenName(string $name): void
     {
         if (!str_ends_with($name, '_*')) {
             throw InvalidTokenNameException::becauseMustEndWith('_*');
@@ -20,6 +27,6 @@ class WildcardToken extends AbstractTokenDefinition
 
     public function matchesTokenName(string $tokenName): bool
     {
-        return (bool) preg_match('/^'.preg_quote(substr($this->getName(), 0, -1), '/').'.+$/', $tokenName);
+        return (bool) preg_match('/^'.preg_quote(substr($this->getTokenName(), 0, -1), '/').'.+$/', $tokenName);
     }
 }

@@ -32,7 +32,7 @@ class GetTokenDefinitionsEvent extends Event
 
     public function addTokenDefinition(TokenDefinitionInterface $token): self
     {
-        $this->tokenDefinitions[$token->getName()] = $token;
+        $this->tokenDefinitions[$token->getTokenName()] = $token;
 
         return $this;
     }
@@ -51,8 +51,8 @@ class GetTokenDefinitionsEvent extends Event
         $definitions = [];
 
         foreach ($this->tokenDefinitions as $definition) {
-            if (\in_array($definition::class, $tokenDefinitionTypes, true)) {
-                $definitions[$definition->getName()] = $definition;
+            if (\in_array($definition->getDefinitionName(), $tokenDefinitionTypes, true)) {
+                $definitions[$definition->getTokenName()] = $definition;
             }
         }
 

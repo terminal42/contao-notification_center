@@ -64,7 +64,7 @@ class AutoSuggester
             }
 
             $tokens[] = [
-                'name' => $token->getName(),
+                'name' => $token->getTokenName(),
                 'label' => $label,
             ];
         }

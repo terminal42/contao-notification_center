@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\MessageType;
 
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
+use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
 
 class LostPasswordMessageType implements MessageTypeInterface
 {
     public const NAME = 'member_password';
+
+    public function __construct(private TokenDefinitionFactoryInterface $factory)
+    {
+    }
 
     public function getName(): string
     {
@@ -20,10 +25,10 @@ class LostPasswordMessageType implements MessageTypeInterface
     public function getTokenDefinitions(): array
     {
         return [
-            EmailToken::createWithTranslationKeyPrefix('recipient_email', 'member_password.'),
-            TextToken::createWithTranslationKeyPrefix('domain', 'member_password.'),
-            TextToken::createWithTranslationKeyPrefix('link', 'member_password.'),
-            WildcardToken::createWithTranslationKeyPrefix('member_*', 'member_password.'),
+            $this->factory->create(EmailToken::DEFINITION_NAME, 'recipient_email', 'member_password.recipient_email'),
+            $this->factory->create(TextToken::DEFINITION_NAME, 'domain', 'member_password.domain'),
+            $this->factory->create(TextToken::DEFINITION_NAME, 'link', 'member_password.link'),
+            $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_*', 'member_password.member_*'),
         ];
     }
 }

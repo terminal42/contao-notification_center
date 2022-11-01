@@ -51,16 +51,14 @@ class DisableDeliverySubscriber implements EventSubscriberInterface
             '' !== $messageConfig->getCondition() &&
             null !== ($tokenCollectionStamp = $event->getParcel()->getStamp(TokenCollectionStamp::class))
         ) {
+            $tokens = $tokenCollectionStamp->tokenCollection->asKeyValue();
+
             // We first replace tokens on the condition. So that e.g. "##form_email"## === 'foobar@foobar.com'" becomes
-            // "form_email === 'foobar@foobar.com'". For this, we can only work with string token values.
-            $tokens = $tokenCollectionStamp->tokenCollection->asRawKeyValueWithStringsOnly();
+            // "form_email === 'foobar@foobar.com'".
             $tokensForCondition = array_combine(array_keys($tokens), array_keys($tokens));
             $condition = $this->simpleTokenParser->parse($messageConfig->getCondition(), $tokensForCondition);
 
-            // Now we have a ready to be evaluated expression. The expression language supports objects though so we
-            // can also pass those tokens to it.
-            $tokens = $tokenCollectionStamp->tokenCollection->asRawKeyValue();
-
+            // Now we have a ready to be evaluated expression.
             if (!$this->expressionLanguage->evaluate($condition, $tokens)) {
                 $event->disableDelivery();
             }

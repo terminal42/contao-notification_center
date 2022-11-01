@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer;
 
-use Contao\Controller;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Contao\CoreBundle\Framework\ContaoFramework;
 use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 
 class NotificationListener
 {
-    public function __construct(private MessageTypeRegistry $typeRegistry, private ContaoFramework $framework)
+    public function __construct(private MessageTypeRegistry $typeRegistry)
     {
     }
 
@@ -40,16 +38,5 @@ class NotificationListener
     public function onTypeOptionsCallback(): array
     {
         return array_keys($this->typeRegistry->all());
-    }
-
-    /**
-     * @return array<string>
-     */
-    #[AsCallback(table: 'tl_nc_notification', target: 'fields.token_transformer.options')]
-    public function onTokenTransformerOptionsCallback(): array
-    {
-        $templates = $this->framework->getAdapter(Controller::class)->getTemplateGroup('nc_token_transformer_');
-        // TODO: fix me as soon as 4.13 supports what we need here
-        return [];
     }
 }

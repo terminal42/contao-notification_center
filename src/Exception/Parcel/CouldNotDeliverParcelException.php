@@ -15,7 +15,7 @@ class CouldNotDeliverParcelException extends \RuntimeException implements Except
      * @param array<class-string<T>> $provided
      * @param array<class-string<T>> $required
      */
-    public static function becauseOfInsufficientStamps(array $provided, array $required, int $code = null, \Throwable $previous = null): self
+    public static function becauseOfInsufficientStamps(array $provided, array $required, int $code = 0, \Throwable $previous = null): self
     {
         return new self(sprintf(
             'The parcel did not contain all required stamps. Provided: [%s], Required: [%s].',
@@ -24,12 +24,12 @@ class CouldNotDeliverParcelException extends \RuntimeException implements Except
         ), $code, $previous);
     }
 
-    public static function becauseNoGatewayWasDefinedForParcel(int $code = null, \Throwable $previous = null): self
+    public static function becauseNoGatewayWasDefinedForParcel(int $code = 0, \Throwable $previous = null): self
     {
         return new self('No gateway was defined for the parcel.', $code, $previous);
     }
 
-    public static function becauseOfGatewayException(string $gatewayType, \Throwable $exception, int $code = null): self
+    public static function becauseOfGatewayException(string $gatewayType, int $code = 0, \Throwable $exception = null): self
     {
         return new self(sprintf(
             'The parcel could not be delivered via the "%s" gateway because of an internal issue: %s.',
