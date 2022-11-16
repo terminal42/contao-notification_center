@@ -140,7 +140,7 @@ class tl_nc_gateway extends \Backend
             background: #eff5fa;
             padding: 10px;
             border-radius: 3px;">%s</div>',
-            str_replace('{gateway_id}', $dc->id, $GLOBALS['TL_LANG']['queueCronjobExplanation'])
+            str_replace('{gateway_id}', $dc->id, $GLOBALS['TL_LANG']['tl_nc_gateway']['queueCronjobExplanation'])
         );
     }
 }
