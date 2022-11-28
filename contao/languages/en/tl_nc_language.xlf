@@ -114,38 +114,6 @@
         <source>Please enter the HTML.</source>
         <target>Please enter the HTML.</target>
       </trans-unit>
-      <trans-unit id="tl_nc_language.email_external_images.0">
-        <source>External images</source>
-        <target>External images</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.email_external_images.1">
-        <source>Do not embed images in HTML emails.</source>
-        <target>Do not embed images in HTML emails.</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_name.0">
-        <source>File name</source>
-        <target>File name</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_name.1">
-        <source>Please enter the file name.</source>
-        <target>Please enter the file name.</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_storage_mode.0">
-        <source>Storage mode</source>
-        <target>Storage mode</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_storage_mode.1">
-        <source>Here you can choose whether you want to override the existing file or append to an existing file if present.</source>
-        <target>Here you can choose whether you want to override the existing file or append to an existing file if present.</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_content.0">
-        <source>File content</source>
-        <target>File content</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_content.1">
-        <source>Please enter the file content.</source>
-        <target>Please enter the file content.</target>
-      </trans-unit>
       <trans-unit id="tl_nc_language.email_mode.textOnly">
         <source>Text only</source>
         <target>Text only</target>
@@ -157,18 +125,6 @@
       <trans-unit id="tl_nc_language.email_mode.textAndHtml">
         <source>HTML and text</source>
         <target>HTML and text</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_storage_mode.create">
-        <source>Create new file</source>
-        <target>Create new file</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_storage_mode.override">
-        <source>Override existing file</source>
-        <target>Override existing file</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.file_storage_mode.append">
-        <source>Append to existing file</source>
-        <target>Append to existing file</target>
       </trans-unit>
       <trans-unit id="tl_nc_language.new.0">
         <source>New language</source>
@@ -225,14 +181,6 @@
       <trans-unit id="tl_nc_language.content_legend">
         <source>Content</source>
         <target>Content</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.token_error">
-        <source>The following tokens you have used are not supported by this notification type: %s.</source>
-        <target>The following tokens you have used are not supported by this notification type: %s.</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.token_character_error">
-        <source>Your content contains invalid tokens. Simple Tokens cannot contain one of those characters: &lt;&gt;!=*. They are either used for comparisons in if statements or as wildcard.</source>
-        <target>Your content contains invalid tokens. Simple Tokens cannot contain one of those characters: &lt;&gt;!=*. They are either used for comparisons in if statements or as wildcard.</target>
       </trans-unit>
       <trans-unit id="tl_nc_language.attachment_templates.0">
         <source>Attachments from templates</source>

@@ -10,18 +10,6 @@
         <source>Please select a notification.</source>
         <target>Please select a notification.</target>
       </trans-unit>
-      <trans-unit id="tl_module.nc_activation_notification.0">
-        <source>Activation notification</source>
-        <target>Activation notification</target>
-      </trans-unit>
-      <trans-unit id="tl_module.nc_activation_notification.1">
-        <source>Please select an activation notification.</source>
-        <target>Please select an activation notification.</target>
-      </trans-unit>
-      <trans-unit id="tl_module.notification_legend">
-        <source>Notification</source>
-        <target>Notification</target>
-      </trans-unit>
     </body>
   </file>
 </xliff>

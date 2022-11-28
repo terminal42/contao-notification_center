@@ -119,28 +119,6 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
             ],
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
-        'attachment_tokens' => [
-            'exclude' => true,
-            'inputType' => 'text',
-            'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                FileToken::DEFINITION_NAME,
-            ],
-            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
-        ],
-        'attachments' => [
-            'exclude' => true,
-            'inputType' => 'fileTree',
-            'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
-        ],
-        'attachment_templates' => [
-            'exclude' => true,
-            'inputType' => 'fileTree',
-            'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr', 'extensions' => 'xml,txt,json'],
-            'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
-        ],
         'email_sender_name' => [
             'exclude' => true,
             'inputType' => 'text',
@@ -231,6 +209,28 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 FileToken::DEFINITION_NAME,
             ],
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
+        ],
+        'attachment_tokens' => [
+            'exclude' => true,
+            'inputType' => 'text',
+            'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true],
+            'nc_token_types' => [
+                WildcardToken::DEFINITION_NAME,
+                FileToken::DEFINITION_NAME,
+            ],
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
+        ],
+        'attachments' => [
+            'exclude' => true,
+            'inputType' => 'fileTree',
+            'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr'],
+            'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
+        ],
+        'attachment_templates' => [
+            'exclude' => true,
+            'inputType' => 'fileTree',
+            'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr', 'extensions' => 'xml,txt,json'],
+            'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
         ],
     ],
 ];
