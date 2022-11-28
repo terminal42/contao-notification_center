@@ -76,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
     'palettes' => [
         '__selector__' => ['email_mode'],
         'default' => '{general_legend},language,fallback',
-        MailerGateway::NAME => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_templates,attachment_tokens',
+        MailerGateway::NAME => '{general_legend},language,fallback;{meta_legend},email_sender_name,email_sender_address,recipients,email_recipient_cc,email_recipient_bcc,email_replyTo;{content_legend},email_subject,email_mode;{attachments_legend},attachments,attachment_tokens',
     ],
 
     'subpalettes' => [
@@ -224,12 +224,6 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
             'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr'],
-            'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
-        ],
-        'attachment_templates' => [
-            'exclude' => true,
-            'inputType' => 'fileTree',
-            'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr', 'extensions' => 'xml,txt,json'],
             'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],
         ],
     ],

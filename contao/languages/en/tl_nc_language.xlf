@@ -182,14 +182,6 @@
         <source>Content</source>
         <target>Content</target>
       </trans-unit>
-      <trans-unit id="tl_nc_language.attachment_templates.0">
-        <source>Attachments from templates</source>
-        <target>Attachments from templates</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_language.attachment_templates.1">
-        <source>These files are used as templates for an attachment. Simple tokens inside these files are replaced and attached to the message.</source>
-        <target>These files are used as templates for an attachment. Simple tokens inside these files are replaced and attached to the message.</target>
-      </trans-unit>
     </body>
   </file>
 </xliff>
