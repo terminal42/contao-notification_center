@@ -25,23 +25,17 @@ class ModuleListener
             return;
         }
 
-        if ('lostPassword' !== $moduleConfig->getType()) {
+        if ('lostPasswordNotificationCenter' !== $moduleConfig->getType()) {
             return;
         }
 
-        // Add the notification choice before the core lost password text field (reg_password)
-        $pm = PaletteManipulator::create()
+        $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPasswordNotificationCenter'] = $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPassword'];
+
+        PaletteManipulator::create()
             ->addField('nc_notification', 'reg_password', PaletteManipulator::POSITION_BEFORE)
+            ->removeField('reg_password')
+            ->applyToPalette('lostPasswordNotificationCenter', 'tl_module')
         ;
-
-        // If a notification was selected, hide the "reg_password" field
-        if ($moduleConfig->getInt('nc_notification') > 0) {
-            $pm->removeField('reg_password');
-        } else {
-            $GLOBALS['TL_DCA']['tl_module']['fields']['reg_password']['eval']['tl_class'] = 'clr';
-        }
-
-        $pm->applyToPalette('lostPassword', 'tl_module');
     }
 
     /**

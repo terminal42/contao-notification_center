@@ -22,6 +22,14 @@
         <source>Manage gateways</source>
         <target>Manage gateways</target>
       </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.0">
+        <source>Lost password (Notification Center)</source>
+        <target>Lost password (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.1">
+        <source>Generates a form to request a new password and sends the notification using the Notification Center.</source>
+        <target>Generates a form to request a new password and sends the notification using the Notification Center.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

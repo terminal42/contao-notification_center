@@ -28,6 +28,7 @@ class LostPasswordMessageType implements MessageTypeInterface
             $this->factory->create(EmailToken::DEFINITION_NAME, 'recipient_email', 'member_password.recipient_email'),
             $this->factory->create(TextToken::DEFINITION_NAME, 'domain', 'member_password.domain'),
             $this->factory->create(TextToken::DEFINITION_NAME, 'link', 'member_password.link'),
+            $this->factory->create(TextToken::DEFINITION_NAME, 'activation', 'member_password.activation'),
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_*', 'member_password.member_*'),
         ];
     }

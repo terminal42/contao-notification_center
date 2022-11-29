@@ -25,6 +25,10 @@ class Terminal42NotificationCenterExtension extends Extension
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.php');
+        $loader->load('gateways.php');
+        $loader->load('listeners.php');
+        $loader->load('message_types.php');
+        $loader->load('modules.php');
 
         $container->registerForAutoconfiguration(GatewayInterface::class)
             ->addTag(self::GATEWAY_TAG)

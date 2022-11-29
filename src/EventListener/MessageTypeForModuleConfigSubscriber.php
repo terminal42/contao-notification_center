@@ -19,7 +19,7 @@ class MessageTypeForModuleConfigSubscriber implements EventSubscriberInterface
 
     public function __invoke(GetMessageTypeForModuleConfigEvent $event): void
     {
-        if ('lostPassword' === $event->getModuleConfig()->getType()) {
+        if ('lostPasswordNotificationCenter' === $event->getModuleConfig()->getType()) {
             $event->setMessageType(LostPasswordMessageType::NAME);
         }
     }
