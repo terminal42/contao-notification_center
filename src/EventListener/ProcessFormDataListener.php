@@ -51,6 +51,10 @@ class ProcessFormDataListener
         $rawTokens['raw_data'] = implode("\n", $rawData);
         $rawTokens['raw_data_filled'] = implode("\n", $rawDataFilled);
 
+        foreach ($files as $k => $file) {
+            $rawTokens['form_'.$k] = $file;
+        }
+
         $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, FormGeneratorMessageType::NAME);
 
         $this->notificationCenter->sendNotification((int) $formData['nc_notification'], $tokens);

@@ -4,17 +4,24 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Gateway;
 
+use Contao\CoreBundle\Filesystem\Dbafs\UnableToResolveUuidException;
+use Contao\CoreBundle\Filesystem\VirtualFilesystem;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\FrontendTemplate;
+use Contao\StringUtil;
+use Contao\Validator;
 use Soundasleep\Html2Text;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Uid\Uuid;
+use Terminal42\NotificationCenterBundle\Config\LanguageConfig;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
+use Terminal42\NotificationCenterBundle\Util\Stringable\FileUpload;
 
 class MailerGateway extends AbstractGateway
 {
@@ -105,6 +112,10 @@ class MailerGateway extends AbstractGateway
             }
         }
 
+        // Attachments
+        $this->addAttachmentsFromBackend($languageConfig, $email);
+        $this->addAttachmentsFromTokens($languageConfig, $parcel, $email);
+
         return $email;
     }
 
@@ -123,6 +134,66 @@ class MailerGateway extends AbstractGateway
         $template->body = $this->replaceTokens($parcel, $languageConfig->getString('email_html')); // @phpstan-ignore-line
 
         return $template->parse();
+    }
+
+    private function addAttachmentsFromTokens(LanguageConfig $languageConfig, Parcel $parcel, Email $email): void
+    {
+        $tokens = StringUtil::trimsplit(',', $languageConfig->getString('attachment_tokens'));
+
+        foreach ($tokens as $token) {
+            $replaced = $this->replaceTokens($parcel, $token);
+
+            try {
+                $fileUpload = FileUpload::fromString($replaced);
+            } catch (\Exception) {
+                continue;
+            }
+
+            if (!file_exists($fileUpload->getTmpName())) {
+                continue;
+            }
+
+            $email->attachFromPath($fileUpload->getTmpName(), $fileUpload->getName(), $fileUpload->getType());
+        }
+    }
+
+    private function addAttachmentsFromBackend(LanguageConfig $languageConfig, Email $email): void
+    {
+        $attachments = StringUtil::deserialize($languageConfig->getString('attachments'), true);
+
+        if (0 === \count($attachments)) {
+            return;
+        }
+
+        /** @var VirtualFilesystem $vfs */
+        $vfs = $this->serviceLocator->get('contao.files');
+
+        // As soon as we're compatible with Contao >5.0 only, we can use the FilesystemUtil for this.
+        foreach ($attachments as $uuid) {
+            if (!\is_string($uuid)) {
+                continue;
+            }
+
+            if (Validator::isBinaryUuid($uuid)) {
+                $uuid = StringUtil::binToUuid($uuid);
+            }
+
+            try {
+                $uuidObject = Uuid::isValid($uuid) ? Uuid::fromString($uuid) : Uuid::fromBinary($uuid);
+
+                if (null === ($item = $vfs->get($uuidObject))) {
+                    continue;
+                }
+            } catch (\InvalidArgumentException|UnableToResolveUuidException) {
+                continue;
+            }
+
+            if (!$item->isFile()) {
+                continue;
+            }
+
+            $email->attach($vfs->readStream($uuidObject), $item->getName(), $item->getMimeType());
+        }
     }
 
     protected function getRequiredStamps(): array

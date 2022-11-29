@@ -117,6 +117,7 @@ return static function (ContainerConfigurator $container): void {
             'mailer' => service('mailer'),
             'contao.string.simple_token_parser' => service('contao.string.simple_token_parser'),
             'contao.framework' => service('contao.framework'),
+            'contao.files' => service('contao.filesystem.virtual.files'),
         ])])
     ;
 

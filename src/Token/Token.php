@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Token;
 
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
+use Terminal42\NotificationCenterBundle\Util\Stringable\FileUpload;
 use Terminal42\NotificationCenterBundle\Util\Stringable\StringableArray;
 
 class Token
@@ -30,9 +31,17 @@ class Token
 
     public static function fromMixedValue(TokenDefinitionInterface $definition, string $name, mixed $value): self
     {
+        if (\is_array($value)) {
+            try {
+                $value = FileUpload::fromSuperGlobal($value);
+            } catch (\Exception) {
+                // noop
+            }
+        }
+
         $value = match (true) {
-            \is_string($value), $value instanceof \Stringable => $value,
             \is_array($value) => new StringableArray($value),
+            \is_string($value), $value instanceof \Stringable => $value,
             default => get_debug_type($value),
         };
 
