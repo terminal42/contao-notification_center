@@ -25,10 +25,18 @@ class ModuleListener
             return;
         }
 
-        if ('lostPasswordNotificationCenter' !== $moduleConfig->getType()) {
-            return;
+        switch ($moduleConfig->getType()) {
+            case 'lostPasswordNotificationCenter':
+                $this->handleLostPasswordModule();
+                break;
+            case 'registrationNotificationCenter':
+                $this->handleRegistrationModule();
+                break;
         }
+    }
 
+    private function handleLostPasswordModule(): void
+    {
         $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPasswordNotificationCenter'] = $GLOBALS['TL_DCA']['tl_module']['palettes']['lostPassword'];
 
         PaletteManipulator::create()
@@ -38,17 +46,30 @@ class ModuleListener
         ;
     }
 
+    private function handleRegistrationModule(): void
+    {
+        $GLOBALS['TL_DCA']['tl_module']['palettes']['registrationNotificationCenter'] = $GLOBALS['TL_DCA']['tl_module']['palettes']['registration'];
+
+        PaletteManipulator::create()
+            ->addField('nc_notification', 'reg_activate')
+            ->addField('nc_registration_auto_activate', 'nc_notification')
+            ->removeField('reg_activate')
+            ->applyToPalette('registrationNotificationCenter', 'tl_module')
+        ;
+    }
+
     /**
      * @return array<string>
      */
     #[AsCallback(table: 'tl_module', target: 'fields.nc_notification.options')]
+    #[AsCallback(table: 'tl_module', target: 'fields.nc_activation_notification.options')]
     public function onNotificationOptionsCallback(DataContainer $dc): array
     {
         if (null === ($moduleConfig = $this->configLoader->loadModule((int) $dc->id))) {
             return [];
         }
 
-        $event = new GetMessageTypeForModuleConfigEvent($moduleConfig);
+        $event = new GetMessageTypeForModuleConfigEvent($moduleConfig, $dc->field);
 
         $this->eventDispatcher->dispatch($event);
 

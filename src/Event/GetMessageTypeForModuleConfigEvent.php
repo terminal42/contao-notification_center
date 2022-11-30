@@ -11,8 +11,13 @@ class GetMessageTypeForModuleConfigEvent extends Event
 {
     private string|null $messageType = null;
 
-    public function __construct(private ModuleConfig $moduleConfig)
+    public function __construct(private ModuleConfig $moduleConfig, private string $field)
     {
+    }
+
+    public function getField(): string
+    {
+        return $this->field;
     }
 
     public function getModuleConfig(): ModuleConfig

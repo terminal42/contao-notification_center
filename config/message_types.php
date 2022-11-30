@@ -6,6 +6,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Terminal42\NotificationCenterBundle\MessageType\FormGeneratorMessageType;
 use Terminal42\NotificationCenterBundle\MessageType\LostPasswordMessageType;
+use Terminal42\NotificationCenterBundle\MessageType\MemberActivationMessageType;
+use Terminal42\NotificationCenterBundle\MessageType\MemberRegistrationMessageType;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -18,6 +20,16 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
     $services->set(LostPasswordMessageType::class)
+        ->args([
+            service(TokenDefinitionFactoryInterface::class),
+        ])
+    ;
+    $services->set(MemberActivationMessageType::class)
+        ->args([
+            service(TokenDefinitionFactoryInterface::class),
+        ])
+    ;
+    $services->set(MemberRegistrationMessageType::class)
         ->args([
             service(TokenDefinitionFactoryInterface::class),
         ])

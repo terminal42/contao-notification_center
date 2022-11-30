@@ -68,6 +68,4 @@ class LostPasswordController extends LostPasswordModule
 
         $this->reload();
     }
-
-    // Do whatever you want here, e.g. override parent methods
 }

@@ -30,6 +30,14 @@
         <source>Generates a form to request a new password and sends the notification using the Notification Center.</source>
         <target>Generates a form to request a new password and sends the notification using the Notification Center.</target>
       </trans-unit>
+      <trans-unit id="FMD.registrationNotificationCenter.0">
+        <source>Registration (Notification Center)</source>
+        <target>Registration (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.1">
+        <source>Generates a registration form and sends the notifications using the Notification Center.</source>
+        <target>Generates a registration form and sends the notifications using the Notification Center.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

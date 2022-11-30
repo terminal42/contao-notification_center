@@ -2,12 +2,24 @@
 
 declare(strict_types=1);
 
-/*
- * Fields
- */
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'nc_registration_auto_activate';
+$GLOBALS['TL_DCA']['tl_module']['subpalettes']['nc_registration_auto_activate'] = 'nc_activation_notification';
+
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'] = [
     'exclude' => true,
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'clr w50'],
     'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification'] = [
+    'exclude' => true,
+    'inputType' => 'select',
+    'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+    'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
+];
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_registration_auto_activate'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'eval' => ['includeBlankOption' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50 m12'],
+    'sql' => ['type' => 'boolean', 'default' => true],
 ];

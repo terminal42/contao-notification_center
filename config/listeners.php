@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Codefog\HasteBundle\Formatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
@@ -18,6 +19,7 @@ use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\Noti
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\MessageTypeForModuleConfigSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
+use Terminal42\NotificationCenterBundle\EventListener\RegistrationListener;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
@@ -91,6 +93,14 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ProcessFormDataListener::class)
         ->args([
             service(NotificationCenter::class),
+        ])
+    ;
+
+    $services->set(RegistrationListener::class)
+        ->args([
+            service(NotificationCenter::class),
+            service('request_stack'),
+            service(Formatter::class),
         ])
     ;
 };
