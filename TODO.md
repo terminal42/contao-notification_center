@@ -2,4 +2,4 @@
 
 * Remove `minimum-stability` in `composer.json`
 * Translate to German
-* Get Autosuggester to work in tinyMCE
+* Rework Autosuggester (current implementation is very...shaky...) and make it work in tinyMCE
