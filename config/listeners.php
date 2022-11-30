@@ -20,6 +20,7 @@ use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\MessageTypeForModuleConfigSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
 use Terminal42\NotificationCenterBundle\EventListener\RegistrationListener;
+use Terminal42\NotificationCenterBundle\EventListener\UpdatePersonalDataListener;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
@@ -101,6 +102,17 @@ return static function (ContainerConfigurator $container): void {
             service(NotificationCenter::class),
             service('request_stack'),
             service(Formatter::class),
+        ])
+    ;
+
+    $services->set(UpdatePersonalDataListener::class)
+        ->args([
+            service(NotificationCenter::class),
+            service('request_stack'),
+            service(Formatter::class),
+            service('contao.routing.scope_matcher'),
+            service('security.helper'),
+            service('twig'),
         ])
     ;
 };

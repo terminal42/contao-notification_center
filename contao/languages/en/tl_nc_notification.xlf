@@ -98,6 +98,10 @@
         <source>Contao member registration</source>
         <target>Contao member registration</target>
       </trans-unit>
+      <trans-unit id="tl_nc_notification.type.member_personaldata.0">
+        <source>Contao member personal data</source>
+        <target>Contao member personal data</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

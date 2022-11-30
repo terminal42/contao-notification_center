@@ -1,0 +1,18 @@
+{% trans_default_domain 'contao_default' %}
+
+<table>
+    <thead>
+    <tr>
+        <th>{{ 'NC.before'|trans }}</th>
+        <th>{{ 'NC.after'|trans }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for change in changes %}
+        <tr>
+            <td>{{ change.before }}</td>
+            <td>{{ change.after }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

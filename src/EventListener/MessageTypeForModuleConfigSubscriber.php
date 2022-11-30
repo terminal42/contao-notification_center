@@ -8,6 +8,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Terminal42\NotificationCenterBundle\Event\GetMessageTypeForModuleConfigEvent;
 use Terminal42\NotificationCenterBundle\MessageType\LostPasswordMessageType;
 use Terminal42\NotificationCenterBundle\MessageType\MemberActivationMessageType;
+use Terminal42\NotificationCenterBundle\MessageType\MemberPersonalDataMessageType;
 use Terminal42\NotificationCenterBundle\MessageType\MemberRegistrationMessageType;
 
 class MessageTypeForModuleConfigSubscriber implements EventSubscriberInterface
@@ -39,6 +40,12 @@ class MessageTypeForModuleConfigSubscriber implements EventSubscriberInterface
 
                 return;
             }
+        }
+
+        if ('personalData' === $event->getModuleConfig()->getType()) {
+            $event->setMessageType(MemberPersonalDataMessageType::NAME);
+
+            return;
         }
     }
 }

@@ -32,6 +32,9 @@ class ModuleListener
             case 'registrationNotificationCenter':
                 $this->handleRegistrationModule();
                 break;
+            case 'personalData':
+                $this->handlePersonalDataModule();
+                break;
         }
     }
 
@@ -55,6 +58,14 @@ class ModuleListener
             ->addField('nc_registration_auto_activate', 'nc_notification')
             ->removeField('reg_activate')
             ->applyToPalette('registrationNotificationCenter', 'tl_module')
+        ;
+    }
+
+    private function handlePersonalDataModule(): void
+    {
+        PaletteManipulator::create()
+            ->addField('nc_notification', 'config_legend', PaletteManipulator::POSITION_APPEND)
+            ->applyToPalette('personalData', 'tl_module')
         ;
     }
 

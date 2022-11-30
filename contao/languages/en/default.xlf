@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2">
+  <file datatype="php" source-language="en" target-language="en">
+    <body>
+      <trans-unit id="NC.before">
+        <source>Before</source>
+        <target>Before</target>
+      </trans-unit>
+      <trans-unit id="NC.after">
+        <source>After</source>
+        <target>After</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
