@@ -17,7 +17,7 @@ use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeExcepti
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
-use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
+use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\ParcelCollection;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
@@ -33,7 +33,7 @@ class NotificationCenter
 {
     public function __construct(
         private Connection $connection,
-        private MessageTypeRegistry $messageTypeRegistry,
+        private NotificationTypeRegistry $notificationTypeRegistry,
         private GatewayRegistry $gatewayRegistry,
         private ConfigLoader $configLoader,
         private EventDispatcherInterface $eventDispatcher,
@@ -46,15 +46,15 @@ class NotificationCenter
      *
      * @return array<TokenDefinitionInterface>
      */
-    public function getTokenDefinitionsForMessageType(string $typeName, array $tokenDefinitionTypes = []): array
+    public function getTokenDefinitionsForNotificationType(string $typeName, array $tokenDefinitionTypes = []): array
     {
-        $messageType = $this->messageTypeRegistry->getByName($typeName);
+        $notificationType = $this->notificationTypeRegistry->getByName($typeName);
 
-        if (null === $messageType) {
+        if (null === $notificationType) {
             throw InvalidNotificationTypeException::becauseTypeDoesNotExist($typeName);
         }
 
-        $event = new GetTokenDefinitionsEvent($messageType, $messageType->getTokenDefinitions());
+        $event = new GetTokenDefinitionsEvent($notificationType, $notificationType->getTokenDefinitions());
 
         $this->eventDispatcher->dispatch($event);
 
@@ -64,9 +64,9 @@ class NotificationCenter
     /**
      * @return array<int, string>
      */
-    public function getNotificationsForMessageType(string $typeName): array
+    public function getNotificationsForNotificationType(string $typeName): array
     {
-        if (null === $this->messageTypeRegistry->getByName($typeName)) {
+        if (null === $this->notificationTypeRegistry->getByName($typeName)) {
             return [];
         }
 
@@ -84,15 +84,15 @@ class NotificationCenter
     /**
      * @param array<string, mixed> $rawTokens
      */
-    public function createTokenCollectionFromArray(array $rawTokens, string $messageTypeName): TokenCollection
+    public function createTokenCollectionFromArray(array $rawTokens, string $notificationTypeName): TokenCollection
     {
-        $messageType = $this->messageTypeRegistry->getByName($messageTypeName);
+        $notificationType = $this->notificationTypeRegistry->getByName($notificationTypeName);
 
-        if (null === $messageType) {
-            throw InvalidNotificationTypeException::becauseTypeDoesNotExist($messageTypeName);
+        if (null === $notificationType) {
+            throw InvalidNotificationTypeException::becauseTypeDoesNotExist($notificationTypeName);
         }
 
-        $tokenDefinitions = $this->getTokenDefinitionsForMessageType($messageTypeName);
+        $tokenDefinitions = $this->getTokenDefinitionsForNotificationType($notificationTypeName);
 
         return TokenCollection::fromRawAndDefinitions($rawTokens, $tokenDefinitions);
     }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Terminal42\NotificationCenterBundle\MessageType;
+namespace Terminal42\NotificationCenterBundle\NotificationType;
 
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
-interface MessageTypeInterface
+interface NotificationTypeInterface
 {
     public function getName(): string;
 

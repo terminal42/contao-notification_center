@@ -6,11 +6,11 @@ namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContaine
 
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
-use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
+use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 
 class NotificationListener
 {
-    public function __construct(private MessageTypeRegistry $typeRegistry)
+    public function __construct(private NotificationTypeRegistry $typeRegistry)
     {
     }
 

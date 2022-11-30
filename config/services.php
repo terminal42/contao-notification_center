@@ -9,8 +9,8 @@ use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
-use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
@@ -33,7 +33,7 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(MessageTypeRegistry::class)
+    $services->set(NotificationTypeRegistry::class)
         ->args([
             tagged_iterator(Terminal42NotificationCenterExtension::TYPE_TAG),
         ])
@@ -53,7 +53,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(NotificationCenter::class)
         ->args([
             service('database_connection'),
-            service(MessageTypeRegistry::class),
+            service(NotificationTypeRegistry::class),
             service(GatewayRegistry::class),
             service(ConfigLoader::class),
             service('event_dispatcher'),

@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayInterface;
-use Terminal42\NotificationCenterBundle\MessageType\MessageTypeInterface;
+use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 
 class Terminal42NotificationCenterExtension extends Extension
@@ -27,13 +27,13 @@ class Terminal42NotificationCenterExtension extends Extension
         $loader->load('services.php');
         $loader->load('gateways.php');
         $loader->load('listeners.php');
-        $loader->load('message_types.php');
+        $loader->load('notification_types.php');
         $loader->load('modules.php');
 
         $container->registerForAutoconfiguration(GatewayInterface::class)
             ->addTag(self::GATEWAY_TAG)
         ;
-        $container->registerForAutoconfiguration(MessageTypeInterface::class)
+        $container->registerForAutoconfiguration(NotificationTypeInterface::class)
             ->addTag(self::TYPE_TAG)
         ;
         $container->registerForAutoconfiguration(TokenDefinitionFactoryInterface::class)

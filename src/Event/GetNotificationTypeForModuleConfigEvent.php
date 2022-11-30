@@ -7,9 +7,9 @@ namespace Terminal42\NotificationCenterBundle\Event;
 use Symfony\Contracts\EventDispatcher\Event;
 use Terminal42\NotificationCenterBundle\Config\ModuleConfig;
 
-class GetMessageTypeForModuleConfigEvent extends Event
+class GetNotificationTypeForModuleConfigEvent extends Event
 {
-    private string|null $messageType = null;
+    private string|null $notificationType = null;
 
     public function __construct(private ModuleConfig $moduleConfig, private string $field)
     {
@@ -25,14 +25,14 @@ class GetMessageTypeForModuleConfigEvent extends Event
         return $this->moduleConfig;
     }
 
-    public function getMessageType(): string|null
+    public function getNotificationType(): string|null
     {
-        return $this->messageType;
+        return $this->notificationType;
     }
 
-    public function setMessageType(string $messageType): self
+    public function setNotificationType(string $notificationType): self
     {
-        $this->messageType = $messageType;
+        $this->notificationType = $notificationType;
 
         $this->stopPropagation();
 

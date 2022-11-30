@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
-use Terminal42\NotificationCenterBundle\MessageType\MessageTypeInterface;
+use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
 class GetTokenDefinitionsEvent extends Event
@@ -18,16 +18,16 @@ class GetTokenDefinitionsEvent extends Event
     /**
      * @param array<TokenDefinitionInterface> $tokenDefinitions
      */
-    public function __construct(private MessageTypeInterface $messageType, array $tokenDefinitions = [])
+    public function __construct(private NotificationTypeInterface $notificationType, array $tokenDefinitions = [])
     {
         foreach ($tokenDefinitions as $token) {
             $this->addTokenDefinition($token);
         }
     }
 
-    public function getMessageType(): MessageTypeInterface
+    public function getNotificationType(): NotificationTypeInterface
     {
-        return $this->messageType;
+        return $this->notificationType;
     }
 
     public function addTokenDefinition(TokenDefinitionInterface $token): self

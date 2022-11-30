@@ -46,11 +46,11 @@ class AutoSuggester
     /**
      * @param array<string> $tokenDefinitionTypes
      */
-    private function getTokenConfigForField(string $messageType, array $tokenDefinitionTypes): string
+    private function getTokenConfigForField(string $notificationType, array $tokenDefinitionTypes): string
     {
         $tokens = [];
 
-        foreach ($this->notificationCenter->getTokenDefinitionsForMessageType($messageType, $tokenDefinitionTypes) as $token) {
+        foreach ($this->notificationCenter->getTokenDefinitionsForNotificationType($notificationType, $tokenDefinitionTypes) as $token) {
             $label = '';
 
             if (($translationKey = $token->getTranslationKey()) !== null) {

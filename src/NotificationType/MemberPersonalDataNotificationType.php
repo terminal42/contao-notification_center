@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Terminal42\NotificationCenterBundle\MessageType;
+namespace Terminal42\NotificationCenterBundle\NotificationType;
 
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\HtmlToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
 
-class MemberPersonalDataMessageType implements MessageTypeInterface
+class MemberPersonalDataNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'member_personaldata';
 

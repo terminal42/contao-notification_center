@@ -28,14 +28,14 @@ class SomeService
         $tokenCollection = $this->notificationCenter->createTokenCollectionFromArray([
             'firstname' => 'value1',
             'lastname' => 'value2',   
-        ], 'my-message-type-name');
+        ], 'my-notification-type-name');
         
         $receipts = $this->notificationCenter->sendNotification($notificationId, $tokenCollection);
     }
 }
 ```
 
-This will send the notification ID `42` with a "token collection" created based on your `my-message-type-name` and
+This will send the notification ID `42` with a "token collection" created based on your `my-notification-type-name` and
 two raw tokens `token1` and `token2`. This means, you customer can go ahead and e.g. compose an e-mail saying 
 `Hello ##firstname## ##lastname##, welcome to my message`.
 
@@ -80,16 +80,16 @@ a `MessageConfig` and adding a `TokenCollectionStamp` which contains your token 
 The task of a gateway implementing the `GatewayInterface` then is to deliver that `Parcel` and returning
 a `Receipt` for it. But more for gateways later.
 
-For now, let's look at message types.
+For now, let's look at notification types.
 
-## Message types
+## Notification types
 
-Message types define which tokens are available for a given message. This allows the Notification Center to
+Notification types define which tokens are available for a given message. This allows the Notification Center to
 assist the users with autocompletion in the back end. Let's look at the one for the Contao form submission
 notification type (triggered, when a form is submitted):
 
 ```php 
-class FormGeneratorMessageType implements MessageTypeInterface
+class FormGeneratorNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'core_form';
 
@@ -116,7 +116,7 @@ class FormGeneratorMessageType implements MessageTypeInterface
 ```
 
 As you can see, it has a name (`core_form`) which we put in a constant so it's easier to reuse when sending (instead
-of typing `contao_form` you just use `FormGeneratorMessageType::NAME`). Also, we use the `TokenDefinitionFactoryInterface` to
+of typing `contao_form` you just use `FormGeneratorNotificationType::NAME`). Also, we use the `TokenDefinitionFactoryInterface` to
 create our token definitions.
 
 And this will be our next topic.
@@ -203,12 +203,12 @@ tokens in case your Gateway was provided with Contao's `SimpleTokenParser` and t
 
 ## Events
 
-Sometimes, you need to add tokens to an already existing message type or you want to log information etc.
+Sometimes, you need to add tokens to an already existing notification type or you want to log information etc.
 That's when we have to dig a little deeper into the processes of the Notification Center.
 There are four events you can use:
 
 * CreateParcelEvent
-* GetMessageTypeForModuleConfigEvent
+* GetNotificationTypeForModuleConfigEvent
 * GetTokenDefinitionsEvent
 * ReceiptEvent
 
@@ -221,19 +221,20 @@ It allows to add stamps to the parcel or even replace it altogether. Notificatio
 the `admin_email` token to all parcels for example. We're talking about the value here, the definition is added in the
 `GetTokenDefinitionsEvent`.
 
-### GetMessageTypeForModuleConfigEvent
+### GetNotificationTypeForModuleConfigEvent
 
 A typical use case will be to have a notification type selection in a front end module. For that, the Notification Center
 ships with `tl_module.nc_notification` which is of `inputType` `select`. Depending on the front end module type, however,
-developers will want to restrict the available notification options to a certain message type. E.g. the `Lost password`
+developers will want to restrict the available notification options to a certain type. E.g. the `Lost password`
 module shouldn't list notifications for a Contao form submission or an Isotope eCommerce status update type.
 
-This event is here for you to be able to reuse `tl_module.nc_notification` in your palette and then filter for your message type.
+This event is here for you to be able to reuse `tl_module.nc_notification` in your palette and then filter for your
+notification type.
 
 ### GetTokenDefinitionsEvent
 
-This event is here to extend the list of token definitions for a given message type. The Notification Center itself
-uses this to add an `admin_email` token definition to all message types for example. We're talking about the definition
+This event is here to extend the list of token definitions for a given notification type. The Notification Center itself
+uses this to add an `admin_email` token definition to all notification types for example. We're talking about the definition
 here, the value is added in the `CreateParcelEvent`.
 
 ### ReceiptEvent

@@ -6,8 +6,8 @@ namespace Terminal42\NotificationCenterBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Form;
-use Terminal42\NotificationCenterBundle\MessageType\FormGeneratorMessageType;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Terminal42\NotificationCenterBundle\NotificationType\FormGeneratorNotificationType;
 
 #[AsHook('processFormData')]
 class ProcessFormDataListener
@@ -55,7 +55,7 @@ class ProcessFormDataListener
             $rawTokens['form_'.$k] = $file;
         }
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, FormGeneratorMessageType::NAME);
+        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, FormGeneratorNotificationType::NAME);
 
         $this->notificationCenter->sendNotification((int) $formData['nc_notification'], $tokens);
     }

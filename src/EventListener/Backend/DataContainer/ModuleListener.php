@@ -9,7 +9,7 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\DataContainer;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
-use Terminal42\NotificationCenterBundle\Event\GetMessageTypeForModuleConfigEvent;
+use Terminal42\NotificationCenterBundle\Event\GetNotificationTypeForModuleConfigEvent;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class ModuleListener
@@ -80,12 +80,12 @@ class ModuleListener
             return [];
         }
 
-        $event = new GetMessageTypeForModuleConfigEvent($moduleConfig, $dc->field);
+        $event = new GetNotificationTypeForModuleConfigEvent($moduleConfig, $dc->field);
 
         $this->eventDispatcher->dispatch($event);
 
-        if (null !== ($type = $event->getMessageType())) {
-            return $this->notificationCenter->getNotificationsForMessageType($type);
+        if (null !== ($type = $event->getNotificationType())) {
+            return $this->notificationCenter->getNotificationsForNotificationType($type);
         }
 
         return [];

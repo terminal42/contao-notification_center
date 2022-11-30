@@ -17,8 +17,8 @@ use Contao\OptInModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Terminal42\NotificationCenterBundle\MessageType\MemberRegistrationMessageType;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Terminal42\NotificationCenterBundle\NotificationType\MemberRegistrationNotificationType;
 
 #[AsFrontendModule('registrationNotificationCenter', 'user', 'member_default')]
 class RegistrationController extends ModuleRegistration
@@ -114,7 +114,7 @@ class RegistrationController extends ModuleRegistration
             }
         }
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, MemberRegistrationMessageType::NAME);
+        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, MemberRegistrationNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens);
     }
 }

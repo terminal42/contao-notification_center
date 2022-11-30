@@ -17,13 +17,13 @@ use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\Mess
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\ModuleListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\NotificationListener;
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
-use Terminal42\NotificationCenterBundle\EventListener\MessageTypeForModuleConfigSubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\NotificationTypeForModuleConfigSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
 use Terminal42\NotificationCenterBundle\EventListener\RegistrationListener;
 use Terminal42\NotificationCenterBundle\EventListener\UpdatePersonalDataListener;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
-use Terminal42\NotificationCenterBundle\MessageType\MessageTypeRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -70,7 +70,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(NotificationListener::class)
         ->args([
-            service(MessageTypeRegistry::class),
+            service(NotificationTypeRegistry::class),
         ])
     ;
 
@@ -89,7 +89,7 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(MessageTypeForModuleConfigSubscriber::class);
+    $services->set(NotificationTypeForModuleConfigSubscriber::class);
 
     $services->set(ProcessFormDataListener::class)
         ->args([

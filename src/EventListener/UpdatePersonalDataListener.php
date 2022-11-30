@@ -14,8 +14,8 @@ use Soundasleep\Html2Text;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
-use Terminal42\NotificationCenterBundle\MessageType\MemberPersonalDataMessageType;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Terminal42\NotificationCenterBundle\NotificationType\MemberPersonalDataNotificationType;
 use Twig\Environment;
 
 class UpdatePersonalDataListener
@@ -84,7 +84,7 @@ class UpdatePersonalDataListener
         $rawTokens['comparison_text'] = $this->renderChanges($changes, 'text');
         $rawTokens['comparison_html'] = $this->renderChanges($changes, 'html');
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, MemberPersonalDataMessageType::NAME);
+        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, MemberPersonalDataNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $module->nc_notification, $tokens);
     }
 
