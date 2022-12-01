@@ -16,6 +16,8 @@
 * `contao/newsletter-bundle` integration: If you did use the "Activate (Notification Center)" front end module,
   you will have to adjust your workflow. This module has been removed. However, the "Subscribe (Notification Center)"
   now has a second forward page setting. You can use this one in order to have a separate confirmation page.
+* Tokens will not be validated in the back end anymore. Basically because it's totally okay to write something
+  like `##something-not-token-related##` in your message and you should be able to write this.
 
 
 NOTE: Please, thoroughly test all your processes involving notifications after the upgrade. Make sure all the tokens
