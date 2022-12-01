@@ -55,6 +55,13 @@ class MailerGateway extends AbstractGateway
         }
     }
 
+    protected function getRequiredStamps(): array
+    {
+        return [
+            LanguageConfigStamp::class,
+        ];
+    }
+
     private function createEmail(Parcel $parcel): Email
     {
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
@@ -194,12 +201,5 @@ class MailerGateway extends AbstractGateway
 
             $email->attach($vfs->readStream($uuidObject), $item->getName(), $item->getMimeType());
         }
-    }
-
-    protected function getRequiredStamps(): array
-    {
-        return [
-            LanguageConfigStamp::class,
-        ];
     }
 }

@@ -23,16 +23,6 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         return $this->translationKey;
     }
 
-    /**
-     * @throws InvalidTokenNameException
-     */
-    protected function validateTokenName(string $name): void
-    {
-        if (str_ends_with($name, '_*')) {
-            throw InvalidTokenNameException::becauseMustNotEndWith('_*');
-        }
-    }
-
     public static function create(string $tokenName, string $translationKey): static
     {
         return new static($tokenName, $translationKey);
@@ -41,5 +31,15 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
     public function matchesTokenName(string $tokenName): bool
     {
         return $tokenName === $this->tokenName;
+    }
+
+    /**
+     * @throws InvalidTokenNameException
+     */
+    protected function validateTokenName(string $name): void
+    {
+        if (str_ends_with($name, '_*')) {
+            throw InvalidTokenNameException::becauseMustNotEndWith('_*');
+        }
     }
 }

@@ -69,13 +69,6 @@ class ParameterBag
         return (bool) $this->get($key, $default);
     }
 
-    private function setParameter(string $key, mixed $value): self
-    {
-        $this->parameters[$key] = $value;
-
-        return $this;
-    }
-
     public function serialize(): string
     {
         return json_encode($this->parameters);
@@ -93,5 +86,12 @@ class ParameterBag
         }
 
         return $instance;
+    }
+
+    private function setParameter(string $key, mixed $value): self
+    {
+        $this->parameters[$key] = $value;
+
+        return $this;
     }
 }

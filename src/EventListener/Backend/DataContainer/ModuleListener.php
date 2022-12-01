@@ -35,7 +35,35 @@ class ModuleListener
             case 'personalData':
                 $this->handlePersonalDataModule();
                 break;
+            case 'newsletterSubscribeNotificationCenter':
+                $this->handleNewsletterSubscribeModule();
+                break;
+            case 'newsletterUnsubscribeNotificationCenter':
+                $this->handleNewsletterUnubscribeModule();
+                break;
         }
+    }
+
+    /**
+     * @return array<string>
+     */
+    #[AsCallback(table: 'tl_module', target: 'fields.nc_notification.options')]
+    #[AsCallback(table: 'tl_module', target: 'fields.nc_activation_notification.options')]
+    public function onNotificationOptionsCallback(DataContainer $dc): array
+    {
+        if (null === ($moduleConfig = $this->configLoader->loadModule((int) $dc->id))) {
+            return [];
+        }
+
+        $event = new GetNotificationTypeForModuleConfigEvent($moduleConfig, $dc->field);
+
+        $this->eventDispatcher->dispatch($event);
+
+        if (null !== ($type = $event->getNotificationType())) {
+            return $this->notificationCenter->getNotificationsForNotificationType($type);
+        }
+
+        return [];
     }
 
     private function handleLostPasswordModule(): void
@@ -69,25 +97,27 @@ class ModuleListener
         ;
     }
 
-    /**
-     * @return array<string>
-     */
-    #[AsCallback(table: 'tl_module', target: 'fields.nc_notification.options')]
-    #[AsCallback(table: 'tl_module', target: 'fields.nc_activation_notification.options')]
-    public function onNotificationOptionsCallback(DataContainer $dc): array
+    private function handleNewsletterSubscribeModule(): void
     {
-        if (null === ($moduleConfig = $this->configLoader->loadModule((int) $dc->id))) {
-            return [];
-        }
+        $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterSubscribeNotificationCenter'] = $GLOBALS['TL_DCA']['tl_module']['palettes']['subscribe'];
 
-        $event = new GetNotificationTypeForModuleConfigEvent($moduleConfig, $dc->field);
+        PaletteManipulator::create()
+            ->addField('nc_notification', 'email_legend', PaletteManipulator::POSITION_APPEND)
+            ->addField('nc_activation_notification', 'nc_notification')
+            ->addField('nc_newsletter_activation_jumpTo', 'redirect_legend', PaletteManipulator::POSITION_APPEND)
+            ->removeField('nl_subscribe')
+            ->applyToPalette('newsletterSubscribeNotificationCenter', 'tl_module')
+        ;
+    }
 
-        $this->eventDispatcher->dispatch($event);
+    private function handleNewsletterUnubscribeModule(): void
+    {
+        $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterUnsubscribeNotificationCenter'] = $GLOBALS['TL_DCA']['tl_module']['palettes']['unsubscribe'];
 
-        if (null !== ($type = $event->getNotificationType())) {
-            return $this->notificationCenter->getNotificationsForNotificationType($type);
-        }
-
-        return [];
+        PaletteManipulator::create()
+            ->addField('nc_notification', 'email_legend', PaletteManipulator::POSITION_APPEND)
+            ->removeField('nl_unsubscribe')
+            ->applyToPalette('newsletterUnsubscribeNotificationCenter', 'tl_module')
+        ;
     }
 }

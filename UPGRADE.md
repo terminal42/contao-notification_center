@@ -7,10 +7,18 @@
 * Attachment templates are not supported anymore.
 * The configurable flattening delimiter in the e-mail notification type has been removed.
 * The configurable template in the notification type has been removed.
-* The `contao/newsletter-bundle` integration has been removed.
 * The Notification Center integration for the Contao core "Registration" front end module has
   been changed. If you want to use the Notification Center to send registration e-mails, update
-  to the new "Registration (Notifcation Center)" module. Also see docs.
+  to the new "Registration (Notification Center)" module. Also see docs.
 * The corresponding language does not need an exact match of the root page language settings
   anymore. It will try to fall back to the general locale first, before taking the one that is
   configured to be fallback. E.g. (`de_CH` first, then `de` and only then the fallback).
+* `contao/newsletter-bundle` integration: If you did use the "Activate (Notification Center)" front end module,
+  you will have to adjust your workflow. This module has been removed. However, the "Subscribe (Notification Center)"
+  now has a second forward page setting. You can use this one in order to have a separate confirmation page.
+
+
+NOTE: Please, thoroughly test all your processes involving notifications after the upgrade. Make sure all the tokens
+you've used are still working!
+
+TODO: Hint for Notification Center Pro.

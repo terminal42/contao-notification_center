@@ -15,6 +15,11 @@ class WildcardToken extends AbstractTokenDefinition
         return self::DEFINITION_NAME;
     }
 
+    public function matchesTokenName(string $tokenName): bool
+    {
+        return (bool) preg_match('/^'.preg_quote(substr($this->getTokenName(), 0, -1), '/').'.+$/', $tokenName);
+    }
+
     /**
      * @throws InvalidTokenNameException
      */
@@ -23,10 +28,5 @@ class WildcardToken extends AbstractTokenDefinition
         if (!str_ends_with($name, '_*')) {
             throw InvalidTokenNameException::becauseMustEndWith('_*');
         }
-    }
-
-    public function matchesTokenName(string $tokenName): bool
-    {
-        return (bool) preg_match('/^'.preg_quote(substr($this->getTokenName(), 0, -1), '/').'.+$/', $tokenName);
     }
 }

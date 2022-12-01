@@ -11,11 +11,6 @@ use Ramsey\Collection\AbstractCollection;
  */
 class StringableArray extends AbstractCollection implements \Stringable
 {
-    public function getType(): string
-    {
-        return 'mixed';
-    }
-
     public function __toString(): string
     {
         $chunks = [];
@@ -29,5 +24,10 @@ class StringableArray extends AbstractCollection implements \Stringable
         }
 
         return implode(', ', $chunks);
+    }
+
+    public function getType(): string
+    {
+        return 'mixed';
     }
 }

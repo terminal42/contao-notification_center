@@ -10,16 +10,12 @@ use Terminal42\NotificationCenterBundle\NotificationType\LostPasswordNotificatio
 use Terminal42\NotificationCenterBundle\NotificationType\MemberActivationNotificationType;
 use Terminal42\NotificationCenterBundle\NotificationType\MemberPersonalDataNotificationType;
 use Terminal42\NotificationCenterBundle\NotificationType\MemberRegistrationNotificationType;
+use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterActivateNotificationType;
+use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterSubscribeNotificationType;
+use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterUnsubscribeNotificationType;
 
 class NotificationTypeForModuleConfigSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            GetNotificationTypeForModuleConfigEvent::class => '__invoke',
-        ];
-    }
-
     public function __invoke(GetNotificationTypeForModuleConfigEvent $event): void
     {
         if ('lostPasswordNotificationCenter' === $event->getModuleConfig()->getType() && 'nc_notification' === $event->getField()) {
@@ -47,5 +43,32 @@ class NotificationTypeForModuleConfigSubscriber implements EventSubscriberInterf
 
             return;
         }
+
+        if ('newsletterSubscribeNotificationCenter' === $event->getModuleConfig()->getType()) {
+            if ('nc_notification' === $event->getField()) {
+                $event->setNotificationType(NewsletterSubscribeNotificationType::NAME);
+
+                return;
+            }
+
+            if ('nc_activation_notification' === $event->getField()) {
+                $event->setNotificationType(NewsletterActivateNotificationType::NAME);
+
+                return;
+            }
+        }
+
+        if ('newsletterUnsubscribeNotificationCenter' === $event->getModuleConfig()->getType()) {
+            $event->setNotificationType(NewsletterUnsubscribeNotificationType::NAME);
+
+            return;
+        }
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            GetNotificationTypeForModuleConfigEvent::class => '__invoke',
+        ];
     }
 }

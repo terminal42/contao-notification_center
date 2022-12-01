@@ -100,6 +100,11 @@ class ConfigLoader implements ResetInterface
         return LanguageConfig::fromArray($parameters);
     }
 
+    public function reset(): void
+    {
+        $this->cache = [];
+    }
+
     /**
      * @template T of AbstractConfig
      *
@@ -146,10 +151,5 @@ class ConfigLoader implements ResetInterface
         } catch (\Exception) {
             return $this->cache[$table][$id] = null;
         }
-    }
-
-    public function reset(): void
-    {
-        $this->cache = [];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\DependencyInjection;
 
+use Contao\NewsletterBundle\ContaoNewsletterBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -39,5 +40,9 @@ class Terminal42NotificationCenterExtension extends Extension
         $container->registerForAutoconfiguration(TokenDefinitionFactoryInterface::class)
             ->addTag(self::TOKEN_DEFINITION_FACTORY_TAG)
         ;
+
+        if (ContainerBuilder::willBeAvailable('contao/news-bundle', ContaoNewsletterBundle::class, ['terminal42/notification_center'])) {
+            $loader->load('newsletter_bundle.php');
+        }
     }
 }

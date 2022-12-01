@@ -38,6 +38,22 @@
         <source>Generates a registration form and sends the notifications using the Notification Center.</source>
         <target>Generates a registration form and sends the notifications using the Notification Center.</target>
       </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.0">
+        <source>Subscribe (Notification Center)</source>
+        <target>Subscribe (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.1">
+        <source>Generates a form to subscribe to one or more channels and sends the notification using the Notification Center.</source>
+        <target>Generates a form to subscribe to one or more channels and sends the notification using the Notification Center.</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.0">
+        <source>Unsubscribe (Notification Center)</source>
+        <target>Unsubscribe (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.1">
+        <source>Generates a form to unsubscribe from one or more channels and sends the notification using the Notification Center.</source>
+        <target>Generates a form to unsubscribe from one or more channels and sends the notification using the Notification Center.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

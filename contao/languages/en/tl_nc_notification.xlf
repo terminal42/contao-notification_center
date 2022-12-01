@@ -102,6 +102,18 @@
         <source>Contao member personal data</source>
         <target>Contao member personal data</target>
       </trans-unit>
+      <trans-unit id="tl_nc_notification.type.newsletter_subscribe.0">
+        <source>Contao newsletter subscribed</source>
+        <target>Contao newsletter subscribed</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.newsletter_activate.0">
+        <source>Contao newsletter activation</source>
+        <target>Contao newsletter activation</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_notification.type.newsletter_unsubscribe.0">
+        <source>Contao newsletter unsubscribed</source>
+        <target>Contao newsletter unsubscribed</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

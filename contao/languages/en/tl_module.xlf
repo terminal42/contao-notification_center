@@ -23,8 +23,16 @@
         <target>Activation notification</target>
       </trans-unit>
       <trans-unit id="tl_module.nc_activation_notification.1">
-        <source>This notification is sent after a new member confirms their double opt-in link.</source>
-        <target>This notification is sent after a new member confirms their double opt-in link.</target>
+        <source>This notification is sent after the activation process (double opt-in) was completed.</source>
+        <target>This notification is sent after the activation process (double opt-in) was completed.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_newsletter_activation_jumpTo.0">
+        <source>Redirect page (successful activation)</source>
+        <target>Redirect page (successful activation)</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_newsletter_activation_jumpTo.1">
+        <source>Allows you to configure a different redirect page after successful activation.</source>
+        <target>Allows you to configure a different redirect page after successful activation.</target>
       </trans-unit>
     </body>
   </file>

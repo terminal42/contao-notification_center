@@ -43,3 +43,24 @@ the checkbox "Enable member self-activation (double opt-in)". In this case, your
 Simple Token `##link##` which contains the activation link a new member has to click to confirm their e-mail address.
 In this case, you can also choose a second notification "Activation notification". This one is sent, once a user has clicked
 on the `##link##` and confirmed their account.
+
+## Subscribe
+
+If working with the `contao/newsletter-bundle`, instead of using the regular "Subscribe" module, you can use the
+"Subscribe (Notification Center)" module. It will provide the option for a regular notification which is sent when
+a new subscriber subscribes to a set of channels. Use `##link##` as Simple Token for the double opt-in process which
+is mandatory. Once the user activates their subscription, you can have a second notification "Activation notification"
+being sent.
+
+Another feature this module provides compared to the core one is an additional redirect page setting called
+"Redirect page (successful activation)". That way you can configure the regular forward page to say something like
+"Thank you for subscribing, you will receive a double opt-in link via e-mail" and a second forward page which is then
+used after successful registration in order to say something like "Thank you for activating your subscription".
+If you don't use this forward page, the core behavior kicks in which means there's a confirmation message shown above
+the subscription module.
+
+## Unsubscribe
+
+If working with the `contao/newsletter-bundle`, instead of using the regular "Unsubscribe" module, you can use the
+"Unsubscribe (Notification Center)" module. It will provide the option for a regular notification which is sent when
+a subscriber unsubscribes from a set of channels.

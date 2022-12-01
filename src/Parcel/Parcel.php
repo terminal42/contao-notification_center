@@ -10,6 +10,11 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 final class Parcel
 {
     /**
+     * @var array<class-string,StampInterface>
+     */
+    private array $stamps = [];
+
+    /**
      * @param array<StampInterface> $stamps
      */
     public function __construct(private MessageConfig $messageConfig, array $stamps)
@@ -23,11 +28,6 @@ final class Parcel
     {
         return $this->messageConfig;
     }
-
-    /**
-     * @var array<class-string,StampInterface>
-     */
-    private array $stamps = [];
 
     public function hasStamp(string $class): bool
     {
@@ -76,13 +76,6 @@ final class Parcel
         return $this->stamps[$className] ?? null;
     }
 
-    private function addStamp(StampInterface $stamp): self
-    {
-        $this->stamps[$stamp::class] = $stamp;
-
-        return $this;
-    }
-
     public function withStamp(StampInterface $stamp): static
     {
         $clone = clone $this;
@@ -104,6 +97,13 @@ final class Parcel
     public function serialize(): string
     {
         return json_encode($this->forSerialization());
+    }
+
+    private function addStamp(StampInterface $stamp): self
+    {
+        $this->stamps[$stamp::class] = $stamp;
+
+        return $this;
     }
 
     /**

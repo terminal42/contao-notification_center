@@ -10,6 +10,16 @@ class FileUpload implements \Stringable
     {
     }
 
+    public function __toString()
+    {
+        return json_encode([
+            'name' => $this->name,
+            'tmp_name' => $this->tmpName,
+            'type' => $this->type,
+            'size' => $this->size,
+        ]);
+    }
+
     public function getName(): string
     {
         return $this->name;
@@ -48,15 +58,5 @@ class FileUpload implements \Stringable
         }
 
         return new self((string) $file['name'], (string) $file['tmp_name'], (string) $file['type'], (int) $file['size']);
-    }
-
-    public function __toString()
-    {
-        return json_encode([
-            'name' => $this->name,
-            'tmp_name' => $this->tmpName,
-            'type' => $this->type,
-            'size' => $this->size,
-        ]);
     }
 }

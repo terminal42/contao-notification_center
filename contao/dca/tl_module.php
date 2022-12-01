@@ -23,3 +23,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_registration_auto_activate'] = [
     'eval' => ['includeBlankOption' => true, 'submitOnChange' => true, 'chosen' => true, 'tl_class' => 'w50 m12'],
     'sql' => ['type' => 'boolean', 'default' => true],
 ];
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_newsletter_activation_jumpTo'] = [
+    'exclude' => true,
+    'inputType' => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+    'eval' => ['fieldType' => 'radio'],
+    'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
+];
