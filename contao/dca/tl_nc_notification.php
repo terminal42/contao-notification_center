@@ -38,25 +38,15 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
             ],
         ],
         'operations' => [
-            'edit-5' => [
+            'edit' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.svg',
             ],
-            'children-5' => [
+            'children' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['children'],
                 'href' => 'table=tl_nc_message',
                 'icon' => 'children.svg',
-            ],
-            'edit-413' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['children'],
-                'href' => 'table=tl_nc_message',
-                'icon' => 'edit.svg',
-            ],
-            'children-413' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['children'],
-                'href' => 'act=edit',
-                'icon' => 'header.svg',
             ],
             'copy' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['copy'],

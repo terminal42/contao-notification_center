@@ -21,13 +21,17 @@ class NotificationListener
     #[AsCallback(table: 'tl_nc_notification', target: 'config.onload')]
     public function onLoadCallback(): void
     {
-        $operationsToUnset = version_compare(ContaoCoreBundle::getVersion(), '5.0', '>=')
-            ? ['edit-413', 'children-413']
-            : ['edit-5', 'children-5']
-        ;
-
-        foreach ($operationsToUnset as $key) {
-            unset($GLOBALS['TL_DCA']['tl_nc_notification']['list']['operations'][$key]);
+        if (version_compare(ContaoCoreBundle::getVersion(), '5.0', '<')) {
+            $GLOBALS['TL_DCA']['tl_nc_notification']['list']['operations']['edit'] = [
+                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['children'],
+                'href' => 'table=tl_nc_message',
+                'icon' => 'edit.svg',
+            ];
+            $GLOBALS['TL_DCA']['tl_nc_notification']['list']['operations']['children'] = [
+                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['edit'],
+                'href' => 'act=edit',
+                'icon' => 'header.svg',
+            ];
         }
     }
 
