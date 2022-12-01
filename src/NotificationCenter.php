@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
+use Terminal42\NotificationCenterBundle\Config\NotificationConfig;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
 use Terminal42\NotificationCenterBundle\Event\ReceiptEvent;
@@ -114,7 +115,7 @@ class NotificationCenter
      * @param string|null $locale The locale for the message. Passing none will try to automatically take
      *                            the one of the current request.
      *
-     * @throw CannotCreateParcelException
+     * @throws CouldNotCreateParcelException in case the message ID does not exist
      */
     public function createParcelForMessage(int $id, TokenCollection $tokenCollection, string $locale = null): Parcel|null
     {
@@ -207,12 +208,24 @@ class NotificationCenter
      *
      * @param string|null $locale The locale for the message. Passing none will try to automatically take
      *                            the one of the current request.
+     *
+     * @throws CouldNotCreateParcelException in case the notification ID does not exist
      */
-    public function sendNotification(int $id, TokenCollection $tokenCollection, string $locale = null): ReceiptCollection
+    public function sendNotification(int $id, TokenCollection|array $tokens, string $locale = null): ReceiptCollection
     {
+        if (!$tokens instanceof TokenCollection) {
+            $notificationConfig = $this->configLoader->loadNotification($id);
+
+            if (!$notificationConfig instanceof NotificationConfig) {
+                throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
+            }
+
+            $tokens = $this->createTokenCollectionFromArray($tokens, $notificationConfig->getType());
+        }
+
         $collection = new ReceiptCollection();
 
-        foreach ($this->createParcelsForNotification($id, $tokenCollection, $locale) as $parcel) {
+        foreach ($this->createParcelsForNotification($id, $tokens, $locale) as $parcel) {
             $collection->add($this->sendParcel($parcel));
         }
 

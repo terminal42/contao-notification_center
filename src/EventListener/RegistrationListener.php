@@ -11,7 +11,6 @@ use Contao\Module;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\NotificationType\MemberActivationNotificationType;
 
 class RegistrationListener
 {
@@ -26,17 +25,16 @@ class RegistrationListener
             return;
         }
 
-        $rawTokens = [];
+        $tokens = [];
 
         if (($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
-            $rawTokens['domain'] = $request->getHttpHost();
+            $tokens['domain'] = $request->getHttpHost();
         }
 
         foreach ($member->row() as $k => $v) {
-            $rawTokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+            $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
         }
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, MemberActivationNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $module->nc_activation_notification, $tokens);
     }
 }

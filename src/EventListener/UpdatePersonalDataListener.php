@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Security;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\NotificationType\MemberPersonalDataNotificationType;
 use Twig\Environment;
 
 class UpdatePersonalDataListener
@@ -55,36 +54,35 @@ class UpdatePersonalDataListener
             return;
         }
 
-        $rawTokens = [];
+        $tokens = [];
         $changes = [];
 
         foreach ($member->getData() as $k => $v) {
-            $rawTokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+            $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
         }
 
         foreach ($oldData as $k => $v) {
-            $rawTokens['member_old_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+            $tokens['member_old_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
 
             // Do not generate any changed_* tokens or comparisons for fields that were not submitted.
             if (!isset($data[$k])) {
                 continue;
             }
 
-            if ($rawTokens['member_'.$k] !== $rawTokens['member_old_'.$k]) {
-                $rawTokens['changed_'.$k] = true;
+            if ($tokens['member_'.$k] !== $tokens['member_old_'.$k]) {
+                $tokens['changed_'.$k] = true;
                 $changes[$k] = [
-                    'before' => $rawTokens['member_old_'.$k],
-                    'after' => $rawTokens['member_'.$k],
+                    'before' => $tokens['member_old_'.$k],
+                    'after' => $tokens['member_'.$k],
                 ];
             } else {
-                $rawTokens['changed_'.$k] = false;
+                $tokens['changed_'.$k] = false;
             }
         }
 
-        $rawTokens['comparison_text'] = $this->renderChanges($changes, 'text');
-        $rawTokens['comparison_html'] = $this->renderChanges($changes, 'html');
+        $tokens['comparison_text'] = $this->renderChanges($changes, 'text');
+        $tokens['comparison_html'] = $this->renderChanges($changes, 'html');
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, MemberPersonalDataNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $module->nc_notification, $tokens);
     }
 

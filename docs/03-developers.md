@@ -25,12 +25,12 @@ class SomeService
     public function sendMessage(): void
     {
         $notificationId = 42: // Usually, some module setting of yours where the user can select the desired notification
-        $tokenCollection = $this->notificationCenter->createTokenCollectionFromArray([
+        $tokens = [
             'firstname' => 'value1',
             'lastname' => 'value2',   
-        ], 'my-notification-type-name');
+        ];
         
-        $receipts = $this->notificationCenter->sendNotification($notificationId, $tokenCollection);
+        $receipts = $this->notificationCenter->sendNotification($notificationId, $tokens);
     }
 }
 ```

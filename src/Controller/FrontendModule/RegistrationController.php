@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\NotificationType\MemberRegistrationNotificationType;
 
 #[AsFrontendModule('registrationNotificationCenter', 'user', 'member_default')]
 class RegistrationController extends ModuleRegistration
@@ -92,17 +91,17 @@ class RegistrationController extends ModuleRegistration
         }
 
         // Prepare the simple token data
-        $rawTokens = [];
+        $tokens = [];
 
         if ($optInToken instanceof OptInTokenInterface) {
-            $rawTokens['activation'] = $optInToken->getIdentifier();
+            $tokens['activation'] = $optInToken->getIdentifier();
         }
 
         if (($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
-            $rawTokens['domain'] = $request->getHttpHost();
+            $tokens['domain'] = $request->getHttpHost();
 
             if ($optInToken instanceof OptInTokenInterface) {
-                $rawTokens['link'] = $this->urlParser->addQueryString('token='.$optInToken->getIdentifier(), $request->getUri());
+                $tokens['link'] = $this->urlParser->addQueryString('token='.$optInToken->getIdentifier(), $request->getUri());
             }
         }
 
@@ -110,11 +109,10 @@ class RegistrationController extends ModuleRegistration
 
         if (null !== $member) {
             foreach ($member->row() as $k => $v) {
-                $rawTokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+                $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
             }
         }
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($rawTokens, MemberRegistrationNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens);
     }
 }

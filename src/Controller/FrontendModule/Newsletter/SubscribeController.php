@@ -16,7 +16,6 @@ use Contao\PageModel;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterSubscribeNotificationType;
 
 #[AsFrontendModule('newsletterSubscribeNotificationCenter', 'newsletter', 'nl_default')]
 class SubscribeController extends ModuleSubscribe
@@ -77,7 +76,6 @@ class SubscribeController extends ModuleSubscribe
         $tokens['channels'] = implode(', ', $arrChannels);
         $tokens['channel_ids'] = implode(', ', $arrNew);
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($tokens, NewsletterSubscribeNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens, $GLOBALS['objPage']->language);
 
         // Redirect to the jumpTo page

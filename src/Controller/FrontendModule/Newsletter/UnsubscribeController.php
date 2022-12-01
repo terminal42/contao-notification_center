@@ -14,7 +14,6 @@ use Contao\PageModel;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterUnsubscribeNotificationType;
 
 #[AsFrontendModule('newsletterUnsubscribeNotificationCenter', 'newsletter', 'nl_default')]
 class UnsubscribeController extends ModuleUnsubscribe
@@ -67,7 +66,6 @@ class UnsubscribeController extends ModuleUnsubscribe
         $tokens['channels'] = implode(', ', $arrChannels);
         $tokens['channel_ids'] = implode(', ', $arrRemove);
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($tokens, NewsletterUnsubscribeNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens, $GLOBALS['objPage']->language);
 
         // Redirect to the jumpTo page

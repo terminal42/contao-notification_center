@@ -13,7 +13,6 @@ use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
 use Terminal42\NotificationCenterBundle\Legacy\LostPasswordModule;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\NotificationType\LostPasswordNotificationType;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 #[AsFrontendModule('lostPasswordNotificationCenter', 'user', 'mod_lostPassword')]
@@ -47,7 +46,6 @@ class LostPasswordController extends LostPasswordModule
             $tokens['member_'.$k] = $v;
         }
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($tokens, LostPasswordNotificationType::NAME);
         $receipts = $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens, $GLOBALS['objPage']->language);
 
         /** @var Receipt $receipt */

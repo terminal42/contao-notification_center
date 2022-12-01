@@ -11,7 +11,6 @@ use Contao\ModuleSubscribe;
 use Contao\NewsletterChannelModel;
 use Contao\PageModel;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
-use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterActivateNotificationType;
 
 #[AsHook('activateRecipient')]
 class ActivationListener
@@ -46,7 +45,6 @@ class ActivationListener
         $tokens['channels'] = implode(', ', $channelTitles);
         $tokens['channel_ids'] = implode(', ', $channelIds);
 
-        $tokens = $this->notificationCenter->createTokenCollectionFromArray($tokens, NewsletterActivateNotificationType::NAME);
         $this->notificationCenter->sendNotification((int) $module->nc_activation_notification, $tokens, $GLOBALS['objPage']->language);
 
         if ($module->nc_newsletter_activation_jumpTo) {

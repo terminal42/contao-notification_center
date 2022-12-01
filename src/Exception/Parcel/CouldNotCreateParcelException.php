@@ -10,4 +10,9 @@ class CouldNotCreateParcelException extends \InvalidArgumentException
     {
         return new self(sprintf('The message ID "%s" does not exist.', $messageId), $code, $previous);
     }
+
+    public static function becauseOfNonExistentNotification(int $notificationId, int $code = 0, \Throwable $previous = null): self
+    {
+        return new self(sprintf('The notification ID "%s" does not exist.', $notificationId), $code, $previous);
+    }
 }
