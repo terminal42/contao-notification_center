@@ -119,7 +119,10 @@ As you can see, it has a name (`core_form`) which we put in a constant so it's e
 of typing `contao_form` you just use `FormGeneratorNotificationType::NAME`). Also, we use the `TokenDefinitionFactoryInterface` to
 create our token definitions.
 
-And this will be our next topic.
+In order to make the new notification type known to the Notification Center, you have to register it as a
+service and tag it using the `notification_center.notification_type` tag. If you use the [autoconfiguration 
+feature of the Symfony Container][DI_Autoconfigure], you don't need to tag the service. Implementing the
+`NotificationTypeInterface` will be enough.
 
 ## Token definitions
 
@@ -195,11 +198,17 @@ class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\Gate
 You can also extend `AbstractGateway` which provides helpers if your gateway e.g. requires certain stamps
 to be present on your `Parcel`. E.g. the `MailerGateay` requires a `LanguageConfigStamp` to be present, because it
 expects language specific information. However, the `TokenCollectionStamp` is optional - it's also perfectly able
-to send a `Parcel` without any token replacements. Maybe you want to write a `SlackGateway` and you need some kind of
-`SlackTargetChannelStamp`.
+to send a `Parcel` without any token replacements.
+
+Maybe you want to write a `SlackGateway` and you need some kind of `SlackTargetChannelStamp`?
 
 The `AbstractGateway` also provides a simple `replaceTokens(Parcel $parcel, string $value)` method which will replace
 tokens in case your Gateway was provided with Contao's `SimpleTokenParser` and the parcel has a `TokenCollectionStamp`.
+
+In order to make your new gateway known to the Notification Center, you have to register it as a
+service and tag it using the `notification_center.gateway` tag. If you use the [autoconfiguration
+feature of the Symfony Container][DI_Autoconfigure], you don't need to tag the service. Implementing the
+`GatewayInterface` will be enough.
 
 ## Events
 
@@ -240,3 +249,5 @@ here, the value is added in the `CreateParcelEvent`.
 ### ReceiptEvent
 
 This event is dispatched every time a `Parcel` was sent. It can be used to implement e.g. logging, retry logic etc.
+
+[DI_Autoconfigure]: https://symfony.com/doc/current/service_container.html#the-autoconfigure-option

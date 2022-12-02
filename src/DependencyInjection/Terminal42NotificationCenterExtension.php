@@ -16,7 +16,7 @@ use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinition
 class Terminal42NotificationCenterExtension extends Extension
 {
     public const GATEWAY_TAG = 'notification_center.gateway';
-    public const TYPE_TAG = 'notification_center.type';
+    public const TYPE_TAG = 'notification_center.notification_type';
     public const TOKEN_DEFINITION_FACTORY_TAG = 'notification_center.token_definition_factory';
 
     /**
