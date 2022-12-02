@@ -38,7 +38,7 @@ class NotificationTypeForModuleConfigSubscriber implements EventSubscriberInterf
             }
         }
 
-        if ('personalData' === $event->getModuleConfig()->getType()) {
+        if ('personalData' === $event->getModuleConfig()->getType() && 'nc_notification' === $event->getField()) {
             $event->setNotificationType(MemberPersonalDataNotificationType::NAME);
 
             return;
@@ -58,7 +58,7 @@ class NotificationTypeForModuleConfigSubscriber implements EventSubscriberInterf
             }
         }
 
-        if ('newsletterUnsubscribeNotificationCenter' === $event->getModuleConfig()->getType()) {
+        if ('newsletterUnsubscribeNotificationCenter' === $event->getModuleConfig()->getType() && 'nc_notification' === $event->getField()) {
             $event->setNotificationType(NewsletterUnsubscribeNotificationType::NAME);
 
             return;
