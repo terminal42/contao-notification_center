@@ -5,7 +5,12 @@
         "/bundles/terminal42notificationcenter/autosuggester.f7daeb5c.css"
       ],
       "js": [
-        "/bundles/terminal42notificationcenter/autosuggester.72c99163.js"
+        "/bundles/terminal42notificationcenter/autosuggester.64a85896.js"
+      ]
+    },
+    "backend": {
+      "css": [
+        "/bundles/terminal42notificationcenter/backend.25024299.css"
       ]
     }
   }

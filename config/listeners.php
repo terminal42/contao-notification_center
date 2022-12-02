@@ -74,7 +74,11 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(BackendMenuSubscriber::class);
+    $services->set(BackendMenuSubscriber::class)
+        ->args([
+            service('assets.packages'),
+        ])
+    ;
 
     $services->set(AdminEmailTokenSubscriber::class)
         ->args([

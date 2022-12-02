@@ -9,9 +9,11 @@ Encore
     .setPublicPath('/bundles/terminal42notificationcenter')
     .setManifestKeyPrefix('')
     .addEntry('autosuggester', './assets/autosuggester.ts')
+    .addStyleEntry('backend', './assets/backend.scss')
     .disableSingleRuntimeChunk()
     .enableTypeScriptLoader()
     .cleanupOutputBeforeBuild()
+    .enableSassLoader()
     .enableSourceMaps(!Encore.isProduction())
     .enableVersioning(Encore.isProduction())
     .configureBabel((config) => {
