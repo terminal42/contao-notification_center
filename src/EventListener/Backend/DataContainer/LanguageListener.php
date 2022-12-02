@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer;
 
+use Contao\BackendUser;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Intl\Locales;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
@@ -17,7 +19,7 @@ class LanguageListener
 {
     use GetCurrentRecordTrait;
 
-    public function __construct(private AutoSuggester $autoSuggester, private Connection $connection, private ConfigLoader $configLoader, private Locales $locales, private TranslatorInterface $translator)
+    public function __construct(private AutoSuggester $autoSuggester, private Connection $connection, private ConfigLoader $configLoader, private Locales $locales, private TranslatorInterface $translator, private Security $security)
     {
     }
 
@@ -33,6 +35,10 @@ class LanguageListener
         }
 
         $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()];
+
+        if (($user = $this->security->getUser()) instanceof BackendUser) {
+            $GLOBALS['TL_DCA']['tl_nc_language']['fields']['language']['default'] = $user->language;
+        }
 
         if (
             null !== ($notification = $this->configLoader->loadNotification($message->getNotification()))

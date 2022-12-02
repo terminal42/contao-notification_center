@@ -49,6 +49,7 @@ return static function (ContainerConfigurator $container): void {
             service(ConfigLoader::class),
             service('contao.intl.locales'),
             service(TranslatorInterface::class),
+            service('security.helper'),
         ])
     ;
 
