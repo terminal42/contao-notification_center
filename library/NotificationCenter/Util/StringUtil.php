@@ -104,6 +104,7 @@ class StringUtil
     public static function compileRecipients($strRecipients, $arrTokens)
     {
         // Replaces tokens first so that tokens can contain a list of recipients.
+        $strRecipients = $strRecipients ?: '';
         $strRecipients = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strRecipients, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
         $arrRecipients = array();
 
