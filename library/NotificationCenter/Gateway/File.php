@@ -10,6 +10,8 @@
 
 namespace NotificationCenter\Gateway;
 
+use Codefog\HasteBundle\StringParser;
+use Contao\System;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Util\StringUtil;
@@ -45,7 +47,7 @@ class File extends Base implements GatewayInterface
             return false;
         }
 
-        $strFileName = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags(
+        $strFileName = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags(
             $objLanguage->file_name,
             $arrTokens,
             StringUtil::NO_TAGS | StringUtil::NO_BREAKS
@@ -59,7 +61,7 @@ class File extends Base implements GatewayInterface
         }
 
         // Preserve all tags here as this is pretty useful in XML :-)
-        $strContent = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags(
+        $strContent = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags(
             $objLanguage->file_content,
             $arrTokens
         );

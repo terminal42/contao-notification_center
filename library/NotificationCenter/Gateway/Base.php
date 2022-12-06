@@ -10,7 +10,9 @@
 
 namespace NotificationCenter\Gateway;
 
+use Codefog\HasteBundle\StringParser;
 use Contao\Controller;
+use Contao\System;
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Util\StringUtil;
 
@@ -73,7 +75,7 @@ abstract class Base extends Controller
      */
     protected function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags = 0)
     {
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
+        return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
     }
 
     /**
@@ -81,6 +83,6 @@ abstract class Base extends Controller
      */
     protected function convertToText($varValue, $options)
     {
-        return \Haste\Util\StringUtil::convertToText($varValue, $options);
+        return System::getContainer()->get(StringParser::class)->convertToText($varValue, $options);
     }
 }

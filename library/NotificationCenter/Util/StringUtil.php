@@ -11,7 +11,8 @@
 namespace NotificationCenter\Util;
 
 
-use Haste\Haste;
+use Codefog\HasteBundle\StringParser;
+use Contao\System;
 
 class StringUtil
 {
@@ -37,7 +38,7 @@ class StringUtil
      */
     public static function recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags = 0)
     {
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
+        return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strText, $arrTokens, $intTextFlags);
     }
 
     /**
@@ -53,7 +54,7 @@ class StringUtil
      */
     public static function convertToText($varValue, $options)
     {
-        return \Haste\Util\StringUtil::convertToText($varValue, $options);
+        return System::getContainer()->get(StringParser::class)->convertToText($varValue, $options);
     }
 
     /**
@@ -72,8 +73,8 @@ class StringUtil
             return $arrAttachments;
         }
 
-        foreach (trimsplit(',', $strAttachmentTokens) as $strToken) {
-            $strParsedToken = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strToken, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
+        foreach (\Contao\StringUtil::trimsplit(',', $strAttachmentTokens) as $strToken) {
+            $strParsedToken = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strToken, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
 
             foreach (trimsplit(',', $strParsedToken) as $strFile) {
                 if (is_file($strFile)) {
@@ -103,10 +104,10 @@ class StringUtil
     public static function compileRecipients($strRecipients, $arrTokens)
     {
         // Replaces tokens first so that tokens can contain a list of recipients.
-        $strRecipients = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strRecipients, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
+        $strRecipients = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strRecipients, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
         $arrRecipients = array();
 
-        foreach ((array) trimsplit(',', $strRecipients) as $strAddress) {
+        foreach ((array) \Contao\StringUtil::trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
                 list($strName, $strEmail) = \StringUtil::splitFriendlyEmail($strAddress);
 
@@ -121,4 +122,4 @@ class StringUtil
 
         return $arrRecipients;
     }
-} 
+}
