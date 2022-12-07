@@ -149,9 +149,9 @@ class MailerGateway extends AbstractGateway
 
         $template = $contaoFramework->createInstance(FrontendTemplate::class, [$parcel->getMessageConfig()->getString('email_template')]);
         $template->charset = 'utf-8'; // @phpstan-ignore-line
-        $template->title = $this->replaceTokens($parcel, $languageConfig->getString('email_subject')); // @phpstan-ignore-line
+        $template->title = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')); // @phpstan-ignore-line
         $template->css = ''; // @phpstan-ignore-line
-        $template->body = $this->replaceTokens($parcel, $languageConfig->getString('email_html')); // @phpstan-ignore-line
+        $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html'))); // @phpstan-ignore-line
 
         return $template->parse();
     }
