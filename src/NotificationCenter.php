@@ -17,6 +17,7 @@ use Terminal42\NotificationCenterBundle\Event\ReceiptEvent;
 use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
@@ -178,6 +179,8 @@ class NotificationCenter
     /**
      * @param string|null $gatewayName you can an either provide a gateway name directly or stick a GatewayConfigStamp
      *                                 on your parcel
+     *
+     * @throws CouldNotFinalizeParcelException
      */
     public function sendParcel(Parcel $parcel, string $gatewayName = null): Receipt
     {
@@ -193,6 +196,13 @@ class NotificationCenter
                 CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel()
             );
         } else {
+            $parcel = $gateway->finalizeParcel($parcel);
+
+            // We force serialization here in order to prevent usage errors. Developers
+            // are expected to build parcels and stamps with proper serializable data in
+            // GatewayInterface::finalizeParcel().
+            $parcel = Parcel::fromSerialized($parcel->serialize());
+
             $receipt = $gateway->sendParcel($parcel);
         }
 

@@ -20,6 +20,7 @@ use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelEx
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 use Terminal42\NotificationCenterBundle\Util\Stringable\FileUpload;
 
@@ -34,7 +35,7 @@ class MailerGateway extends AbstractGateway
 
     public function doSendParcel(Parcel $parcel): Receipt
     {
-        $email = $this->createEmail($parcel);
+        $email = $parcel->getStamp(EmailStamp::class)->email;
 
         /** @var MailerInterface $mailer */
         $mailer = $this->serviceLocator->get('mailer');
@@ -55,10 +56,22 @@ class MailerGateway extends AbstractGateway
         }
     }
 
-    protected function getRequiredStamps(): array
+    protected function doFinalizeParcel(Parcel $parcel): Parcel
+    {
+        return $parcel->withJustOneStamp(new EmailStamp($this->createEmail($parcel)));
+    }
+
+    protected function getRequiredStampsForFinalization(): array
     {
         return [
             LanguageConfigStamp::class,
+        ];
+    }
+
+    protected function getRequiredStampsForSending(): array
+    {
+        return [
+            EmailStamp::class,
         ];
     }
 
@@ -67,20 +80,20 @@ class MailerGateway extends AbstractGateway
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
 
         $email = (new Email())
-            ->from($this->replaceTokens($parcel, $languageConfig->getString('email_sender_address')))
-            ->to($this->replaceTokens($parcel, $languageConfig->getString('recipients')))
-            ->subject($this->replaceTokens($parcel, $languageConfig->getString('email_subject')))
+            ->from($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_address')))
+            ->to($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('recipients')))
+            ->subject($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')))
         ;
 
-        if ('' !== ($cc = $this->replaceTokens($parcel, $languageConfig->getString('email_recipient_cc')))) {
+        if ('' !== ($cc = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_recipient_cc')))) {
             $email->cc($cc);
         }
 
-        if ('' !== ($bcc = $this->replaceTokens($parcel, $languageConfig->getString('email_recipient_bcc')))) {
+        if ('' !== ($bcc = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_recipient_bcc')))) {
             $email->bcc($bcc);
         }
 
-        if ('' !== ($replyTo = $this->replaceTokens($parcel, $languageConfig->getString('email_replyTo')))) {
+        if ('' !== ($replyTo = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_replyTo')))) {
             $email->replyTo($replyTo);
         }
 
@@ -89,7 +102,7 @@ class MailerGateway extends AbstractGateway
 
         switch ($languageConfig->getString('email_mode')) {
             case 'textOnly':
-                $text = $this->replaceTokens($parcel, $languageConfig->getString('email_text'));
+                $text = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'));
                 break;
             case 'htmlAndAutoText':
                 $html = $this->renderEmailTemplate($parcel);
@@ -97,7 +110,7 @@ class MailerGateway extends AbstractGateway
                 break;
             case 'textAndHtml':
                 $html = $this->renderEmailTemplate($parcel);
-                $text = $this->replaceTokens($parcel, $languageConfig->getString('email_text'));
+                $text = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'));
                 break;
         }
 
@@ -160,7 +173,9 @@ class MailerGateway extends AbstractGateway
                 continue;
             }
 
-            $email->attachFromPath($fileUpload->getTmpName(), $fileUpload->getName(), $fileUpload->getType());
+            // Do not use attachFromPath() here. Finalizing the parcel requires all the data to be part
+            // of the stamps which means we cannot store a path only, as that path might be gone in the future.
+            $email->attach(file_get_contents($fileUpload->getTmpName()), $fileUpload->getName(), $fileUpload->getType());
         }
     }
 

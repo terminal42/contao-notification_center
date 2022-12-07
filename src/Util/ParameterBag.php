@@ -36,24 +36,6 @@ class ParameterBag
         return \array_key_exists($key, $this->parameters) ? $this->parameters[$key] : $default;
     }
 
-    /**
-     * @template T of object
-     *
-     * @param class-string<T> $className
-     *
-     * @return T|null
-     */
-    public function getObject(string $key, string $className): object|null
-    {
-        $value = $this->get($key);
-
-        if (null === $value || !is_a($value, $className, true)) {
-            return null;
-        }
-
-        return $value;
-    }
-
     public function getString(string $key, string $default = ''): string
     {
         return (string) $this->get($key, $default);
@@ -72,6 +54,11 @@ class ParameterBag
     public function serialize(): string
     {
         return json_encode($this->parameters);
+    }
+
+    public static function fromSerialized(string $serialized): static
+    {
+        return static::fromArray(json_decode($serialized, true));
     }
 
     /**

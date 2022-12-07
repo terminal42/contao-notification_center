@@ -157,7 +157,7 @@ In the DCA, you can then configure which token definitions are allowed:
 
 ## Gateways
 
-Gateways are responsible for actually sending a `Parcel` and issuing a `Receipt` for it.
+Gateways are responsible for actually finalizing and then sending a `Parcel` and issuing a `Receipt` for it.
 The Notification Center ships with a `MailerGateway` which sends a `Parcel` using the Symfony Mailer.
 Hence, the basic logic looks like this:
 
@@ -165,21 +165,28 @@ Hence, the basic logic looks like this:
 class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\GatewayInterface
 {
     public const NAME = 'mailer';
+    
+    public function __construct(private MailerInterface $mailer) 
+    {
+    
+    }
 
     public function getName(): string
     {
         return self::NAME;
     }
-
+    
+    public function finalizeParcel(Parcel $parcel): Parcel
+    {
+        return $parcel->withJustOneStamp(new EmailStamp($this->createEmail($parcel)));
+    }
+    
     public function sendParcel(Parcel $parcel): Receipt
     {
-        $email = $this->createEmail($parcel);
-
-        /** @var MailerInterface $mailer */
-        $mailer = $this->serviceLocator->get('mailer');
+        $email = $parcel->getStamp(EmailStamp::class)->email;
 
         try {
-            $mailer->send($email);
+            $this->mailer->send($email);
 
             return Receipt::createForSuccessfulDelivery($parcel);
         } catch (TransportExceptionInterface $e) {
@@ -193,11 +200,41 @@ class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\Gate
             );
         }
     }
+    
+    private function createEmail(Parcel $parcel): Symfony\Component\Mime\Email
+    {
+        // Create a Symfony Email instance based on the contents, stamps etc.
+    }
+}
 ```
 
+Now, let's talk about **the single most important** design decision when creating your own gateway which you
+absolutely have to keep in mind: Your gateway **must not** rely on dynamic information in the `sendParcel()`
+method. Let's take the post office analogy: When you prepare your parcel, you can stick as many stamps and labels to
+it. You can put placeholder stamps, unpack it, change its content, move it around. All of which is represented in 
+the Notification Center by the `CreateParcelEvent`. However, once you go to the counter and you actually want to
+send the parcel, you have to create one final version of your package. You cannot send a parcel with `##receiver_name##`
+written on it. The parcel must be finalized. This is what you do in your `finalizeParcel()` method. Basically, this
+is the one that does the heavy work. In most cases, you will take all the stamps, process them the way you want and
+return a final parcel with just one stamp that `sendParcel()` will then use. This is exactly what happens in the
+example above. 
+
+The best way to think about this architectural design is to imagine that `finalizeParcel()` does not happen on the
+same server as `sendParcel()`. This will clarify that everything `sendParcel()` requires, must be part of your
+`Parcel` and its stamps.
+
+Typical design issues may include:
+
+* Accessing the current request via the `RequestStack` in the `sendParcel()` method. That is not allowed! If you
+  need something from the current request, it's best to create a stamp for that. Use the `CreateParcelEvent` for it.
+* Replacing insert tags in the `sendParcel()` method. This must happen in the `finalizeParcel()` method. An insert tag
+  could be e.g. `{{env::request}}` which contains the URL of the current page. This might not exist during `sendParcel()`
+  because it happens later/on a different server etc. Make sure you replace that information when finalizing the parcel.
+
 You can also extend `AbstractGateway` which provides helpers if your gateway e.g. requires certain stamps
-to be present on your `Parcel`. E.g. the `MailerGateay` requires a `LanguageConfigStamp` to be present, because it
-expects language specific information. However, the `TokenCollectionStamp` is optional - it's also perfectly able
+to be present on your `Parcel`. E.g. the `MailerGateay` requires a `LanguageConfigStamp` to be present during the
+`finalizeParcel()` stage, because it expects language specific information. And it expects an `EmailStamp` during
+the `sendParcel()` stage. However, the `TokenCollectionStamp` is optional - it's also perfectly able
 to send a `Parcel` without any token replacements.
 
 Maybe you want to write a `SlackGateway` and you need some kind of `SlackTargetChannelStamp`?

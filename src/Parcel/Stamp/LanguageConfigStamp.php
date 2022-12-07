@@ -12,4 +12,9 @@ class LanguageConfigStamp extends AbstractConfigStamp
     {
         parent::__construct($this->languageConfig);
     }
+
+    public static function fromSerialized(string $serialized): self
+    {
+        return new self(LanguageConfig::fromArray(json_decode($serialized, true)));
+    }
 }

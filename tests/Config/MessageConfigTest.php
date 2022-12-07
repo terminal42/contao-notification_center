@@ -6,7 +6,6 @@ namespace Terminal42\NotificationCenterBundle\Test\Config;
 
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
-use Terminal42\NotificationCenterBundle\Config\NotificationConfig;
 
 class MessageConfigTest extends TestCase
 {
@@ -16,9 +15,12 @@ class MessageConfigTest extends TestCase
             'foobar' => 'test',
         ]);
 
-        $config = $config->withParameter('stdClass', new \stdClass());
+        $config = $config->withParameter('foobar2', ['nested' => true]);
 
-        $this->assertInstanceOf(\stdClass::class, $config->getObject('stdClass', \stdClass::class));
-        $this->assertNull($config->getObject('stdClass', NotificationConfig::class));
+        $this->assertSame([
+            'foobar' => 'test',
+            'foobar2' => ['nested' => true],
+        ], $config->all());
+        $this->assertNull($config->get('foo'));
     }
 }

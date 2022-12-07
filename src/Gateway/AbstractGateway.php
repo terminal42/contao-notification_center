@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Gateway;
 
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\String\SimpleTokenParser;
 use Psr\Container\ContainerInterface;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
@@ -18,14 +20,23 @@ abstract class AbstractGateway implements GatewayInterface
     {
     }
 
+    public function finalizeParcel(Parcel $parcel): Parcel
+    {
+        if (!$parcel->hasStamps($this->getRequiredStampsForFinalization())) {
+            throw CouldNotFinalizeParcelException::becauseOfInsufficientStamps($parcel->getStampClasses(), $this->getRequiredStampsForFinalization());
+        }
+
+        return $this->doFinalizeParcel($parcel);
+    }
+
     public function sendParcel(Parcel $parcel): Receipt
     {
-        if (!$parcel->hasStamps($this->getRequiredStamps())) {
+        if (!$parcel->hasStamps($this->getRequiredStampsForSending())) {
             return Receipt::createForUnsuccessfulDelivery(
                 $parcel,
                 CouldNotDeliverParcelException::becauseOfInsufficientStamps(
                     $parcel->getStampClasses(),
-                    $this->getRequiredStamps()
+                    $this->getRequiredStampsForSending()
                 )
             );
         }
@@ -36,7 +47,20 @@ abstract class AbstractGateway implements GatewayInterface
     /**
      * @return array<class-string<StampInterface>>
      */
-    abstract protected function getRequiredStamps(): array;
+    protected function getRequiredStampsForFinalization(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<class-string<StampInterface>>
+     */
+    protected function getRequiredStampsForSending(): array
+    {
+        return [];
+    }
+
+    abstract protected function doFinalizeParcel(Parcel $parcel): Parcel;
 
     abstract protected function doSendParcel(Parcel $parcel): Receipt;
 
@@ -57,5 +81,22 @@ abstract class AbstractGateway implements GatewayInterface
             $value,
             $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->asKeyValue()
         );
+    }
+
+    protected function replaceInsertTags(string $value): string
+    {
+        if (!$this->serviceLocator->has('contao.insert_tag.parser')) {
+            return $value;
+        }
+
+        /** @var InsertTagParser $insertTagParser */
+        $insertTagParser = $this->serviceLocator->get('contao.insert_tag.parser');
+
+        return $insertTagParser->replaceInline($value);
+    }
+
+    protected function replaceTokensAndInsertTags(Parcel $parcel, string $value): string
+    {
+        return $this->replaceInsertTags($this->replaceTokens($parcel, $value));
     }
 }

@@ -6,7 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Parcel\Stamp;
 
 use Terminal42\NotificationCenterBundle\Config\AbstractConfig;
 
-abstract class AbstractConfigStamp implements StampInterface
+abstract class AbstractConfigStamp implements StampInterface, UnserializableStampInterface
 {
     public function __construct(private AbstractConfig $config)
     {
