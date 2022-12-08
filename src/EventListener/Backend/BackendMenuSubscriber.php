@@ -23,6 +23,13 @@ class BackendMenuSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $notificationCenter = $tree->getChild('notification_center');
+
+        // No permissions for the nc
+        if (null === $notificationCenter) {
+            return;
+        }
+
         $GLOBALS['TL_CSS'][] = trim($this->packages->getUrl(
             'backend.css',
             'terminal42_notification_center'
@@ -30,7 +37,7 @@ class BackendMenuSubscriber implements EventSubscriberInterface
 
         // Moves the NC to second position
         $manipulator = new MenuManipulator();
-        $manipulator->moveToPosition($tree->getChild('notification_center'), 1);
+        $manipulator->moveToPosition($notificationCenter, 1);
     }
 
     public static function getSubscribedEvents(): array
