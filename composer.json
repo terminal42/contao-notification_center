@@ -31,7 +31,7 @@
     },
     "require": {
         "php": "^7.0 || ^8.0",
-        "contao/core-bundle": "^4.13 || ^5.0",
+        "contao/core-bundle": "^4.13",
         "codefog/contao-haste": "^5.0",
         "terminal42/dcawizard": "^2.5"
     },
