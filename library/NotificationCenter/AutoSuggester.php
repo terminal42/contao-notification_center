@@ -110,7 +110,7 @@ window.addEvent('domready', function() {
 
         $strGroup = NotificationModel::findGroupForType(static::$strType);
 
-        $validTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name];
+        $validTokens = (array) $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$objWidget->name] ?? [];
         $validTokens = array_merge($validTokens, $this->loadTemplateTokens());
 
         $strText = StringUtil::decodeEntities(StringUtil::restoreBasicEntities($strText));
