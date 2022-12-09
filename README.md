@@ -7,6 +7,14 @@ Contao developers to send notifications via their extensions.
 If we can get this extension to be widely used, users will quickly get used
 to the way one can configure the notification center.
 
+## Which version should I choose?
+
+| Contao Version | Haste Version | PHP Version    | Notification Center Version |
+|----------------|---------------|----------------|-----------------------------|
+| <= 4.13        | 4.*           | ^7.0 ǀǀ ^8.0   | 1.6.*                       |
+| 4.13.*         | 5.*           | > 8.1          | 1.7.*                       |
+| 4.13.* ǀǀ 5.*  | 5.*           | > 8.1          | [2.*][NC_2]                 |
+
 ## Translating
 The notification center can be translated via Transifex: https://www.transifex.com/projects/p/notification_center
 
@@ -113,3 +121,5 @@ Managing translations files.
 1. Install transifex client.
 
 2.  `tx pull -a` to fetch updated translations.
+
+[NC_2]: https://github.com/terminal42/contao-notification_center/discussions/277
