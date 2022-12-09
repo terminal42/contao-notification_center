@@ -28,6 +28,10 @@ class MailerGateway extends AbstractGateway
 {
     public const NAME = 'mailer';
 
+    public function __construct(private ContaoFramework $contaoFramework, private VirtualFilesystem $filesystem, private MailerInterface $mailer)
+    {
+    }
+
     public function getName(): string
     {
         return self::NAME;
@@ -37,11 +41,8 @@ class MailerGateway extends AbstractGateway
     {
         $email = $parcel->getStamp(EmailStamp::class)->email;
 
-        /** @var MailerInterface $mailer */
-        $mailer = $this->serviceLocator->get('mailer');
-
         try {
-            $mailer->send($email);
+            $this->mailer->send($email);
 
             return Receipt::createForSuccessfulDelivery($parcel);
         } catch (TransportExceptionInterface $e) {
@@ -143,11 +144,9 @@ class MailerGateway extends AbstractGateway
     {
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
 
-        /** @var ContaoFramework $contaoFramework */
-        $contaoFramework = $this->serviceLocator->get('contao.framework');
-        $contaoFramework->initialize();
+        $this->contaoFramework->initialize();
 
-        $template = $contaoFramework->createInstance(FrontendTemplate::class, [$parcel->getMessageConfig()->getString('email_template')]);
+        $template = $this->contaoFramework->createInstance(FrontendTemplate::class, [$parcel->getMessageConfig()->getString('email_template')]);
         $template->charset = 'utf-8'; // @phpstan-ignore-line
         $template->title = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')); // @phpstan-ignore-line
         $template->css = ''; // @phpstan-ignore-line
@@ -187,9 +186,6 @@ class MailerGateway extends AbstractGateway
             return;
         }
 
-        /** @var VirtualFilesystem $vfs */
-        $vfs = $this->serviceLocator->get('contao.files');
-
         // As soon as we're compatible with Contao >5.0 only, we can use the FilesystemUtil for this.
         foreach ($attachments as $uuid) {
             if (!\is_string($uuid)) {
@@ -203,7 +199,7 @@ class MailerGateway extends AbstractGateway
             try {
                 $uuidObject = Uuid::isValid($uuid) ? Uuid::fromString($uuid) : Uuid::fromBinary($uuid);
 
-                if (null === ($item = $vfs->get($uuidObject))) {
+                if (null === ($item = $this->filesystem->get($uuidObject))) {
                     continue;
                 }
             } catch (\InvalidArgumentException|UnableToResolveUuidException) {
@@ -214,7 +210,7 @@ class MailerGateway extends AbstractGateway
                 continue;
             }
 
-            $email->attach($vfs->readStream($uuidObject), $item->getName(), $item->getMimeType());
+            $email->attach($this->filesystem->readStream($uuidObject), $item->getName(), $item->getMimeType());
         }
     }
 }

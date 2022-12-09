@@ -16,8 +16,13 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 abstract class AbstractGateway implements GatewayInterface
 {
-    public function __construct(protected ContainerInterface $serviceLocator)
+    protected ContainerInterface|null $container;
+
+    public function setContainer(ContainerInterface $container): self
     {
+        $this->container = $container;
+
+        return $this;
     }
 
     public function finalizeParcel(Parcel $parcel): Parcel
@@ -70,12 +75,11 @@ abstract class AbstractGateway implements GatewayInterface
             return $value;
         }
 
-        if (!$this->serviceLocator->has('contao.string.simple_token_parser')) {
+        $simpleTokenParser = $this->getSimpleTokenParser();
+
+        if (null === $simpleTokenParser) {
             return $value;
         }
-
-        /** @var SimpleTokenParser $simpleTokenParser */
-        $simpleTokenParser = $this->serviceLocator->get('contao.string.simple_token_parser');
 
         return $simpleTokenParser->parse(
             $value,
@@ -85,12 +89,11 @@ abstract class AbstractGateway implements GatewayInterface
 
     protected function replaceInsertTags(string $value): string
     {
-        if (!$this->serviceLocator->has('contao.insert_tag.parser')) {
+        $insertTagParser = $this->getInsertTagParser();
+
+        if (null === $insertTagParser) {
             return $value;
         }
-
-        /** @var InsertTagParser $insertTagParser */
-        $insertTagParser = $this->serviceLocator->get('contao.insert_tag.parser');
 
         return $insertTagParser->replaceInline($value);
     }
@@ -98,5 +101,27 @@ abstract class AbstractGateway implements GatewayInterface
     protected function replaceTokensAndInsertTags(Parcel $parcel, string $value): string
     {
         return $this->replaceInsertTags($this->replaceTokens($parcel, $value));
+    }
+
+    protected function getSimpleTokenParser(): SimpleTokenParser|null
+    {
+        if (null === $this->container || !$this->container->has('simple_token_parser')) {
+            return null;
+        }
+
+        $simpleTokenParser = $this->container->get('simple_token_parser');
+
+        return !$simpleTokenParser instanceof SimpleTokenParser ? null : $simpleTokenParser;
+    }
+
+    protected function getInsertTagParser(): InsertTagParser|null
+    {
+        if (null === $this->container || !$this->container->has('insert_tag_parser')) {
+            return null;
+        }
+
+        $insertTagParser = $this->container->get('insert_tag_parser');
+
+        return !$insertTagParser instanceof InsertTagParser ? null : $insertTagParser;
     }
 }

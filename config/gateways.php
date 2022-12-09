@@ -11,12 +11,10 @@ return static function (ContainerConfigurator $container): void {
     $services->defaults()->autoconfigure();
 
     $services->set(MailerGateway::class)
-        ->args([service_locator([
-            'mailer' => service('mailer'),
-            'contao.string.simple_token_parser' => service('contao.string.simple_token_parser'),
-            'contao.insert_tag.parser' => service('contao.insert_tag.parser'),
-            'contao.framework' => service('contao.framework'),
-            'contao.files' => service('contao.filesystem.virtual.files'),
-        ])])
+        ->args([
+            service('contao.framework'),
+            service('contao.filesystem.virtual.files'),
+            service('mailer'),
+        ])
     ;
 };
