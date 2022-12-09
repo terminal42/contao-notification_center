@@ -132,7 +132,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSubject()
     {
-        return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS | System::getContainer()->get(StringParser::class)->NO_ENTITIES);
+        return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringParser::NO_ENTITIES);
     }
 
     /**
