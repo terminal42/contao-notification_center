@@ -25,7 +25,7 @@ class BackendMenuSubscriber implements EventSubscriberInterface
 
         $notificationCenter = $tree->getChild('notification_center');
 
-        // No permissions for the nc
+        // No permissions for the NC
         if (null === $notificationCenter) {
             return;
         }

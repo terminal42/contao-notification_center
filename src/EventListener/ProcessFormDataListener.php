@@ -38,7 +38,7 @@ class ProcessFormDataListener
             $tokens['form_'.$k] = $v;
             $rawData[] = $label.': '.(\is_array($v) ? implode(', ', $v) : $v);
 
-            if (\is_array($v) || \strlen($v)) {
+            if (\is_array($v) || ('' !== (string) $v)) {
                 $rawDataFilled[] = $label.': '.(\is_array($v) ? implode(', ', $v) : $v);
             }
         }
