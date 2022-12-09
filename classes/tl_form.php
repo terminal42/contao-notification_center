@@ -102,9 +102,12 @@ class tl_form extends \Backend
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
 
         // Upload fields
+        $arrFileNames = array();
         foreach ($arrFiles as $fieldName => $file) {
             $arrTokens['form_' . $fieldName] = Form::getFileUploadPathForToken($file);
+            $arrFileNames[] = $file['name'];
         }
+        $arrTokens['filenames'] = implode($delimiter, $arrFileNames);
 
         return $arrTokens;
     }
