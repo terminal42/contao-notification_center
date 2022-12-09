@@ -18,8 +18,8 @@ class AbstractGatewayPass implements CompilerPassInterface
     {
         $taggedServices = $container->findTaggedServiceIds(Terminal42NotificationCenterExtension::GATEWAY_TAG);
         $locateableServices = [
-            'simple_token_parser' => new Reference('contao.string.simple_token_parser', ContainerInterface::NULL_ON_INVALID_REFERENCE),
-            'insert_tag_parser' => new Reference('contao.insert_tag.parser', ContainerInterface::NULL_ON_INVALID_REFERENCE),
+            AbstractGateway::SERVICE_NAME_SIMPLE_TOKEN_PARSER => new Reference('contao.string.simple_token_parser', ContainerInterface::NULL_ON_INVALID_REFERENCE),
+            AbstractGateway::SERVICE_NAME_INSERT_TAG_PARSER => new Reference('contao.insert_tag.parser', ContainerInterface::NULL_ON_INVALID_REFERENCE),
         ];
 
         foreach (array_keys($taggedServices) as $id) {

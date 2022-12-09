@@ -16,6 +16,9 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 abstract class AbstractGateway implements GatewayInterface
 {
+    public const SERVICE_NAME_SIMPLE_TOKEN_PARSER = 'simple_token_parser';
+    public const SERVICE_NAME_INSERT_TAG_PARSER = 'insert_tag_parser';
+
     protected ContainerInterface|null $container;
 
     public function setContainer(ContainerInterface $container): self
@@ -105,22 +108,22 @@ abstract class AbstractGateway implements GatewayInterface
 
     protected function getSimpleTokenParser(): SimpleTokenParser|null
     {
-        if (null === $this->container || !$this->container->has('simple_token_parser')) {
+        if (null === $this->container || !$this->container->has(self::SERVICE_NAME_SIMPLE_TOKEN_PARSER)) {
             return null;
         }
 
-        $simpleTokenParser = $this->container->get('simple_token_parser');
+        $simpleTokenParser = $this->container->get(self::SERVICE_NAME_SIMPLE_TOKEN_PARSER);
 
         return !$simpleTokenParser instanceof SimpleTokenParser ? null : $simpleTokenParser;
     }
 
     protected function getInsertTagParser(): InsertTagParser|null
     {
-        if (null === $this->container || !$this->container->has('insert_tag_parser')) {
+        if (null === $this->container || !$this->container->has(self::SERVICE_NAME_INSERT_TAG_PARSER)) {
             return null;
         }
 
-        $insertTagParser = $this->container->get('insert_tag_parser');
+        $insertTagParser = $this->container->get(self::SERVICE_NAME_INSERT_TAG_PARSER);
 
         return !$insertTagParser instanceof InsertTagParser ? null : $insertTagParser;
     }
