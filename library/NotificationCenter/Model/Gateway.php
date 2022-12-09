@@ -10,9 +10,10 @@
 
 namespace NotificationCenter\Model;
 
+use Contao\Model;
 use NotificationCenter\Gateway\GatewayInterface;
 
-class Gateway extends \Model
+class Gateway extends Model
 {
 
     /**

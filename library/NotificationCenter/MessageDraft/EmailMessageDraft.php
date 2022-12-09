@@ -11,8 +11,10 @@
 namespace NotificationCenter\MessageDraft;
 
 
+use Codefog\HasteBundle\StringParser;
 use Contao\Config;
 use Contao\File;
+use Contao\System;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
 use NotificationCenter\Util\StringUtil;
@@ -70,7 +72,7 @@ class EmailMessageDraft implements MessageDraftInterface
     {
         $strSenderAddress = $this->objLanguage->email_sender_address ?: ($GLOBALS['TL_ADMIN_EMAIL'] ?? Config::get('adminEmail'));
 
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
+        return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
 
     /**
@@ -81,7 +83,7 @@ class EmailMessageDraft implements MessageDraftInterface
     {
         $strSenderName = $this->objLanguage->email_sender_name ?: ($GLOBALS['TL_ADMIN_NAME'] ?? '');
 
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
+        return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
 
     /**
@@ -118,7 +120,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getReplyToEmail()
     {
         if ($this->objLanguage->email_replyTo) {
-            return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
+            return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($this->objLanguage->email_replyTo, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
         }
 
         return '';
@@ -130,7 +132,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSubject()
     {
-        return \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS | \Haste\Util\StringUtil::NO_ENTITIES);
+        return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($this->objLanguage->email_subject, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS | StringParser::NO_ENTITIES);
     }
 
     /**
@@ -154,7 +156,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getTextBody()
     {
         $strText = $this->objLanguage->email_text;
-        $strText = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strText, $this->arrTokens, StringUtil::NO_TAGS);
+        $strText = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strText, $this->arrTokens, StringUtil::NO_TAGS);
 
         return \Controller::convertRelativeUrls($strText, '', true);
     }
@@ -173,7 +175,7 @@ class EmailMessageDraft implements MessageDraftInterface
             // Prevent parseSimpleTokens from stripping important HTML tags
             $GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
             $strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
-            $strHtml = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($strHtml, $this->arrTokens);
+            $strHtml = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strHtml, $this->arrTokens);
             $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
             $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
 
@@ -204,7 +206,7 @@ class EmailMessageDraft implements MessageDraftInterface
             $this->attachments = StringUtil::getTokenAttachments($this->objLanguage->attachment_tokens, $this->arrTokens);
 
             // Add static attachments
-            $arrStaticAttachments = deserialize($this->objLanguage->attachments, true);
+            $arrStaticAttachments = \Contao\StringUtil::deserialize($this->objLanguage->attachments, true);
 
             if (!empty($arrStaticAttachments)) {
                 $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
@@ -241,7 +243,7 @@ class EmailMessageDraft implements MessageDraftInterface
                             continue;
                         }
 
-                        $this->stringAttachments[$objFiles->name] = \Haste\Util\StringUtil::recursiveReplaceTokensAndTags($file->getContent(), $this->arrTokens);
+                        $this->stringAttachments[$objFiles->name] = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($file->getContent(), $this->arrTokens);
                     }
                 }
             }

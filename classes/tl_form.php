@@ -10,6 +10,9 @@
 
 namespace NotificationCenter;
 
+use Codefog\HasteBundle\StringParser;
+use Contao\ArrayUtil;
+use Contao\System;
 use NotificationCenter\Util\Form;
 
 class tl_form extends \Backend
@@ -80,8 +83,10 @@ class tl_form extends \Backend
         $arrTokens['raw_data'] = '';
         $arrTokens['raw_data_filled'] = '';
 
+        $stringParser = System::getContainer()->get(StringParser::class);
+
         foreach ($arrData as $k => $v) {
-            \Haste\Util\StringUtil::flatten($v, 'form_'.$k, $arrTokens, $delimiter);
+            $stringParser->flatten($v, 'form_'.$k, $arrTokens, $delimiter);
             $arrTokens['formlabel_'.$k] = $arrLabels[$k] ?? ucfirst($k);
             $arrTokens['raw_data'] .= ($arrLabels[$k] ?? ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
             if (is_array($v) || strlen($v)) {
@@ -90,7 +95,7 @@ class tl_form extends \Backend
         }
 
         foreach ($arrForm as $k => $v) {
-            \Haste\Util\StringUtil::flatten($v, 'formconfig_'.$k, $arrTokens, $delimiter);
+            $stringParser->flatten($v, 'formconfig_'.$k, $arrTokens, $delimiter);
         }
 
         // Administrator e-mail
@@ -123,7 +128,7 @@ class tl_form extends \Backend
             return;
         }
 
-        $blnAssoc = array_is_assoc($varValue);
+        $blnAssoc = ArrayUtil::isAssoc($varValue);
         $arrValues = array();
 
         foreach ($varValue as $k => $v) {

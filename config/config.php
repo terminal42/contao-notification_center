@@ -11,7 +11,7 @@
 /**
  * Back end modules
  */
-array_insert($GLOBALS['BE_MOD'], 1, array
+\Contao\ArrayUtil::arrayInsert($GLOBALS['BE_MOD'], 1, array
 (
     'notification_center' => array
     (
@@ -32,7 +32,7 @@ array_insert($GLOBALS['BE_MOD'], 1, array
 ));
 
 // Load icon in Contao 4.2 backend
-if ('BE' === TL_MODE) {
+if (defined('TL_MODE') && 'BE' === TL_MODE) {
     $GLOBALS['TL_CSS'][] = 'system/modules/notification_center/assets/backend.css';
 }
 
@@ -41,7 +41,7 @@ if ('BE' === TL_MODE) {
  */
 $GLOBALS['FE_MOD']['user']['lostPasswordNotificationCenter'] = 'ModulePasswordNotificationCenter';
 
-if (in_array('newsletter', \ModuleLoader::getActive(), true)) {
+if (class_exists(Contao\NewsletterBundle\ContaoNewsletterBundle::class)) {
     $GLOBALS['FE_MOD']['newsletter']['newsletterSubscribeNotificationCenter']   = 'ModuleNewsletterSubscribeNotificationCenter';
     $GLOBALS['FE_MOD']['newsletter']['newsletterActivateNotificationCenter']    = 'ModuleNewsletterActivateNotificationCenter';
     $GLOBALS['FE_MOD']['newsletter']['newsletterUnsubscribeNotificationCenter'] = 'ModuleNewsletterUnsubscribeNotificationCenter';
@@ -170,7 +170,7 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
 );
 
 // Add the newsletter tokens only if the extension is active
-if (in_array('newsletter', \Contao\ModuleLoader::getActive(), true)) {
+if (class_exists(Contao\NewsletterBundle\ContaoNewsletterBundle::class)) {
     $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE']['contao']['newsletter_subscribe'] = array(
         'recipients'           => array('recipient_email', 'admin_email'),
         'email_subject'        => array('domain', 'link', 'recipient_email', 'admin_email', 'channels', 'channel_ids', 'subject'),

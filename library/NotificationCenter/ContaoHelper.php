@@ -11,10 +11,17 @@
 namespace NotificationCenter;
 
 
+use Codefog\HasteBundle\Formatter;
+use Contao\Controller;
+use Contao\Database;
+use Contao\Environment;
+use Contao\MemberModel;
+use Contao\NewsletterBundle\ContaoNewsletterBundle;
+use Contao\System;
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Notification;
 
-class ContaoHelper extends \Controller
+class ContaoHelper extends Controller
 {
     /**
      * Public constructor.
@@ -37,30 +44,28 @@ class ContaoHelper extends \Controller
             return;
         }
 
-        if (version_compare(VERSION, '4.7', '>=')) {
-            $notification = Notification::findByPk($objModule->nc_notification);
+        $notification = Notification::findByPk($objModule->nc_notification);
 
-            // Only create opt-in token if the ##link## simple token is in use (#237)
-            if (null !== $notification && $notification->hasToken('link')) {
-                /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
-                $optIn      = \Contao\System::getContainer()->get('contao.opt-in');
-                $optInToken = $optIn->create('reg-', $arrData['email'], array('tl_member' => array($arrData['id'])));
+        // Only create opt-in token if the ##link## simple token is in use (#237)
+        if (null !== $notification && $notification->hasToken('link')) {
+            /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
+            $optIn      = \Contao\System::getContainer()->get('contao.opt-in');
+            $optInToken = $optIn->create('reg-', $arrData['email'], array('tl_member' => array($arrData['id'])));
 
-                $arrData['activation'] = $optInToken->getIdentifier();
-            }
+            $arrData['activation'] = $optInToken->getIdentifier();
         }
 
         $arrTokens = [];
 
         if (!empty($arrData['activation'])) {
-            $arrTokens['link'] = \Environment::get('base') . \Environment::get('request') . ((($GLOBALS['TL_CONFIG']['disableAlias'] ?? false) || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
+            $arrTokens['link'] = Environment::get('base') . Environment::get('request') . ((($GLOBALS['TL_CONFIG']['disableAlias'] ?? false) || strpos(Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $arrData['activation'];
         }
 
         // Disable the email to admin because no core notification has been sent
         $objModule->reg_activate = true;
 
         // Reload the data because $arrData does not contain all of it
-        if (($objMember = \MemberModel::findByPk($intId)) instanceof \MemberModel) {
+        if (($objMember = MemberModel::findByPk($intId)) instanceof MemberModel) {
             $arrData = $objMember->row();
         }
 
@@ -99,7 +104,7 @@ class ContaoHelper extends \Controller
 
         // Translate/format old values
         foreach ($_SESSION['PERSONAL_DATA'] as $strFieldName => $strFieldValue) {
-            $arrTokens['member_old_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
+            $arrTokens['member_old_' . $strFieldName] = System::getContainer()->get(Formatter::class)->dcaValue('tl_member', $strFieldName, $strFieldValue);
         }
 
         $this->sendNotifications($objModule->nc_notification, $arrData, $objModule, $arrTokens);
@@ -120,13 +125,13 @@ class ContaoHelper extends \Controller
         }
 
         $arrTokens['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
-        $arrTokens['domain']      = \Environment::get('host');
+        $arrTokens['domain']      = Environment::get('host');
 
         // Support newsletters
-        if (in_array('newsletter', \ModuleLoader::getActive())) {
+        if (class_exists(ContaoNewsletterBundle::class)) {
             if (!is_array($arrData['newsletter'])) {
                 if ($arrData['newsletter'] != '') {
-                    $objChannels                    = \Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array) $arrData['newsletter'])) . ")");
+                    $objChannels                    = Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array) $arrData['newsletter'])) . ")");
                     $arrTokens['member_newsletter'] = implode("\n", $objChannels->fetchEach('title'));
                 } else {
                     $arrTokens['member_newsletter'] = '';
@@ -136,7 +141,7 @@ class ContaoHelper extends \Controller
 
         // translate/format values
         foreach ($arrData as $strFieldName => $strFieldValue) {
-            $arrTokens['member_' . $strFieldName] = \Haste\Util\Format::dcaValue('tl_member', $strFieldName, $strFieldValue);
+            $arrTokens['member_' . $strFieldName] = System::getContainer()->get(Formatter::class)->dcaValue('tl_member', $strFieldName, $strFieldValue);
 
             if ((string) $arrTokens['member_' . $strFieldName] !== (string) ($arrTokens['member_old_' . $strFieldName] ?? '')) {
                 $arrTokens['changed_' . $strFieldName] = '1';
@@ -163,11 +168,11 @@ class ContaoHelper extends \Controller
     public function addQueueToUserNavigation($arrModules, $blnShowAll)
     {
         // Make sure there's no exception if notification_center has not been properly installed yet
-        if (!\Database::getInstance()->tableExists('tl_nc_gateway')) {
+        if (!Database::getInstance()->tableExists('tl_nc_gateway')) {
             return $arrModules;
         }
 
-        if (!\Database::getInstance()
+        if (!Database::getInstance()
             ->prepare('SELECT COUNT(id) as count FROM tl_nc_gateway WHERE type=? AND tstamp>0')
             ->execute('queue')->count
         ) {
@@ -183,10 +188,6 @@ class ContaoHelper extends \Controller
      */
     public function alertLegacySmtpSetting()
     {
-        if (version_compare(VERSION, '4.10', '<')) {
-            return '';
-        }
-
         $legacyGateways = Gateway::findBy(["type='email'", "email_overrideSmtp='1'"], []);
         if (null === $legacyGateways) {
             return '';

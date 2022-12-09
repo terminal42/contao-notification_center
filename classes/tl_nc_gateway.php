@@ -10,7 +10,7 @@
 
 namespace NotificationCenter;
 
-use Haste\Dca\PaletteManipulator;
+use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use NotificationCenter\Gateway\LabelCallbackInterface;
 use NotificationCenter\Model\Gateway;
 
@@ -29,15 +29,6 @@ class tl_nc_gateway extends \Backend
         $paletteManipulator = PaletteManipulator::create();
 
         $paletteManipulator->addLegend('gateway_legend', 'title_legend');
-
-        // Add the "email_overrideSmtp" field in Contao <4.10
-        if (version_compare(VERSION, '4.10', '<')) {
-            $paletteManipulator
-                ->addField('email_overrideSmtp', 'gateway_legend', PaletteManipulator::POSITION_APPEND)
-                ->applyToPalette('email', 'tl_nc_gateway')
-            ;
-            return;
-        }
 
         // Show the legacy field "email_overrideSmtp" as long as it is configured
         $gatewayModel = Gateway::findByPk($dc->id);
