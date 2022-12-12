@@ -54,25 +54,25 @@ class ContaoNotificationCenterAutoSuggester {
                 } catch (err) {}
             }
 
-            // Set the mirror for textarea
+            // Create the mirror for textarea
             if (this.input.tagName.toLowerCase() === 'textarea' && !this.tinyMCEInstance) {
-                this.setUpMirror();
+                this.createInputMirror();
             }
 
-            this.setUpSuggestions();
-            this.registerObservers();
+            this.createBoxElements();
+            this.registerEvents();
         }, 500);
     }
 
     /**
-     * Set up the suggestions
+     * Create the box elements
      */
-    setUpSuggestions(): void {
+    createBoxElements(): void {
         this.boxContainer = document.createElement('div');
         this.boxContainer.className = this.cssClassBoxContainer;
 
         this.box = document.createElement('div');
-        this.box.id = `${this.input.id}_autosuggester`;
+        this.box.id = `${this.input.id}-autosuggester`;
         this.box.className = this.cssClassBox;
 
         this.boxList = document.createElement('ul');
@@ -97,9 +97,9 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Set up the input mirror
+     * Create the input mirror
      */
-    setUpMirror(): void {
+    createInputMirror(): void {
         this.inputMirror = document.createElement('div');
         this.inputMirror.className = this.cssClassInputMirror;
         this.inputMirror.innerText = this.input.value;
@@ -120,29 +120,29 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Register the observers
+     * Register the events
      */
-    registerObservers(): void {
+    registerEvents(): void {
         // Add the regular events
         if (!this.tinyMCEInstance) {
-            this.input.addEventListener('keyup', (e: KeyboardEvent) => this.eventKeyUp(e));
-            this.input.addEventListener('keydown', (e: KeyboardEvent) => this.eventKeyDown(e));
+            this.input.addEventListener('keyup', (e: KeyboardEvent) => this.onKeyUpEvent(e));
+            this.input.addEventListener('keydown', (e: KeyboardEvent) => this.onKeyDownEvent(e));
         }
 
         // Add the events to tinyMCE
         if (this.tinyMCEInstance) {
             if (typeof this.tinyMCEInstance.on === 'function') {
-                this.tinyMCEInstance.on('keyUp', e => this.eventKeyUp(e));
+                this.tinyMCEInstance.on('keyUp', (e: KeyboardEvent) => this.onKeyUpEvent(e));
 
                 // Fix an issue with the "enter" key
                 this.tinyMCEInstance.off('keyDown');
-                this.tinyMCEInstance.on('keyDown', e => this.eventKeyDown(e));
+                this.tinyMCEInstance.on('keyDown', (e: KeyboardEvent) => this.onKeyDownEvent(e));
             } else {
-                this.tinyMCEInstance.onKeyUp.add((editor, event) => this.eventKeyUp(event));
+                this.tinyMCEInstance.onKeyUp.add((editor, event: KeyboardEvent) => this.onKeyUpEvent(event));
 
                 // Fix an issue with the "enter" key
                 this.tinyMCEInstance.onKeyDown.listeners = [];
-                this.tinyMCEInstance.onKeyDown.add((editor, event) => this.eventKeyDown(event));
+                this.tinyMCEInstance.onKeyDown.add((editor, event: KeyboardEvent) => this.onKeyDownEvent(event));
             }
         }
 
@@ -159,7 +159,7 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Show the box with suggestions
+     * Show the box with tokens
      */
     showBox(): void {
         if (this.boxVisible) {
@@ -213,7 +213,7 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Hide the box with suggestions
+     * Hide the box with tokens
      */
     hideBox(): void {
         this.box.style.display = 'none';
@@ -224,9 +224,9 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Triggered on the key up
+     * On the key up event
      */
-    eventKeyUp(event: KeyboardEvent): void {
+    onKeyUpEvent(event: KeyboardEvent): void {
         if (event.key === 'Escape' || event.key === 'ArrowUp' || event.key === 'ArrowDown') {
             return;
         }
@@ -270,9 +270,9 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Triggered on the key down
+     * On the key up event
      */
-    eventKeyDown(event: KeyboardEvent): void {
+    onKeyDownEvent(event: KeyboardEvent): void {
         if (!this.boxVisible) {
             return;
         }
@@ -320,7 +320,7 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Highlight a particular item
+     * Highlight an item with provided index
      */
     highlightItem(index: number): void {
         const maxHeight = parseInt(window.getComputedStyle(this.box).maxHeight);
@@ -346,7 +346,7 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * Select the current item
+     * Select the currently selected item
      */
     selectItem(): void {
         let value, index, indexNew;
