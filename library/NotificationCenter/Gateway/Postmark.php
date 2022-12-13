@@ -81,6 +81,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         $arrBcc = $objDraft->getBccRecipientEmails();
 
         if (count(array_merge($arrTo, $arrCc, $arrBcc)) >= 20) {
+            $this->objModel->addFormError();
             \System::log(
                 sprintf('The Postmark gateway does not support sending to more than 20 recipients (CC and BCC included) for message ID "%s".',
                     $objMessage->id
@@ -136,6 +137,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         }
 
         if ($objRequest->hasError()) {
+            $this->objModel->addFormError();
             \System::log(
                 sprintf('Error sending the Postmark request for message ID "%s". HTTP Response status code: %s. JSON data sent: %s',
                     $objMessage->id,

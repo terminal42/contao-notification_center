@@ -14,6 +14,7 @@ use NotificationCenter\Gateway\Email;
 
 class Message extends \Model
 {
+    use FormErrorTrait;
 
     /**
      * Name of the current table

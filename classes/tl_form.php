@@ -47,13 +47,15 @@ class tl_form extends \Backend
      * @param array $arrForm
      * @param array $arrFiles
      * @param array $arrLabels
+     * @param \Contao\Form $form
      */
-    public function sendFormNotification($arrData, $arrForm, $arrFiles, $arrLabels)
+    public function sendFormNotification($arrData, $arrForm, $arrFiles, $arrLabels, $form)
     {
         if (!$arrForm['nc_notification'] || ($objNotification = Model\Notification::findByPk($arrForm['nc_notification'])) === null) {
             return;
         }
 
+        $objNotification->setForm($form);
         $objNotification->send(
             $this->generateTokens(
                 (array) $arrData,

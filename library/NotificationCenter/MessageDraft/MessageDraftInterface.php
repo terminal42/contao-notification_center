@@ -20,7 +20,7 @@ interface MessageDraftInterface
 
     /**
      * Returns the message model for that message draft
-     * @return \NotificationCenter\MessageDraft\Message
+     * @return \NotificationCenter\Model\Message
      */
     public function getMessage();
 

@@ -14,6 +14,7 @@ use Contao\Model;
 
 class Notification extends Model
 {
+    use FormErrorTrait;
 
     /**
      * Name of the current table
@@ -49,6 +50,7 @@ class Notification extends Model
         $arrResult = array();
 
         foreach ($objMessages as $objMessage) {
+            $objMessage->setForm($this->form);
             $arrResult[$objMessage->id] = $objMessage->send($arrTokens, $strLanguage);
         }
 
@@ -104,6 +106,7 @@ class Notification extends Model
 
                 $tokens['template_'.substr($name, 13)] = $template->parse();
             } catch (\Exception $e) {
+                $this->addFormError();
                 \System::log('Could not generate token template "'.$name.'"', __METHOD__, TL_ERROR);
             }
         }

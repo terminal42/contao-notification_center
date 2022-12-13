@@ -169,6 +169,7 @@ class QueueManager implements QueueManagerInterface
                 (new Filesystem())->copy($originalPath, $clonePath);
                 $attachments[$index] = $clonePath;
             } catch (\Exception $exception) {
+                $message->addFormError();
                 // noop
             }
         }
@@ -188,4 +189,4 @@ class QueueManager implements QueueManagerInterface
     {
         return 'var/notification_center/' . $messageId;
     }
-} 
+}

@@ -15,6 +15,7 @@ use NotificationCenter\Gateway\GatewayInterface;
 
 class Gateway extends Model
 {
+    use FormErrorTrait;
 
     /**
      * Name of the current table
@@ -56,6 +57,7 @@ class Gateway extends Model
                 $this->objGateway = $objGateway;
 
             } catch (\Exception $e) {
+                $this->addFormError();
                 \System::log(sprintf('There was a general error building the gateway: "%s".', $e->getMessage()), __METHOD__, TL_ERROR);
 
                 return null;
