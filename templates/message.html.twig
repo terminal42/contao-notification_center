@@ -1,0 +1,13 @@
+<div class="cte_type {{ message.published ? 'published' : 'unpublished' }}">
+    <strong>{{ message.title }}</strong>
+    {% if gateway %}
+    - {{ gateway.title }}
+    {% endif %}
+</div>
+<div>
+    <ul>
+         {% for language in languages %}
+        <li>{{ language.name }}</li>
+        {% endfor %}
+    </ul>
+</div>

@@ -7,14 +7,51 @@ namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContaine
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Intl\Locales;
 use Contao\DataContainer;
+use Doctrine\DBAL\Connection;
+use Symfony\Component\Intl\Languages;
+use Symfony\Component\Security\Core\Security;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
+use Twig\Environment;
 
 class MessageListener
 {
-    public function __construct(private AutoSuggester $autoSuggester, private ConfigLoader $configLoader, private ContaoFramework $framework)
+    public function __construct(private AutoSuggester $autoSuggester, private ConfigLoader $configLoader, private ContaoFramework $framework, private Connection $connection, private Locales $locales, private Security $security, private Environment $twig)
     {
+    }
+
+    #[AsCallback(table: 'tl_nc_message', target: 'list.sorting.child_record')]
+    public function onChildRecordCallback(array $row): string
+    {
+        if (null === ($message = $this->configLoader->loadMessage((int) $row['id']))) {
+            return '';
+        }
+
+        $gateway = $this->configLoader->loadGateway($message->getGateway());
+        $languageNames = Languages::getNames($this->security->getUser()?->language ?? null);
+
+        $query = $this->connection->createQueryBuilder()
+            ->select('id, language')
+            ->from('tl_nc_language')
+            ->where('pid = :pid')
+            ->setParameter('pid', $message->getId())
+        ;
+
+        $languagesFormatted = [];
+
+        foreach ($query->fetchAllAssociative() as $language) {
+            $languagesFormatted[] = [
+                'name' => $languageNames[$language['language']],
+            ];
+        }
+
+        return $this->twig->render('@Terminal42NotificationCenter/message.html.twig', [
+            'message' => $message,
+            'gateway' => $gateway,
+            'languages' => $languagesFormatted,
+        ]);
     }
 
     #[AsCallback(table: 'tl_nc_message', target: 'config.onload')]
