@@ -64,7 +64,9 @@ class MessageListener
             return;
         }
 
-        $GLOBALS['TL_DCA']['tl_nc_message']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_message']['palettes'][$gateway->getType()];
+        if (isset($GLOBALS['TL_DCA']['tl_nc_message']['palettes'][$gateway->getType()])) {
+            $GLOBALS['TL_DCA']['tl_nc_message']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_message']['palettes'][$gateway->getType()];
+        }
 
         if (
             null !== ($notification = $this->configLoader->loadNotification($message->getNotification()))
