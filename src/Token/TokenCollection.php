@@ -5,53 +5,61 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Token;
 
 use Ramsey\Collection\AbstractCollection;
-use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
 /**
- * @extends AbstractCollection<Token>
+ * @extends AbstractCollection<TokenInterface>
  */
 class TokenCollection extends AbstractCollection
 {
-    /**
-     * @return array<string, mixed>
-     */
-    public function asKeyValue(bool $noStringable = false): array
+    public static function fromSerialized(string $serialized): self
     {
-        $values = [];
+        $tokens = [];
+        $data = json_decode($serialized, true);
 
-        foreach ($this as $token) {
-            $values[$token->getName()] = $noStringable ? (string) $token->getValue() : $token->getValue();
+        if (!\is_array($data)) {
+            return new self();
         }
 
-        return $values;
+        foreach ($data as $class => $tokenData) {
+            if (!class_exists($class) || !is_a($class, TokenInterface::class, true)) {
+                continue;
+            }
+
+            $tokens[] = $class::fromSerialized($tokenData);
+        }
+
+        return new self($tokens);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function forSimpleTokenParser(): array
+    {
+        $data = [];
+
+        /** @var TokenInterface $token */
+        foreach ($this as $token) {
+            $data[$token->getName()] = $token->getParserValue();
+        }
+
+        return $data;
     }
 
     public function serialize(): string
     {
-        return json_encode($this->asKeyValue());
+        $data = [];
+
+        /** @var TokenInterface $token */
+        foreach ($this as $token) {
+            $data[\get_class($token)] = $token->serialize();
+        }
+
+        return json_encode($data);
     }
 
     public function getType(): string
     {
-        return Token::class;
-    }
-
-    /**
-     * @param array<string, mixed>            $rawTokens
-     * @param array<TokenDefinitionInterface> $tokenDefinitions
-     */
-    public static function fromRawAndDefinitions(array $rawTokens, array $tokenDefinitions): self
-    {
-        $collection = new self();
-
-        foreach ($rawTokens as $rawTokenName => $rawTokenValue) {
-            foreach ($tokenDefinitions as $definition) {
-                if ($definition->matchesTokenName($rawTokenName)) {
-                    $collection->add(Token::fromMixedValue($definition, $rawTokenName, $rawTokenValue));
-                }
-            }
-        }
-
-        return $collection;
+        return TokenInterface::class;
     }
 }

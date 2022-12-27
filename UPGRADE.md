@@ -18,7 +18,8 @@
   now has a second forward page setting. You can use this one in order to have a separate confirmation page.
 * Tokens will not be validated in the back end anymore. Basically because it's totally okay to write something
   like `##something-not-token-related##` in your message and you should be able to write this.
-
+* The `filenames` token introduced in 1.7 has been removed. It's a very specific use case which can be provided very easily
+  as a third party bundle now (not easily possible before and thus part of the core in 1.7).
 
 NOTE: Please, thoroughly test all your processes involving notifications after the upgrade. Make sure all the tokens
 you've used are still working!

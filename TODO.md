@@ -3,4 +3,6 @@
 * Remove `minimum-stability` in `composer.json`
 * Translate to German
 * Rework Autosuggester (current implementation is very...shaky...) and make it work in tinyMCE
-* What do we do with the `filenames` token added in v 1.7.0 which apparently is some kind of use case?
+* Adjust Contao minimum requirements to contain bugfixes for:
+  * https://github.com/contao/contao/pull/5603
+  * https://github.com/contao/contao/issues/5613

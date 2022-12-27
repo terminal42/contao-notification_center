@@ -5,27 +5,22 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Test\Token;
 
 use PHPUnit\Framework\TestCase;
-use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
-use Terminal42\NotificationCenterBundle\Token\Token;
+use Terminal42\NotificationCenterBundle\Token\ArrayToken;
+use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
 
-class TokenTest extends TestCase
+class ArrayTokenTest extends TestCase
 {
     /**
-     * @dataProvider fromMixedValueProvider
+     * @dataProvider arrayProvider
      */
-    public function testFromMixedValue(mixed $value, string $expectedValue): void
+    public function testFromMixedValue(array $value, string $expectedParserValue): void
     {
-        $token = Token::fromMixedValue(new WildcardToken('form_*', 'form'), 'form_foobar', $value);
-        $this->assertSame($expectedValue, (string) $token->getValue());
+        $token = new ArrayToken($value, 'form_foobar', TextToken::DEFINITION_NAME);
+        $this->assertSame($expectedParserValue, $token->getParserValue());
     }
 
-    public function fromMixedValueProvider(): \Generator
+    public function arrayProvider(): \Generator
     {
-        yield 'String token' => [
-            'foobar',
-            'foobar',
-        ];
-
         yield 'Simple array token' => [
             [
                 'red',

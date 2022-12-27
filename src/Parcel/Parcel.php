@@ -6,23 +6,31 @@ namespace Terminal42\NotificationCenterBundle\Parcel;
 
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
-use Terminal42\NotificationCenterBundle\Parcel\Stamp\UnserializableStampInterface;
 
 final class Parcel
 {
-    /**
-     * @var array<class-string,StampInterface>
-     */
-    private array $stamps = [];
+    private bool $sealed = false;
 
-    /**
-     * @param array<StampInterface> $stamps
-     */
-    public function __construct(private MessageConfig $messageConfig, array $stamps = [])
+    public function __construct(private MessageConfig $messageConfig, private StampCollection $stamps)
     {
-        foreach ($stamps as $stamp) {
-            $this->addStamp($stamp);
+    }
+
+    public function seal(): self
+    {
+        if ($this->isSealed()) {
+            return $this;
         }
+
+        $clone = clone $this;
+        $clone->sealed = true;
+        $clone->stamps = $this->stamps->seal();
+
+        return $clone;
+    }
+
+    public function isSealed(): bool
+    {
+        return $this->sealed;
     }
 
     public function getMessageConfig(): MessageConfig
@@ -32,7 +40,7 @@ final class Parcel
 
     public function hasStamp(string $class): bool
     {
-        return \array_key_exists($class, $this->stamps);
+        return $this->stamps->has($class);
     }
 
     /**
@@ -40,29 +48,12 @@ final class Parcel
      */
     public function hasStamps(array $classes): bool
     {
-        foreach ($classes as $class) {
-            if (!$this->hasStamp($class)) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->stamps->hasMultiple($classes);
     }
 
-    /**
-     * @return array<class-string<StampInterface>,StampInterface>
-     */
-    public function getStamps(): array
+    public function getStamps(): StampCollection
     {
         return $this->stamps;
-    }
-
-    /**
-     * @return array<class-string<StampInterface>>
-     */
-    public function getStampClasses(): array
-    {
-        return array_keys($this->stamps);
     }
 
     /**
@@ -74,41 +65,15 @@ final class Parcel
      */
     public function getStamp(string $className): StampInterface|null
     {
-        return $this->stamps[$className] ?? null;
+        return $this->stamps->get($className);
     }
 
     public function withStamp(StampInterface $stamp): self
     {
         $clone = clone $this;
-
-        $clone->addStamp($stamp);
-
-        return $clone;
-    }
-
-    public function withJustOneStamp(StampInterface $stamp): self
-    {
-        $clone = $this->withoutStamps();
-
-        $clone->addStamp($stamp);
-
-        return $clone;
-    }
-
-    public function withoutStamp(StampInterface $stamp): self
-    {
-        $clone = clone $this;
-
-        unset($clone->stamps[$stamp::class]);
-
-        return $clone;
-    }
-
-    public function withoutStamps(): self
-    {
-        $clone = clone $this;
-
-        $clone->stamps = [];
+        $clone->stamps = $this->stamps
+            ->with($stamp)
+        ;
 
         return $clone;
     }
@@ -117,12 +82,9 @@ final class Parcel
     {
         $data = [
             'messageConfig' => $this->messageConfig->serialize(),
-            'stamps' => [],
+            'stamps' => $this->stamps->serialize(),
+            'sealed' => $this->sealed,
         ];
-
-        foreach ($this->stamps as $stamp) {
-            $data['stamps'][$stamp::class] = $stamp->serialize();
-        }
 
         return json_encode($data);
     }
@@ -131,21 +93,13 @@ final class Parcel
     {
         $data = json_decode($serialized, true);
 
-        $parcel = new self(MessageConfig::fromSerialized($data['messageConfig']));
+        $parcel = new self(
+            MessageConfig::fromSerialized($data['messageConfig']),
+            StampCollection::fromSerialized($data['stamps']),
+        );
 
-        foreach ($data['stamps'] as $class => $stampData) {
-            if (is_a($class, UnserializableStampInterface::class, true)) {
-                $parcel->addStamp($class::fromSerialized($stampData));
-            }
-        }
+        $parcel->sealed = $data['sealed'];
 
         return $parcel;
-    }
-
-    private function addStamp(StampInterface $stamp): self
-    {
-        $this->stamps[$stamp::class] = $stamp;
-
-        return $this;
     }
 }

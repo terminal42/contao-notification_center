@@ -9,12 +9,14 @@ use Contao\PageModel;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Config\NotificationConfig;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
 use Terminal42\NotificationCenterBundle\Event\ReceiptEvent;
 use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeException;
+use Terminal42\NotificationCenterBundle\Exception\InvalidRawTokenFormatException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
@@ -24,12 +26,15 @@ use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\ParcelCollection;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\LocaleStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\NotificationConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
+use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 use Terminal42\NotificationCenterBundle\Receipt\ReceiptCollection;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
+use Terminal42\NotificationCenterBundle\Token\TokenFactoryInterface;
 
 class NotificationCenter
 {
@@ -40,7 +45,14 @@ class NotificationCenter
         private ConfigLoader $configLoader,
         private EventDispatcherInterface $eventDispatcher,
         private RequestStack $requestStack,
+        private TokenFactoryInterface $tokenFactory,
+        private BulkyItemStorage $bulkyGoodsStorage,
     ) {
+    }
+
+    public function getBulkyGoodsStorage(): BulkyItemStorage
+    {
+        return $this->bulkyGoodsStorage;
     }
 
     /**
@@ -96,15 +108,30 @@ class NotificationCenter
 
         $tokenDefinitions = $this->getTokenDefinitionsForNotificationType($notificationTypeName);
 
-        return TokenCollection::fromRawAndDefinitions($rawTokens, $tokenDefinitions);
+        $collection = new TokenCollection();
+
+        foreach ($rawTokens as $rawTokenName => $rawTokenValue) {
+            foreach ($tokenDefinitions as $definition) {
+                if ($definition->matchesTokenName($rawTokenName)) {
+                    try {
+                        $token = $this->tokenFactory->createFromRaw($rawTokenValue, $rawTokenName, $definition->getDefinitionName());
+                        $collection->add($token);
+                    } catch (InvalidRawTokenFormatException $exception) {
+                        // noop
+                    }
+                }
+            }
+        }
+
+        return $collection;
     }
 
-    public function createParcelsForNotification(int $id, TokenCollection $tokenCollection, string $locale = null): ParcelCollection
+    public function createParcelsForNotification(int $id, StampCollection $stamps): ParcelCollection
     {
         $parcels = new ParcelCollection();
 
         foreach ($this->configLoader->loadMessagesForNotification($id) as $messageConfig) {
-            if (null !== ($parcel = $this->createParcelForMessage($messageConfig->getId(), $tokenCollection, $locale))) {
+            if (null !== ($parcel = $this->createParcelForMessage($messageConfig->getId(), $stamps))) {
                 $parcels->add($parcel);
             }
         }
@@ -113,19 +140,15 @@ class NotificationCenter
     }
 
     /**
-     * @param string|null $locale The locale for the message. Passing none will try to automatically take
-     *                            the one of the current request.
-     *
      * @throws CouldNotCreateParcelException in case the message ID does not exist
      */
-    public function createParcelForMessage(int $id, TokenCollection $tokenCollection, string $locale = null): Parcel|null
+    public function createParcelForMessage(int $id, StampCollection $stamps): Parcel|null
     {
         if (null === ($messageConfig = $this->configLoader->loadMessage($id))) {
             throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
         }
 
-        // Create a parcel with the token collection stamp
-        $parcel = new Parcel($messageConfig, [new TokenCollectionStamp($tokenCollection)]);
+        $parcel = new Parcel($messageConfig, $stamps);
 
         // Add additional stamps
         if (null !== ($notificationConfig = $this->configLoader->loadNotification($messageConfig->getNotification()))) {
@@ -136,21 +159,16 @@ class NotificationCenter
             $parcel = $parcel->withStamp(new GatewayConfigStamp($gatewayConfig));
         }
 
-        if (
-            null === $locale
-            && ($request = $this->requestStack->getCurrentRequest())
-            && ($pageModel = $request->attributes->get('pageModel'))
-            && $pageModel instanceof PageModel
-        ) {
-            // We do not want to use $request->getLocale() here because this is never empty. If we're not on a Contao
-            // page, $request->getLocale() would return the configured default locale which in Symfony always falls back
-            // to English. But we want $locale to remain null in case we really have no Contao page language so that our
-            // own fallback mechanism can kick in (loading the language marked as fallback by the user).
-            $pageModel->loadDetails();
-            $locale = $pageModel->language ? LocaleUtil::formatAsLocale($pageModel->language) : null;
-        }
+        /** @var LocaleStamp|null $localeStamp */
+        $localeStamp = $parcel->getStamp(LocaleStamp::class);
+        $locale = $localeStamp?->locale;
 
-        if (null !== ($languageConfig = $this->configLoader->loadLanguageForMessageAndLocale($messageConfig->getId(), $locale))) {
+        if (
+            null !== ($languageConfig = $this->configLoader->loadLanguageForMessageAndLocale(
+                $messageConfig->getId(),
+                $locale
+            ))
+        ) {
             $parcel = $parcel->withStamp(new LanguageConfigStamp($languageConfig));
         }
 
@@ -196,11 +214,14 @@ class NotificationCenter
                 CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel()
             );
         } else {
-            $parcel = $gateway->finalizeParcel($parcel);
+            $parcel = $gateway->sealParcel($parcel);
+
+            // Gateways are expected to seal but let's be very sure it is
+            $parcel = $parcel->seal();
 
             // We force serialization here in order to prevent usage errors. Developers
             // are expected to build parcels and stamps with proper serializable data in
-            // GatewayInterface::finalizeParcel().
+            // GatewayInterface::sealParcel().
             $parcel = Parcel::fromSerialized($parcel->serialize());
 
             $receipt = $gateway->sendParcel($parcel);
@@ -223,6 +244,24 @@ class NotificationCenter
      */
     public function sendNotification(int $id, TokenCollection|array $tokens, string $locale = null): ReceiptCollection
     {
+        return $this->sendNotificationWithStamps($id, $this->createTokenAndLocaleStampsForNotification($id, $tokens, $locale));
+    }
+
+    public function sendNotificationWithStamps(int $id, StampCollection $stamps): ReceiptCollection
+    {
+        $collection = new ReceiptCollection();
+
+        foreach ($this->createParcelsForNotification($id, $stamps) as $parcel) {
+            $collection->add($this->sendParcel($parcel));
+        }
+
+        return $collection;
+    }
+
+    public function createTokenAndLocaleStampsForNotification(int $id, TokenCollection|array $tokens, string $locale = null): StampCollection
+    {
+        $stamps = new StampCollection();
+
         if (!$tokens instanceof TokenCollection) {
             $notificationConfig = $this->configLoader->loadNotification($id);
 
@@ -233,12 +272,27 @@ class NotificationCenter
             $tokens = $this->createTokenCollectionFromArray($tokens, $notificationConfig->getType());
         }
 
-        $collection = new ReceiptCollection();
+        $stamps = $stamps->with(new TokenCollectionStamp($tokens));
 
-        foreach ($this->createParcelsForNotification($id, $tokens, $locale) as $parcel) {
-            $collection->add($this->sendParcel($parcel));
+        if (
+            null === $locale
+            && ($request = $this->requestStack->getCurrentRequest())
+            && ($pageModel = $request->attributes->get('pageModel'))
+            && $pageModel instanceof PageModel
+        ) {
+            // We do not want to use $request->getLocale() here because this is never empty. If we're not on a Contao
+            // page, $request->getLocale() would return the configured default locale which in Symfony always falls back
+            // to English. But we want $locale to remain null in case we really have no Contao page language so that our
+            // own fallback mechanism can kick in (loading the language marked as fallback by the user).
+            $pageModel->loadDetails();
+
+            if ($pageModel->language) {
+                $stamps = $stamps
+                    ->with(new LocaleStamp(LocaleUtil::formatAsLocale($pageModel->language)))
+                ;
+            }
         }
 
-        return $collection;
+        return $stamps;
     }
 }

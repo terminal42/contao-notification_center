@@ -11,7 +11,7 @@ use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
-use Terminal42\NotificationCenterBundle\Token\Token;
+use Terminal42\NotificationCenterBundle\Token\StringToken;
 
 class AdminEmailTokenSubscriber implements EventSubscriberInterface
 {
@@ -51,7 +51,7 @@ class AdminEmailTokenSubscriber implements EventSubscriberInterface
         $pageModel->loadDetails();
 
         $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
-            new Token($this->getTokenDefinition(), 'admin_email', $pageModel->adminEmail)
+            new StringToken($pageModel->adminEmail, 'admin_email', $this->getTokenDefinition()->getDefinitionName())
         );
     }
 

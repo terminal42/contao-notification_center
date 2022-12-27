@@ -51,7 +51,7 @@ class DisableDeliverySubscriber implements EventSubscriberInterface
             '' !== $messageConfig->getCondition() &&
             null !== ($tokenCollectionStamp = $event->getParcel()->getStamp(TokenCollectionStamp::class))
         ) {
-            $tokens = $tokenCollectionStamp->tokenCollection->asKeyValue();
+            $tokens = $tokenCollectionStamp->tokenCollection->forSimpleTokenParser();
 
             // We first replace tokens on the condition. So that e.g. "##form_email"## === 'foobar@foobar.com'" becomes
             // "form_email === 'foobar@foobar.com'".

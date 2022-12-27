@@ -13,7 +13,7 @@ interface GatewayInterface
     public function getName(): string;
 
     /**
-     * In this method, Gateways are expected to finalize the
+     * In this method, Gateways are expected to seal the
      * parcel in such a way, that there is no dynamic data anymore
      * when actually sending (@see sendParcel) the parcel.
      * At this stage you should:.
@@ -30,7 +30,7 @@ interface GatewayInterface
      *
      * @throws CouldNotFinalizeParcelException If the parcel cannot be finalized due to e.g. wrong/missing stamps, content etc.
      */
-    public function finalizeParcel(Parcel $parcel): Parcel;
+    public function sealParcel(Parcel $parcel): Parcel;
 
     /**
      * In this method, Gateways receive the finalized

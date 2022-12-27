@@ -70,7 +70,7 @@ foreach ($receipts as $receipt) {
     }
     
     $receipt->getParcel()->getMessageConfig(); // Access the contents of the parcel
-    $receipt->getParcel()->getStamps(); // Access the meta data of the parcel, aka the stamps
+    $receipt->getParcel()->getStamps(); // Access the metadata of the parcel, aka the stamps
 }
 ```
 
@@ -115,7 +115,7 @@ class FormGeneratorNotificationType implements NotificationTypeInterface
 }
 ```
 
-As you can see, it has a name (`core_form`) which we put in a constant so it's easier to reuse when sending (instead
+As you can see, it has a name (`core_form`) which we put in a constant, so it's easier to reuse when sending (instead
 of typing `contao_form` you just use `FormGeneratorNotificationType::NAME`). Also, we use the `TokenDefinitionFactoryInterface` to
 create our token definitions.
 
@@ -157,7 +157,7 @@ In the DCA, you can then configure which token definitions are allowed:
 
 ## Gateways
 
-Gateways are responsible for actually finalizing and then sending a `Parcel` and issuing a `Receipt` for it.
+Gateways are responsible for actually sealing and then sending a `Parcel` and issuing a `Receipt` for it.
 The Notification Center ships with a `MailerGateway` which sends a `Parcel` using the Symfony Mailer.
 Hence, the basic logic looks like this:
 
@@ -176,14 +176,14 @@ class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\Gate
         return self::NAME;
     }
     
-    public function finalizeParcel(Parcel $parcel): Parcel
+    public function sealParcel(Parcel $parcel): Parcel
     {
-        return $parcel->withJustOneStamp(new EmailStamp($this->createEmail($parcel)));
+        return $parcel->withStamp($this->createEmailStamp($parcel));
     }
     
     public function sendParcel(Parcel $parcel): Receipt
     {
-        $email = $parcel->getStamp(EmailStamp::class)->email;
+        $email = $this->createEmail($parcel->getStamp(EmailStamp::class));
 
         try {
             $this->mailer->send($email);
@@ -201,25 +201,29 @@ class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\Gate
         }
     }
     
-    private function createEmail(Parcel $parcel): Symfony\Component\Mime\Email
+    private function createEmailStamp(Parcel $parcel): \Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp
     {
-        // Create a Symfony Email instance based on the contents, stamps etc.
+        // Create a stamp that contains all we need to actually send the e-mail
+    }
+    
+    private function createEmail(EmailStamp $emailStamp): Symfony\Component\Mime\Email
+    {
+        // Create a Symfony Email instance based on our immutable EmailStamp
     }
 }
 ```
 
 Now, let's talk about **the single most important** design decision when creating your own gateway which you
 absolutely have to keep in mind: Your gateway **must not** rely on dynamic information in the `sendParcel()`
-method. Let's take the post office analogy: When you prepare your parcel, you can stick as many stamps and labels to
-it. You can put placeholder stamps, unpack it, change its content, move it around. All of which is represented in 
-the Notification Center by the `CreateParcelEvent`. However, once you go to the counter and you actually want to
-send the parcel, you have to create one final version of your package. You cannot send a parcel with `##receiver_name##`
-written on it. The parcel must be finalized. This is what you do in your `finalizeParcel()` method. Basically, this
+method. It **must be immutable**. Let's take the post office analogy: When you prepare your parcel, you can stick as many stamps and labels to
+it. You can put placeholder stamps, unpack it, change its content, hand it to your friend to add more content or their own
+labels etc. All of which is represented in the Notification Center by the `CreateParcelEvent`. However, 
+once you go to the counter and you actually want to send the parcel, you have to create one final version it. You cannot send it with `##receiver_name##` written on it and it cannot be sent when still open. 
+Thus, the parcel must be sealed. This is what you do in your `sealParcel()` method. Basically, this
 is the one that does the heavy work. In most cases, you will take all the stamps, process them the way you want and
-return a final parcel with just one stamp that `sendParcel()` will then use. This is exactly what happens in the
-example above. 
+add another **immutable** stamp that `sendParcel()` will then use. This is exactly what happens in the example above. 
 
-The best way to think about this architectural design is to imagine that `finalizeParcel()` does not happen on the
+The best way to think about this architectural design is to imagine that `sealParcel()` does not happen on the
 same server as `sendParcel()`. This will clarify that everything `sendParcel()` requires, must be part of your
 `Parcel` and its stamps.
 
@@ -227,13 +231,13 @@ Typical design issues may include:
 
 * Accessing the current request via the `RequestStack` in the `sendParcel()` method. That is not allowed! If you
   need something from the current request, it's best to create a stamp for that. Use the `CreateParcelEvent` for it.
-* Replacing insert tags in the `sendParcel()` method. This must happen in the `finalizeParcel()` method. An insert tag
+* Replacing insert tags in the `sendParcel()` method. This must happen in the `sealParcel()` method. An insert tag
   could be e.g. `{{env::request}}` which contains the URL of the current page. This might not exist during `sendParcel()`
-  because it happens later/on a different server etc. Make sure you replace that information when finalizing the parcel.
+  because it happens later/on a different server etc. Make sure you replace that information when sealing the parcel.
 
 You can also extend `AbstractGateway` which provides helpers if your gateway e.g. requires certain stamps
 to be present on your `Parcel`. E.g. the `MailerGateay` requires a `LanguageConfigStamp` to be present during the
-`finalizeParcel()` stage, because it expects language specific information. And it expects an `EmailStamp` during
+`sealParcel()` stage, because it expects language specific information. And it expects an `EmailStamp` during
 the `sendParcel()` stage. However, the `TokenCollectionStamp` is optional - it's also perfectly able
 to send a `Parcel` without any token replacements.
 
@@ -246,6 +250,59 @@ In order to make your new gateway known to the Notification Center, you have to 
 service and tag it using the `notification_center.gateway` tag. If you use the [autoconfiguration
 feature of the Symfony Container][DI_Autoconfigure], you don't need to tag the service. Implementing the
 `GatewayInterface` will be enough.
+
+## Bulky items
+
+To stick to our post office analogy: Sometimes parcels are really heavy or bulky and they cannot be handed
+over the counter. So what you do is you hand over your bulky item at a separate place that has more space for
+big items and trucks to maneuver. You may deliver your item there and receive a voucher for it. Then, you take
+that voucher and take that to the post office counter to conclude the transaction.
+
+Bulky items in web development might be things like user uploads, file attachments etc. We don't want to log the
+contents of those files anywhere so they must not be part of our `Parcel` instance but instead we just pass along
+"vouchers". Vouchers are nothing else than a simple combination of today's date and a UUID for later reference.
+
+Let's look at how the Core uses this to pass on file uploads from the form generator to e.g. our mailer gateway:
+
+```php
+<?php
+
+foreach ($files as $k => $file) {
+    $voucher = $this->notificationCenter->getBulkyGoodsStorage()->store(
+        FileItem::fromPath($file['tmp_name'], $file['name'], $file['type'], $file['size'])
+    );
+
+    $bulkyItemVouchers[] = $voucher;
+}
+```
+
+As you can see. All it's doing is asking the Notification Center for the bulky goods storage and storing a `FileItem` in
+there. It can be anything implementing the `BulkyItemInterface`. The Notification Center will take care of actually
+storing the item and arbitrary metadata. It also takes care of cleaning them up. As a developer, that's all you need to do.
+We then add a stamp to the parcel to inform the gateways about the fact that this parcel has bulky items to it:
+
+```php
+<?php
+
+$stamps = $stamps->with(new BulkyItemsStamp($bulkyItemVouchers));
+```
+
+Done. A gateway can now use those vouchers to actually ask for the bulky items when sending them. This could
+look for example like this:
+
+```php
+<?php
+
+$item = $this->getNotificationCenter()->getBulkyGoodsStorage()->retrieve($voucher);
+
+if ($item instanceof FileItem) {
+    $email->attach(
+        $item->getContents(),
+        $item->getName(),
+        $item->getMimeType()
+    );
+}
+```
 
 ## Events
 

@@ -16,7 +16,9 @@ use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\Lang
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\MessageListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\ModuleListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\NotificationListener;
+use Terminal42\NotificationCenterBundle\EventListener\DbafsMetadataSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\DoctrineSchemaListener;
 use Terminal42\NotificationCenterBundle\EventListener\NotificationTypeForModuleConfigSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
 use Terminal42\NotificationCenterBundle\EventListener\RegistrationListener;
@@ -124,4 +126,10 @@ return static function (ContainerConfigurator $container): void {
             service('twig'),
         ])
     ;
+
+    $services->set(DoctrineSchemaListener::class)
+        ->tag('doctrine.event_listener', ['event' => 'postGenerateSchema'])
+    ;
+
+    $services->set(DbafsMetadataSubscriber::class);
 };

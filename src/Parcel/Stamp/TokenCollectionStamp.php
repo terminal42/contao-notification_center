@@ -16,4 +16,9 @@ class TokenCollectionStamp implements StampInterface
     {
         return $this->tokenCollection->serialize();
     }
+
+    public static function fromSerialized(string $serialized): self
+    {
+        return new self(TokenCollection::fromSerialized($serialized));
+    }
 }

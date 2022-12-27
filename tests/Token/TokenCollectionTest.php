@@ -5,38 +5,31 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Test\Token;
 
 use PHPUnit\Framework\TestCase;
-use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
+use Terminal42\NotificationCenterBundle\Token\ArrayToken;
+use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
+use Terminal42\NotificationCenterBundle\Token\StringToken;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 class TokenCollectionTest extends TestCase
 {
-    /**
-     * @param array<string, mixed>  $input
-     * @param array<string, string> $expectedRawKeyValue
-     *
-     * @dataProvider fromRawProvider
-     */
-    public function testFromRaw(array $input, array $expectedRawKeyValue): void
+    public function testCollectionHandling(): void
     {
-        $tokenCollection = TokenCollection::fromRawAndDefinitions($input, [new WildcardToken('form_*', 'form')]);
+        $tokenCollection = new TokenCollection();
+        $tokenCollection->add(new StringToken('blue', 'form_color', TextToken::DEFINITION_NAME));
+        $tokenCollection->add(new ArrayToken(['blue', 'orange'], 'form_other_color', TextToken::DEFINITION_NAME));
 
-        $this->assertSame($expectedRawKeyValue, $tokenCollection->asKeyValue(true));
-    }
+        $this->assertSame([
+            'form_color' => 'blue',
+            'form_other_color' => 'blue, orange',
+        ], $tokenCollection->forSimpleTokenParser());
 
-    public function fromRawProvider(): \Generator
-    {
-        yield 'Regular nested arrays' => [
-            [
-                'form_firstname' => 'First name',
-                'form_color' => [
-                    'Red',
-                    'Green',
-                ],
-            ],
-            [
-                'form_firstname' => 'First name',
-                'form_color' => 'Red, Green',
-            ],
-        ];
+        // Test if serialization and unserialization works
+        $serialized = $tokenCollection->serialize();
+        $tokenCollection = TokenCollection::fromSerialized($serialized);
+
+        $this->assertSame([
+            'form_color' => 'blue',
+            'form_other_color' => 'blue, orange',
+        ], $tokenCollection->forSimpleTokenParser());
     }
 }

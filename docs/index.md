@@ -8,8 +8,9 @@ which developers provide via their extensions.
 ## Documentation
 
 1. [Installation](01-installation.md)
-2. [Users](02-users.md)
-3. [Developers](03-developers.md)
+2. [Configuration](02-configuration.md)
+3. [Users](03-users.md)
+4. [Developers](04-developers.md)
 
 
 

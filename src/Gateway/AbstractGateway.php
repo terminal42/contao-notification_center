@@ -9,13 +9,16 @@ use Contao\CoreBundle\String\SimpleTokenParser;
 use Psr\Container\ContainerInterface;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
+use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 abstract class AbstractGateway implements GatewayInterface
 {
+    public const SERVICE_NAME_NOTIFICATION_CENTER = 'notification_center';
     public const SERVICE_NAME_SIMPLE_TOKEN_PARSER = 'simple_token_parser';
     public const SERVICE_NAME_INSERT_TAG_PARSER = 'insert_tag_parser';
 
@@ -28,13 +31,13 @@ abstract class AbstractGateway implements GatewayInterface
         return $this;
     }
 
-    public function finalizeParcel(Parcel $parcel): Parcel
+    public function sealParcel(Parcel $parcel): Parcel
     {
-        if (!$parcel->hasStamps($this->getRequiredStampsForFinalization())) {
-            throw CouldNotFinalizeParcelException::becauseOfInsufficientStamps($parcel->getStampClasses(), $this->getRequiredStampsForFinalization());
+        if (!$parcel->hasStamps($this->getRequiredStampsForSealing())) {
+            throw CouldNotFinalizeParcelException::becauseOfInsufficientStamps($parcel->getStamps()->getClasses(), $this->getRequiredStampsForSealing());
         }
 
-        return $this->doFinalizeParcel($parcel);
+        return $this->doSealParcel($parcel);
     }
 
     public function sendParcel(Parcel $parcel): Receipt
@@ -43,7 +46,7 @@ abstract class AbstractGateway implements GatewayInterface
             return Receipt::createForUnsuccessfulDelivery(
                 $parcel,
                 CouldNotDeliverParcelException::becauseOfInsufficientStamps(
-                    $parcel->getStampClasses(),
+                    $parcel->getStamps()->getClasses(),
                     $this->getRequiredStampsForSending()
                 )
             );
@@ -55,7 +58,7 @@ abstract class AbstractGateway implements GatewayInterface
     /**
      * @return array<class-string<StampInterface>>
      */
-    protected function getRequiredStampsForFinalization(): array
+    protected function getRequiredStampsForSealing(): array
     {
         return [];
     }
@@ -68,7 +71,7 @@ abstract class AbstractGateway implements GatewayInterface
         return [];
     }
 
-    abstract protected function doFinalizeParcel(Parcel $parcel): Parcel;
+    abstract protected function doSealParcel(Parcel $parcel): Parcel;
 
     abstract protected function doSendParcel(Parcel $parcel): Receipt;
 
@@ -78,32 +81,32 @@ abstract class AbstractGateway implements GatewayInterface
             return $value;
         }
 
-        $simpleTokenParser = $this->getSimpleTokenParser();
-
-        if (null === $simpleTokenParser) {
-            return $value;
-        }
-
-        return $simpleTokenParser->parse(
+        return $this->getSimpleTokenParser()?->parse(
             $value,
-            $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->asKeyValue()
+            $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->forSimpleTokenParser()
         );
     }
 
     protected function replaceInsertTags(string $value): string
     {
-        $insertTagParser = $this->getInsertTagParser();
-
-        if (null === $insertTagParser) {
-            return $value;
-        }
-
-        return $insertTagParser->replaceInline($value);
+        return $this->getInsertTagParser()?->replaceInline($value);
     }
 
     protected function replaceTokensAndInsertTags(Parcel $parcel, string $value): string
     {
         return $this->replaceInsertTags($this->replaceTokens($parcel, $value));
+    }
+
+    protected function isBulkyItemVoucher(Parcel $parcel, string $voucher): bool
+    {
+        if (!$parcel->hasStamp(BulkyItemsStamp::class)) {
+            return false;
+        }
+
+        /** @var BulkyItemsStamp $bulkyItemsStamp */
+        $bulkyItemsStamp = $parcel->getStamp(BulkyItemsStamp::class);
+
+        return $bulkyItemsStamp->has($voucher);
     }
 
     protected function getSimpleTokenParser(): SimpleTokenParser|null
@@ -126,5 +129,16 @@ abstract class AbstractGateway implements GatewayInterface
         $insertTagParser = $this->container->get(self::SERVICE_NAME_INSERT_TAG_PARSER);
 
         return !$insertTagParser instanceof InsertTagParser ? null : $insertTagParser;
+    }
+
+    protected function getNotificationCenter(): NotificationCenter|null
+    {
+        if (null === $this->container || !$this->container->has(self::SERVICE_NAME_NOTIFICATION_CENTER)) {
+            return null;
+        }
+
+        $notificationCenter = $this->container->get(self::SERVICE_NAME_NOTIFICATION_CENTER);
+
+        return !$notificationCenter instanceof NotificationCenter ? null : $notificationCenter;
     }
 }

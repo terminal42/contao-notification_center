@@ -6,7 +6,9 @@ namespace Terminal42\NotificationCenterBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Form;
+use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
 
 #[AsHook('processFormData')]
 class ProcessFormDataListener
@@ -30,6 +32,7 @@ class ProcessFormDataListener
         $tokens = [];
         $rawData = [];
         $rawDataFilled = [];
+        $bulkyItemVouchers = [];
 
         foreach ($submittedData as $k => $v) {
             $label = $labels[$k] ?? ucfirst($k);
@@ -51,9 +54,23 @@ class ProcessFormDataListener
         $tokens['raw_data_filled'] = implode("\n", $rawDataFilled);
 
         foreach ($files as $k => $file) {
-            $tokens['form_'.$k] = $file;
+            $voucher = $this->notificationCenter->getBulkyGoodsStorage()->store(
+                FileItem::fromPath($file['tmp_name'], $file['name'], $file['type'], $file['size'])
+            );
+
+            $tokens['form_'.$k] = $voucher;
+            $bulkyItemVouchers[] = $voucher;
         }
 
-        $this->notificationCenter->sendNotification((int) $formData['nc_notification'], $tokens);
+        $stamps = $this->notificationCenter->createTokenAndLocaleStampsForNotification(
+            (int) $formData['nc_notification'],
+            $tokens
+        );
+
+        if (0 !== \count($bulkyItemVouchers)) {
+            $stamps = $stamps->with(new BulkyItemsStamp($bulkyItemVouchers));
+        }
+
+        $this->notificationCenter->sendNotificationWithStamps((int) $formData['nc_notification'], $stamps);
     }
 }

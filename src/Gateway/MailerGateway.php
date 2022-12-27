@@ -15,6 +15,7 @@ use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Uid\Uuid;
+use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 use Terminal42\NotificationCenterBundle\Config\LanguageConfig;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
@@ -22,7 +23,6 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
-use Terminal42\NotificationCenterBundle\Util\Stringable\FileUpload;
 
 class MailerGateway extends AbstractGateway
 {
@@ -39,7 +39,7 @@ class MailerGateway extends AbstractGateway
 
     public function doSendParcel(Parcel $parcel): Receipt
     {
-        $email = $parcel->getStamp(EmailStamp::class)->email;
+        $email = $this->createEmail($parcel);
 
         try {
             $this->mailer->send($email);
@@ -57,12 +57,15 @@ class MailerGateway extends AbstractGateway
         }
     }
 
-    protected function doFinalizeParcel(Parcel $parcel): Parcel
+    protected function doSealParcel(Parcel $parcel): Parcel
     {
-        return $parcel->withJustOneStamp(new EmailStamp($this->createEmail($parcel)));
+        return $parcel
+            ->withStamp($this->createEmailStamp($parcel))
+            ->seal()
+        ;
     }
 
-    protected function getRequiredStampsForFinalization(): array
+    protected function getRequiredStampsForSealing(): array
     {
         return [
             LanguageConfigStamp::class,
@@ -76,26 +79,25 @@ class MailerGateway extends AbstractGateway
         ];
     }
 
-    private function createEmail(Parcel $parcel): Email
+    private function createEmailStamp(Parcel $parcel): EmailStamp
     {
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
 
-        $email = (new Email())
-            ->from($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_address')))
-            ->to($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('recipients')))
-            ->subject($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')))
-        ;
+        $stamp = new EmailStamp();
+        $stamp = $stamp->withFrom($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_address')));
+        $stamp = $stamp->withTo($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('recipients')));
+        $stamp = $stamp->withSubject($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')));
 
         if ('' !== ($cc = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_recipient_cc')))) {
-            $email->cc($cc);
+            $stamp = $stamp->withCc($cc);
         }
 
         if ('' !== ($bcc = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_recipient_bcc')))) {
-            $email->bcc($bcc);
+            $stamp = $stamp->withBcc($bcc);
         }
 
         if ('' !== ($replyTo = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_replyTo')))) {
-            $email->replyTo($replyTo);
+            $stamp = $stamp->withReplyTo($replyTo);
         }
 
         $text = '';
@@ -115,11 +117,24 @@ class MailerGateway extends AbstractGateway
                 break;
         }
 
-        $email->text($text);
+        $stamp = $stamp->withText($text);
 
-        if (null !== $html) {
-            $email->html($html);
+        if ($html) {
+            $stamp = $stamp->withHtml($html);
         }
+
+        $stamp = $this->addAttachmentsFromBackend($languageConfig, $stamp);
+
+        return $this->addAttachmentsFromTokens($languageConfig, $parcel, $stamp);
+    }
+
+    private function createEmail(Parcel $parcel): Email
+    {
+        /** @var EmailStamp $emailStamp */
+        $emailStamp = $parcel->getStamp(EmailStamp::class);
+
+        $email = new Email();
+        $emailStamp->applyToEmail($email);
 
         // Adjust the priority if configured to do so
         if (($priority = $parcel->getMessageConfig()->getInt('email_priority')) > 0) {
@@ -134,8 +149,17 @@ class MailerGateway extends AbstractGateway
         }
 
         // Attachments
-        $this->addAttachmentsFromBackend($languageConfig, $email);
-        $this->addAttachmentsFromTokens($languageConfig, $parcel, $email);
+        foreach ($emailStamp->getAttachmentVouchers() as $voucher) {
+            $item = $this->getNotificationCenter()->getBulkyGoodsStorage()->retrieve($voucher);
+
+            if ($item instanceof FileItem) {
+                $email->attach(
+                    $item->getContents(),
+                    $item->getName(),
+                    $item->getMimeType()
+                );
+            }
+        }
 
         return $email;
     }
@@ -155,35 +179,27 @@ class MailerGateway extends AbstractGateway
         return $template->parse();
     }
 
-    private function addAttachmentsFromTokens(LanguageConfig $languageConfig, Parcel $parcel, Email $email): void
+    private function addAttachmentsFromTokens(LanguageConfig $languageConfig, Parcel $parcel, EmailStamp $emailStamp): EmailStamp
     {
         $tokens = StringUtil::trimsplit(',', $languageConfig->getString('attachment_tokens'));
 
         foreach ($tokens as $token) {
-            $replaced = $this->replaceTokens($parcel, $token);
+            $voucher = $this->replaceTokens($parcel, $token);
 
-            try {
-                $fileUpload = FileUpload::fromString($replaced);
-            } catch (\Exception) {
-                continue;
+            if ($this->isBulkyItemVoucher($parcel, $voucher)) {
+                $emailStamp = $emailStamp->withAttachmentVoucher($voucher);
             }
-
-            if (!file_exists($fileUpload->getTmpName())) {
-                continue;
-            }
-
-            // Do not use attachFromPath() here. Finalizing the parcel requires all the data to be part
-            // of the stamps which means we cannot store a path only, as that path might be gone in the future.
-            $email->attach(file_get_contents($fileUpload->getTmpName()), $fileUpload->getName(), $fileUpload->getType());
         }
+
+        return $emailStamp;
     }
 
-    private function addAttachmentsFromBackend(LanguageConfig $languageConfig, Email $email): void
+    private function addAttachmentsFromBackend(LanguageConfig $languageConfig, EmailStamp $emailStamp): EmailStamp
     {
         $attachments = StringUtil::deserialize($languageConfig->getString('attachments'), true);
 
         if (0 === \count($attachments)) {
-            return;
+            return $emailStamp;
         }
 
         // As soon as we're compatible with Contao >5.0 only, we can use the FilesystemUtil for this.
@@ -210,7 +226,20 @@ class MailerGateway extends AbstractGateway
                 continue;
             }
 
-            $email->attach($this->filesystem->readStream($uuidObject), $item->getName(), $item->getMimeType());
+            $voucher = $this->getNotificationCenter()?->getBulkyGoodsStorage()->store(
+                new FileItem(
+                    $this->filesystem->readStream($uuidObject),
+                    $item->getName(),
+                    $item->getMimeType(),
+                    $item->getFileSize()
+                )
+            );
+
+            if (null !== $voucher) {
+                $emailStamp = $emailStamp->withAttachmentVoucher($voucher);
+            }
         }
+
+        return $emailStamp;
     }
 }
