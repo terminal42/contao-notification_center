@@ -36,7 +36,7 @@ class AutoSuggester
             );
 
             $GLOBALS['TL_MOOTOOLS'][] = sprintf(
-                "<script>(function(window){new window.ContaoNotificationCenterAutoSuggester('%s', %s)})(window);</script>",
+                "<script>document.addEventListener('DOMContentLoaded',()=>{new initContaoNotificationCenterAutoSuggester('%s', %s)});</script>",
                 'ctrl_'.$field,
                 $this->getTokenConfigForField($notificationType, $fieldConfig['nc_token_types'])
             );

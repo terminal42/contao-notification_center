@@ -2,10 +2,10 @@
   "entrypoints": {
     "autosuggester": {
       "css": [
-        "/bundles/terminal42notificationcenter/autosuggester.f7daeb5c.css"
+        "/bundles/terminal42notificationcenter/autosuggester.4d8c0dd8.css"
       ],
       "js": [
-        "/bundles/terminal42notificationcenter/autosuggester.64a85896.js"
+        "/bundles/terminal42notificationcenter/autosuggester.e24c0e3a.js"
       ]
     },
     "backend": {
