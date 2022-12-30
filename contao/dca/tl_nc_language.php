@@ -132,7 +132,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
         'email_sender_address' => [
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'eval' => ['maxlength' => 255, 'mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
             'nc_token_types' => [
                 WildcardToken::DEFINITION_NAME,
                 EmailToken::DEFINITION_NAME,
