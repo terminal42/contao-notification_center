@@ -11,6 +11,7 @@ class JsonTest extends TestCase
 {
     private const ARRAY_WITH_BINARY_DATA = [
         'foo' => 'bar',
+        'other' => 42,
         'binary' => "b\xE4r",
         'nested' => [
             'foo' => 'bar',
@@ -21,7 +22,7 @@ class JsonTest extends TestCase
             ],
         ],
     ];
-    private const ENCODED = '{"foo":"bar","binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy"}}}';
+    private const ENCODED = '{"foo":"bar","other":42,"binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy"}}}';
 
     public function testEncodesNonUtf8CharactersCorrectly(): void
     {
