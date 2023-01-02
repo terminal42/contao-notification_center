@@ -14,6 +14,11 @@ interface BulkyItemInterface
     public function getContents();
 
     /**
+     * Return a name for the item.
+     */
+    public function getName(): string;
+
+    /**
      * Optional meta data to an item. Must be serializable.
      */
     public function getMeta(): array;

@@ -40,6 +40,11 @@ class BulkyItemsStamp implements StampInterface
         return new self(json_decode($serialized, true));
     }
 
+    public function all(): array
+    {
+        return array_keys($this->vouchers);
+    }
+
     private function add(string $voucher): void
     {
         if (!BulkyItemStorage::validateVoucherFormat($voucher)) {
