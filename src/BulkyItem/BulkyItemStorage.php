@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\BulkyItem;
 
+use Contao\CoreBundle\Filesystem\VirtualFilesystemException;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use Symfony\Component\Uid\Uuid;
 
@@ -35,12 +36,20 @@ class BulkyItemStorage
 
     public function has(string $voucher): bool
     {
-        return $this->filesystem->has($voucher);
+        try {
+            return $this->filesystem->has($voucher);
+        } catch (VirtualFilesystemException) {
+            return false;
+        }
     }
 
     public function retrieve(string $voucher): BulkyItemInterface|null
     {
-        $file = $this->filesystem->get($voucher);
+        try {
+            $file = $this->filesystem->get($voucher);
+        } catch (VirtualFilesystemException) {
+            return null;
+        }
 
         if (null === $file) {
             return null;
@@ -53,9 +62,15 @@ class BulkyItemStorage
             return null;
         }
 
+        try {
+            $stream = $this->filesystem->readStream($voucher);
+        } catch (VirtualFilesystemException) {
+            return null;
+        }
+
         /** @var BulkyItemInterface $class */
         return $class::restore(
-            $this->filesystem->readStream($voucher),
+            $stream,
             $meta['item'] ?? []
         );
     }

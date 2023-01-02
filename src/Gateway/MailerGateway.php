@@ -40,7 +40,7 @@ class MailerGateway extends AbstractGateway
     public function doSendParcel(Parcel $parcel): Receipt
     {
         $email = $this->createEmail($parcel);
-
+dd($email);
         try {
             $this->mailer->send($email);
 
