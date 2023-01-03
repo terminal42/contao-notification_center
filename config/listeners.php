@@ -26,6 +26,7 @@ use Terminal42\NotificationCenterBundle\EventListener\UpdatePersonalDataListener
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
+use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -90,6 +91,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(AdminEmailTokenSubscriber::class)
         ->args([
             service('request_stack'),
+            service(TokenDefinitionFactoryInterface::class),
         ])
     ;
 

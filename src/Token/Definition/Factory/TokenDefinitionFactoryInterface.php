@@ -9,15 +9,7 @@ use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterfac
 
 interface TokenDefinitionFactoryInterface
 {
-    /**
-     * @return array<string,class-string<TokenDefinitionInterface>>
-     */
-    public function all(): array;
-
-    /**
-     * @return class-string<TokenDefinitionInterface>|null
-     */
-    public function getDefinitionByName(string $name): string|null;
+    public function supports(string $definitionName): bool;
 
     /**
      * @throws InvalidTokenDefinitionNameException

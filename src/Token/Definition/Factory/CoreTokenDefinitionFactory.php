@@ -14,26 +14,17 @@ use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
 
 class CoreTokenDefinitionFactory implements TokenDefinitionFactoryInterface
 {
-    /**
-     * @return array<string,class-string<TokenDefinitionInterface>>
-     */
-    public function all(): array
-    {
-        return [
-            EmailToken::DEFINITION_NAME => EmailToken::class,
-            FileToken::DEFINITION_NAME => FileToken::class,
-            HtmlToken::DEFINITION_NAME => HtmlToken::class,
-            TextToken::DEFINITION_NAME => TextToken::class,
-            WildcardToken::DEFINITION_NAME => WildcardToken::class,
-        ];
-    }
+    private const MAPPER = [
+        EmailToken::DEFINITION_NAME => EmailToken::class,
+        FileToken::DEFINITION_NAME => FileToken::class,
+        HtmlToken::DEFINITION_NAME => HtmlToken::class,
+        TextToken::DEFINITION_NAME => TextToken::class,
+        WildcardToken::DEFINITION_NAME => WildcardToken::class,
+    ];
 
-    /**
-     * @return class-string<TokenDefinitionInterface>|null
-     */
-    public function getDefinitionByName(string $name): string|null
+    public function supports(string $definitionName): bool
     {
-        return $this->all()[$name] ?? null;
+        return \array_key_exists($definitionName, self::MAPPER);
     }
 
     /**
@@ -41,12 +32,13 @@ class CoreTokenDefinitionFactory implements TokenDefinitionFactoryInterface
      */
     public function create(string $definitionName, string $tokenName, string $translationKey): TokenDefinitionInterface
     {
-        $definition = $this->getDefinitionByName($definitionName);
+        $class = self::MAPPER[$definitionName] ?? null;
 
-        if (null === $definition) {
+        if (null === $class) {
             throw InvalidTokenDefinitionNameException::becauseDoesNotExist($definitionName);
         }
 
-        return $definition::create($tokenName, $translationKey);
+        // All of the core definitions extend AbstractTokenDefinition so we can use this helper.
+        return $class::createFromNameAndTranslationKey($tokenName, $translationKey);
     }
 }

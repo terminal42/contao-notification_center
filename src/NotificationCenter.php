@@ -16,7 +16,7 @@ use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
 use Terminal42\NotificationCenterBundle\Event\ReceiptEvent;
 use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeException;
-use Terminal42\NotificationCenterBundle\Exception\InvalidRawTokenFormatException;
+use Terminal42\NotificationCenterBundle\Exception\InvalidTokenException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
@@ -35,7 +35,6 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 use Terminal42\NotificationCenterBundle\Receipt\ReceiptCollection;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
-use Terminal42\NotificationCenterBundle\Token\TokenFactoryInterface;
 
 class NotificationCenter
 {
@@ -46,7 +45,6 @@ class NotificationCenter
         private ConfigLoader $configLoader,
         private EventDispatcherInterface $eventDispatcher,
         private RequestStack $requestStack,
-        private TokenFactoryInterface $tokenFactory,
         private BulkyItemStorage $bulkyGoodsStorage,
     ) {
     }
@@ -98,6 +96,8 @@ class NotificationCenter
 
     /**
      * @param array<string, mixed> $rawTokens
+     *
+     * @throws InvalidTokenException
      */
     public function createTokenCollectionFromArray(array $rawTokens, string $notificationTypeName): TokenCollection
     {
@@ -114,12 +114,8 @@ class NotificationCenter
         foreach ($rawTokens as $rawTokenName => $rawTokenValue) {
             foreach ($tokenDefinitions as $definition) {
                 if ($definition->matchesTokenName($rawTokenName)) {
-                    try {
-                        $token = $this->tokenFactory->createFromRaw($rawTokenValue, $rawTokenName, $definition->getDefinitionName());
-                        $collection->add($token);
-                    } catch (InvalidRawTokenFormatException $exception) {
-                        // noop
-                    }
+                    $token = $definition->createToken($rawTokenName, $rawTokenValue);
+                    $collection->add($token);
                 }
             }
         }

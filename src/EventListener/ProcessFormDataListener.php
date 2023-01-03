@@ -62,6 +62,9 @@ class ProcessFormDataListener
             $bulkyItemVouchers[] = $voucher;
         }
 
+        // Make sure we don't pass any objects and stuff as tokens
+        $tokens = array_filter($tokens, static fn ($v) => \is_scalar($v) || null === $v);
+
         $stamps = $this->notificationCenter->createTokenAndLocaleStampsForNotification(
             (int) $formData['nc_notification'],
             $tokens

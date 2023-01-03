@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token\Definition;
 
+use Terminal42\NotificationCenterBundle\Exception\InvalidTokenException;
 use Terminal42\NotificationCenterBundle\Exception\InvalidTokenNameException;
+use Terminal42\NotificationCenterBundle\Token\ArrayToken;
+use Terminal42\NotificationCenterBundle\Token\StringToken;
+use Terminal42\NotificationCenterBundle\Token\TokenInterface;
 
 abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
-    final public function __construct(private string $tokenName, private string $translationKey)
+    public function __construct(private string $tokenName, private string $translationKey)
     {
         $this->validateTokenName($this->tokenName);
     }
@@ -23,7 +27,7 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         return $this->translationKey;
     }
 
-    public static function create(string $tokenName, string $translationKey): static
+    public static function createFromNameAndTranslationKey(string $tokenName, string $translationKey): static
     {
         return new static($tokenName, $translationKey);
     }
@@ -41,5 +45,22 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         if (str_ends_with($name, '_*')) {
             throw InvalidTokenNameException::becauseMustNotEndWith('_*');
         }
+    }
+
+    protected function createTokenWithAllowedTypes(string $tokenName, mixed $value, string $definitionName, array $allowedTypes): TokenInterface
+    {
+        if (\in_array('null', $allowedTypes, true) && null === $value) {
+            return new StringToken('', $tokenName, $definitionName);
+        }
+
+        if (\in_array('string', $allowedTypes, true) && \is_scalar($value)) {
+            return new StringToken((string) $value, $tokenName, $definitionName);
+        }
+
+        if (\in_array('array', $allowedTypes, true) && \is_array($value)) {
+            return new ArrayToken($value, $tokenName, $definitionName);
+        }
+
+        throw InvalidTokenException::becauseOfUnknownType(get_debug_type($value));
     }
 }

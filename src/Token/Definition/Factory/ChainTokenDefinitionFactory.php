@@ -22,44 +22,27 @@ class ChainTokenDefinitionFactory implements TokenDefinitionFactoryInterface
     }
 
     /**
-     * @return array<string,class-string<TokenDefinitionInterface>>
-     */
-    public function all(): array
-    {
-        $all = [];
-
-        foreach ($this->factories as $factory) {
-            $all = array_merge($all, $factory->all());
-        }
-
-        return $all;
-    }
-
-    /**
-     * @return class-string<TokenDefinitionInterface>|null
-     */
-    public function getDefinitionByName(string $name): string|null
-    {
-        foreach ($this->factories as $factory) {
-            if (null !== ($definition = $factory->getDefinitionByName($name))) {
-                return $definition;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * @throws InvalidTokenDefinitionNameException
      */
     public function create(string $definitionName, string $tokenName, string $translationKey): TokenDefinitionInterface
     {
-        $definition = $this->getDefinitionByName($definitionName);
-
-        if (null === $definition) {
-            throw InvalidTokenDefinitionNameException::becauseDoesNotExist($definitionName);
+        foreach ($this->factories as $factory) {
+            if ($factory->supports($definitionName)) {
+                return $factory->create($definitionName, $tokenName, $translationKey);
+            }
         }
 
-        return $definition::create($tokenName, $translationKey);
+        throw InvalidTokenDefinitionNameException::becauseDoesNotExist($definitionName);
+    }
+
+    public function supports(string $definitionName): bool
+    {
+        foreach ($this->factories as $factory) {
+            if ($factory->supports($definitionName)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

@@ -11,11 +11,12 @@ use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
-use Terminal42\NotificationCenterBundle\Token\StringToken;
+use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
+use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
 class AdminEmailTokenSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private RequestStack $requestStack)
+    public function __construct(private RequestStack $requestStack, private TokenDefinitionFactoryInterface $tokenDefinitionFactory)
     {
     }
 
@@ -51,12 +52,12 @@ class AdminEmailTokenSubscriber implements EventSubscriberInterface
         $pageModel->loadDetails();
 
         $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
-            new StringToken($pageModel->adminEmail, 'admin_email', $this->getTokenDefinition()->getDefinitionName())
+            $this->getTokenDefinition()->createToken('admin_email', $pageModel->adminEmail)
         );
     }
 
-    private function getTokenDefinition(): EmailToken
+    private function getTokenDefinition(): TokenDefinitionInterface
     {
-        return new EmailToken('admin_email', 'admin_email');
+        return $this->tokenDefinitionFactory->create(EmailToken::DEFINITION_NAME, 'admin_email', 'admin_email');
     }
 }

@@ -16,8 +16,6 @@ use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistr
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
-use Terminal42\NotificationCenterBundle\Token\TokenFactory;
-use Terminal42\NotificationCenterBundle\Token\TokenFactoryInterface;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -54,9 +52,6 @@ return static function (ContainerConfigurator $container): void {
         ->tag('kernel.event_listener', ['event' => 'kernel.reset'])
     ;
 
-    $services->set(TokenFactory::class);
-    $services->alias(TokenFactoryInterface::class, TokenFactory::class);
-
     $services->set(BulkyItemStorage::class)
         ->args([
             service('contao.filesystem.virtual.'.Terminal42NotificationCenterExtension::BULKY_ITEMS_VFS_NAME),
@@ -77,7 +72,6 @@ return static function (ContainerConfigurator $container): void {
             service(ConfigLoader::class),
             service('event_dispatcher'),
             service('request_stack'),
-            service(TokenFactoryInterface::class),
             service(BulkyItemStorage::class),
         ])
     ;
