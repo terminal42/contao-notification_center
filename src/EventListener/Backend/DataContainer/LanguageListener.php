@@ -34,7 +34,9 @@ class LanguageListener
             return;
         }
 
-        $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()];
+        if (isset($GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()])) {
+            $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()];
+        }
 
         if (($user = $this->security->getUser()) instanceof BackendUser) {
             $GLOBALS['TL_DCA']['tl_nc_language']['fields']['language']['default'] = $user->language;
