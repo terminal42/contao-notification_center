@@ -131,9 +131,9 @@ class EmailStamp implements StampInterface
         }
     }
 
-    public function serialize(): string
+    public function toArray(): array
     {
-        return json_encode([
+        return [
             'from' => $this->from,
             'to' => $this->to,
             'subject' => $this->subject,
@@ -143,12 +143,11 @@ class EmailStamp implements StampInterface
             'text' => $this->text,
             'html' => $this->html,
             'attachmentVouchers' => $this->attachmentVouchers,
-        ]);
+        ];
     }
 
-    public static function fromSerialized(string $serialized): StampInterface
+    public static function fromArray(array $data): StampInterface
     {
-        $data = json_decode($serialized, true);
         $stamp = (new self())
             ->withFrom($data['from'])
             ->withTo($data['to'])

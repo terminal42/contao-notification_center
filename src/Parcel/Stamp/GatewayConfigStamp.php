@@ -13,8 +13,8 @@ class GatewayConfigStamp extends AbstractConfigStamp
         parent::__construct($this->gatewayConfig);
     }
 
-    public static function fromSerialized(string $serialized): self
+    public static function fromArray(array $data): self
     {
-        return new self(GatewayConfig::fromArray(json_decode($serialized, true)));
+        return new self(GatewayConfig::fromArray($data));
     }
 }

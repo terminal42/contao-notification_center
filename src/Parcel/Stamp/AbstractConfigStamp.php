@@ -12,8 +12,8 @@ abstract class AbstractConfigStamp implements StampInterface
     {
     }
 
-    public function serialize(): string
+    public function toArray(): array
     {
-        return $this->config->serialize();
+        return $this->config->toArray();
     }
 }

@@ -22,19 +22,17 @@ abstract class AbstractToken implements TokenInterface
 
     abstract public function getParserValue(): string;
 
-    public function serialize(): string
+    public function toArray(): array
     {
-        return json_encode([
+        return [
             'raw' => $this->tokenData,
             'name' => $this->getName(),
             'definition' => $this->getDefinitionName(),
-        ]);
+        ];
     }
 
-    public static function fromSerialized(string $serialized): static
+    public static function fromArray(array $data): static
     {
-        $data = json_decode($serialized, true);
-
         return new static($data['raw'], $data['name'], $data['definition']);
     }
 }

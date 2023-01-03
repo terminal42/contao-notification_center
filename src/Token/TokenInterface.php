@@ -25,7 +25,7 @@ interface TokenInterface
      */
     public function getParserValue(): string;
 
-    public function serialize(): string;
+    public function toArray(): array;
 
-    public static function fromSerialized(string $serialized): self;
+    public static function fromArray(array $data): self;
 }

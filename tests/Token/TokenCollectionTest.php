@@ -23,9 +23,8 @@ class TokenCollectionTest extends TestCase
             'form_other_color' => 'blue, orange',
         ], $tokenCollection->forSimpleTokenParser());
 
-        // Test if serialization and unserialization works
-        $serialized = $tokenCollection->serialize();
-        $tokenCollection = TokenCollection::fromSerialized($serialized);
+        $array = $tokenCollection->toArray();
+        $tokenCollection = TokenCollection::fromArray($array);
 
         $this->assertSame([
             'form_color' => 'blue',

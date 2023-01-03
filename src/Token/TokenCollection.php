@@ -11,21 +11,16 @@ use Ramsey\Collection\AbstractCollection;
  */
 class TokenCollection extends AbstractCollection
 {
-    public static function fromSerialized(string $serialized): self
+    public static function fromArray(array $data): self
     {
         $tokens = [];
-        $data = json_decode($serialized, true);
-
-        if (!\is_array($data)) {
-            return new self();
-        }
 
         foreach ($data as $class => $tokenData) {
             if (!class_exists($class) || !is_a($class, TokenInterface::class, true)) {
                 continue;
             }
 
-            $tokens[] = $class::fromSerialized($tokenData);
+            $tokens[] = $class::fromArray($tokenData);
         }
 
         return new self($tokens);
@@ -46,16 +41,16 @@ class TokenCollection extends AbstractCollection
         return $data;
     }
 
-    public function serialize(): string
+    public function toArray(): array
     {
         $data = [];
 
         /** @var TokenInterface $token */
         foreach ($this as $token) {
-            $data[\get_class($token)] = $token->serialize();
+            $data[\get_class($token)] = $token->toArray();
         }
 
-        return json_encode($data);
+        return $data;
     }
 
     public function getType(): string

@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Parcel;
 
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
+use Terminal42\NotificationCenterBundle\Util\Json;
 
 final class Parcel
 {
@@ -80,22 +81,28 @@ final class Parcel
 
     public function serialize(): string
     {
-        $data = [
-            'messageConfig' => $this->messageConfig->serialize(),
-            'stamps' => $this->stamps->serialize(),
-            'sealed' => $this->sealed,
-        ];
-
-        return json_encode($data);
+        return Json::utf8SafeEncode($this->toArray());
     }
 
     public static function fromSerialized(string $serialized): self
     {
-        $data = json_decode($serialized, true);
+        return self::fromArray(Json::utf8SafeDecode($serialized));
+    }
 
+    public function toArray(): array
+    {
+        return [
+            'messageConfig' => $this->messageConfig->toArray(),
+            'stamps' => $this->stamps->toArray(),
+            'sealed' => $this->sealed,
+        ];
+    }
+
+    public static function fromArray(array $data): self
+    {
         $parcel = new self(
-            MessageConfig::fromSerialized($data['messageConfig']),
-            StampCollection::fromSerialized($data['stamps']),
+            MessageConfig::fromArray($data['messageConfig']),
+            StampCollection::fromArray($data['stamps']),
         );
 
         $parcel->sealed = $data['sealed'];

@@ -40,8 +40,8 @@ class StampCollectionTest extends TestCase
         $collection = $collection->with(new LocaleStamp('de_CH'));
         $collection = $collection->seal();
 
-        $serialized = $collection->serialize();
-        $collection = StampCollection::fromSerialized($serialized);
+        $array = $collection->toArray();
+        $collection = StampCollection::fromArray($array);
 
         $this->assertTrue($collection->has(LocaleStamp::class));
         $this->assertTrue($collection->isSealed());

@@ -94,7 +94,7 @@ class StampCollection
         return array_keys($this->stamps);
     }
 
-    public function serialize(): string
+    public function toArray(): array
     {
         $data = [
             'stamps' => [],
@@ -102,15 +102,14 @@ class StampCollection
         ];
 
         foreach ($this->stamps as $stamp) {
-            $data['stamps'][$stamp::class] = $stamp->serialize();
+            $data['stamps'][$stamp::class] = $stamp->toArray();
         }
 
-        return json_encode($data);
+        return $data;
     }
 
-    public static function fromSerialized(string $serialized): self
+    public static function fromArray(array $data): self
     {
-        $data = json_decode($serialized, true);
         $stamps = [];
 
         foreach ($data['stamps'] as $class => $stampValue) {
@@ -118,7 +117,7 @@ class StampCollection
                 continue;
             }
 
-            $stamps[] = $class::fromSerialized($stampValue);
+            $stamps[] = $class::fromArray($stampValue);
         }
 
         $collection = new self($stamps);

@@ -51,15 +51,10 @@ class ParameterBag
         return (bool) $this->get($key, $default);
     }
 
-    public function serialize(): string
+    public function toArray(): array
     {
         // Ensure encoding works even if non utf8 parameters are used.
-        return Json::utf8SafeEncode($this->parameters);
-    }
-
-    public static function fromSerialized(string $serialized): static
-    {
-        return static::fromArray(Json::utf8SafeDecode($serialized));
+        return $this->parameters;
     }
 
     /**

@@ -6,9 +6,9 @@ namespace Terminal42\NotificationCenterBundle\Util;
 
 class Json
 {
-    public static function utf8SafeEncode(array $data): string|false
+    public static function utf8SafeEncode(array $data, int $flags = 0): string|false
     {
-        return json_encode(self::recursiveBase64Encode($data));
+        return json_encode(self::recursiveBase64Encode($data), $flags);
     }
 
     public static function utf8SafeDecode(string $encoded): array|false

@@ -30,19 +30,19 @@ class BulkyItemsStamp implements StampInterface
         return $this->vouchers[$voucher] ?? null;
     }
 
-    public function serialize(): string
+    public function toArray(): array
     {
-        return json_encode($this->vouchers);
+        return $this->vouchers;
     }
 
-    public static function fromSerialized(string $serialized): StampInterface
+    public static function fromArray(array $data): StampInterface
     {
-        return new self(json_decode($serialized, true));
+        return new self($data);
     }
 
     public function all(): array
     {
-        return array_keys($this->vouchers);
+        return array_values($this->vouchers);
     }
 
     private function add(string $voucher): void

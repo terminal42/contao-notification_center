@@ -6,7 +6,10 @@ namespace Terminal42\NotificationCenterBundle\Parcel\Stamp;
 
 interface StampInterface
 {
-    public function serialize(): string;
+    /**
+     * Must return a JSON serializable array.
+     */
+    public function toArray(): array;
 
-    public static function fromSerialized(string $serialized): self;
+    public static function fromArray(array $data): self;
 }

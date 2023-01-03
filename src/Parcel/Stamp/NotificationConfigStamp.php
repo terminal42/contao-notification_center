@@ -13,8 +13,8 @@ class NotificationConfigStamp extends AbstractConfigStamp
         parent::__construct($this->notificationConfig);
     }
 
-    public static function fromSerialized(string $serialized): self
+    public static function fromArray(array $data): self
     {
-        return new self(NotificationConfig::fromArray(json_decode($serialized, true)));
+        return new self(NotificationConfig::fromArray($data));
     }
 }

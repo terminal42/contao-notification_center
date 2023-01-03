@@ -10,13 +10,13 @@ class LocaleStamp implements StampInterface
     {
     }
 
-    public function serialize(): string
+    public function toArray(): array
     {
-        return $this->locale;
+        return ['locale' => $this->locale];
     }
 
-    public static function fromSerialized(string $serialized): StampInterface
+    public static function fromArray(array $data): StampInterface
     {
-        return new self($serialized);
+        return new self($data['locale']);
     }
 }
