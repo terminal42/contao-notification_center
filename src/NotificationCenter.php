@@ -20,6 +20,7 @@ use Terminal42\NotificationCenterBundle\Exception\InvalidRawTokenFormatException
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
+use Terminal42\NotificationCenterBundle\Gateway\GatewayInterface;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
@@ -195,6 +196,20 @@ class NotificationCenter
     }
 
     /**
+     * Checks for a GatewayConfigStamp on the parcel and returns the matching gateway if present.
+     */
+    public function getGatewayForParcel(Parcel $parcel): GatewayInterface|null
+    {
+        if (null === ($gatewayStamp = $parcel->getStamp(GatewayConfigStamp::class))) {
+            return null;
+        }
+
+        $gatewayName = $gatewayStamp->gatewayConfig->getType();
+
+        return $this->gatewayRegistry->getByName($gatewayName);
+    }
+
+    /**
      * @param string|null $gatewayName you can an either provide a gateway name directly or stick a GatewayConfigStamp
      *                                 on your parcel
      *
@@ -202,11 +217,11 @@ class NotificationCenter
      */
     public function sendParcel(Parcel $parcel, string $gatewayName = null): Receipt
     {
-        if (null === $gatewayName && null !== ($gatewayStamp = $parcel->getStamp(GatewayConfigStamp::class))) {
-            $gatewayName = $gatewayStamp->gatewayConfig->getType();
+        if (null === $gatewayName) {
+            $gateway = $this->getGatewayForParcel($parcel);
+        } else {
+            $gateway = $this->gatewayRegistry->getByName($gatewayName);
         }
-
-        $gateway = $this->gatewayRegistry->getByName((string) $gatewayName);
 
         if (null === $gateway) {
             $receipt = Receipt::createForUnsuccessfulDelivery(

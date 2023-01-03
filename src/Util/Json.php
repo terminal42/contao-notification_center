@@ -28,7 +28,7 @@ class Json
             if (\is_array($v)) {
                 $data[$k] = self::recursiveBase64Encode($v);
             } else {
-                if (is_string($v) && 1 !== preg_match('//u', $v)) {
+                if (\is_string($v) && 1 !== preg_match('//u', $v)) {
                     $data[$k] = 'base64://'.base64_encode($v);
                 } else {
                     $data[$k] = $v;
@@ -45,7 +45,7 @@ class Json
             if (\is_array($v)) {
                 $data[$k] = self::recursiveBase64Decode($v);
             } else {
-                if (is_string($v) && str_starts_with($v, 'base64://')) {
+                if (\is_string($v) && str_starts_with($v, 'base64://')) {
                     $data[$k] = base64_decode(substr($v, 9), true);
                 } else {
                     $data[$k] = $v;
