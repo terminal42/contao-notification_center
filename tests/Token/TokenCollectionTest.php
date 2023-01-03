@@ -16,10 +16,12 @@ class TokenCollectionTest extends TestCase
     {
         $tokenCollection = new TokenCollection();
         $tokenCollection->add(new StringToken('blue', 'form_color', TextToken::DEFINITION_NAME));
+        $tokenCollection->add(new StringToken('t-shirt', 'form_product', TextToken::DEFINITION_NAME));
         $tokenCollection->add(new ArrayToken(['blue', 'orange'], 'form_other_color', TextToken::DEFINITION_NAME));
 
         $this->assertSame([
             'form_color' => 'blue',
+            'form_product' => 't-shirt',
             'form_other_color' => 'blue, orange',
         ], $tokenCollection->forSimpleTokenParser());
 
@@ -28,6 +30,7 @@ class TokenCollectionTest extends TestCase
 
         $this->assertSame([
             'form_color' => 'blue',
+            'form_product' => 't-shirt',
             'form_other_color' => 'blue, orange',
         ], $tokenCollection->forSimpleTokenParser());
     }

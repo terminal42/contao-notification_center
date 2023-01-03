@@ -15,12 +15,12 @@ class TokenCollection extends AbstractCollection
     {
         $tokens = [];
 
-        foreach ($data as $class => $tokenData) {
-            if (!class_exists($class) || !is_a($class, TokenInterface::class, true)) {
+        foreach ($data as $token) {
+            if (!isset($token['class']) || !class_exists($token['class']) || !is_a($token['class'], TokenInterface::class, true)) {
                 continue;
             }
 
-            $tokens[] = $class::fromArray($tokenData);
+            $tokens[] = $token['class']::fromArray($token['data'] ?? []);
         }
 
         return new self($tokens);
@@ -47,7 +47,10 @@ class TokenCollection extends AbstractCollection
 
         /** @var TokenInterface $token */
         foreach ($this as $token) {
-            $data[\get_class($token)] = $token->toArray();
+            $data[] = [
+                'class' => \get_class($token),
+                'data' => $token->toArray(),
+            ];
         }
 
         return $data;
