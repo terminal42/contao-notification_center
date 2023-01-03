@@ -25,6 +25,10 @@ class GatewayRegistry
     {
         $this->gatewaysByName[$gateway->getName()] = $gateway;
 
+        if ($gateway instanceof GatewayRegistryAwareInterface) {
+            $gateway->setGatewayRegistry($this);
+        }
+
         return $this;
     }
 
