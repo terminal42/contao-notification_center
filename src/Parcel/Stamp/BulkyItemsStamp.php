@@ -32,7 +32,7 @@ class BulkyItemsStamp implements StampInterface
 
     public function toArray(): array
     {
-        return $this->vouchers;
+        return array_values($this->vouchers);
     }
 
     public static function fromArray(array $data): StampInterface
@@ -42,7 +42,7 @@ class BulkyItemsStamp implements StampInterface
 
     public function all(): array
     {
-        return array_values($this->vouchers);
+        return $this->toArray();
     }
 
     private function add(string $voucher): void
