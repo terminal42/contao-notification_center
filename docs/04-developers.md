@@ -304,6 +304,14 @@ if ($item instanceof FileItem) {
 }
 ```
 
+> 💡 Technically, you could omit the `BulkyItemsStamp` if for example you added the voucher as a token value.
+> So let's say your `##form_upload##` token contains an upload voucher. The gateway could just replace that token
+> and use the voucher to fetch from the bulky goods storage, right? Well, yes. While possible, it's still recommended
+> you add the `BulkyItemsStamp` as this allows any gateway to differentiate whether the value of a token was really
+> meant to be a bulky item or if - by chance - just has the same format as a voucher. Moreover, by providing the
+> stamp, other extensions or your custom application code can read from the stamp and process those further if needed.
+> In short: Always use the `BulkyItemsStamp`.
+
 ## Events
 
 Sometimes, you need to add tokens to an already existing notification type or you want to log information etc.
