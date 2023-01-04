@@ -25,6 +25,14 @@ class StampCollection
         }
     }
 
+    /**
+     * @return array<class-string,StampInterface>
+     */
+    public function all(): array
+    {
+        return $this->stamps;
+    }
+
     public function seal(): self
     {
         if ($this->isSealed()) {

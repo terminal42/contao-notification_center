@@ -98,6 +98,21 @@ final class Parcel
         ];
     }
 
+    public function duplicate(): self
+    {
+        if (!$this->isSealed()) {
+            throw new \BadMethodCallException('Why duplicating a parcel if the current one is not sealed yet?');
+        }
+
+        $stampCollection = new StampCollection();
+
+        foreach ($this->stamps->all() as $stamp) {
+            $stampCollection = $stampCollection->with($stamp);
+        }
+
+        return new self($this->getMessageConfig(), $stampCollection);
+    }
+
     public static function fromArray(array $data): self
     {
         $parcel = new self(

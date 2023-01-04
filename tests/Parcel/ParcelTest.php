@@ -35,6 +35,31 @@ class ParcelTest extends TestCase
         $sealed->withStamp(new LocaleStamp('de_CH'));
     }
 
+    public function testCannotDuplicateAnUnsealedParcel(): void
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage('Why duplicating a parcel if the current one is not sealed yet?');
+
+        $parcel = new Parcel(MessageConfig::fromArray(['foo' => 'bar']), new StampCollection());
+        $parcel->duplicate();
+    }
+
+    public function testDuplicatingASealedParcel(): void
+    {
+        $parcel = new Parcel(MessageConfig::fromArray(['foo' => 'bar']), new StampCollection());
+        $parcel = $parcel->withStamp(new LocaleStamp('de_CH'));
+        $sealed = $parcel->seal();
+        $this->assertTrue($sealed->isSealed());
+        $this->assertTrue($sealed->getStamps()->isSealed());
+
+        $duplicate = $sealed->duplicate();
+
+        $this->assertFalse($duplicate->isSealed());
+        $this->assertFalse($duplicate->getStamps()->isSealed());
+        $this->assertSame(['foo' => 'bar'], $duplicate->getMessageConfig()->all());
+        $this->assertTrue($duplicate->getStamps()->has(LocaleStamp::class));
+    }
+
     public function testSerialize(): void
     {
         $parcel = new Parcel(MessageConfig::fromArray(['foo' => 'bar']), new StampCollection());
