@@ -224,19 +224,28 @@ class NotificationCenter
                 $parcel,
                 CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel()
             );
-        } else {
+
+            // Readonly event so developers can do whatever they want with the receipt, whether it was successful
+            // or not. Use this to implement logging etc.
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt));
+
+            return $receipt;
+        }
+
+        // Seal if not already sealed
+        if (!$parcel->isSealed()) {
             $parcel = $gateway->sealParcel($parcel);
 
             // Gateways are expected to seal but let's be very sure it is
             $parcel = $parcel->seal();
-
-            // We force serialization here in order to prevent usage errors. Developers
-            // are expected to build parcels and stamps with proper serializable data in
-            // GatewayInterface::sealParcel().
-            $parcel = Parcel::fromSerialized($parcel->serialize());
-
-            $receipt = $gateway->sendParcel($parcel);
         }
+
+        // We force serialization here in order to prevent usage errors. Developers
+        // are expected to build parcels and stamps with proper serializable data in
+        // GatewayInterface::sealParcel().
+        $parcel = Parcel::fromSerialized($parcel->serialize());
+
+        $receipt = $gateway->sendParcel($parcel);
 
         // Readonly event so developers can do whatever they want with the receipt, whether it was successful
         // or not. Use this to implement logging etc.
