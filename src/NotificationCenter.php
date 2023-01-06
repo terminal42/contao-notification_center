@@ -19,7 +19,7 @@ use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeExcepti
 use Terminal42\NotificationCenterBundle\Exception\InvalidTokenException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotCreateParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
-use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotSealParcelException;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayInterface;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
@@ -209,7 +209,7 @@ class NotificationCenter
      * @param string|null $gatewayName you can an either provide a gateway name directly or stick a GatewayConfigStamp
      *                                 on your parcel
      *
-     * @throws CouldNotFinalizeParcelException
+     * @throws CouldNotSealParcelException
      */
     public function sendParcel(Parcel $parcel, string $gatewayName = null): Receipt
     {

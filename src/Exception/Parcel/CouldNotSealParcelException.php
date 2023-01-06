@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Exception\Parcel;
 use Terminal42\NotificationCenterBundle\Exception\ExceptionInterface;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 
-class CouldNotFinalizeParcelException extends \RuntimeException implements ExceptionInterface
+class CouldNotSealParcelException extends \RuntimeException implements ExceptionInterface
 {
     /**
      * @template T of StampInterface

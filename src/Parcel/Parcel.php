@@ -10,10 +10,14 @@ use Terminal42\NotificationCenterBundle\Util\Json;
 
 final class Parcel
 {
+    private StampCollection $stampsBeforeSealing;
+    private StampCollection $stampsAfterSealing;
     private bool $sealed = false;
 
-    public function __construct(private MessageConfig $messageConfig, private StampCollection $stamps)
+    public function __construct(private MessageConfig $messageConfig)
     {
+        $this->stampsBeforeSealing = new StampCollection();
+        $this->stampsAfterSealing = new StampCollection();
     }
 
     public function seal(): self
@@ -24,7 +28,6 @@ final class Parcel
 
         $clone = clone $this;
         $clone->sealed = true;
-        $clone->stamps = $this->stamps->seal();
 
         return $clone;
     }
@@ -41,7 +44,7 @@ final class Parcel
 
     public function hasStamp(string $class): bool
     {
-        return $this->stamps->has($class);
+        return $this->stampsBeforeSealing->has($class) || $this->stampsAfterSealing->has($class);
     }
 
     /**
@@ -49,12 +52,18 @@ final class Parcel
      */
     public function hasStamps(array $classes): bool
     {
-        return $this->stamps->hasMultiple($classes);
+        foreach ($classes as $class) {
+            if (!$this->hasStamp($class)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
-    public function getStamps(): StampCollection
+    public function getStampClasses(): array
     {
-        return $this->stamps;
+        return $this->stampsBeforeSealing->getClasses();
     }
 
     /**
@@ -66,15 +75,25 @@ final class Parcel
      */
     public function getStamp(string $className): StampInterface|null
     {
-        return $this->stamps->get($className);
+        // Stamps after sealing have priority
+        if (null !== ($stamp = $this->stampsAfterSealing->get($className))) {
+            return $stamp;
+        }
+
+        return $this->stampsBeforeSealing->get($className);
     }
 
     public function withStamp(StampInterface $stamp): self
     {
         $clone = clone $this;
-        $clone->stamps = $this->stamps
-            ->with($stamp)
-        ;
+
+        if ($this->isSealed()) {
+            $clone->stampsAfterSealing = $this->stampsAfterSealing
+                ->with($stamp);
+        } else {
+            $clone->stampsBeforeSealing = $this->stampsBeforeSealing
+                ->with($stamp);
+        }
 
         return $clone;
     }
@@ -93,33 +112,40 @@ final class Parcel
     {
         return [
             'messageConfig' => $this->messageConfig->toArray(),
-            'stamps' => $this->stamps->toArray(),
+            'stampsBeforeSealing' => $this->stampsBeforeSealing->toArray(),
+            'stampsAfterSealing' => $this->stampsAfterSealing->toArray(),
             'sealed' => $this->sealed,
         ];
     }
 
-    public function duplicate(): self
+    /**
+     * Will return an instance of the parcel as it was before it was sealed.
+     * This means, the stamps that were added AFTER a parcel was sealed will not
+     * be present on the new instance.
+     */
+    public function unseal(): self
     {
         if (!$this->isSealed()) {
-            throw new \BadMethodCallException('Why duplicating a parcel if the current one is not sealed yet?');
+            return $this;
         }
 
-        $stampCollection = new StampCollection();
+        $parcel = new self($this->getMessageConfig());
 
-        foreach ($this->stamps->all() as $stamp) {
-            $stampCollection = $stampCollection->with($stamp);
+        foreach ($this->stampsBeforeSealing->all() as $stamp) {
+            $parcel = $parcel->withStamp($stamp);
         }
 
-        return new self($this->getMessageConfig(), $stampCollection);
+        return $parcel;
     }
 
     public static function fromArray(array $data): self
     {
         $parcel = new self(
             MessageConfig::fromArray($data['messageConfig']),
-            StampCollection::fromArray($data['stamps']),
         );
 
+        $parcel->stampsBeforeSealing = StampCollection::fromArray($data['stampsBeforeSealing']);
+        $parcel->stampsAfterSealing = StampCollection::fromArray($data['stampsAfterSealing']);
         $parcel->sealed = $data['sealed'];
 
         return $parcel;

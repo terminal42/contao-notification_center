@@ -8,7 +8,7 @@ use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\String\SimpleTokenParser;
 use Psr\Container\ContainerInterface;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
-use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotFinalizeParcelException;
+use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotSealParcelException;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
@@ -34,7 +34,7 @@ abstract class AbstractGateway implements GatewayInterface
     public function sealParcel(Parcel $parcel): Parcel
     {
         if (!$parcel->hasStamps($this->getRequiredStampsForSealing())) {
-            throw CouldNotFinalizeParcelException::becauseOfInsufficientStamps($parcel->getStamps()->getClasses(), $this->getRequiredStampsForSealing());
+            throw CouldNotSealParcelException::becauseOfInsufficientStamps($parcel->getStampClasses(), $this->getRequiredStampsForSealing());
         }
 
         return $this->doSealParcel($parcel);
@@ -46,7 +46,7 @@ abstract class AbstractGateway implements GatewayInterface
             return Receipt::createForUnsuccessfulDelivery(
                 $parcel,
                 CouldNotDeliverParcelException::becauseOfInsufficientStamps(
-                    $parcel->getStamps()->getClasses(),
+                    $parcel->getStampClasses(),
                     $this->getRequiredStampsForSending()
                 )
             );

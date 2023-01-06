@@ -6,14 +6,12 @@ namespace Terminal42\NotificationCenterBundle\Parcel;
 
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 
-class StampCollection
+final class StampCollection
 {
     /**
      * @var array<class-string,StampInterface>
      */
     private array $stamps = [];
-
-    private bool $sealed = false;
 
     /**
      * @param array<StampInterface> $stamps
@@ -33,23 +31,6 @@ class StampCollection
         return $this->stamps;
     }
 
-    public function seal(): self
-    {
-        if ($this->isSealed()) {
-            return $this;
-        }
-
-        $clone = clone $this;
-        $clone->sealed = true;
-
-        return $clone;
-    }
-
-    public function isSealed(): bool
-    {
-        return $this->sealed;
-    }
-
     /**
      * @template T of StampInterface
      *
@@ -64,10 +45,6 @@ class StampCollection
 
     public function with(StampInterface $stamp): self
     {
-        if ($this->isSealed()) {
-            throw new \LogicException('Cannot add a stamp to a sealed collection.');
-        }
-
         $clone = clone $this;
 
         $clone->add($stamp);
@@ -81,20 +58,6 @@ class StampCollection
     }
 
     /**
-     * @param array<class-string<StampInterface>> $classes
-     */
-    public function hasMultiple(array $classes): bool
-    {
-        foreach ($classes as $class) {
-            if (!$this->has($class)) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * @return array<class-string<StampInterface>>
      */
     public function getClasses(): array
@@ -104,13 +67,10 @@ class StampCollection
 
     public function toArray(): array
     {
-        $data = [
-            'stamps' => [],
-            'sealed' => $this->sealed,
-        ];
+        $data = [];
 
         foreach ($this->stamps as $stamp) {
-            $data['stamps'][$stamp::class] = $stamp->toArray();
+            $data[$stamp::class] = $stamp->toArray();
         }
 
         return $data;
@@ -120,7 +80,7 @@ class StampCollection
     {
         $stamps = [];
 
-        foreach ($data['stamps'] as $class => $stampValue) {
+        foreach ($data as $class => $stampValue) {
             if (!class_exists($class) || !is_a($class, StampInterface::class, true)) {
                 continue;
             }
@@ -128,18 +88,11 @@ class StampCollection
             $stamps[] = $class::fromArray($stampValue);
         }
 
-        $collection = new self($stamps);
-        $collection->sealed = $data['sealed'];
-
-        return $collection;
+        return new self($stamps);
     }
 
     private function add(StampInterface $stamp): self
     {
-        if ($this->isSealed()) {
-            throw new \LogicException('Cannot add a stamp to a sealed parcel.');
-        }
-
         $this->stamps[$stamp::class] = $stamp;
 
         return $this;

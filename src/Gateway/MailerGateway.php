@@ -60,8 +60,8 @@ class MailerGateway extends AbstractGateway
     protected function doSealParcel(Parcel $parcel): Parcel
     {
         return $parcel
-            ->withStamp($this->createEmailStamp($parcel))
             ->seal()
+            ->withStamp($this->createEmailStamp($parcel))
         ;
     }
 

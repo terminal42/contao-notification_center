@@ -178,7 +178,10 @@ class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\Gate
     
     public function sealParcel(Parcel $parcel): Parcel
     {
-        return $parcel->withStamp($this->createEmailStamp($parcel));
+        return $parcel
+            ->seal()
+            ->withStamp($this->createEmailStamp($parcel))
+        ;
     }
     
     public function sendParcel(Parcel $parcel): Receipt
@@ -213,7 +216,12 @@ class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\Gate
 }
 ```
 
-Now, let's talk about **the single most important** design decision when creating your own gateway which you
+> ⚠️ Notice how `$parcel->seal()` is called **before** adding the `EmailStamp`. This is an important design decision
+> as it allows to make a difference between stamps that were added before and after the sealing process. The difference
+> is that if you call `$parcel->unseal()`, the `EmailStamp` will not be present on the parcel. Only the stamps that have
+> been added before are.
+
+🚨 Let's talk about **the single most important** design decision when creating your own gateway which you
 absolutely have to keep in mind: Your gateway **must not** rely on dynamic information in the `sendParcel()`
 method. It **must be immutable**. Let's take the post office analogy: When you prepare your parcel, you can stick as many stamps and labels to
 it. You can put placeholder stamps, unpack it, change its content, hand it to your friend to add more content or their own
