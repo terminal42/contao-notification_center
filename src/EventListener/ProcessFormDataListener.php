@@ -33,6 +33,7 @@ class ProcessFormDataListener
         $rawData = [];
         $rawDataFilled = [];
         $bulkyItemVouchers = [];
+        $files = !\is_array($files) ? [] : $files; // In Contao 4.13, $files can be null
 
         foreach ($submittedData as $k => $v) {
             $label = $labels[$k] ?? ucfirst($k);
