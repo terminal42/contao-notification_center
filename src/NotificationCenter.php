@@ -145,7 +145,11 @@ class NotificationCenter
             throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
         }
 
-        $parcel = new Parcel($messageConfig, $stamps);
+        $parcel = new Parcel($messageConfig);
+
+        foreach ($stamps->all() as $stamp) {
+            $parcel = $parcel->withStamp($stamp);
+        }
 
         // Add additional stamps
         if (null !== ($notificationConfig = $this->configLoader->loadNotification($messageConfig->getNotification()))) {
