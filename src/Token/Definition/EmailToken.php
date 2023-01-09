@@ -20,7 +20,6 @@ class EmailToken extends AbstractTokenDefinition
         return $this->createTokenWithAllowedTypes(
             $tokenName,
             $value,
-            self::DEFINITION_NAME,
             ['null', 'string']
         );
     }

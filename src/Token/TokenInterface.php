@@ -12,11 +12,6 @@ interface TokenInterface
     public function getName(): string;
 
     /**
-     * The TokenDefinitionInterface instance name that belongs to this token.
-     */
-    public function getDefinitionName(): string;
-
-    /**
      * Returns the value passed on to the simple token parser.
      * Thus, it has to be a string. Usually, the same value as in serialize()
      * but e.g. a multidimensional array could have a comma-separated representation

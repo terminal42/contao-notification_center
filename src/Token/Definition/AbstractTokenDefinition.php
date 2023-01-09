@@ -12,7 +12,7 @@ use Terminal42\NotificationCenterBundle\Token\TokenInterface;
 
 abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
-    public function __construct(private string $tokenName, private string $translationKey)
+    final public function __construct(private string $tokenName, private string $translationKey)
     {
         $this->validateTokenName($this->tokenName);
     }
@@ -47,20 +47,20 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         }
     }
 
-    protected function createTokenWithAllowedTypes(string $tokenName, mixed $value, string $definitionName, array $allowedTypes): TokenInterface
+    protected function createTokenWithAllowedTypes(string $tokenName, mixed $tokenValue, array $allowedTypes): TokenInterface
     {
-        if (\in_array('null', $allowedTypes, true) && null === $value) {
-            return new StringToken('', $tokenName, $definitionName);
+        if (\in_array('null', $allowedTypes, true) && null === $tokenValue) {
+            return new StringToken('', $tokenName);
         }
 
-        if (\in_array('string', $allowedTypes, true) && \is_scalar($value)) {
-            return new StringToken((string) $value, $tokenName, $definitionName);
+        if (\in_array('string', $allowedTypes, true) && \is_scalar($tokenValue)) {
+            return new StringToken((string) $tokenValue, $tokenName);
         }
 
-        if (\in_array('array', $allowedTypes, true) && \is_array($value)) {
-            return new ArrayToken($value, $tokenName, $definitionName);
+        if (\in_array('array', $allowedTypes, true) && \is_array($tokenValue)) {
+            return new ArrayToken($tokenValue, $tokenName);
         }
 
-        throw InvalidTokenException::becauseOfUnknownType(get_debug_type($value));
+        throw InvalidTokenException::becauseOfUnknownType(get_debug_type($tokenValue));
     }
 }

@@ -26,7 +26,6 @@ class WildcardToken extends AbstractTokenDefinition
         return $this->createTokenWithAllowedTypes(
             $tokenName,
             $value,
-            self::DEFINITION_NAME,
             ['null', 'string', 'array']
         );
     }

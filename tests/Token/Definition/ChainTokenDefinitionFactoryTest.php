@@ -49,10 +49,12 @@ class ChainTokenDefinitionFactoryTest extends TestCase
 
     private function createExampleFactoryWithDependencyInjection(string $tokenName, string $translationKey, string $serviceDummy): TokenDefinitionFactoryInterface
     {
-        $diDefinition = new class($tokenName, $translationKey, $serviceDummy) extends AbstractTokenDefinition {
-            public function __construct(string $tokenName, string $translationKey, private string $serviceDummy)
+        $diDefinition = new class($tokenName, $translationKey) extends AbstractTokenDefinition {
+            private string $serviceDummy;
+
+            public function setServiceDummy(string $serviceDummy): void
             {
-                parent::__construct($tokenName, $translationKey);
+                $this->serviceDummy = $serviceDummy;
             }
 
             public function getDefinitionName(): string
@@ -62,9 +64,11 @@ class ChainTokenDefinitionFactoryTest extends TestCase
 
             public function createToken(string $tokenName, mixed $value): TokenInterface
             {
-                return new StringToken('i-would-call-service: '.$this->serviceDummy.' and return value: '.$value, $tokenName, $this->getDefinitionName());
+                return new StringToken('i-would-call-service: '.$this->serviceDummy.' and return value: '.$value, $tokenName);
             }
         };
+
+        $diDefinition->setServiceDummy($serviceDummy);
 
         return new class($diDefinition) implements TokenDefinitionFactoryInterface {
             public function __construct(private TokenDefinitionInterface $diDefinition)

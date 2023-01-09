@@ -6,7 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Token;
 
 abstract class AbstractToken implements TokenInterface
 {
-    public function __construct(protected mixed $tokenData, private string $tokenName, private string $tokenDefinitionName)
+    public function __construct(protected mixed $tokenValue, private string $tokenName)
     {
     }
 
@@ -15,24 +15,13 @@ abstract class AbstractToken implements TokenInterface
         return $this->tokenName;
     }
 
-    public function getDefinitionName(): string
-    {
-        return $this->tokenDefinitionName;
-    }
-
     abstract public function getParserValue(): string;
 
     public function toArray(): array
     {
         return [
-            'raw' => $this->tokenData,
+            'value' => $this->tokenValue,
             'name' => $this->getName(),
-            'definition' => $this->getDefinitionName(),
         ];
-    }
-
-    public static function fromArray(array $data): static
-    {
-        return new static($data['raw'], $data['name'], $data['definition']);
     }
 }

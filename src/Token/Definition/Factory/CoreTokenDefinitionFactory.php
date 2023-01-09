@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Token\Definition\Factory;
 
 use Terminal42\NotificationCenterBundle\Exception\InvalidTokenDefinitionNameException;
+use Terminal42\NotificationCenterBundle\Token\Definition\AbstractTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\FileToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\HtmlToken;
@@ -38,7 +39,10 @@ class CoreTokenDefinitionFactory implements TokenDefinitionFactoryInterface
             throw InvalidTokenDefinitionNameException::becauseDoesNotExist($definitionName);
         }
 
-        // All of the core definitions extend AbstractTokenDefinition so we can use this helper.
+        if (!is_a($class, AbstractTokenDefinition::class, true)) {
+            throw InvalidTokenDefinitionNameException::becauseDoesNotExist($definitionName);
+        }
+
         return $class::createFromNameAndTranslationKey($tokenName, $translationKey);
     }
 }
