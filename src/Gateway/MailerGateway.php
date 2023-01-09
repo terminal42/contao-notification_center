@@ -21,6 +21,7 @@ use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelEx
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\BackendAttachmentsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
@@ -59,6 +60,10 @@ class MailerGateway extends AbstractGateway
 
     protected function doSealParcel(Parcel $parcel): Parcel
     {
+        // Copy back end attachments so that they are still there if being removed from the back end.
+        // Sealing means ensuring that the parcel has all its content.
+        $parcel = $this->copyBackendAttachments($parcel, $parcel->getStamp(LanguageConfigStamp::class)->languageConfig);
+
         return $parcel
             ->seal()
             ->withStamp($this->createEmailStamp($parcel))
@@ -123,7 +128,7 @@ class MailerGateway extends AbstractGateway
             $stamp = $stamp->withHtml($html);
         }
 
-        $stamp = $this->addAttachmentsFromBackend($languageConfig, $stamp);
+        $stamp = $this->addAttachmentsFromBackend($parcel, $stamp);
 
         return $this->addAttachmentsFromTokens($languageConfig, $parcel, $stamp);
     }
@@ -194,13 +199,33 @@ class MailerGateway extends AbstractGateway
         return $emailStamp;
     }
 
-    private function addAttachmentsFromBackend(LanguageConfig $languageConfig, EmailStamp $emailStamp): EmailStamp
+    private function addAttachmentsFromBackend(Parcel $parcel, EmailStamp $emailStamp): EmailStamp
     {
+        if (!$parcel->hasStamp(BackendAttachmentsStamp::class)) {
+            return $emailStamp;
+        }
+
+        foreach ($parcel->getStamp(BackendAttachmentsStamp::class)->toArray() as $voucher) {
+            $emailStamp = $emailStamp->withAttachmentVoucher($voucher);
+        }
+
+        return $emailStamp;
+    }
+
+    private function copyBackendAttachments(Parcel $parcel, LanguageConfig $languageConfig): Parcel
+    {
+        // Attachments have been added before (by e.g. a third party logic)
+        if ($parcel->hasStamp(BackendAttachmentsStamp::class)) {
+            return $parcel;
+        }
+
         $attachments = StringUtil::deserialize($languageConfig->getString('attachments'), true);
 
         if (0 === \count($attachments)) {
-            return $emailStamp;
+            return $parcel;
         }
+
+        $vouchers = [];
 
         // As soon as we're compatible with Contao >5.0 only, we can use the FilesystemUtil for this.
         foreach ($attachments as $uuid) {
@@ -236,10 +261,14 @@ class MailerGateway extends AbstractGateway
             );
 
             if (null !== $voucher) {
-                $emailStamp = $emailStamp->withAttachmentVoucher($voucher);
+                $vouchers[] = $voucher;
             }
         }
 
-        return $emailStamp;
+        if (0 === \count($vouchers)) {
+            return $parcel;
+        }
+
+        return $parcel->withStamp(new BackendAttachmentsStamp($vouchers));
     }
 }

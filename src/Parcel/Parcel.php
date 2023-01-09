@@ -89,10 +89,12 @@ final class Parcel
 
         if ($this->isSealed()) {
             $clone->stampsAfterSealing = $this->stampsAfterSealing
-                ->with($stamp);
+                ->with($stamp)
+            ;
         } else {
             $clone->stampsBeforeSealing = $this->stampsBeforeSealing
-                ->with($stamp);
+                ->with($stamp)
+            ;
         }
 
         return $clone;
