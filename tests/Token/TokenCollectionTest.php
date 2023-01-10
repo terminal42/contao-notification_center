@@ -33,5 +33,8 @@ class TokenCollectionTest extends TestCase
             'form_product' => 't-shirt',
             'form_other_color' => 'blue, orange',
         ], $tokenCollection->forSimpleTokenParser());
+
+        $this->assertSame('blue', $tokenCollection->getByName('form_color')->getParserValue());
+        $this->assertNull($tokenCollection->getByName('form_i_do_not_exist'));
     }
 }

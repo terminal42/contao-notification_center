@@ -41,6 +41,18 @@ class TokenCollection extends AbstractCollection
         return $data;
     }
 
+    public function getByName(string $name): TokenInterface|null
+    {
+        /** @var TokenInterface $token */
+        foreach ($this as $token) {
+            if ($token->getName() === $name) {
+                return $token;
+            }
+        }
+
+        return null;
+    }
+
     public function toArray(): array
     {
         $data = [];
