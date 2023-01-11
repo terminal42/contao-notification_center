@@ -53,6 +53,11 @@ class TokenCollection extends AbstractCollection
         return null;
     }
 
+    public function has(string $name): bool
+    {
+        return null !== $this->getByName($name);
+    }
+
     public function toArray(): array
     {
         $data = [];

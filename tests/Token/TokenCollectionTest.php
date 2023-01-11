@@ -18,6 +18,9 @@ class TokenCollectionTest extends TestCase
         $tokenCollection->add(new StringToken('t-shirt', 'form_product'));
         $tokenCollection->add(new ArrayToken(['blue', 'orange'], 'form_other_color'));
 
+        $this->assertTrue($tokenCollection->has('form_color'));
+        $this->assertFalse($tokenCollection->has('form_i_do_not_exist'));
+
         $this->assertSame([
             'form_color' => 'blue',
             'form_product' => 't-shirt',

@@ -11,6 +11,8 @@ interface TokenInterface
      */
     public function getName(): string;
 
+    public function getValue(): mixed;
+
     /**
      * Returns the value passed on to the simple token parser.
      * Thus, it has to be a string. Usually, the same value as in serialize()

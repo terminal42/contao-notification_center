@@ -6,9 +6,14 @@ namespace Terminal42\NotificationCenterBundle\Token;
 
 final class StringToken extends AbstractToken
 {
-    public function __construct(string $tokenData, string $tokenName)
+    public function __construct(string $tokenValue, string $tokenName)
     {
-        parent::__construct($tokenData, $tokenName);
+        parent::__construct($tokenValue, $tokenName);
+    }
+
+    public function getValue(): string
+    {
+        return $this->tokenValue;
     }
 
     public function getParserValue(): string

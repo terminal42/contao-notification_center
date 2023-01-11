@@ -11,6 +11,11 @@ class ArrayToken extends AbstractToken
         parent::__construct($tokenValue, $tokenName);
     }
 
+    public function getValue(): array
+    {
+        return $this->tokenValue;
+    }
+
     public function getParserValue(): string
     {
         $chunks = [];
