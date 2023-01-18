@@ -114,7 +114,7 @@ class NotificationCenter
         foreach ($rawTokens as $rawTokenName => $rawTokenValue) {
             foreach ($tokenDefinitions as $definition) {
                 if ($definition->matchesTokenName($rawTokenName)) {
-                    $token = $definition->createToken($rawTokenName, $rawTokenValue);
+                    $token = $definition->createToken($rawTokenValue, $rawTokenName);
                     $collection->add($token);
                 }
             }
