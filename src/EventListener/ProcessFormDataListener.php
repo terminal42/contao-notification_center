@@ -25,7 +25,7 @@ class ProcessFormDataListener
      */
     public function __invoke(array $submittedData, array $formData, array|null $files, array $labels, Form $form): void
     {
-        if (!isset($formData['nc_notification']) || !is_numeric($formData['nc_notification'])) {
+        if (!isset($formData['nc_notification']) || !is_numeric($formData['nc_notification']) || $formData['nc_notification'] <= 0) {
             return;
         }
 
