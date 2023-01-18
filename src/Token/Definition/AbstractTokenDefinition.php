@@ -47,8 +47,12 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         }
     }
 
-    protected function createTokenWithAllowedTypes(string $tokenName, mixed $tokenValue, array $allowedTypes): TokenInterface
+    protected function createTokenWithAllowedTypes(mixed $tokenValue, array $allowedTypes, string $tokenName = null): TokenInterface
     {
+        if (null === $tokenName) {
+            $tokenName = $this->getTokenName();
+        }
+
         if (\in_array('null', $allowedTypes, true) && null === $tokenValue) {
             return new StringToken('', $tokenName);
         }

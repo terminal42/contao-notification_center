@@ -52,7 +52,7 @@ class AdminEmailTokenSubscriber implements EventSubscriberInterface
         $pageModel->loadDetails();
 
         $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
-            $this->getTokenDefinition()->createToken('admin_email', $pageModel->adminEmail)
+            $this->getTokenDefinition()->createToken($pageModel->adminEmail)
         );
     }
 

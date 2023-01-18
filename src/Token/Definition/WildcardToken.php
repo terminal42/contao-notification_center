@@ -21,12 +21,16 @@ class WildcardToken extends AbstractTokenDefinition
         return (bool) preg_match('/^'.preg_quote(substr($this->getTokenName(), 0, -1), '/').'.+$/', $tokenName);
     }
 
-    public function createToken(string $tokenName, mixed $value): TokenInterface
+    public function createToken(mixed $value, string $tokenName = null): TokenInterface
     {
+        if (null === $tokenName) {
+            throw new \InvalidArgumentException('Must provide a concrete token name!');
+        }
+
         return $this->createTokenWithAllowedTypes(
-            $tokenName,
             $value,
-            ['null', 'string', 'array']
+            ['null', 'string', 'array'],
+            $tokenName,
         );
     }
 

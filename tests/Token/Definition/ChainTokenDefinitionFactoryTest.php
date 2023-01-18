@@ -43,7 +43,7 @@ class ChainTokenDefinitionFactoryTest extends TestCase
         $this->assertSame('form_iban', $definition->getTokenName());
         $this->assertSame('foobar', $definition->getTranslationKey());
 
-        $token = $definition->createToken('form_iban', 'CH...');
+        $token = $definition->createToken('CH...');
         $this->assertSame('i-would-call-service: iban-validator-service-id and return value: CH...', $token->getParserValue());
     }
 
@@ -62,8 +62,12 @@ class ChainTokenDefinitionFactoryTest extends TestCase
                 return 'iban-token-definition';
             }
 
-            public function createToken(string $tokenName, mixed $value): TokenInterface
+            public function createToken(mixed $value, string $tokenName = null): TokenInterface
             {
+                if (null === $tokenName) {
+                    $tokenName = $this->getTokenName();
+                }
+
                 return new StringToken('i-would-call-service: '.$this->serviceDummy.' and return value: '.$value, $tokenName);
             }
         };
