@@ -15,7 +15,7 @@ class TokenCollectionTest extends TestCase
     {
         $tokenCollection = new TokenCollection();
         $tokenCollection->add(new StringToken('blue', 'form_color'));
-        $tokenCollection->add(new StringToken('t-shirt', 'form_product'));
+        $tokenCollection->addToken(new StringToken('t-shirt', 'form_product'));
         $tokenCollection->add(new ArrayToken(['blue', 'orange'], 'form_other_color'));
 
         $this->assertTrue($tokenCollection->has('form_color'));

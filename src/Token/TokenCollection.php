@@ -27,6 +27,16 @@ class TokenCollection extends AbstractCollection
     }
 
     /**
+     * Provides a fluent interface alternative to add() with a type hint.
+     */
+    public function addToken(TokenInterface $token): self
+    {
+        $this->add($token);
+
+        return $this;
+    }
+
+    /**
      * @return array<string, string>
      */
     public function forSimpleTokenParser(): array
