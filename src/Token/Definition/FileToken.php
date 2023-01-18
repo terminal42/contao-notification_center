@@ -15,12 +15,12 @@ class FileToken extends AbstractTokenDefinition
         return self::DEFINITION_NAME;
     }
 
-    public function createToken(string $tokenName, mixed $value): TokenInterface
+    public function createToken(mixed $value, string $tokenName = null): TokenInterface
     {
         return $this->createTokenWithAllowedTypes(
-            $tokenName,
             $value,
-            ['null', 'string']
+            ['null', 'string'],
+            $tokenName,
         );
     }
 }

@@ -40,9 +40,12 @@ interface TokenDefinitionInterface
 
     /**
      * This method is responsible for actually creating a concrete token (NOT the definition) from a
-     * value. E.g. turning "form_email" and "foobar@example.com" into a StringToken instance.
+     * value. E.g. turning "foobar@example.com" into a StringToken instance.
+     * By default, the tokenName is the same as defined on the token definition (also @see matchesTokenName() as this
+     * is the default case). However, in cases like the WildcardToken where the definition itself uses a placeholder, the
+     * concrete token name has to be provided. But really that is up to the token definition.
      *
      * @throws InvalidTokenException
      */
-    public function createToken(string $tokenName, mixed $value): TokenInterface;
+    public function createToken(mixed $value, string $tokenName = null): TokenInterface;
 }
