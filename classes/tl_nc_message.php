@@ -96,7 +96,7 @@ class tl_nc_message extends \Backend
      */
     public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
     {
-        if (strlen(\Input::get('tid'))) {
+        if (!empty(\Input::get('tid'))) {
             $this->toggleVisibility(\Input::get('tid'), (\Input::get('state') == 1));
 
             if (\Environment::get('isAjaxRequest')) {
