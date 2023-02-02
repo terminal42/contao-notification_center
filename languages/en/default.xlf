@@ -3,7 +3,7 @@
   <file datatype="php" date="2018-10-22T10:57:28+02:00" original="default" source-language="en">
     <body>
       <trans-unit id="MSC.notification_center.warn_legacy_smtp">
-        <source>[Notification Center]: Using custom SMTP settings has been changed in Contao 4.10. Please visit &lt;a href=&quot;https://docs.contao.org/manual/en/system/settings/#different-e-mail-configurations-and-sender-addresses&quot;&gt;the Contao documentation&lt;/a&gt; to learn how to define SMTP settings. Then, please update all email gateways that need this feature and disable "Override SMTP settings".</source>
+        <source>[Notification Center]: Using custom SMTP settings has been changed in Contao 4.10. Please visit &lt;a href=&quot;https://docs.contao.org/manual/en/system/settings/#different-e-mail-configurations-and-sender-addresses&quot; style=&quot;text-decoration:underline&quot;&gt;the Contao documentation&lt;/a&gt; to learn how to define SMTP settings. Then, please update all email gateways that need this feature and disable "Override SMTP settings".</source>
       </trans-unit>
     </body>
   </file>
