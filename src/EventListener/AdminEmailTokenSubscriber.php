@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\EventListener;
 
+use Contao\Config;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -16,7 +18,7 @@ use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterfac
 
 class AdminEmailTokenSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private RequestStack $requestStack, private TokenDefinitionFactoryInterface $tokenDefinitionFactory)
+    public function __construct(private RequestStack $requestStack, private TokenDefinitionFactoryInterface $tokenDefinitionFactory, private ContaoFramework $contaoFramework)
     {
     }
 
@@ -39,21 +41,43 @@ class AdminEmailTokenSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (null === ($request = $this->requestStack->getCurrentRequest())) {
+        $email = $this->getEmailFromPage();
+
+        if (null === $email) {
+            $email = $this->getEmailFromConfig();
+        }
+
+        if (null === $email) {
             return;
+        }
+
+        $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
+            $this->getTokenDefinition()->createToken($email)
+        );
+    }
+
+    private function getEmailFromPage(): string|null
+    {
+        if (null === ($request = $this->requestStack->getCurrentRequest())) {
+            return null;
         }
 
         $pageModel = $request->attributes->get('pageModel');
 
         if (!$pageModel instanceof PageModel) {
-            return;
+            return null;
         }
 
         $pageModel->loadDetails();
 
-        $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
-            $this->getTokenDefinition()->createToken($pageModel->adminEmail)
-        );
+        return $pageModel->adminEmail ?: null;
+    }
+
+    private function getEmailFromConfig(): string|null
+    {
+        $email = $this->contaoFramework->getAdapter(Config::class)->get('adminEmail');
+
+        return !\is_string($email) ? null : $email;
     }
 
     private function getTokenDefinition(): TokenDefinitionInterface

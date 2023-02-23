@@ -92,6 +92,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('request_stack'),
             service(TokenDefinitionFactoryInterface::class),
+            service('contao_framework'),
         ])
     ;
 
