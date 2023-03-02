@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle;
 
 use Contao\CoreBundle\Util\LocaleUtil;
-use Contao\PageModel;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
@@ -298,23 +298,9 @@ class NotificationCenter
 
         $stamps = $stamps->with(new TokenCollectionStamp($tokens));
 
-        if (
-            null === $locale
-            && ($request = $this->requestStack->getCurrentRequest())
-            && ($pageModel = $request->attributes->get('pageModel'))
-            && $pageModel instanceof PageModel
-        ) {
-            // We do not want to use $request->getLocale() here because this is never empty. If we're not on a Contao
-            // page, $request->getLocale() would return the configured default locale which in Symfony always falls back
-            // to English. But we want $locale to remain null in case we really have no Contao page language so that our
-            // own fallback mechanism can kick in (loading the language marked as fallback by the user).
-            $pageModel->loadDetails();
-
-            if ($pageModel->language) {
-                $stamps = $stamps
-                    ->with(new LocaleStamp(LocaleUtil::formatAsLocale($pageModel->language)))
-                ;
-            }
+        if (null === $locale && ($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
+            $stamps = $stamps
+                ->with(new LocaleStamp(LocaleUtil::formatAsLocale($request->getLocale())));
         }
 
         return $stamps;
