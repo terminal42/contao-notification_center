@@ -24,6 +24,7 @@
     },
     "require": {
         "php": "^8.1",
+        "composer-plugin-api": "^2.0",
         "contao/core-bundle": "^4.13 || ^5.0",
         "symfony/http-kernel": "^5.4 || ^6.0",
         "terminal42/dcawizard": "^2.6",
@@ -61,7 +62,8 @@
         "allow-plugins": {
             "contao-components/installer": true,
             "contao/manager-plugin": true,
-            "contao-community-alliance/composer-plugin": true
+            "contao-community-alliance/composer-plugin": true,
+            "php-http/discovery": false
         }
     },
     "minimum-stability": "dev",

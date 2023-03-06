@@ -19,6 +19,7 @@ use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\Noti
 use Terminal42\NotificationCenterBundle\EventListener\DbafsMetadataSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\DoctrineSchemaListener;
+use Terminal42\NotificationCenterBundle\EventListener\NotificationCenterProListener;
 use Terminal42\NotificationCenterBundle\EventListener\NotificationTypeForModuleConfigSubscriber;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
 use Terminal42\NotificationCenterBundle\EventListener\RegistrationListener;
@@ -81,6 +82,8 @@ return static function (ContainerConfigurator $container): void {
             service(NotificationTypeRegistry::class),
         ])
     ;
+
+    $services->set(NotificationCenterProListener::class);
 
     $services->set(BackendMenuSubscriber::class)
         ->args([

@@ -1,3 +1,11 @@
 #tl_navigation .group-notification_center {
-  background: url(icon.svg) 3px 2px no-repeat;
+  background: url(bell.svg) 3px 2px no-repeat;
+}
+
+.header_nc_pro {
+  padding: 3px 0 3px 19px;
+  background-position: left center;
+  background-repeat: no-repeat;
+  margin-left: 15px;
+  background-image: url(award.svg);
 }
