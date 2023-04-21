@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer;
 
 use Symfony\Component\Mime\Email;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
+use Terminal42\NotificationCenterBundle\Util\Email as EmailUtil;
 
 class EmailStamp implements StampInterface
 {
@@ -103,7 +104,7 @@ class EmailStamp implements StampInterface
         }
 
         if ($this->to) {
-            $email->to($this->to);
+            $email->to(...EmailUtil::splitEmailAddresses($this->to));
         }
 
         if ($this->subject) {
@@ -111,11 +112,11 @@ class EmailStamp implements StampInterface
         }
 
         if ($this->cc) {
-            $email->cc($this->cc);
+            $email->cc(...EmailUtil::splitEmailAddresses($this->cc));
         }
 
         if ($this->bcc) {
-            $email->bcc($this->bcc);
+            $email->bcc(...EmailUtil::splitEmailAddresses($this->bcc));
         }
 
         if ($this->replyTo) {
