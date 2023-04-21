@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\NotificationCenterBundle\EventListener;
 
 use Composer\InstalledVersions;
@@ -10,7 +12,7 @@ class NotificationCenterProListener
 {
     public function __invoke(string $table): void
     {
-        if ($table !== 'tl_nc_notification' || InstalledVersions::isInstalled('terminal42/contao-notification-center-pro')) {
+        if ('tl_nc_notification' !== $table || InstalledVersions::isInstalled('terminal42/contao-notification-center-pro')) {
             // return;
         }
 

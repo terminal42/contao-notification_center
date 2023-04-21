@@ -11,7 +11,6 @@ use Contao\FrontendTemplate;
 use Contao\StringUtil;
 use Contao\Validator;
 use Soundasleep\Html2Text;
-use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Uid\Uuid;

@@ -300,7 +300,8 @@ class NotificationCenter
 
         if (null === $locale && ($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
             $stamps = $stamps
-                ->with(new LocaleStamp(LocaleUtil::formatAsLocale($request->getLocale())));
+                ->with(new LocaleStamp(LocaleUtil::formatAsLocale($request->getLocale())))
+            ;
         }
 
         return $stamps;
