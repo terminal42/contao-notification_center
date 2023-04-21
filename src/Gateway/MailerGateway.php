@@ -40,13 +40,11 @@ class MailerGateway extends AbstractGateway
 
     public function doSendParcel(Parcel $parcel): Receipt
     {
-        $email = $this->createEmail($parcel);
-
         try {
-            $this->mailer->send($email);
+            $this->mailer->send($this->createEmail($parcel));
 
             return Receipt::createForSuccessfulDelivery($parcel);
-        } catch (TransportExceptionInterface $e) {
+        } catch (\Throwable $e) {
             return Receipt::createForUnsuccessfulDelivery(
                 $parcel,
                 CouldNotDeliverParcelException::becauseOfGatewayException(
