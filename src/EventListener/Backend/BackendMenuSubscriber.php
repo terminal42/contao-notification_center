@@ -35,9 +35,11 @@ class BackendMenuSubscriber implements EventSubscriberInterface
             'terminal42_notification_center'
         ), '/');
 
-        // Moves the NC to second position
+        // Moves the NC after "content" (or 1 if that does not exist)
+        $targetPosition = array_search('content', array_keys($tree->getChildren()), true);
+        $targetPosition = false === $targetPosition ? 1 : $targetPosition + 1;
         $manipulator = new MenuManipulator();
-        $manipulator->moveToPosition($notificationCenter, 1);
+        $manipulator->moveToPosition($notificationCenter, $targetPosition);
     }
 
     public static function getSubscribedEvents(): array
