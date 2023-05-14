@@ -131,11 +131,6 @@
         <target>Mitglied: Aktivierung</target>
         
       </trans-unit>
-      <trans-unit id="tl_nc_notification.type.member_close.0">
-        <source>Member closing</source>
-        <target>Mitglied: Schließung</target>
-        
-      </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_registration.0">
         <source>Member registration</source>
         <target>Mitglied: Registrierung</target>

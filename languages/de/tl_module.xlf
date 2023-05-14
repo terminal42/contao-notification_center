@@ -21,16 +21,6 @@
         <target>Bitte wählen Sie eine Aktivierungsbenachrichtigung.</target>
         
       </trans-unit>
-      <trans-unit id="tl_module.nc_close_notification.0">
-        <source>Close notification</source>
-        <target>Schließungsbenachrichtigung</target>
-        
-      </trans-unit>
-      <trans-unit id="tl_module.nc_close_notification.1">
-        <source>Please select a close notification.</source>
-        <target>Bitte wählen Sie eine Schließungsbenachrichtigung.</target>
-        
-      </trans-unit>
       <trans-unit id="tl_module.notification_legend">
         <source>Notification</source>
         <target>Benachrichtigung</target>
