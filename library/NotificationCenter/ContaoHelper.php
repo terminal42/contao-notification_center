@@ -98,7 +98,8 @@ class ContaoHelper extends Controller
         if (!$objModule->nc_close_notification) {
             return;
         }
-        $objMember = \MemberModel::findByPk($objMember);
+
+        $objMember = MemberModel::findByPk($objMember);
         $arrTokens['member_close_mode'] = $mode;
 
         $this->sendNotifications($objModule->nc_close_notification, $objMember->row(), $objModule, $arrTokens);
