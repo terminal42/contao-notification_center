@@ -13,6 +13,7 @@
  * Palettes
  */
 $GLOBALS['TL_DCA']['tl_module']['palettes']['registration'] = str_replace('reg_activate;', 'reg_activate,reg_jumpTo,nc_notification,nc_activation_notification;', $GLOBALS['TL_DCA']['tl_module']['palettes']['registration']);
+$GLOBALS['TL_DCA']['tl_module']['palettes']['closeAccount'] = str_replace('reg_close', 'reg_close,nc_close_notification', $GLOBALS['TL_DCA']['tl_module']['palettes']['closeAccount']);
 // Move the "reg_jumpTo" field from the sub palette into the main palette. See #166
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['reg_activate'] = str_replace('reg_jumpTo,', '', $GLOBALS['TL_DCA']['tl_module']['subpalettes']['reg_activate']);
 
@@ -44,6 +45,8 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'] = array
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification'] = $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'];
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification']['label'] = &$GLOBALS['TL_LANG']['tl_module']['nc_activation_notification'];
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_close_notification'] = $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification'];
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_close_notification']['label'] = &$GLOBALS['TL_LANG']['tl_module']['nc_close_notification'];
 
 /**
  * Notification choices
@@ -54,3 +57,4 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotifica
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['newsletterActivateNotificationCenter'] = array('newsletter_activate');
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['ncNotificationChoices']['newsletterUnsubscribeNotificationCenter'] = array('newsletter_unsubscribe');
 $GLOBALS['TL_DCA']['tl_module']['fields']['nc_activation_notification']['eval']['ncNotificationChoices']['registration'] = array('member_activation');
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_close_notification']['eval']['ncNotificationChoices']['registration'] = array('member_close');

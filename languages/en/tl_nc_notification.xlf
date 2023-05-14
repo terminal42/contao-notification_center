@@ -106,6 +106,10 @@
         <source>Member activation</source>
         <target>Member activation</target>
       </trans-unit>
+      <trans-unit id="tl_nc_notification.type.member_close.0">
+        <source>Member closing</source>
+        <target>Member closing</target>
+      </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_registration.0">
         <source>Member registration</source>
         <target>Member registration</target>

@@ -18,6 +18,14 @@
         <source>Please select an activation notification.</source>
         <target>Please select an activation notification.</target>
       </trans-unit>
+      <trans-unit id="tl_module.nc_close_notification.0">
+        <source>Close notification</source>
+        <target>Close notification</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_close_notification.1">
+        <source>Please select a close notification.</source>
+        <target>Please select a close notification.</target>
+      </trans-unit>
       <trans-unit id="tl_module.notification_legend">
         <source>Notification</source>
         <target>Notification</target>

@@ -88,6 +88,23 @@ class ContaoHelper extends Controller
     }
 
     /**
+     * Send a activation e-mail
+     *
+     * @param object
+     * @param object
+     */
+    public function sendCloseEmail($objMember, $mode, &$objModule)
+    {
+        if (!$objModule->nc_close_notification) {
+            return;
+        }
+        $objMember = \MemberModel::findByPk($objMember);
+        $arrTokens['member_close_mode'] = $mode;
+
+        $this->sendNotifications($objModule->nc_close_notification, $objMember->row(), $objModule, $arrTokens);
+    }
+
+    /**
      * Send the personal data change e-mail
      *
      * @param object $objUser
