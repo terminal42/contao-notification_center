@@ -58,6 +58,10 @@
         <source>Output of template "%s"</source>
         <target>Output of template "%s"</target>
       </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.close_mode">
+        <source>The close account mode. Either 'close_deactivate' or 'close_delete'.</source>
+        <target>The close account mode. Either 'close_deactivate' or 'close_delete'.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
