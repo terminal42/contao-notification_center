@@ -100,7 +100,7 @@ class ContaoHelper extends Controller
         }
 
         $objMember = MemberModel::findByPk($objMember);
-        $arrTokens['member_close_mode'] = $mode;
+        $arrTokens['close_mode'] = $mode;
 
         $this->sendNotifications($objModule->nc_close_notification, $objMember->row(), $objModule, $arrTokens);
     }

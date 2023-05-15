@@ -131,9 +131,9 @@ $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'] = array_merge_recursive(
              ),
              'member_close' => array(
                  'recipients'           => array('member_email', 'admin_email'),
-                 'email_subject'        => array('domain', 'member_*', 'admin_email'),
-                 'email_text'           => array('domain', 'member_*', 'admin_email'),
-                 'email_html'           => array('domain', 'member_*', 'admin_email'),
+                 'email_subject'        => array('domain', 'member_*', 'admin_email', 'close_mode'),
+                 'email_text'           => array('domain', 'member_*', 'admin_email', 'close_mode'),
+                 'email_html'           => array('domain', 'member_*', 'admin_email', 'close_mode'),
                  'file_name'            => array('domain', 'member_*', 'admin_email'),
                  'file_content'         => array('domain', 'member_*', 'admin_email'),
                  'email_sender_name'    => array('admin_email', 'form_*'),
