@@ -25,7 +25,7 @@
     "require": {
         "php": "^8.1",
         "composer-plugin-api": "^2.0",
-        "contao/core-bundle": "^4.13 || ^5.0",
+        "contao/core-bundle": "^4.13.17 || ^5.1.1",
         "symfony/http-kernel": "^5.4 || ^6.0",
         "terminal42/dcawizard": "^2.6",
         "symfony/asset": "^5.4 || ^6.0",
