@@ -51,3 +51,19 @@ $this: '.autosuggester';
 #{$this}-box-list-item-active #{$this}-box-list-item-value {
     color: #8ab858;
 }
+
+html[data-color-scheme="dark"] {
+    #{$this}-box {
+        background-color: #151619;
+        border-color: #3a3d40;
+        box-shadow: 0 3px 6px #3a3d40;
+    }
+
+    #{$this}-box-list-item {
+        border-color: #3a3d40;
+    }
+
+    #{$this}-box-list-item-active {
+        background-color: #272930;
+    }
+}
