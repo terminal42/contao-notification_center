@@ -23,7 +23,6 @@ class NotificationCenterProListener
 
     public function buttonCallback(): string
     {
-        // TODO: link!
-        return '<a href="https://extensions.terminal42.ch/TODO-LINK" title="Notification Center Pro" class="header_nc_pro" target="_blank" rel="noreferrer noopener">Notification Center Pro</a>';
+        return '<a href="https://extensions.terminal42.ch/p/nc-pro" title="Notification Center Pro" class="header_nc_pro" target="_blank" rel="noreferrer noopener">Notification Center Pro</a>';
     }
 }
