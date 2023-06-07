@@ -31,9 +31,12 @@ class FileUploadNormalizer
 
         foreach ($files as $k => $file) {
             switch (true) {
-                case $this->isAlreadyInCorrectFormat($file):
+                case $this->hasRequiredKeys($file):
                     $file['stream'] = $this->fopen($file['tmp_name']);
                     $standardizedPerKey[$k][] = $file;
+                    break;
+                case $this->isPhpUpload($file):
+                    $standardizedPerKey[$k][] = $this->fromPhpUpload($file);
                     break;
                 case \is_array($file):
                     foreach ($this->normalize($file) as $nestedFiles) {
@@ -86,7 +89,7 @@ class FileUploadNormalizer
         ];
     }
 
-    private function isAlreadyInCorrectFormat(mixed $file): bool
+    private function hasRequiredKeys(mixed $file): bool
     {
         if (!\is_array($file)) {
             return false;
@@ -143,5 +146,28 @@ class FileUploadNormalizer
         }
 
         return $handle;
+    }
+
+    private function isPhpUpload(mixed $file): bool
+    {
+        if (!\is_array($file) || !isset($file['tmp_name'])) {
+            return false;
+        }
+
+        return is_uploaded_file($file['tmp_name']);
+    }
+
+    private function fromPhpUpload(array $file): array
+    {
+        return [
+            'name' => $file['name'],
+            'type' => $file['type'],
+            'tmp_name' => $file['tmp_name'],
+            'error' => 0,
+            'size' => $file['size'],
+            'uploaded' => true,
+            'uuid' => null,
+            'stream' => $this->fopen($file['tmp_name']),
+        ];
     }
 }
