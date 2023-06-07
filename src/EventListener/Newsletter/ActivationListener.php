@@ -7,6 +7,7 @@ namespace Terminal42\NotificationCenterBundle\EventListener\Newsletter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Exception\RedirectResponseException;
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\Module;
 use Contao\ModuleSubscribe;
 use Contao\NewsletterChannelModel;
 use Contao\PageModel;
@@ -19,11 +20,8 @@ class ActivationListener
     {
     }
 
-    public function __invoke(string $email, array $recipientIds, array $channelIds): void
+    public function __invoke(string $email, array $recipientIds, array $channelIds, Module $module): void
     {
-        // TODO: Use the argument once https://github.com/contao/contao/pull/5548 is merged.
-        $module = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2)[1]['object'] ?? null;
-
         if (!$module instanceof ModuleSubscribe) {
             return;
         }
