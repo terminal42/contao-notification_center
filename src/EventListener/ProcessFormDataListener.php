@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\EventListener;
 
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Form;
+use Contao\StringUtil;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
@@ -37,7 +38,7 @@ class ProcessFormDataListener
         $files = !\is_array($files) ? [] : $files; // In Contao 4.13, $files can be null
 
         foreach ($submittedData as $k => $v) {
-            $label = $labels[$k] ?? ucfirst($k);
+            $label = isset($labels[$k]) && \is_string($labels[$k]) ? StringUtil::decodeEntities($labels[$k]) : ucfirst($k);
 
             $tokens['formlabel_'.$k] = $label;
             $tokens['form_'.$k] = $v;
@@ -50,7 +51,7 @@ class ProcessFormDataListener
         }
 
         foreach ($formData as $k => $v) {
-            $tokens['formconfig_'.$k] = $v;
+            $tokens['formconfig_'.$k] = \is_string($v) ? StringUtil::decodeEntities($v) : $v;
         }
 
         $tokens['raw_data'] = implode("\n", $rawData);
