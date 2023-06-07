@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2">
+  <file datatype="php" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_nc_gateway.title.0">
+        <source>Title</source>
+        <target>Titel</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.title.1">
+        <source>Please enter a title for this gateway.</source>
+        <target>Bitte geben Sie einen Titel für dieses Gateway ein.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.type.0">
+        <source>Type</source>
+        <target>Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.type.1">
+        <source>Please select a type for this gateway.</source>
+        <target>Bitte wählen Sie einen Typen für dieses Gateway.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.0">
+        <source>Mailer transport</source>
+        <target>Mailer-Transport</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.mailerTransport.1">
+        <source>Here you can override the mailer transport used to send e-mails.</source>
+        <target>Hier können Sie den Mailer-Transport überschreiben, der für den E-Mail-Versand verwendet wird.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.type.mailer">
+        <source>Contao Mailer</source>
+        <target>Contao-Mailer</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.new.0">
+        <source>New gateway</source>
+        <target>Neues Gateway</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.new.1">
+        <source>Create a new gateway.</source>
+        <target>Neues Gateway anlegen.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.edit.0">
+        <source>Edit gateway</source>
+        <target>Gateway editieren</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.edit.1">
+        <source>Edit gateway ID %s.</source>
+        <target>Editieren Sie das Gateway ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.copy.0">
+        <source>Copy gateway</source>
+        <target>Gateway duplizieren</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.copy.1">
+        <source>Copy gateway ID %s.</source>
+        <target>Duplizieren Sie das Gateway ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.delete.0">
+        <source>Delete gateway</source>
+        <target>Gateway löschen</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.delete.1">
+        <source>Delete gateway ID %s.</source>
+        <target>Löschen Sie das Gateway ID %s</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.show.0">
+        <source>Gateway details</source>
+        <target>Gateway-Details</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.show.1">
+        <source>Show details for gateway ID %s.</source>
+        <target>Details des Gateways ID %s anzeigen.</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.title_legend">
+        <source>Title &amp; type</source>
+        <target>Titel &amp; Typ</target>
+      </trans-unit>
+      <trans-unit id="tl_nc_gateway.gateway_legend">
+        <source>Gateway settings</source>
+        <target>Gateway-Einstellungen</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

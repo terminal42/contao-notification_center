@@ -1,114 +1,114 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2">
-  <file datatype="php" source-language="en" target-language="en">
+  <file datatype="php" source-language="en" target-language="de">
     <body>
       <trans-unit id="tl_nc_notification.title.0">
         <source>Title</source>
-        <target>Title</target>
+        <target>Titel</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.title.1">
         <source>Please enter a title for this notification.</source>
-        <target>Please enter a title for this notification.</target>
+        <target>Bitte geben Sie einen Namen für diese Benachrichtigung ein.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.0">
         <source>Type</source>
-        <target>Type</target>
+        <target>Benachrichtigungstyp</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.1">
         <source>Please select a type for this notification.</source>
-        <target>Please select a type for this notification.</target>
+        <target>Bitte wählen Sie einen Benachrichtigungstypen aus.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.new.0">
         <source>New notification</source>
-        <target>New notification</target>
+        <target>Neue Benachrichtigung</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.new.1">
         <source>Create a new notification.</source>
-        <target>Create a new notification.</target>
+        <target>Neue Benachrichtigung erstellen.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.edit.0">
         <source>Edit notification</source>
-        <target>Edit notification</target>
+        <target>Benachrichtigung editieren</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.edit.1">
         <source>Edit notification ID %s.</source>
-        <target>Edit notification ID %s.</target>
+        <target>Benachrichtigung ID %s editieren.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.children.0">
         <source>Manage notifications</source>
-        <target>Manage notifications</target>
+        <target>Nachrichten bearbeiten</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.children.1">
         <source>Manage messages for notification ID %s.</source>
-        <target>Manage messages for notification ID %s.</target>
+        <target>Nachrichten der Benachrichtigung ID %s editieren.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.copy.0">
         <source>Copy notification</source>
-        <target>Copy notification</target>
+        <target>Benachrichtigung kopieren</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.copy.1">
         <source>Copy notification ID %s.</source>
-        <target>Copy notification ID %s.</target>
+        <target>Benachrichtigung ID %s kopieren.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.delete.0">
         <source>Delete notification</source>
-        <target>Delete notification</target>
+        <target>Benachrichtigung löschen</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.delete.1">
         <source>Delete notification ID %s.</source>
-        <target>Delete notification ID %s.</target>
+        <target>Benachrichtigung ID %s löschen.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.show.0">
         <source>Notification details</source>
-        <target>Notification details</target>
+        <target>Benachrichtigungsdetails</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.show.1">
         <source>Show details for notification ID %s.</source>
-        <target>Show details for notification ID %s.</target>
+        <target>Details für Benachrichtigung ID %s anzeigen.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.title_legend">
         <source>Title &amp; type</source>
-        <target>Title &amp; type</target>
+        <target>Titel &amp; Benachrichtigungstyp</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.config_legend">
         <source>Configuration</source>
-        <target>Configuration</target>
+        <target>Konfiguration</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.core_form.0">
         <source>Contao form generator submission</source>
-        <target>Contao form generator submission</target>
+        <target>Contao Formulargenerator-Übertragungn</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.core_form.1">
         <source>This notification type can be sent when the form is submitted.</source>
-        <target>This notification type can be sent when the form is submitted.</target>
+        <target>Dieser Benachrichtigungstyp wird nach erfolgreicher Formularübertragung versendet.</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_password.0">
         <source>Contao member lost password</source>
-        <target>Contao member lost password</target>
+        <target>Mitglied: Passwort vergessen</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_activation.0">
         <source>Contao member activation</source>
-        <target>Contao member activation</target>
+        <target>Mitglied: Aktivierung</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_registration.0">
         <source>Contao member registration</source>
-        <target>Contao member registration</target>
+        <target>Mitglied: Registrierung</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.member_personaldata.0">
         <source>Contao member personal data</source>
-        <target>Contao member personal data</target>
+        <target>Mitglied: Persönliche Daten</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.newsletter_subscribe.0">
         <source>Contao newsletter subscribed</source>
-        <target>Contao newsletter subscribed</target>
+        <target>Newsletter abonniert</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.newsletter_activate.0">
         <source>Contao newsletter activation</source>
-        <target>Contao newsletter activation</target>
+        <target>Newsletter aktiviert</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.newsletter_unsubscribe.0">
         <source>Contao newsletter unsubscribed</source>
-        <target>Contao newsletter unsubscribed</target>
+        <target>Newsletter gekündigt</target>
       </trans-unit>
     </body>
   </file>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2">
+  <file datatype="php" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_module.nc_notification.0">
+        <source>Notification</source>
+        <target>Benachrichtigung</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_notification.1">
+        <source>Please select a notification.</source>
+        <target>Bitte wählen Sie eine Benachrichtigung.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_registration_auto_activate.0">
+        <source>Enable member self-activation (double opt-in)</source>
+        <target>Ermöglichen Sie die Selbstaktivierung der Mitglieder (Double Opt-In)</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_registration_auto_activate.1">
+        <source>By default, new members are disabled and have to be enabled by an administrator. If you want them to be able to self-activate their account, use this checkbox.</source>
+        <target>Standardmässig sind neue Mitglieder deaktiviert und müssen von einem Administrator aktiviert werden. Wenn Sie möchten, dass sie ihr Konto selbst aktivieren können, aktivieren Sie dieses Kontrollkästchen.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_activation_notification.0">
+        <source>Activation notification</source>
+        <target>Aktivierungsbenachrichtigung</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_activation_notification.1">
+        <source>This notification is sent after the activation process (double opt-in) was completed.</source>
+        <target>Diese Benachrichtigung wird nach Abschluss des Aktivierungsprozesses (Double Opt-in) versandt.</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_newsletter_activation_jumpTo.0">
+        <source>Redirect page (successful activation)</source>
+        <target>Weiterleitungsseite (erfolgreiche Aktivierung)</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_newsletter_activation_jumpTo.1">
+        <source>Allows you to configure a different redirect page after successful activation.</source>
+        <target>Ermöglicht es Ihnen, eine andere Weiterleitungsseite nach erfolgreicher Aktivierung zu konfigurieren.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

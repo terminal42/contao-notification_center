@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2">
+  <file datatype="php" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="MOD.notification_center">
+        <source>Notification Center</source>
+        <target>Notification Center</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_notifications.0">
+        <source>Notifications</source>
+        <target>Benachrichtigungen</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_notifications.1">
+        <source>Manage notifications.</source>
+        <target>Benachrichtigungen verwalten.</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_gateways.0">
+        <source>Gateways</source>
+        <target>Gateways</target>
+      </trans-unit>
+      <trans-unit id="MOD.nc_gateways.1">
+        <source>Manage gateways</source>
+        <target>Gateways verwalten</target>
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.0">
+        <source>Lost password (Notification Center)</source>
+        <target>Passwort vergessen (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.1">
+        <source>Generates a form to request a new password and sends the notification using the Notification Center.</source>
+        <target>Generiert ein Formular um ein neues Passwort anzufordern und versendet anschließend die Benachrichtigung über das Notification Center.</target>
+      </trans-unit>
+      <trans-unit id="FMD.registrationNotificationCenter.0">
+        <source>Registration (Notification Center)</source>
+        <target>Registrierung (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.lostPasswordNotificationCenter.1">
+        <source>Generates a registration form and sends the notifications using the Notification Center.</source>
+        <target>Erzeugt ein Registrierungsformular und sendet die Benachrichtigungen über das Notification Center.</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.0">
+        <source>Subscribe (Notification Center)</source>
+        <target>Abonnieren (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterSubscribeNotificationCenter.1">
+        <source>Generates a form to subscribe to one or more channels and sends the notification using the Notification Center.</source>
+        <target>Erzeugt ein Formular zum Abonnieren von Verteilern, welches eine Benachrichtigung senden kann.</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.0">
+        <source>Unsubscribe (Notification Center)</source>
+        <target>Kündigen (Notification Center)</target>
+      </trans-unit>
+      <trans-unit id="FMD.newsletterUnsubscribeNotificationCenter.1">
+        <source>Generates a form to unsubscribe from one or more channels and sends the notification using the Notification Center.</source>
+        <target>Erzeugt ein Formular zum Kündigen von Abonnements, welches eine Benachrichtigung senden kann.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

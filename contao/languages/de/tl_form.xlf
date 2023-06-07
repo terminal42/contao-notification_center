@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2">
+  <file datatype="php" source-language="en" target-language="de">
+    <body>
+      <trans-unit id="tl_form.nc_notification.0">
+        <source>Notification</source>
+        <target>Benachrichtigung</target>
+      </trans-unit>
+      <trans-unit id="tl_form.nc_notification.1">
+        <source>Please select a notification.</source>
+        <target>Bitte wählen Sie eine Benachrichtigung aus.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
