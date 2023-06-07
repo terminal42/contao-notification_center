@@ -28,6 +28,7 @@ use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
+use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -111,6 +112,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ProcessFormDataListener::class)
         ->args([
             service(NotificationCenter::class),
+            service(FileUploadNormalizer::class),
         ])
     ;
 

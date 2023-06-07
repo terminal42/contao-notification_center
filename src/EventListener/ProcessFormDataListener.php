@@ -9,11 +9,12 @@ use Contao\Form;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
+use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 #[AsHook('processFormData')]
 class ProcessFormDataListener
 {
-    public function __construct(private NotificationCenter $notificationCenter)
+    public function __construct(private NotificationCenter $notificationCenter, private FileUploadNormalizer $fileUploadNormalizer)
     {
     }
 
@@ -40,6 +41,7 @@ class ProcessFormDataListener
 
             $tokens['formlabel_'.$k] = $label;
             $tokens['form_'.$k] = $v;
+
             $rawData[] = $label.': '.(\is_array($v) ? implode(', ', $v) : $v);
 
             if (\is_array($v) || ('' !== (string) $v)) {
@@ -54,13 +56,19 @@ class ProcessFormDataListener
         $tokens['raw_data'] = implode("\n", $rawData);
         $tokens['raw_data_filled'] = implode("\n", $rawDataFilled);
 
-        foreach ($files as $k => $file) {
-            $voucher = $this->notificationCenter->getBulkyGoodsStorage()->store(
-                FileItem::fromPath($file['tmp_name'], $file['name'], $file['type'], $file['size'])
-            );
+        foreach ($this->fileUploadNormalizer->normalize($files) as $k => $files) {
+            $vouchers = [];
 
-            $tokens['form_'.$k] = $voucher;
-            $bulkyItemVouchers[] = $voucher;
+            foreach ($files as $file) {
+                $fileItem = \is_resource($file['stream']) ?
+                    FileItem::fromStream($file['stream'], $file['name'], $file['type'], $file['size']) :
+                    FileItem::fromPath($file['tmp_name'], $file['name'], $file['type'], $file['size']);
+
+                $vouchers[] = $this->notificationCenter->getBulkyGoodsStorage()->store($fileItem);
+            }
+
+            $tokens['form_'.$k] = implode(',', $vouchers);
+            $bulkyItemVouchers = array_merge($bulkyItemVouchers, $vouchers);
         }
 
         // Make sure we don't pass any objects as tokens

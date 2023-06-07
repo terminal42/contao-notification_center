@@ -186,10 +186,12 @@ class MailerGateway extends AbstractGateway
         $tokens = StringUtil::trimsplit(',', $languageConfig->getString('attachment_tokens'));
 
         foreach ($tokens as $token) {
-            $voucher = $this->replaceTokens($parcel, $token);
+            $vouchers = StringUtil::trimsplit(',', $this->replaceTokens($parcel, $token));
 
-            if ($this->isBulkyItemVoucher($parcel, $voucher)) {
-                $emailStamp = $emailStamp->withAttachmentVoucher($voucher);
+            foreach ($vouchers as $voucher) {
+                if ($this->isBulkyItemVoucher($parcel, $voucher)) {
+                    $emailStamp = $emailStamp->withAttachmentVoucher($voucher);
+                }
             }
         }
 
@@ -249,7 +251,7 @@ class MailerGateway extends AbstractGateway
             }
 
             $voucher = $this->getNotificationCenter()?->getBulkyGoodsStorage()->store(
-                new FileItem(
+                FileItem::fromStream(
                     $this->filesystem->readStream($uuidObject),
                     $item->getName(),
                     $item->getMimeType(),

@@ -154,7 +154,7 @@ class BulkItemStorageTest extends TestCase
 
     private function createFileItem(): FileItem
     {
-        return new FileItem($this->createStream(), 'foobar.png', 'image/png', 100);
+        return FileItem::fromStream($this->createStream(), 'foobar.png', 'image/png', 100);
     }
 
     private function createStream()

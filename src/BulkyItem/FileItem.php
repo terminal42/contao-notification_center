@@ -9,7 +9,7 @@ class FileItem implements BulkyItemInterface
     /**
      * @param resource $contents
      */
-    public function __construct(private $contents, private string $name, private string $mimeType, private int $size)
+    private function __construct(private $contents, private string $name, private string $mimeType, private int $size)
     {
     }
 
@@ -54,5 +54,14 @@ class FileItem implements BulkyItemInterface
         }
 
         return new self(fopen($path, 'r'), $name, $mimeType, $size);
+    }
+
+    public static function fromStream($resouce, string $name, string $mimeType, int $size): self
+    {
+        if (!\is_resource($resouce)) {
+            throw new \InvalidArgumentException('$contents must be a resource.');
+        }
+
+        return new self($resouce, $name, $mimeType, $size);
     }
 }
