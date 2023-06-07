@@ -17,3 +17,6 @@ been added. Check the [UPGRADE.md](UPGRADE.md) to know how to update.
   only send that message, if `##form_department##` contains `department_a`.
 * The "Personal data" change notification contains two new tokens: `comparison_text` and `comparison_html` which
   contain a simple table of all changes simplifying the use case of informing a member about their changes tremendously.
+* The "Subscribe (Notification Center)" front end module (for newsletters) now allows you to define two different 
+  redirect pages, one when registering (always been there) and one when the registration has been confirmed using 
+  double opt-in (new).
