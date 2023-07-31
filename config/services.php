@@ -50,7 +50,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service('database_connection'),
         ])
-        ->tag('kernel.event_listener', ['event' => 'kernel.reset'])
+        ->tag('kernel.event_listener', ['event' => 'kernel.reset', 'method' => 'reset'])
     ;
 
     $services->set(BulkyItemStorage::class)
