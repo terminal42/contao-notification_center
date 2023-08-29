@@ -76,7 +76,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.core_form.0">
         <source>Contao form generator submission</source>
-        <target>Contao Formulargenerator-Übertragungn</target>
+        <target>Contao Formulargenerator-Übertragungen</target>
       </trans-unit>
       <trans-unit id="tl_nc_notification.type.core_form.1">
         <source>This notification type can be sent when the form is submitted.</source>
