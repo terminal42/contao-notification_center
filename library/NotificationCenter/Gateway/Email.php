@@ -157,8 +157,12 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
             $objEmail->sendBcc($arrBcc);
         }
 
+        if (empty($recipientEmails = $objDraft->getRecipientEmails())) {
+            \System::log(sprintf('Recipient email is empty - could not send email to for message ID %s.', $objDraft->getMessage()->id), __METHOD__, TL_ERROR);
+        }
+
         try {
-            return $objEmail->sendTo($objDraft->getRecipientEmails());
+            return $objEmail->sendTo($recipientEmails);
         } catch (\Exception $e) {
             \System::log(sprintf('Could not send email to "%s" for message ID %s: %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
         }
