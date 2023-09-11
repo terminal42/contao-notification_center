@@ -129,7 +129,7 @@ class ContaoHelper extends Controller
 
         // Support newsletters
         if (class_exists(ContaoNewsletterBundle::class)) {
-            if (!is_array($arrData['newsletter'])) {
+            if (!empty($arrData['newsletter'])) {
                 if ($arrData['newsletter'] != '') {
                     $objChannels                    = Database::getInstance()->execute("SELECT title FROM tl_newsletter_channel WHERE id IN(" . implode(',', array_map('intval', (array) $arrData['newsletter'])) . ")");
                     $arrTokens['member_newsletter'] = implode("\n", $objChannels->fetchEach('title'));
