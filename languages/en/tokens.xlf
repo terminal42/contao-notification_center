@@ -26,6 +26,14 @@
         <source>All filled in form fields and their raw values.</source>
         <target>All filled in form fields and their raw values.</target>
       </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.raw_data_html">
+        <source>All the form fields and their raw values with html line breaks.</source>
+        <target>All the form fields and their raw values with html line breaks.</target>
+      </trans-unit>
+      <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.raw_data_filled_html">
+        <source>All filled in form fields and their raw values with html line breaks.</source>
+        <target>All filled in form fields and their raw values with html line breaks.</target>
+      </trans-unit>
       <trans-unit id="NOTIFICATION_CENTER_TOKEN.core_form.filenames">
         <source>All the uploaded files names.</source>
         <target>All the uploaded files names.</target>

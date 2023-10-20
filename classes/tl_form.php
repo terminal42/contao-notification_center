@@ -81,7 +81,9 @@ class tl_form extends \Backend
     {
         $arrTokens = array();
         $arrTokens['raw_data'] = '';
+        $arrTokens['raw_data_html'] = '';
         $arrTokens['raw_data_filled'] = '';
+        $arrTokens['raw_data_filled_html'] = '';
 
         $stringParser = System::getContainer()->get(StringParser::class);
 
@@ -89,8 +91,10 @@ class tl_form extends \Backend
             $stringParser->flatten($v, 'form_'.$k, $arrTokens, $delimiter);
             $arrTokens['formlabel_'.$k] = $arrLabels[$k] ?? ucfirst($k);
             $arrTokens['raw_data'] .= ($arrLabels[$k] ?? ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
+            $arrTokens['raw_data_html'] .= ($arrLabels[$k] ?? ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "<br>";
             if (is_array($v) || strlen($v)) {
                 $arrTokens['raw_data_filled'] .= ($arrLabels[$k] ?? ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "\n";
+                $arrTokens['raw_data_filled_html'] .= ($arrLabels[$k] ?? ucfirst($k)) . ': ' . (is_array($v) ? implode(', ', $v) : $v) . "<br>";
             }
         }
 
