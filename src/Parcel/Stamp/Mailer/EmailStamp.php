@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer;
 
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 use Terminal42\NotificationCenterBundle\Util\Email as EmailUtil;
 
 class EmailStamp implements StampInterface
 {
+    private string $fromName = '';
     private string $from = '';
     private string $to = '';
     private string $subject = '';
@@ -19,6 +21,14 @@ class EmailStamp implements StampInterface
     private string $text = '';
     private string $html = '';
     private array $attachmentVouchers = [];
+
+    public function withFromName(string $fromName): self
+    {
+        $clone = clone $this;
+        $clone->fromName = $fromName;
+
+        return $clone;
+    }
 
     public function withFrom(string $from): self
     {
@@ -100,7 +110,7 @@ class EmailStamp implements StampInterface
     public function applyToEmail(Email $email): void
     {
         if ($this->from) {
-            $email->from($this->from);
+            $email->from(new Address($this->from, $this->fromName));
         }
 
         if ($this->to) {
@@ -135,6 +145,7 @@ class EmailStamp implements StampInterface
     public function toArray(): array
     {
         return [
+            'fromName' => $this->fromName,
             'from' => $this->from,
             'to' => $this->to,
             'subject' => $this->subject,
@@ -150,6 +161,7 @@ class EmailStamp implements StampInterface
     public static function fromArray(array $data): StampInterface
     {
         $stamp = (new self())
+            ->withFromName($data['fromName'] ?? '')
             ->withFrom($data['from'])
             ->withTo($data['to'])
             ->withSubject($data['subject'])

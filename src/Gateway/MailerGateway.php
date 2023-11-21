@@ -86,6 +86,7 @@ class MailerGateway extends AbstractGateway
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
 
         $stamp = new EmailStamp();
+        $stamp = $stamp->withFromName($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_name')));
         $stamp = $stamp->withFrom($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_address')));
         $stamp = $stamp->withTo($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('recipients')));
         $stamp = $stamp->withSubject($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')));
