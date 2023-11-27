@@ -6,7 +6,6 @@ namespace Terminal42\NotificationCenterBundle\Test\Token;
 
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Token\ArrayToken;
-use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
 
 class ArrayTokenTest extends TestCase
 {
@@ -15,19 +14,27 @@ class ArrayTokenTest extends TestCase
      */
     public function testFromMixedValue(array $value, string $expectedParserValue): void
     {
-        $token = new ArrayToken($value, 'form_foobar', TextToken::DEFINITION_NAME);
+        $token = new ArrayToken($value, 'form_foobar');
         $this->assertSame($expectedParserValue, $token->getParserValue());
     }
 
     public function arrayProvider(): \Generator
     {
-        yield 'Simple array token' => [
+        yield 'Simple list array token' => [
             [
                 'red',
                 'green',
                 'blue',
             ],
             'red, green, blue',
+        ];
+
+        yield 'Simple key value token' => [
+            [
+                'from' => 'May',
+                'to' => 'June',
+            ],
+            'from: May, to: June',
         ];
 
         yield 'Nested array token' => [
@@ -41,7 +48,7 @@ class ArrayTokenTest extends TestCase
                     ],
                 ],
             ],
-            'red, green, blue [{"0":"orange","magenta":["cyan"]}]',
+            '0: red, 1: green, blue: blue [{"0":"orange","magenta":["cyan"]}]',
         ];
     }
 }

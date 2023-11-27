@@ -22,9 +22,15 @@ class ArrayToken extends AbstractToken
 
         foreach ($this->tokenValue as $k => $v) {
             if (!\is_string($v)) {
-                $chunks[] = $k.' ['.json_encode($v).']';
+                $chunks[$k] = $k.' ['.json_encode($v).']';
             } else {
-                $chunks[] = $v;
+                $chunks[$k] = $v;
+            }
+        }
+
+        if (!array_is_list($chunks)) {
+            foreach ($chunks as $k => &$v) {
+                $v = $k.': '.$v;
             }
         }
 
