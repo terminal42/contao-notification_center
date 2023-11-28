@@ -64,7 +64,6 @@ return static function (ContainerConfigurator $container): void {
             service(ConfigLoader::class),
             service('contao.framework'),
             service('database_connection'),
-            service('contao.intl.locales'),
             service('security.helper'),
             service('twig'),
         ])
