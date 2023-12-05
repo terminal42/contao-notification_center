@@ -27,7 +27,7 @@
         "contao/core-bundle":"~4.4",
         "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "codefog/contao-haste":"^4.14.1",
-        "terminal42/dcawizard":"2.*"
+        "terminal42/dcawizard":"2.* || 3.*"
     },
     "require-dev": {
         "contao/newsletter-bundle":"~3.5 || ~4.1"
