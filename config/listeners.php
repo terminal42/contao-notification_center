@@ -66,6 +66,7 @@ return static function (ContainerConfigurator $container): void {
             service('database_connection'),
             service('security.helper'),
             service('twig'),
+            service('contao.intl.locales'),
         ])
     ;
 

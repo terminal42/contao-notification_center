@@ -7,9 +7,9 @@ namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContaine
 use Contao\Controller;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Intl\Locales;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Intl\Languages;
 use Symfony\Component\Security\Core\Security;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
@@ -17,7 +17,7 @@ use Twig\Environment;
 
 class MessageListener
 {
-    public function __construct(private AutoSuggester $autoSuggester, private ConfigLoader $configLoader, private ContaoFramework $framework, private Connection $connection, private Security $security, private Environment $twig)
+    public function __construct(private AutoSuggester $autoSuggester, private ConfigLoader $configLoader, private ContaoFramework $framework, private Connection $connection, private Security $security, private Environment $twig, private Locales $locales)
     {
     }
 
@@ -29,7 +29,7 @@ class MessageListener
         }
 
         $gateway = $this->configLoader->loadGateway($message->getGateway());
-        $languageNames = Languages::getNames($this->security->getUser()?->language ?? null);
+        $languageNames = $this->locales->getLocales($this->security->getUser()?->language ?? null);
 
         $query = $this->connection->createQueryBuilder()
             ->select('id, language')
@@ -42,7 +42,7 @@ class MessageListener
 
         foreach ($query->fetchAllAssociative() as $language) {
             $languagesFormatted[] = [
-                'name' => $languageNames[$language['language']],
+                'name' => $languageNames[$language['language']] ?? 'unknown',
             ];
         }
 
