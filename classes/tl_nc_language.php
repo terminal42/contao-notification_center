@@ -55,47 +55,6 @@ class tl_nc_language extends \Backend
         }
     }
 
-    /**
-     * Generate a list for the dcaWizard displaying the languages
-     *
-     * @param \Database\Result $objRecords
-     * @param string           $strId
-     * @param \DcaWizard       $widget
-     *
-     * @return string
-     */
-    public function generateWizardList($objRecords, $strId, $widget)
-    {
-        $strReturn = '
-<table class="tl_listing showColumns">
-<thead>
-    <td class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['tl_nc_language']['language'][0] . '</td>
-    <td class="tl_folder_tlist">' . $GLOBALS['TL_LANG']['tl_nc_language']['fallback'][0] . '</td>
-    <td class="tl_folder_tlist"></td>
-</thead>
-<tbody>';
-
-        $arrLanguages = \System::getLanguages();
-
-        while ($objRecords->next()) {
-            $row = $objRecords->row();
-
-            $strReturn .= '
-<tr>
-    <td class="tl_file_list">' . $arrLanguages[$objRecords->language] . '</td>
-    <td class="tl_file_list">' . (($objRecords->fallback) ? '&#10004;' : '') . '</td>
-    <td class="tl_file_list">' . $widget->generateRowOperation('edit', $row) . '</td>
-</tr>
-';
-        }
-
-        $strReturn .= '
-</tbody>
-</table>';
-
-        return $strReturn;
-    }
-
 
     /**
      * Check if the language field is unique per message

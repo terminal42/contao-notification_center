@@ -178,9 +178,11 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             'foreignTable'          => 'tl_nc_language',
             'eval'                  => array
             (
-                'listCallback'      => array('NotificationCenter\tl_nc_language', 'generateWizardList'),
+                'fields'            => ['language', 'fallback'],
                 'editButtonLabel'   => &$GLOBALS['TL_LANG']['tl_nc_message']['languages'][2],
                 'applyButtonLabel'  => &$GLOBALS['TL_LANG']['tl_nc_message']['languages'][3],
+                'global_operations' => array('new'),
+                'showOperations'    => true,
                 'tl_class'          =>'clr'
             )
         ),
