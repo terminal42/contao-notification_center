@@ -160,11 +160,13 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         try {
             $blnSent = $objEmail->sendTo($objDraft->getRecipientEmails());
         } catch (\Exception $e) {
-            $blnSent = false;
+            \System::log(sprintf('Could not send email to "%s" for message ID %s: %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
+
+            return false;
         }
 
         if (!$blnSent) {
-            \System::log(sprintf('Could not send email to "%s" for message ID %s: %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
+            \System::log(sprintf('Could not send email to "%s" for message ID %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id), __METHOD__, TL_ERROR);
         }
 
         return $blnSent;
