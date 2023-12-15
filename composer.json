@@ -32,6 +32,7 @@
     "require": {
         "php": "^7.0 || ^8.0",
         "contao/core-bundle": "^4.13",
+        "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "codefog/contao-haste": "^5.0",
         "terminal42/dcawizard": "^2.7 || ^3.0"
     },
