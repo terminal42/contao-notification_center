@@ -27,6 +27,15 @@ class TokenCollectionTest extends TestCase
             'form_other_color' => 'blue, orange',
         ], $tokenCollection->forSimpleTokenParser());
 
+        $this->assertSame([
+            'form_color' => 'blue',
+            'form_product' => 't-shirt',
+            'form_other_color' => [
+                'blue',
+                'orange',
+            ],
+        ], $tokenCollection->toKeyValue());
+
         $array = $tokenCollection->toArray();
         $tokenCollection = TokenCollection::fromArray($array);
 

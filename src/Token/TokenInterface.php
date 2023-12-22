@@ -15,9 +15,9 @@ interface TokenInterface
 
     /**
      * Returns the value passed on to the simple token parser.
-     * Thus, it has to be a string. Usually, the same value as in serialize()
+     * Thus, it has to be a string. Usually, the same value as in toArray()
      * but e.g. a multidimensional array could have a comma-separated representation
-     * here for human readability but in serialize() and fromSerialized() it's likely
+     * here for human readability but in toArray() and fromArray() it's likely
      * using a JSON representation.
      */
     public function getParserValue(): string;
