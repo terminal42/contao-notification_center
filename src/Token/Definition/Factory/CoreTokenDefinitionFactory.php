@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Token\Definition\Factory;
 
 use Terminal42\NotificationCenterBundle\Exception\InvalidTokenDefinitionNameException;
 use Terminal42\NotificationCenterBundle\Token\Definition\AbstractTokenDefinition;
+use Terminal42\NotificationCenterBundle\Token\Definition\ArrayToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\FileToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\HtmlToken;
@@ -20,6 +21,7 @@ class CoreTokenDefinitionFactory implements TokenDefinitionFactoryInterface
         FileToken::DEFINITION_NAME => FileToken::class,
         HtmlToken::DEFINITION_NAME => HtmlToken::class,
         TextToken::DEFINITION_NAME => TextToken::class,
+        ArrayToken::DEFINITION_NAME => ArrayToken::class,
         WildcardToken::DEFINITION_NAME => WildcardToken::class,
     ];
 
