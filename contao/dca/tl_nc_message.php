@@ -122,7 +122,6 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
                 'fields' => ['language', 'fallback'],
                 'showOperations' => true,
                 'global_operations' => ['new'],
-                'operations' => ['edit', 'delete'],
                 'editButtonLabel' => &$GLOBALS['TL_LANG']['tl_nc_message']['languages'][2],
                 'applyButtonLabel' => &$GLOBALS['TL_LANG']['tl_nc_message']['languages'][3],
                 'tl_class' => 'clr',

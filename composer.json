@@ -27,7 +27,7 @@
         "composer-plugin-api": "^2.0",
         "contao/core-bundle": "^4.13.17 || ^5.1.1",
         "symfony/http-kernel": "^5.4 || ^6.0",
-        "terminal42/dcawizard": "^2.6 || ^3.0",
+        "terminal42/dcawizard": "^3.0",
         "symfony/asset": "^5.4 || ^6.0",
         "doctrine/dbal": "^3.4",
         "soundasleep/html2text": "^2.0",

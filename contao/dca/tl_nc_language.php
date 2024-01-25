@@ -100,14 +100,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
         'language' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['mandatory' => true, 'chosen' => true, 'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'chosen' => true, 'doNotCopy' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 64, 'default' => null, 'notnull' => false],
         ],
         'fallback' => [
             'exclude' => true,
             'inputType' => 'checkbox',
             'eval' => ['tl_class' => 'w50 m12'],
-            'sql' => ['type' => 'boolean', 'default' => false],
+            'sql' => ['type' => 'boolean', 'doNotCopy' => true, 'default' => false],
         ],
         'recipients' => [
             'exclude' => true,
