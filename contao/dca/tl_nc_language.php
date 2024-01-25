@@ -106,8 +106,8 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
         'fallback' => [
             'exclude' => true,
             'inputType' => 'checkbox',
-            'eval' => ['tl_class' => 'w50 m12'],
-            'sql' => ['type' => 'boolean', 'doNotCopy' => true, 'default' => false],
+            'eval' => ['doNotCopy' => true, 'tl_class' => 'w50 m12'],
+            'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'recipients' => [
             'exclude' => true,
