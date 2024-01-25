@@ -10,6 +10,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
+        'markAsCopy' => 'title',
         'sql' => [
             'keys' => [
                 'id' => 'primary',

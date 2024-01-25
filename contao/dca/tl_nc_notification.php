@@ -11,6 +11,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
         'dataContainer' => DC_Table::class,
         'switchToEdit' => true,
         'enableVersioning' => true,
+        'markAsCopy' => 'title',
         'sql' => [
             'keys' => [
                 'id' => 'primary',

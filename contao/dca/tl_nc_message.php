@@ -14,6 +14,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
         'ctable' => ['tl_nc_language'],
         'dataContainer' => DC_Table::class,
         'enableVersioning' => true,
+        'markAsCopy' => 'title',
         'sql' => [
             'keys' => [
                 'id' => 'primary',
