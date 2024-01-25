@@ -7,6 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Gateway;
 use Contao\CoreBundle\Filesystem\Dbafs\UnableToResolveUuidException;
 use Contao\CoreBundle\Filesystem\VirtualFilesystem;
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Util\LocaleUtil;
 use Contao\FrontendTemplate;
 use Contao\StringUtil;
 use Contao\Validator;
@@ -178,6 +179,7 @@ class MailerGateway extends AbstractGateway
         $template->title = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')); // @phpstan-ignore-line
         $template->css = ''; // @phpstan-ignore-line
         $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html'))); // @phpstan-ignore-line
+        $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
 
         return $template->parse();
     }
