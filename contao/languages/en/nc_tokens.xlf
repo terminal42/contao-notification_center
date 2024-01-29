@@ -2,27 +2,27 @@
 <xliff version="1.2">
   <file datatype="php" source-language="en" target-language="en">
     <body>
-      <trans-unit id="nc_tokens.admin_email">
+      <trans-unit id="admin_email">
         <source>E-mail address of administrator of the current page (website root settings).</source>
         <target>E-mail address of administrator of the current page (website root settings).</target>
       </trans-unit>
-      <trans-unit id="nc_tokens.form.form_*">
+      <trans-unit id="form.form_*">
         <source>All the form fields.</source>
         <target>All the form fields.</target>
       </trans-unit>
-      <trans-unit id="nc_tokens.form.formlabel_*">
+      <trans-unit id="form.formlabel_*">
         <source>All the form field labels.</source>
         <target>All the form field labels.</target>
       </trans-unit>
-    <trans-unit id="nc_tokens.form.formconfig_*">
+    <trans-unit id="form.formconfig_*">
         <source>All the form generator configuration fields.</source>
         <target>All the form generator configuration fields.</target>
       </trans-unit>
-      <trans-unit id="nc_tokens.form.raw_data">
+      <trans-unit id="form.raw_data">
         <source>All the form fields and their raw values.</source>
         <target>All the form fields and their raw values.</target>
       </trans-unit>
-      <trans-unit id="nc_tokens.form.raw_data_filled">
+      <trans-unit id="form.raw_data_filled">
         <source>All filled in form fields and their raw values.</source>
         <target>All filled in form fields and their raw values.</target>
       </trans-unit>

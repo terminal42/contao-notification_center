@@ -25,9 +25,8 @@ interface TokenDefinitionInterface
 
     /**
      * Every token definition can have a description coming from the translation domain
-     * "contao_nc_tokens". The translation key here is prefixed with "nc_tokens." so
-     * if you return e.g. "form.foobar" here, the Notification Center will search for
-     * the translation key "nc_tokens.form.foobar" in the "contao_nc_tokens" domain.
+     * "contao_nc_tokens". So if you return e.g. "form.foobar" here, the Notification Center
+     * will search for the translation key "form.foobar" in the "contao_nc_tokens" domain.
      */
     public function getTranslationKey(): string;
 

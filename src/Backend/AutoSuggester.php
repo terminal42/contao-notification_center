@@ -54,7 +54,6 @@ class AutoSuggester
             $label = '';
 
             if (($translationKey = $token->getTranslationKey()) !== null) {
-                $translationKey = 'nc_tokens.'.$translationKey;
                 $label = $this->translator->trans($translationKey, [], 'contao_nc_tokens');
 
                 // Missing label would return the key untranslated, we ignore in that case
