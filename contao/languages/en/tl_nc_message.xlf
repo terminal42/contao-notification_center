@@ -74,14 +74,6 @@
         <source>Only publish this message until the configured stop time is reached.</source>
         <target>Only publish this message until the configured stop time is reached.</target>
       </trans-unit>
-      <trans-unit id="tl_nc_message.condition.0">
-        <source>Publish condition</source>
-        <target>Publish condition</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_message.condition.1">
-        <source>Only publish if a given condition evaluates to "true". See docs for details.</source>
-        <target>Only publish if a given condition evaluates to "true". See docs for details.</target>
-      </trans-unit>
       <trans-unit id="tl_nc_message.new.0">
         <source>New message</source>
         <target>New message</target>

@@ -8,19 +8,19 @@ use Codefog\HasteBundle\Formatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
-use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenSubscriber;
-use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuSubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenListener;
+use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\FormListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\GatewayListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\LanguageListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\MessageListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\ModuleListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\NotificationListener;
-use Terminal42\NotificationCenterBundle\EventListener\DbafsMetadataSubscriber;
-use Terminal42\NotificationCenterBundle\EventListener\DisableDeliverySubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\DbafsMetadataListener;
+use Terminal42\NotificationCenterBundle\EventListener\DisableDeliveryListener;
 use Terminal42\NotificationCenterBundle\EventListener\DoctrineSchemaListener;
 use Terminal42\NotificationCenterBundle\EventListener\NotificationCenterProListener;
-use Terminal42\NotificationCenterBundle\EventListener\NotificationTypeForModuleConfigSubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\NotificationTypeForModuleListener;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
 use Terminal42\NotificationCenterBundle\EventListener\RegistrationListener;
 use Terminal42\NotificationCenterBundle\EventListener\UpdatePersonalDataListener;
@@ -86,13 +86,13 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(NotificationCenterProListener::class);
 
-    $services->set(BackendMenuSubscriber::class)
+    $services->set(BackendMenuListener::class)
         ->args([
             service('assets.packages'),
         ])
     ;
 
-    $services->set(AdminEmailTokenSubscriber::class)
+    $services->set(AdminEmailTokenListener::class)
         ->args([
             service('request_stack'),
             service(TokenDefinitionFactoryInterface::class),
@@ -100,14 +100,9 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(DisableDeliverySubscriber::class)
-        ->args([
-            service('contao.string.simple_token_parser'),
-            service('contao.string.simple_token_expression_language'),
-        ])
-    ;
+    $services->set(DisableDeliveryListener::class);
 
-    $services->set(NotificationTypeForModuleConfigSubscriber::class);
+    $services->set(NotificationTypeForModuleListener::class);
 
     $services->set(ProcessFormDataListener::class)
         ->args([
@@ -139,5 +134,5 @@ return static function (ContainerConfigurator $container): void {
         ->tag('doctrine.event_listener', ['event' => 'postGenerateSchema'])
     ;
 
-    $services->set(DbafsMetadataSubscriber::class);
+    $services->set(DbafsMetadataListener::class);
 };

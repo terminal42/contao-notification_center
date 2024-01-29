@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
-use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenSubscriber;
+use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenListener;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
@@ -33,7 +33,7 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
 
         $tokenDefinitionFactory = new CoreTokenDefinitionFactory();
 
-        $listener = new AdminEmailTokenSubscriber(
+        $listener = new AdminEmailTokenListener(
             $stack,
             $tokenDefinitionFactory,
             $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch')
@@ -56,7 +56,7 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
 
         $tokenDefinitionFactory = new CoreTokenDefinitionFactory();
 
-        $listener = new AdminEmailTokenSubscriber(
+        $listener = new AdminEmailTokenListener(
             $stack,
             $tokenDefinitionFactory,
             $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch')

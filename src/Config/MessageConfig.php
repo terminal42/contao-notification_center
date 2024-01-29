@@ -43,9 +43,4 @@ class MessageConfig extends AbstractConfig
 
         return new \DateTimeImmutable('@'.$stop);
     }
-
-    public function getCondition(): string
-    {
-        return $this->getString('condition');
-    }
 }

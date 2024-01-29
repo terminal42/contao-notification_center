@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\EventListener;
 use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
@@ -16,25 +16,19 @@ use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
-class AdminEmailTokenSubscriber implements EventSubscriberInterface
+class AdminEmailTokenListener
 {
     public function __construct(private RequestStack $requestStack, private TokenDefinitionFactoryInterface $tokenDefinitionFactory, private ContaoFramework $contaoFramework)
     {
     }
 
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            GetTokenDefinitionsEvent::class => 'onGetTokenDefinitions',
-            CreateParcelEvent::class => 'onCreateParcel',
-        ];
-    }
-
+    #[AsEventListener]
     public function onGetTokenDefinitions(GetTokenDefinitionsEvent $event): void
     {
         $event->addTokenDefinition($this->getTokenDefinition());
     }
 
+    #[AsEventListener]
     public function onCreateParcel(CreateParcelEvent $event): void
     {
         if (!$event->getParcel()->hasStamp(TokenCollectionStamp::class)) {

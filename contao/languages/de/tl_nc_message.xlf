@@ -74,14 +74,6 @@
         <source>Only publish this message until the configured stop time is reached.</source>
         <target>Diese Nachricht wird nur veröffentlicht, bis die konfigurierte Stopp-Zeit erreicht ist.</target>
       </trans-unit>
-      <trans-unit id="tl_nc_message.condition.0">
-        <source>Publish condition</source>
-        <target>Veröffentlichungsbedingung</target>
-      </trans-unit>
-      <trans-unit id="tl_nc_message.condition.1">
-        <source>Only publish if a given condition evaluates to "true". See docs for details.</source>
-        <target>Nur veröffentlichen, wenn eine gegebene Bedingung als "wahr" ausgewertet wird. Siehe Dokumentation für Details.</target>
-      </trans-unit>
       <trans-unit id="tl_nc_message.new.0">
         <source>New message</source>
         <target>Neue Nachricht</target>

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Terminal42\NotificationCenterBundle\Event\GetNotificationTypeForModuleConfigEvent;
 use Terminal42\NotificationCenterBundle\NotificationType\LostPasswordNotificationType;
 use Terminal42\NotificationCenterBundle\NotificationType\MemberActivationNotificationType;
@@ -14,7 +14,8 @@ use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterAc
 use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterSubscribeNotificationType;
 use Terminal42\NotificationCenterBundle\NotificationType\Newsletter\NewsletterUnsubscribeNotificationType;
 
-class NotificationTypeForModuleConfigSubscriber implements EventSubscriberInterface
+#[AsEventListener]
+class NotificationTypeForModuleListener
 {
     public function __invoke(GetNotificationTypeForModuleConfigEvent $event): void
     {
@@ -63,12 +64,5 @@ class NotificationTypeForModuleConfigSubscriber implements EventSubscriberInterf
 
             return;
         }
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            GetNotificationTypeForModuleConfigEvent::class => '__invoke',
-        ];
     }
 }

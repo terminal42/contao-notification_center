@@ -6,11 +6,12 @@ namespace Terminal42\NotificationCenterBundle\EventListener;
 
 use Contao\CoreBundle\Filesystem\Dbafs\RetrieveDbafsMetadataEvent;
 use Contao\CoreBundle\Filesystem\Dbafs\StoreDbafsMetadataEvent;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
 
-class DbafsMetadataSubscriber implements EventSubscriberInterface
+class DbafsMetadataListener
 {
+    #[AsEventListener]
     public function enhanceMetadata(RetrieveDbafsMetadataEvent $event): void
     {
         if (!$this->supports($event)) {
@@ -28,6 +29,7 @@ class DbafsMetadataSubscriber implements EventSubscriberInterface
         $event->set('storage_meta', $meta);
     }
 
+    #[AsEventListener]
     public function normalizeMetadata(StoreDbafsMetadataEvent $event): void
     {
         if (!$this->supports($event)) {
@@ -41,14 +43,6 @@ class DbafsMetadataSubscriber implements EventSubscriberInterface
         }
 
         $event->set('storage_meta', $meta);
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            RetrieveDbafsMetadataEvent::class => ['enhanceMetadata'],
-            StoreDbafsMetadataEvent::class => ['normalizeMetadata'],
-        ];
     }
 
     private function supports(RetrieveDbafsMetadataEvent|StoreDbafsMetadataEvent $event): bool

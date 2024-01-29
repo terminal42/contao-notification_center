@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use Contao\DC_Table;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
-use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
-use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
 
 $GLOBALS['TL_DCA']['tl_nc_message'] = [
     // Config
@@ -84,8 +82,8 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
     // Palettes
     'palettes' => [
         '__selector__' => ['gateway'],
-        'default' => '{title_legend},title,gateway;{publish_legend},published,start,stop,condition',
-        MailerGateway::NAME => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template;{publish_legend},published,start,stop,condition',
+        'default' => '{title_legend},title,gateway;{publish_legend},published,start,stop',
+        MailerGateway::NAME => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template;{publish_legend},published,start,stop',
     ],
 
     // Fields
@@ -159,16 +157,6 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'datim', 'datepicker' => true, 'tl_class' => 'w50 wizard'],
             'sql' => ['type' => 'string', 'length' => 10, 'default' => ''],
-        ],
-        'condition' => [
-            'exclude' => true,
-            'inputType' => 'textarea',
-            'eval' => ['tl_class' => 'clr', 'decodeEntities' => true],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                TextToken::DEFINITION_NAME,
-            ],
-            'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
     ],
 ];
