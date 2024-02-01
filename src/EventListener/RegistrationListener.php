@@ -33,6 +33,7 @@ class RegistrationListener
 
         foreach ($member->row() as $k => $v) {
             $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+            $tokens['member_raw_'.$k] = $v;
         }
 
         $this->notificationCenter->sendNotification((int) $module->nc_activation_notification, $tokens);

@@ -20,6 +20,8 @@
   like `##something-not-token-related##` in your message, and you should be able to write this.
 * The `filenames` token introduced in 1.7 has been removed. It's a very specific use case which can be provided very easily
   as a third party bundle now (not easily possible before and thus part of the core in 1.7).
+* The `member_*` tokens in the `lost_password` notification type used to contain the raw database values, they are now
+  formatted the same way as in all the other notification types. Use `member_raw_*` if you need to access the raw values.
 
 NOTE: Please, thoroughly test all your processes involving notifications after the upgrade. Make sure all the tokens
 you've used are still working!

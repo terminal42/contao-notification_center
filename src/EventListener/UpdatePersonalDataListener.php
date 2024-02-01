@@ -59,10 +59,12 @@ class UpdatePersonalDataListener
 
         foreach ($member->getData() as $k => $v) {
             $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+            $tokens['member_raw_'.$k] = $v;
         }
 
         foreach ($oldData as $k => $v) {
             $tokens['member_old_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+            $tokens['member_old_raw_'.$k] = $v;
 
             // Do not generate any changed_* tokens or comparisons for fields that were not submitted.
             if (!isset($data[$k])) {

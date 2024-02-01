@@ -30,6 +30,7 @@ class LostPasswordNotificationType implements NotificationTypeInterface
             $this->factory->create(TextToken::DEFINITION_NAME, 'link', 'member_password.link'),
             $this->factory->create(TextToken::DEFINITION_NAME, 'activation', 'member_password.activation'),
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_*', 'member_password.member_*'),
+            $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_raw_*', 'member_password.member_raw_*'),
         ];
     }
 }

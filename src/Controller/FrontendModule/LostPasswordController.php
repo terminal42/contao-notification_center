@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Controller\FrontendModule;
 
+use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\Environment;
 use Contao\Idna;
@@ -18,7 +19,7 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 #[AsFrontendModule('lostPasswordNotificationCenter', 'user', 'mod_lostPassword')]
 class LostPasswordController extends LostPasswordModule
 {
-    public function __construct(private NotificationCenter $notificationCenter)
+    public function __construct(private NotificationCenter $notificationCenter, private Formatter $formatter)
     {
     }
 
@@ -43,7 +44,8 @@ class LostPasswordController extends LostPasswordModule
 
         // Add member tokens
         foreach ($objMember->row() as $k => $v) {
-            $tokens['member_'.$k] = $v;
+            $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+            $tokens['member_raw_'.$k] = $v;
         }
 
         $receipts = $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens, $GLOBALS['objPage']->language);

@@ -110,6 +110,7 @@ class RegistrationController extends ModuleRegistration
         if (null !== $member) {
             foreach ($member->row() as $k => $v) {
                 $tokens['member_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
+                $tokens['member_raw_'.$k] = $v;
             }
         }
 

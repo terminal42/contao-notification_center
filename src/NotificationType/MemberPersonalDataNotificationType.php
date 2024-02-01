@@ -26,7 +26,9 @@ class MemberPersonalDataNotificationType implements NotificationTypeInterface
     {
         return [
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_*', 'member_personal_data.member_*'),
+            $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_raw_*', 'member_activation.member_raw_*'),
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_old_*', 'member_personal_data.member_old_*'),
+            $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_old_raw_*', 'member_personal_data.member_old_raw_*'),
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'changed_*', 'member_personal_data.changed_*'),
             $this->factory->create(TextToken::DEFINITION_NAME, 'comparison_text', 'member_personal_data.comparison_text'),
             $this->factory->create(HtmlToken::DEFINITION_NAME, 'comparison_html', 'member_personal_data.comparison_html'),

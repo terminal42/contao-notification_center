@@ -17,6 +17,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(LostPasswordController::class)
         ->args([
             service(NotificationCenter::class),
+            service(Formatter::class),
         ])
     ;
     $services->set(RegistrationController::class)

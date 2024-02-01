@@ -26,6 +26,7 @@ class MemberActivationNotificationType implements NotificationTypeInterface
         return [
             $this->factory->create(TextToken::DEFINITION_NAME, 'domain', 'member_activation.domain'),
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_*', 'member_activation.member_*'),
+            $this->factory->create(WildcardToken::DEFINITION_NAME, 'member_raw_*', 'member_activation.member_raw_*'),
         ];
     }
 }
