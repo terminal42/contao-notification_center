@@ -37,9 +37,9 @@ class LostPasswordController extends LostPasswordModule
 
         // Prepare the simple tokens
         $tokens = [];
-        $tokens['activation'] = $optInToken->getIdentifier();
         $tokens['domain'] = Idna::decode(Environment::get('host'));
         $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(false !== strpos(Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
+        $tokens['token'] = $optInToken->getIdentifier();
         $tokens['recipient_email'] = $objMember->email;
 
         // Add member tokens

@@ -95,6 +95,7 @@ class RegistrationController extends ModuleRegistration
 
         if ($optInToken instanceof OptInTokenInterface) {
             $tokens['activation'] = $optInToken->getIdentifier();
+            $tokens['token'] = $optInToken->getIdentifier(); // Unifying the names with other notification types
         }
 
         if (($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
