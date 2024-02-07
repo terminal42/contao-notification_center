@@ -14,6 +14,7 @@ namespace NotificationCenter\MessageDraft;
 use Codefog\HasteBundle\StringParser;
 use Contao\Config;
 use Contao\File;
+use Contao\StringUtil as ContaoStringUtil;
 use Contao\System;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
@@ -70,7 +71,11 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderEmail()
     {
-        $strSenderAddress = $this->objLanguage->email_sender_address ?: ($GLOBALS['TL_ADMIN_EMAIL'] ?? Config::get('adminEmail'));
+        if (!isset($GLOBALS['TL_ADMIN_EMAIL'])) {
+            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = ContaoStringUtil::splitFriendlyEmail(Config::get('adminEmail'));
+        }
+
+        $strSenderAddress = $this->objLanguage->email_sender_address ?: $GLOBALS['TL_ADMIN_EMAIL'];
 
         return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
@@ -81,7 +86,11 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderName()
     {
-        $strSenderName = $this->objLanguage->email_sender_name ?: ($GLOBALS['TL_ADMIN_NAME'] ?? '');
+        if (!isset($GLOBALS['TL_ADMIN_EMAIL'])) {
+            [$GLOBALS['TL_ADMIN_NAME'], $GLOBALS['TL_ADMIN_EMAIL']] = ContaoStringUtil::splitFriendlyEmail(Config::get('adminEmail'));
+        }
+
+        $strSenderName = $this->objLanguage->email_sender_name ?: $GLOBALS['TL_ADMIN_NAME'];
 
         return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
