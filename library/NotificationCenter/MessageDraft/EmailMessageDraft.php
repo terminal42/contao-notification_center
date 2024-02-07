@@ -288,11 +288,11 @@ class EmailMessageDraft implements MessageDraftInterface
 
     private function getAdminEmail(): string
     {
-        return \Contao\StringUtil::splitFriendlyEmail(Config::get('adminEmail'))[1];
+        return $GLOBALS['TL_ADMIN_EMAIL'] ?? \Contao\StringUtil::splitFriendlyEmail(Config::get('adminEmail'))[1];
     }
 
     private function getAdminName(): string
     {
-        return \Contao\StringUtil::splitFriendlyEmail(Config::get('adminEmail'))[0];
+        return $GLOBALS['TL_ADMIN_NAME'] ?? \Contao\StringUtil::splitFriendlyEmail(Config::get('adminEmail'))[0];
     }
 }
