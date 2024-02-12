@@ -139,10 +139,9 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
         (
             'label'                   => &$GLOBALS['TL_LANG']['tl_nc_language']['language'],
             'exclude'                 => true,
-            'default'                 => $GLOBALS['TL_LANGUAGE'],
             'inputType'               => 'select',
-            'options'                 => \System::getLanguages(),
-            'eval'                    => array('mandatory'=>true, 'chosen'=>true, 'tl_class'=>'w50'),
+            'options'                 => \Contao\System::getLanguages(),
+            'eval'                    => array('mandatory'=>true, 'chosen'=>true, 'includeBlankOption' => true, 'doNotCopy' => true, 'tl_class'=>'w50'),
             'sql'                     => "varchar(5) NOT NULL default ''",
             'save_callback' => array
             (
