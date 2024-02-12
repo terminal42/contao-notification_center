@@ -70,7 +70,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderEmail()
     {
-        $strSenderAddress = $this->objLanguage->email_sender_address ?: ($GLOBALS['TL_ADMIN_EMAIL'] ?? Config::get('adminEmail'));
+        $strSenderAddress = $this->objLanguage->email_sender_address ?: $this->getAdminEmail();
 
         return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strSenderAddress, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
@@ -81,7 +81,7 @@ class EmailMessageDraft implements MessageDraftInterface
      */
     public function getSenderName()
     {
-        $strSenderName = $this->objLanguage->email_sender_name ?: ($GLOBALS['TL_ADMIN_NAME'] ?? '');
+        $strSenderName = $this->objLanguage->email_sender_name ?: $this->getAdminName();
 
         return System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strSenderName, $this->arrTokens, StringUtil::NO_TAGS | StringUtil::NO_BREAKS);
     }
@@ -284,5 +284,15 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getLanguage()
     {
         return $this->objLanguage->language;
+    }
+
+    private function getAdminEmail(): string
+    {
+        return $GLOBALS['TL_ADMIN_EMAIL'] ?? \Contao\StringUtil::splitFriendlyEmail(Config::get('adminEmail'))[1];
+    }
+
+    private function getAdminName(): string
+    {
+        return $GLOBALS['TL_ADMIN_NAME'] ?? \Contao\StringUtil::splitFriendlyEmail(Config::get('adminEmail'))[0];
     }
 }
