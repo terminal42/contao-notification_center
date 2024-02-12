@@ -69,7 +69,7 @@ class tl_nc_message extends \Backend
         $arrTranslations =  \Database::getInstance()->prepare('SELECT language FROM tl_nc_language WHERE pid=?')->execute($arrRow['id'])->fetchEach('language');
 
         $strBuffer = '
-<div class="cte_type ' . (($arrRow['published']) ? 'published' : 'unpublished') . '"><strong>' . $arrRow['title'] . '</strong> - ' . $this->arrGateways[$arrRow['gateway']] . '</div>
+<div class="cte_type ' . (($arrRow['published']) ? 'published' : 'unpublished') . '"><strong>' . $arrRow['title'] . '</strong> - ' . ($this->arrGateways[$arrRow['gateway']] ?? $arrRow['gateway']) . '</div>
 <div>
 <ul>';
 
