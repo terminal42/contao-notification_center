@@ -13,7 +13,7 @@ class NotificationCenterProListener
     public function __invoke(string $table): void
     {
         if ('tl_nc_notification' !== $table || InstalledVersions::isInstalled('terminal42/contao-notification-center-pro')) {
-            // return;
+            return;
         }
 
         $GLOBALS['TL_DCA']['tl_nc_notification']['list']['global_operations']['notification_center_pro'] = [
