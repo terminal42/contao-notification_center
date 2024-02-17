@@ -180,7 +180,7 @@ class File extends Base implements GatewayInterface
         if ($strStorageMode === self::FILE_STORAGE_CREATE
             && is_file(TL_ROOT . '/' . $this->objModel->file_path . '/' . $strFileName)
         ) {
-            $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path, true));
+            $strFileName = $this->getUniqueFileName($strFileName, Folder::scan(TL_ROOT . '/' . $this->objModel->file_path, true));
         }
 
         $objFile = new \Contao\File($this->objModel->file_path . '/' . $strFileName);

@@ -12,6 +12,7 @@ namespace NotificationCenter\Model;
 
 use Contao\FrontendTemplate;
 use Contao\Model;
+use Contao\StringUtil;
 use Contao\System;
 
 class Notification extends Model
@@ -97,7 +98,7 @@ class Notification extends Model
 
     private function addTemplateTokens(array $tokens)
     {
-        $templates = deserialize($this->templates, true);
+        $templates = StringUtil::deserialize($this->templates, true);
 
         foreach ($templates as $name) {
             try {

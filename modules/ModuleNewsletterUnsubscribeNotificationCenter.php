@@ -34,7 +34,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->Template->channels = $this->compileChannels();
         $this->Template->showChannels = !$this->nl_hideChannels;
         $this->Template->email = Input::get('email');
-        $this->Template->submit = specialchars($GLOBALS['TL_LANG']['MSC']['unsubscribe']);
+        $this->Template->submit = StringUtil::specialchars($GLOBALS['TL_LANG']['MSC']['unsubscribe']);
         $this->Template->channelsLabel = $GLOBALS['TL_LANG']['MSC']['nl_channels'];
         $this->Template->emailLabel = $GLOBALS['TL_LANG']['MSC']['emailAddress'];
         $this->Template->action = Environment::get('indexFreeRequest');
