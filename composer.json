@@ -37,7 +37,8 @@
         "terminal42/dcawizard": "^2.7 || ^3.0"
     },
     "require-dev": {
-        "contao/newsletter-bundle": "^4.13 || ^5.0"
+        "contao/newsletter-bundle": "^4.13 || ^5.0",
+        "phpstan/phpstan": "^1.10"
     },
     "autoload": {
         "psr-0": {

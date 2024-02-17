@@ -1,0 +1,9 @@
+parameters:
+    level: 0
+
+    paths:
+        - modules
+        - library
+        - dca
+        - classes
+        - bin
