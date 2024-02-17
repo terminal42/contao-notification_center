@@ -10,7 +10,9 @@
 
 namespace NotificationCenter\Model;
 
+use Contao\FrontendTemplate;
 use Contao\Model;
+use Contao\System;
 
 class Notification extends Model
 {
@@ -40,7 +42,7 @@ class Notification extends Model
     {
         // Check if there are valid messages
         if (($objMessages = $this->getMessages()) === null) {
-            \System::log('Could not find any messages for notification ID ' . $this->id, __METHOD__, TL_ERROR);
+            System::log('Could not find any messages for notification ID ' . $this->id, __METHOD__, TL_ERROR);
 
             return array();
         }
@@ -99,12 +101,12 @@ class Notification extends Model
 
         foreach ($templates as $name) {
             try {
-                $template = new \FrontendTemplate($name);
+                $template = new FrontendTemplate($name);
                 $template->setData($tokens);
 
                 $tokens['template_'.substr($name, 13)] = $template->parse();
             } catch (\Exception $e) {
-                \System::log('Could not generate token template "'.$name.'"', __METHOD__, TL_ERROR);
+                System::log('Could not generate token template "'.$name.'"', __METHOD__, TL_ERROR);
             }
         }
 

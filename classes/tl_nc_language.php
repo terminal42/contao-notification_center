@@ -10,20 +10,26 @@
 
 namespace NotificationCenter;
 
+use Contao\Backend;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Input;
+use Contao\StringUtil;
+use Contao\Validator;
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Language;
 
-class tl_nc_language extends \Backend
+class tl_nc_language extends Backend
 {
 
     /**
      * Modifies the palette for the queue gateway so it takes the one from the target gateway
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public function modifyPalette(\DataContainer $dc)
+    public function modifyPalette(DataContainer $dc)
     {
-        if ('edit' !== \Input::get('act')) {
+        if ('edit' !== Input::get('act')) {
             return;
         }
 
@@ -44,12 +50,12 @@ class tl_nc_language extends \Backend
      * @param string         $strTable
      * @param int            $insertID
      * @param array          $arrSet
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
     public function insertGatewayType($strTable, $insertID, $arrSet, $dc)
     {
         if ('tl_nc_language' === $strTable) {
-            \Database::getInstance()->prepare("
+            Database::getInstance()->prepare("
                 UPDATE tl_nc_language SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=(SELECT gateway FROM tl_nc_message WHERE id=?)) WHERE id=?
             ")->execute($arrSet['pid'], $insertID);
         }
@@ -60,12 +66,12 @@ class tl_nc_language extends \Backend
      * Check if the language field is unique per message
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return mixed
      * @throws \Exception
      */
-    public function validateLanguageField($varValue, \DataContainer $dc)
+    public function validateLanguageField($varValue, DataContainer $dc)
     {
         $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE language=? AND pid=? AND id!=?")
             ->limit(1)
@@ -84,12 +90,12 @@ class tl_nc_language extends \Backend
      * Make sure the fallback field is a fallback per message
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return mixed
      * @throws \Exception
      */
-    public function validateFallbackField($varValue, \DataContainer $dc)
+    public function validateFallbackField($varValue, DataContainer $dc)
     {
         if ($varValue) {
             $objLanguages = $this->Database->prepare("SELECT id FROM tl_nc_language WHERE fallback=1 AND pid=? AND id!=?")
@@ -110,15 +116,15 @@ class tl_nc_language extends \Backend
      * Validate e-mail addresses in the comma separated list
      *
      * @param mixed          $varValue
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return mixed
      * @throws \Exception
      */
-    public function validateEmailList($varValue, \DataContainer $dc)
+    public function validateEmailList($varValue, DataContainer $dc)
     {
         if ($varValue != '') {
-            $chunks = trimsplit(',', $varValue);
+            $chunks = StringUtil::trimsplit(',', $varValue);
 
             foreach ($chunks as $chunk) {
 
@@ -127,7 +133,7 @@ class tl_nc_language extends \Backend
                     continue;
                 }
 
-                if (!\Validator::isEmail($chunk)) {
+                if (!Validator::isEmail($chunk)) {
                     throw new \Exception($GLOBALS['TL_LANG']['ERR']['emails']);
                 }
             }

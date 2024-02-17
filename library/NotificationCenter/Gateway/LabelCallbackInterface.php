@@ -10,6 +10,8 @@
 
 namespace NotificationCenter\Gateway;
 
+use Contao\DataContainer;
+
 interface LabelCallbackInterface
 {
     /**
@@ -17,10 +19,10 @@ interface LabelCallbackInterface
      *
      * @param array          $row
      * @param string         $label
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      * @param array          $args
      *
      * @return string
      */
-    public function getLabel($row, $label, \DataContainer $dc, $args);
+    public function getLabel($row, $label, DataContainer $dc, $args);
 }

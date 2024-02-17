@@ -37,8 +37,7 @@ abstract class Base extends Controller
 
     /**
      * Set notification type and models
-     * @param   Notification
-     * @param   Gateway
+     * @param   Gateway $objModel
      */
     public function __construct(Gateway $objModel)
     {
@@ -47,7 +46,7 @@ abstract class Base extends Controller
 
     /**
      * Gets the gateway model
-     * @return  \NotificationCenter\Model\Gateway
+     * @return  Gateway
      */
     public function getModel()
     {

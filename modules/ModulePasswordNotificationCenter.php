@@ -30,7 +30,9 @@
 namespace Contao;
 
 
-class ModulePasswordNotificationCenter extends \ModulePassword
+use NotificationCenter\Model\Notification;
+
+class ModulePasswordNotificationCenter extends ModulePassword
 {
 
 	/**
@@ -39,7 +41,7 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 	 */
 	protected function sendPasswordLink($objMember)
 	{
-		$objNotification = \NotificationCenter\Model\Notification::findByPk($this->nc_notification);
+		$objNotification = Notification::findByPk($this->nc_notification);
 
 		if ($objNotification === null) {
 			$this->log('The notification was not found ID ' . $this->nc_notification, __METHOD__, TL_ERROR);
@@ -59,7 +61,7 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 
 		if (!version_compare($contaoVersion, '4.7.0', '>=')) {
 			// Store the token
-			$objMember = \MemberModel::findByPk($objMember->id);
+			$objMember = MemberModel::findByPk($objMember->id);
 			$objMember->activation = $token;
 			$objMember->save();
 		}
@@ -73,8 +75,8 @@ class ModulePasswordNotificationCenter extends \ModulePassword
 		}
 
 		$arrTokens['recipient_email'] = $objMember->email;
-		$arrTokens['domain'] = \Idna::decode(\Environment::get('host'));
-		$arrTokens['link'] = \Idna::decode(\Environment::get('base')) . \Environment::get('request') . ((($GLOBALS['TL_CONFIG']['disableAlias'] ?? false) || strpos(\Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $token;
+		$arrTokens['domain'] = Idna::decode(Environment::get('host'));
+		$arrTokens['link'] = Idna::decode(Environment::get('base')) . Environment::get('request') . ((($GLOBALS['TL_CONFIG']['disableAlias'] ?? false) || strpos(Environment::get('request'), '?') !== false) ? '&' : '?') . 'token=' . $token;
 
 		$objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);
 		$this->log('A new password has been requested for user ID ' . $objMember->id . ' (' . $objMember->email . ')', __METHOD__, TL_ACCESS);

@@ -10,17 +10,24 @@
 
 namespace NotificationCenter;
 
+use Contao\Backend;
+use Contao\Controller;
+use Contao\DataContainer;
+use Contao\Date;
+use Contao\Environment;
+use Contao\Image;
+use Contao\StringUtil;
 use NotificationCenter\Model\QueuedMessage;
 use NotificationCenter\Queue\QueueManager;
 
-class tl_nc_queue extends \Backend
+class tl_nc_queue extends Backend
 {
     /**
      * On delete callback.
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public function onDeleteCallback(\DataContainer $dc)
+    public function onDeleteCallback(DataContainer $dc)
     {
         $queueManager = new $GLOBALS['NOTIFICATION_CENTER']['QUEUE_MANAGER']();
 
@@ -34,14 +41,14 @@ class tl_nc_queue extends \Backend
      *
      * @param array          $arrRow
      * @param string         $label
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return string
      */
     public function listRows($arrRow, $label, $dc)
     {
         $strBuffer = '<span style="color:#b3b3b3;padding-right:3px">[%s]</span>';
-        $arrValues = array(\Date::parse(\Date::getNumericDatimFormat(), $arrRow['dateAdded']));
+        $arrValues = array(Date::parse(Date::getNumericDatimFormat(), $arrRow['dateAdded']));
 
         $objQueuedMessage = QueuedMessage::findByPk($arrRow['id']);
 
@@ -74,13 +81,13 @@ class tl_nc_queue extends \Backend
     /**
      * Re-queue a queued message
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public function reQueue(\DataContainer $dc)
+    public function reQueue(DataContainer $dc)
     {
         $objQueuedMsg = QueuedMessage::findByPk($dc->id);
         $objQueuedMsg->reQueue();
-        \Controller::redirect(str_replace('&key=re-queue', '', \Environment::get('request')));
+        Controller::redirect(str_replace('&key=re-queue', '', Environment::get('request')));
     }
 
     /**
@@ -98,7 +105,7 @@ class tl_nc_queue extends \Backend
     public function reQueueButton($row, $href, $label, $title, $icon, $attributes)
     {
         $objMessage = QueuedMessage::findByPk($row['id']);
-        return ($objMessage->getStatus() === 'error') ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return ($objMessage->getStatus() === 'error') ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : '';
     }
 
     /**
@@ -116,6 +123,6 @@ class tl_nc_queue extends \Backend
     public function deleteButton($row, $href, $label, $title, $icon, $attributes)
     {
         $objMessage = QueuedMessage::findByPk($row['id']);
-        return ($objMessage->getStatus() !== 'sent') ? '<a href="' . \Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . specialchars($title) . '"' . $attributes . '>' . \Image::getHtml($icon, $label) . '</a> ' : '';
+        return ($objMessage->getStatus() !== 'sent') ? '<a href="' . Backend::addToUrl($href . '&amp;id=' . $row['id']) . '" title="' . StringUtil::specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label) . '</a> ' : '';
     }
 }

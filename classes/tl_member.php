@@ -10,6 +10,8 @@
 
 namespace NotificationCenter;
 
+use Contao\FrontendUser;
+
 class tl_member
 {
     /**
@@ -19,7 +21,7 @@ class tl_member
     {
         if ('FE' === TL_MODE && true === FE_USER_LOGGED_IN)
         {
-            $_SESSION['PERSONAL_DATA'] = \FrontendUser::getInstance()->getData();
+            $_SESSION['PERSONAL_DATA'] = FrontendUser::getInstance()->getData();
         }
     }
 }

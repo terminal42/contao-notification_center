@@ -11,6 +11,8 @@
 namespace NotificationCenter\Gateway;
 
 use Codefog\HasteBundle\StringParser;
+use Contao\Config;
+use Contao\Folder;
 use Contao\System;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
@@ -42,7 +44,7 @@ class File extends Base implements GatewayInterface
         }
 
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
-            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -69,7 +71,7 @@ class File extends Base implements GatewayInterface
         try {
             return $this->save($strFileName, $strContent, (string) $objLanguage->file_storage_mode);
         } catch (\Exception $e) {
-            \System::log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
+            System::log('Notification Center gateway error: ' . $e->getMessage(), __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -167,10 +169,10 @@ class File extends Base implements GatewayInterface
     {
         // Make sure the directory exists
         if (!is_dir(sprintf('%s/%s', TL_ROOT, $this->objModel->file_path))) {
-            $folder = new \Folder($this->objModel->file_path);
+            $folder = new Folder($this->objModel->file_path);
 
-            if (\Config::get('defaultFolderChmod')) {
-                $folder->chmod(\Config::get('defaultFolderChmod'));
+            if (Config::get('defaultFolderChmod')) {
+                $folder->chmod(Config::get('defaultFolderChmod'));
             }
         }
 
@@ -181,7 +183,7 @@ class File extends Base implements GatewayInterface
             $strFileName = $this->getUniqueFileName($strFileName, scan(TL_ROOT . '/' . $this->objModel->file_path, true));
         }
 
-        $objFile = new \File($this->objModel->file_path . '/' . $strFileName);
+        $objFile = new \Contao\File($this->objModel->file_path . '/' . $strFileName);
 
         // Don't start with a newline
         if ($strStorageMode === self::FILE_STORAGE_APPEND
@@ -193,7 +195,7 @@ class File extends Base implements GatewayInterface
 
         $blnResult = $objFile->write($strContent);
         $objFile->close();
-        $objFile->chmod(\Config::get('defaultFileChmod'));
+        $objFile->chmod(Config::get('defaultFileChmod'));
 
         return $blnResult;
     }
@@ -247,7 +249,7 @@ class File extends Base implements GatewayInterface
         }
 
         // Write content to temporary file
-        $objFile = new \File(sys_get_temp_dir() . '/' . md5(uniqid(mt_rand(), true)));
+        $objFile = new \Contao\File(sys_get_temp_dir() . '/' . md5(uniqid(mt_rand(), true)));
         $objFile->write($strContent);
         $objFile->close();
 
@@ -256,7 +258,7 @@ class File extends Base implements GatewayInterface
 
         // Delete temporary file and close FTP connection
         $objFile->delete();
-        @ftp_chmod($resConnection, \Config::get('defaultFileChmod'), $this->objModel->file_path . '/' . $strFileName);
+        @ftp_chmod($resConnection, Config::get('defaultFileChmod'), $this->objModel->file_path . '/' . $strFileName);
         @ftp_close($resConnection);
 
         return $blnResult;

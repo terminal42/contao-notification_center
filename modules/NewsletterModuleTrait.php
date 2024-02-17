@@ -16,7 +16,7 @@ trait NewsletterModuleTrait
     protected function setCustomTemplate()
     {
         if ($this->nl_template) {
-            $this->Template = new \FrontendTemplate($this->nl_template);
+            $this->Template = new FrontendTemplate($this->nl_template);
             $this->Template->setData($this->arrData);
         }
     }
@@ -37,7 +37,7 @@ trait NewsletterModuleTrait
             'eval'      => ['mandatory' => true]
         ];
 
-        return new \FormCaptcha(\FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
+        return new FormCaptcha(FormCaptcha::getAttributesFromDca($arrField, $arrField['name']));
     }
 
     /**
@@ -47,7 +47,7 @@ trait NewsletterModuleTrait
      */
     protected function processForm($strFormId, $objCaptchaWidget, $strCallback)
     {
-        if (\Input::post('FORM_SUBMIT') == $strFormId)
+        if (Input::post('FORM_SUBMIT') == $strFormId)
         {
             $varSubmitted = $this->validateForm($objCaptchaWidget);
 
@@ -61,7 +61,7 @@ trait NewsletterModuleTrait
     protected function compileChannels()
     {
         $arrChannels = array();
-        $objChannel = \NewsletterChannelModel::findByIds($this->nl_channels);
+        $objChannel = NewsletterChannelModel::findByIds($this->nl_channels);
 
         // Get the titles
         if ($objChannel !== null)

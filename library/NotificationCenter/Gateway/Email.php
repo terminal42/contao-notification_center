@@ -10,6 +10,7 @@
 
 namespace NotificationCenter\Gateway;
 
+use Contao\System;
 use NotificationCenter\MessageDraft\EmailMessageDraft;
 use NotificationCenter\MessageDraft\MessageDraftFactoryInterface;
 use NotificationCenter\Model\Language;
@@ -40,7 +41,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         }
 
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
-            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
 
             return null;
         }
@@ -51,7 +52,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
     private function instantiateEmail()
     {
         if (version_compare(VERSION, '4.10', '>=')) {
-            $objEmail = new \Email();
+            $objEmail = new \Contao\Email();
             if ($this->objModel->mailerTransport) {
                 $objEmail->addHeader('X-Transport', $this->objModel->mailerTransport);
             }
@@ -77,10 +78,10 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
                 $transport->setUsername($this->objModel->email_smtpUser)->setPassword($this->objModel->email_smtpPass);
             }
 
-            return new \Email(new \Swift_Mailer($transport));
+            return new \Contao\Email(new \Swift_Mailer($transport));
         }
 
-        $objEmail = new \Email();
+        $objEmail = new \Contao\Email();
         $this->resetSMTPSettings();
 
         return $objEmail;
@@ -109,7 +110,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
             try {
                 $objEmail->replyTo($strReplyTo);
             } catch (\Exception $e) {
-                \System::log(sprintf('Could not set reply-to address "%s" for message ID %s: %s', $strReplyTo, $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
+                System::log(sprintf('Could not set reply-to address "%s" for message ID %s: %s', $strReplyTo, $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
                 return false;
             }
         }
@@ -160,13 +161,13 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         try {
             $blnSent = $objEmail->sendTo($objDraft->getRecipientEmails());
         } catch (\Exception $e) {
-            \System::log(sprintf('Could not send email to "%s" for message ID %s: %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not send email to "%s" for message ID %s: %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id, $e->getMessage()), __METHOD__, TL_ERROR);
 
             return false;
         }
 
         if (!$blnSent) {
-            \System::log(sprintf('Could not send email to "%s" for message ID %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not send email to "%s" for message ID %s', implode(', ', $objDraft->getRecipientEmails()), $objDraft->getMessage()->id), __METHOD__, TL_ERROR);
         }
 
         return $blnSent;
@@ -191,7 +192,7 @@ class Email extends Base implements GatewayInterface, MessageDraftFactoryInterfa
         // return false if no language found for BC
         if ($objDraft === null) {
 
-            \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $objMessage->id), __METHOD__, TL_ERROR);
 
             return false;
         }

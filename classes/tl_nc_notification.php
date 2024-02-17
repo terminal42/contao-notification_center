@@ -10,7 +10,10 @@
 
 namespace NotificationCenter;
 
-class tl_nc_notification extends \Backend
+use Contao\Backend;
+use Contao\DataContainer;
+
+class tl_nc_notification extends Backend
 {
     /**
      * Get all registered notification types
@@ -39,7 +42,7 @@ class tl_nc_notification extends \Backend
      * @param int            $intMode
      * @param string         $strField
      * @param array          $arrRow
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return string
      */

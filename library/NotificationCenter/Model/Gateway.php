@@ -11,6 +11,7 @@
 namespace NotificationCenter\Model;
 
 use Contao\Model;
+use Contao\System;
 use NotificationCenter\Gateway\GatewayInterface;
 
 class Gateway extends Model
@@ -39,7 +40,7 @@ class Gateway extends Model
         if (null === $this->objGateway) {
             $strClass = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$this->type];
             if (!class_exists($strClass)) {
-                \System::log(sprintf('Could not find gateway class "%s".', $strClass), __METHOD__, TL_ERROR);
+                System::log(sprintf('Could not find gateway class "%s".', $strClass), __METHOD__, TL_ERROR);
 
                 return null;
             }
@@ -48,7 +49,7 @@ class Gateway extends Model
                 $objGateway = new $strClass($this);
 
                 if (!$objGateway instanceof GatewayInterface) {
-                    \System::log(sprintf('The gateway class "%s" must be an instance of GatewayInterface.', $strClass), __METHOD__, TL_ERROR);
+                    System::log(sprintf('The gateway class "%s" must be an instance of GatewayInterface.', $strClass), __METHOD__, TL_ERROR);
 
                     return null;
                 }
@@ -56,7 +57,7 @@ class Gateway extends Model
                 $this->objGateway = $objGateway;
 
             } catch (\Exception $e) {
-                \System::log(sprintf('There was a general error building the gateway: "%s".', $e->getMessage()), __METHOD__, TL_ERROR);
+                System::log(sprintf('There was a general error building the gateway: "%s".', $e->getMessage()), __METHOD__, TL_ERROR);
 
                 return null;
             }

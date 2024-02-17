@@ -10,11 +10,16 @@
 
 namespace NotificationCenter;
 
+use Contao\Controller;
+use Contao\Database;
+use Contao\DataContainer;
+use Contao\Input;
 use Contao\StringUtil;
+use Contao\System;
 use NotificationCenter\Model\Notification as NotificationModel;
 
 
-class AutoSuggester extends \Controller
+class AutoSuggester extends Controller
 {
     protected static $strTable;
     protected static $objNotification;
@@ -29,17 +34,17 @@ class AutoSuggester extends \Controller
         }
 
         // @todo implement editAll and overrideAll
-        if ('edit' !== \Input::get('act')) {
+        if ('edit' !== Input::get('act')) {
             return;
         }
 
         // @todo rename to nc_tokens
-        \System::loadLanguageFile('tokens');
+        System::loadLanguageFile('tokens');
         $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/notification_center/assets/autosuggester' . ($GLOBALS['TL_CONFIG']['debugMode'] ? '' : '.min') . '.js';
         $GLOBALS['TL_CSS'][]        = 'system/modules/notification_center/assets/autosuggester' . ($GLOBALS['TL_CONFIG']['debugMode'] ? '' : '.min') . '.css';
 
         static::$strTable = $dc->table;
-        static::$objNotification = \Database::getInstance()->prepare("SELECT * FROM tl_nc_notification WHERE id=(SELECT pid FROM tl_nc_message WHERE id=(SELECT pid FROM tl_nc_language WHERE id=?))")->execute($dc->id);
+        static::$objNotification = Database::getInstance()->prepare("SELECT * FROM tl_nc_notification WHERE id=(SELECT pid FROM tl_nc_message WHERE id=(SELECT pid FROM tl_nc_language WHERE id=?))")->execute($dc->id);
         static::$strType = static::$objNotification->type;
 
         foreach ($GLOBALS['TL_DCA'][static::$strTable]['fields'] as $field => $arrConfig) {
@@ -53,11 +58,11 @@ class AutoSuggester extends \Controller
     /**
      * Initialize the auto suggester
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return string
      */
-    public function init(\DataContainer $dc)
+    public function init(DataContainer $dc)
     {
         $strGroup  = NotificationModel::findGroupForType(static::$strType);
         $arrTokens = $GLOBALS['NOTIFICATION_CENTER']['NOTIFICATION_TYPE'][$strGroup][static::$strType][$dc->field] ?? [];
@@ -203,7 +208,7 @@ window.addEvent('domready', function() {
         }
 
         try {
-            \StringUtil::parseSimpleTokens($strText, array_flip($foundTokens));
+            StringUtil::parseSimpleTokens($strText, array_flip($foundTokens));
         } catch (\Exception $e) {
             $objWidget->addError($e->getMessage());
 
@@ -220,7 +225,7 @@ window.addEvent('domready', function() {
         }
 
         $tokens = [];
-        $templates = deserialize(static::$objNotification->templates, true);
+        $templates = StringUtil::deserialize(static::$objNotification->templates, true);
 
         foreach ($templates as $template) {
             $tokens[] = 'template_'.substr($template, 13);

@@ -10,16 +10,20 @@
 
 namespace NotificationCenter;
 
-class tl_module extends \Backend
+use Contao\Backend;
+use Contao\Database;
+use Contao\DataContainer;
+
+class tl_module extends Backend
 {
     /**
      * Get notification choices
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return array
      */
-    public function getNotificationChoices(\DataContainer $dc)
+    public function getNotificationChoices(DataContainer $dc)
     {
         $strWhere = '';
         $arrValues = array();
@@ -31,7 +35,7 @@ class tl_module extends \Backend
         }
 
         $arrChoices = array();
-        $objNotifications = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')
+        $objNotifications = Database::getInstance()->prepare('SELECT id,title FROM tl_nc_notification' . $strWhere . ' ORDER BY title')
                                            ->execute($arrValues);
 
         while ($objNotifications->next()) {

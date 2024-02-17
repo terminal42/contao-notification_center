@@ -10,6 +10,8 @@
 
 namespace NotificationCenter\Gateway;
 
+use Contao\Request;
+use Contao\System;
 use NotificationCenter\MessageDraft\MessageDraftFactoryInterface;
 use NotificationCenter\MessageDraft\PostmarkMessageDraft;
 use NotificationCenter\Model\Language;
@@ -33,7 +35,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         }
 
         if (($objLanguage = Language::findByMessageAndLanguageOrFallback($objMessage, $strLanguage)) === null) {
-            \System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not find matching language or fallback for message ID "%s" and language "%s".', $objMessage->id, $strLanguage), __METHOD__, TL_ERROR);
 
             return null;
         }
@@ -51,7 +53,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
     public function send(Message $objMessage, array $arrTokens, $strLanguage = '')
     {
         if ($this->objModel->postmark_key == '') {
-            \System::log(sprintf('Please provide the Postmark API key for message ID "%s"', $objMessage->id), __METHOD__, TL_ERROR);
+            System::log(sprintf('Please provide the Postmark API key for message ID "%s"', $objMessage->id), __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -81,7 +83,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         $arrBcc = $objDraft->getBccRecipientEmails();
 
         if (count(array_merge($arrTo, $arrCc, $arrBcc)) >= 20) {
-            \System::log(
+            System::log(
                 sprintf('The Postmark gateway does not support sending to more than 20 recipients (CC and BCC included) for message ID "%s".',
                     $objMessage->id
                 ),
@@ -124,7 +126,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
 
         $strData = json_encode($arrData);
 
-        $objRequest = new \Request();
+        $objRequest = new Request();
         $objRequest->setHeader('Content-Type', 'application/json');
         $objRequest->setHeader('X-Postmark-Server-Token', ($this->objModel->postmark_test ? 'POSTMARK_API_TEST' : $this->objModel->postmark_key));
         $objRequest->send(($this->objModel->postmark_ssl ? 'https://' : 'http://') . 'api.postmarkapp.com/email', $strData, 'POST');
@@ -136,7 +138,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
         }
 
         if ($objRequest->hasError()) {
-            \System::log(
+            System::log(
                 sprintf('Error sending the Postmark request for message ID "%s". HTTP Response status code: %s. JSON data sent: %s',
                     $objMessage->id,
                     $code,
@@ -148,7 +150,7 @@ class Postmark extends Base implements GatewayInterface, MessageDraftFactoryInte
             return false;
         } else {
             $strWouldHave = ($this->objModel->postmark_test) ? ' would have (test mode)' : '';
-            \System::log(
+            System::log(
                 sprintf('The Postmark API accepted the request and%s sent %s emails. HTTP Response status code: %s. JSON data sent: %s',
                     $strWouldHave,
                     count($arrTo),

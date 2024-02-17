@@ -10,7 +10,10 @@
 
 namespace NotificationCenter\Model;
 
-class QueuedMessage extends \Model
+use Contao\Model;
+use Contao\System;
+
+class QueuedMessage extends Model
 {
 
     /**
@@ -105,7 +108,7 @@ class QueuedMessage extends \Model
     {
         $message = $this->getRelated('message');
         if ($message === null) {
-            \System::log('Could not send queued message ' . $this->id . ' because related message could not be found.', __METHOD__, TL_ERROR);
+            System::log('Could not send queued message ' . $this->id . ' because related message could not be found.', __METHOD__, TL_ERROR);
 
             return false;
         } else {

@@ -10,18 +10,22 @@
 
 namespace NotificationCenter;
 
+use Contao\Backend;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
+use Contao\DataContainer;
+use Contao\Message;
+use Contao\System;
 use NotificationCenter\Gateway\LabelCallbackInterface;
 use NotificationCenter\Model\Gateway;
 
-class tl_nc_gateway extends \Backend
+class tl_nc_gateway extends Backend
 {
     /**
      * Loads the language file tl_settings
      */
     public function loadSettingsLanguageFile()
     {
-        \System::loadLanguageFile('tl_settings');
+        System::loadLanguageFile('tl_settings');
     }
 
     public function loadPalette($dc)
@@ -69,9 +73,9 @@ class tl_nc_gateway extends \Backend
     /**
      * Check the FTP connection
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      */
-    public function checkFileServerConnection(\DataContainer $dc)
+    public function checkFileServerConnection(DataContainer $dc)
     {
         if ('ftp' !== $dc->activeRecord->type || 'ftp' !== $dc->activeRecord->file_connection) {
             return;
@@ -79,7 +83,7 @@ class tl_nc_gateway extends \Backend
 
         // Try to connect
         if (($ftp = @ftp_connect($dc->activeRecord->file_host, (int) ($dc->activeRecord->file_port ?: 21), 5)) === false) {
-            \Message::addError($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect']);
+            Message::addError($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_connect']);
 
             return;
         }
@@ -87,12 +91,12 @@ class tl_nc_gateway extends \Backend
         // Try to login
         if (false === @ftp_login($ftp, $dc->activeRecord->file_username, $dc->activeRecord->file_password)) {
             @ftp_close($ftp);
-            \Message::addError($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_login']);
+            Message::addError($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_error_login']);
 
             return;
         }
 
-        \Message::addConfirmation($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_confirm']);
+        Message::addConfirmation($GLOBALS['TL_LANG']['tl_nc_gateway']['ftp_confirm']);
     }
 
     /**
@@ -100,12 +104,12 @@ class tl_nc_gateway extends \Backend
      *
      * @param array          $row
      * @param string         $label
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      * @param array          $args
      *
      * @return string
      */
-    public function executeLabelCallback($row, $label, \DataContainer $dc, $args)
+    public function executeLabelCallback($row, $label, DataContainer $dc, $args)
     {
         $model = Gateway::findByPk($row['id']);
         $gateway = $model->getGateway();
@@ -121,11 +125,11 @@ class tl_nc_gateway extends \Backend
     /**
      * Gets the cron job explanation
      *
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      *
      * @return string
      */
-    public function queueCronjobExplanation(\DataContainer $dc)
+    public function queueCronjobExplanation(DataContainer $dc)
     {
         return sprintf('<div style="color: #4b85ba;
             background: #eff5fa;

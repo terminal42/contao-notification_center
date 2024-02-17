@@ -13,7 +13,10 @@ namespace NotificationCenter\MessageDraft;
 
 use Codefog\HasteBundle\StringParser;
 use Contao\Config;
+use Contao\Controller;
 use Contao\File;
+use Contao\FilesModel;
+use Contao\FrontendTemplate;
 use Contao\System;
 use NotificationCenter\Model\Language;
 use NotificationCenter\Model\Message;
@@ -158,7 +161,7 @@ class EmailMessageDraft implements MessageDraftInterface
         $strText = $this->objLanguage->email_text;
         $strText = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strText, $this->arrTokens, StringUtil::NO_TAGS);
 
-        return \Controller::convertRelativeUrls($strText, '', true);
+        return Controller::convertRelativeUrls($strText, '', true);
     }
 
     /**
@@ -168,7 +171,7 @@ class EmailMessageDraft implements MessageDraftInterface
     public function getHtmlBody()
     {
         if ($this->objLanguage->email_mode == 'textAndHtml') {
-            $objTemplate          = new \FrontendTemplate($this->objMessage->email_template);
+            $objTemplate          = new FrontendTemplate($this->objMessage->email_template);
             $objTemplate->body    = $this->objLanguage->email_html;
             $objTemplate->charset = $GLOBALS['TL_CONFIG']['characterSet'];
 
@@ -176,7 +179,7 @@ class EmailMessageDraft implements MessageDraftInterface
             $GLOBALS['TL_CONFIG']['allowedTags'] .= '<doctype><html><head><meta><style><body>';
             $strHtml = str_replace('<!DOCTYPE', '<DOCTYPE', $objTemplate->parse());
             $strHtml = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strHtml, $this->arrTokens);
-            $strHtml = \Controller::convertRelativeUrls($strHtml, '', true);
+            $strHtml = Controller::convertRelativeUrls($strHtml, '', true);
             $strHtml = str_replace('<DOCTYPE', '<!DOCTYPE', $strHtml);
 
             return $strHtml;
@@ -209,7 +212,7 @@ class EmailMessageDraft implements MessageDraftInterface
             $arrStaticAttachments = \Contao\StringUtil::deserialize($this->objLanguage->attachments, true);
 
             if (!empty($arrStaticAttachments)) {
-                $objFiles = \FilesModel::findMultipleByUuids($arrStaticAttachments);
+                $objFiles = FilesModel::findMultipleByUuids($arrStaticAttachments);
 
                 if ($objFiles !== null) {
                     while ($objFiles->next()) {
@@ -231,10 +234,10 @@ class EmailMessageDraft implements MessageDraftInterface
         if ($this->stringAttachments === null) {
 
             // Add attachment templates
-            $arrTemplateAttachments = deserialize($this->objLanguage->attachment_templates, true);
+            $arrTemplateAttachments = \Contao\StringUtil::deserialize($this->objLanguage->attachment_templates, true);
 
             if (!empty($arrTemplateAttachments)) {
-                $objFiles = \FilesModel::findMultipleByUuids($arrTemplateAttachments);
+                $objFiles = FilesModel::findMultipleByUuids($arrTemplateAttachments);
 
                 if ($objFiles !== null) {
                     while ($objFiles->next()) {

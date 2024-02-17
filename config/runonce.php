@@ -8,7 +8,9 @@
  * @license    LGPL
  */
 
-if (\Database::getInstance()->tableExists('tl_nc_language') && \Database::getInstance()->fieldExists('file_override', 'tl_nc_language')) {
-    \Database::getInstance()->execute("ALTER TABLE tl_nc_language CHANGE file_override file_storage_mode varchar(8) NOT NULL default ''");
-    \Database::getInstance()->execute("UPDATE tl_nc_language SET file_storage_mode='override' WHERE file_storage_mode!=''");
+use Contao\Database;
+
+if (Database::getInstance()->tableExists('tl_nc_language') && Database::getInstance()->fieldExists('file_override', 'tl_nc_language')) {
+    Database::getInstance()->execute("ALTER TABLE tl_nc_language CHANGE file_override file_storage_mode varchar(8) NOT NULL default ''");
+    Database::getInstance()->execute("UPDATE tl_nc_language SET file_storage_mode='override' WHERE file_storage_mode!=''");
 }

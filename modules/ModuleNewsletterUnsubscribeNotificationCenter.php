@@ -33,11 +33,11 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->Template->captcha = $objCaptchaWidget ? $objCaptchaWidget->parse() : '';
         $this->Template->channels = $this->compileChannels();
         $this->Template->showChannels = !$this->nl_hideChannels;
-        $this->Template->email = \Input::get('email');
+        $this->Template->email = Input::get('email');
         $this->Template->submit = specialchars($GLOBALS['TL_LANG']['MSC']['unsubscribe']);
         $this->Template->channelsLabel = $GLOBALS['TL_LANG']['MSC']['nl_channels'];
         $this->Template->emailLabel = $GLOBALS['TL_LANG']['MSC']['emailAddress'];
-        $this->Template->action = \Environment::get('indexFreeRequest');
+        $this->Template->action = Environment::get('indexFreeRequest');
         $this->Template->formId = $strFormId;
         $this->Template->id = $this->id;
         $this->Template->requestToken = REQUEST_TOKEN;
@@ -53,9 +53,9 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
     protected function validateForm(Widget $objWidget = null)
     {
         // Validate the e-mail address
-        $varInput = \Idna::encodeEmail(\Input::post('email', true));
+        $varInput = Idna::encodeEmail(Input::post('email', true));
 
-        if (!\Validator::isEmail($varInput)) {
+        if (!Validator::isEmail($varInput)) {
             $this->Template->mclass = 'error';
             $this->Template->message = $GLOBALS['TL_LANG']['ERR']['email'];
 
@@ -65,7 +65,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->Template->email = $varInput;
 
         // Validate the channel selection
-        $arrChannels = \Input::post('channels');
+        $arrChannels = Input::post('channels');
 
         if (!\is_array($arrChannels)) {
             $this->Template->mclass = 'error';
@@ -88,7 +88,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         // Check if there are any new subscriptions
         $arrSubscriptions = array();
 
-        if (($objSubscription = \NewsletterRecipientsModel::findBy(
+        if (($objSubscription = NewsletterRecipientsModel::findBy(
                 array("email=? AND active=1"),
                 $varInput
             )) !== null) {
@@ -128,14 +128,14 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
     protected function removeNewsletterRecipient($strEmail, $arrRemove)
     {
         // Remove the subscriptions
-        if (($objRemove = \NewsletterRecipientsModel::findByEmailAndPids($strEmail, $arrRemove)) !== null) {
+        if (($objRemove = NewsletterRecipientsModel::findByEmailAndPids($strEmail, $arrRemove)) !== null) {
             while ($objRemove->next()) {
                 $strHash = md5($objRemove->email);
 
                 // Add a blacklist entry (see #4999)
-                $objBlacklist = \NewsletterBlacklistModel::findByHashAndPid($strHash, $objRemove->pid);
+                $objBlacklist = NewsletterBlacklistModel::findByHashAndPid($strHash, $objRemove->pid);
                 if ($objBlacklist === null) {
-                    $objBlacklist = new \NewsletterBlacklistModel();
+                    $objBlacklist = new NewsletterBlacklistModel();
                     $objBlacklist->pid = $objRemove->pid;
                     $objBlacklist->hash = $strHash;
                     $objBlacklist->save();
@@ -156,7 +156,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         $this->sendNotification($strEmail, $arrRemove);
         $this->redirectToJumpToPage();
 
-        \System::getContainer()
+        System::getContainer()
                ->get('session')
                ->getFlashBag()
                ->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed'])
@@ -167,7 +167,7 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
 
     protected function compileConfirmationMessage()
     {
-        $session = \System::getContainer()->get('session');
+        $session = System::getContainer()->get('session');
         $flashBag = $session->getFlashBag();
 
         // Confirmation message
@@ -187,18 +187,18 @@ class ModuleNewsletterUnsubscribeNotificationCenter extends ModuleUnsubscribe
         }
 
         // Get the channels
-        $objChannels = \NewsletterChannelModel::findByIds($arrRemove);
+        $objChannels = NewsletterChannelModel::findByIds($arrRemove);
         $arrChannels = $objChannels ? $objChannels->fetchEach('title') : [];
 
         // Prepare the simple token data
         $arrData = array();
         $arrData['recipient_email'] = $strEmail;
-        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
+        $arrData['domain'] = Idna::decode(Environment::get('host'));
         $arrData['channels'] = implode(', ', $arrChannels);
         $arrData['channel_ids'] = implode(', ', $arrRemove);
         $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
         $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
-        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
+        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], Idna::decode(Environment::get('host')));
         $arrData['text'] = $this->nl_unsubscribe;
 
         $objNotification->send($arrData);

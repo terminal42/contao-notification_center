@@ -26,7 +26,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
     public function generate()
     {
         if (TL_MODE == 'BE') {
-            $objTemplate = new \BackendTemplate('be_wildcard');
+            $objTemplate = new BackendTemplate('be_wildcard');
             $objTemplate->wildcard = '### ' . strtoupper($GLOBALS['TL_LANG']['FMD']['newsletterActivateNotificationCenter'][0]) . ' ###';
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
@@ -36,7 +36,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             return $objTemplate->parse();
         }
 
-        if (!\Input::get('token')) {
+        if (!Input::get('token')) {
             return '';
         }
 
@@ -45,7 +45,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
 
     protected function compile()
     {
-        $this->activateRecipient(\Input::get('token'));
+        $this->activateRecipient(Input::get('token'));
     }
 
     /**
@@ -62,7 +62,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             }
 
             /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
-            $optIn = \System::getContainer()->get('contao.opt-in');
+            $optIn = System::getContainer()->get('contao.opt-in');
 
             if ((!$optInToken = $optIn->find($token)) || !$optInToken->isValid() || \count($arrRelated = $optInToken->getRelatedRecords()) < 1 || key($arrRelated) != 'tl_newsletter_recipients' || \count($arrIds = current($arrRelated)) < 1)
             {
@@ -102,7 +102,7 @@ class ModuleNewsletterActivateNotificationCenter extends Module
 
             $strEmail = $optInToken->getEmail();
         } else {
-            $objRecipient = \NewsletterRecipientsModel::findByToken($token);
+            $objRecipient = NewsletterRecipientsModel::findByToken($token);
 
             if ($objRecipient === null) {
                 $this->Template->mclass = 'error';
@@ -172,18 +172,18 @@ class ModuleNewsletterActivateNotificationCenter extends Module
             return;
         }
 
-        $objChannel = \NewsletterChannelModel::findByIds($arrCids);
+        $objChannel = NewsletterChannelModel::findByIds($arrCids);
         $arrChannels = $objChannel ? $objChannel->fetchEach('title') : [];
 
         // Prepare the simple token data
         $arrData = array();
         $arrData['recipient_email'] = $strEmail;
-        $arrData['domain'] = \Idna::decode(\Environment::get('host'));
+        $arrData['domain'] = Idna::decode(Environment::get('host'));
         $arrData['channels'] = implode(', ', $arrChannels);
         $arrData['channel_ids'] = implode(', ', $arrCids);
         $arrData['admin_email'] = $GLOBALS['TL_ADMIN_EMAIL'];
         $arrData['admin_name'] = $GLOBALS['TL_ADMIN_NAME'];
-        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], \Idna::decode(\Environment::get('host')));
+        $arrData['subject'] = sprintf($GLOBALS['TL_LANG']['MSC']['nl_subject'], Idna::decode(Environment::get('host')));
 
         $objNotification->send($arrData);
     }

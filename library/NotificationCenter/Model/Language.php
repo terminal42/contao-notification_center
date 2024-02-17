@@ -10,6 +10,8 @@
 
 namespace NotificationCenter\Model;
 
+use Contao\Model;
+
 /**
  * @property int    $id
  * @property int    $pid
@@ -33,7 +35,7 @@ namespace NotificationCenter\Model;
  * @property string $file_storage_mode
  * @property string $file_content
  */
-class Language extends \Model
+class Language extends Model
 {
 
     /**

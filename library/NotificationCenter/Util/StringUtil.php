@@ -13,6 +13,7 @@ namespace NotificationCenter\Util;
 
 use Codefog\HasteBundle\StringParser;
 use Contao\System;
+use Contao\Validator;
 
 class StringUtil
 {
@@ -76,7 +77,7 @@ class StringUtil
         foreach (\Contao\StringUtil::trimsplit(',', $strAttachmentTokens) as $strToken) {
             $strParsedToken = System::getContainer()->get(StringParser::class)->recursiveReplaceTokensAndTags($strToken, $arrTokens, static::NO_TAGS | static::NO_BREAKS);
 
-            foreach (trimsplit(',', $strParsedToken) as $strFile) {
+            foreach (\Contao\StringUtil::trimsplit(',', $strParsedToken) as $strFile) {
                 if (is_file($strFile)) {
                     $arrAttachments[$strFile] = $strFile;
                     continue;
@@ -110,10 +111,10 @@ class StringUtil
 
         foreach ((array) \Contao\StringUtil::trimsplit(',', $strRecipients) as $strAddress) {
             if ($strAddress != '') {
-                list($strName, $strEmail) = \StringUtil::splitFriendlyEmail($strAddress);
+                list($strName, $strEmail) = \Contao\StringUtil::splitFriendlyEmail($strAddress);
 
                 // Address could become empty through invalid insert tag
-                if ($strAddress == '' || !\Validator::isEmail($strEmail)) {
+                if ($strAddress == '' || !Validator::isEmail($strEmail)) {
                     continue;
                 }
 

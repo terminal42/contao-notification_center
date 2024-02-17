@@ -10,6 +10,7 @@
 
 namespace NotificationCenter\Queue;
 
+use Contao\Database;
 use Contao\Folder;
 use NotificationCenter\Gateway\GatewayInterface;
 use NotificationCenter\MessageDraft\EmailMessageDraft;
@@ -74,7 +75,7 @@ class QueueManager implements QueueManagerInterface
      */
     public function removeMessage(Message $message)
     {
-        \Database::getInstance()->prepare('DELETE FROM tl_nc_queue WHERE message=?')
+        Database::getInstance()->prepare('DELETE FROM tl_nc_queue WHERE message=?')
             ->execute($message->id);
 
         return $this;

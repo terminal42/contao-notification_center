@@ -12,10 +12,12 @@ namespace NotificationCenter;
 
 use Codefog\HasteBundle\StringParser;
 use Contao\ArrayUtil;
+use Contao\Backend;
+use Contao\Database;
 use Contao\System;
 use NotificationCenter\Util\Form;
 
-class tl_form extends \Backend
+class tl_form extends Backend
 {
 
     public function __construct()
@@ -31,7 +33,7 @@ class tl_form extends \Backend
     public function getNotificationChoices()
     {
         $arrChoices = array();
-        $objNotifications = \Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='core_form' ORDER BY title");
+        $objNotifications = Database::getInstance()->execute("SELECT id,title FROM tl_nc_notification WHERE type='core_form' ORDER BY title");
 
         while ($objNotifications->next()) {
             $arrChoices[$objNotifications->id] = $objNotifications->title;

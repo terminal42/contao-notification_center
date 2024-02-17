@@ -11,6 +11,7 @@
 namespace NotificationCenter\Gateway;
 
 
+use Contao\DataContainer;
 use NotificationCenter\Model\Gateway;
 use NotificationCenter\Model\Message;
 
@@ -37,12 +38,12 @@ class Queue implements GatewayInterface, LabelCallbackInterface
      *
      * @param array          $row
      * @param string         $label
-     * @param \DataContainer $dc
+     * @param DataContainer $dc
      * @param array          $args
      *
      * @return string
      */
-    public function getLabel($row, $label, \DataContainer $dc, $args)
+    public function getLabel($row, $label, DataContainer $dc, $args)
     {
         $targetModel = Gateway::findByPk($row['queue_targetGateway']);
 

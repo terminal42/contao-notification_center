@@ -8,6 +8,9 @@
  * @license    LGPL
  */
 
+use Contao\CoreBundle\Mailer\AvailableTransports;
+use Contao\Database;
+
 /**
  * Table tl_nc_gateway
  */
@@ -153,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'options_callback'        => function() {
                 $options = array();
 
-                $gateways = \Database::getInstance()->prepare('SELECT id,title FROM tl_nc_gateway WHERE type!=?')
+                $gateways = Database::getInstance()->prepare('SELECT id,title FROM tl_nc_gateway WHERE type!=?')
                     ->execute('queue');
 
                 while ($gateways->next()) {
@@ -257,7 +260,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
             'exclude'                 => true,
             'inputType'               => 'select',
             'eval'                    => array('tl_class'=>'w50', 'includeBlankOption'=>true),
-            'options_callback'        => array(\Contao\CoreBundle\Mailer\AvailableTransports::class, 'getTransportOptions'),
+            'options_callback'        => array(AvailableTransports::class, 'getTransportOptions'),
             'sql'                     => "varchar(255) NOT NULL default ''"
         ),
         'file_type' => array

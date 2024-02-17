@@ -49,7 +49,7 @@ class ContaoHelper extends Controller
         // Only create opt-in token if the ##link## simple token is in use (#237)
         if (null !== $notification && $notification->hasToken('link')) {
             /** @var \Contao\CoreBundle\OptIn\OptIn $optIn */
-            $optIn      = \Contao\System::getContainer()->get('contao.opt-in');
+            $optIn      = System::getContainer()->get('contao.opt-in');
             $optInToken = $optIn->create('reg-', $arrData['email'], array('tl_member' => array($arrData['id'])));
 
             $arrData['activation'] = $optInToken->getIdentifier();
@@ -146,7 +146,7 @@ class ContaoHelper extends Controller
             }
         }
 
-        $objNotification = \NotificationCenter\Model\Notification::findByPk($intNotification);
+        $objNotification = Notification::findByPk($intNotification);
 
         if ($objNotification !== null) {
             $objNotification->send($arrTokens, $GLOBALS['TL_LANGUAGE']);

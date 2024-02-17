@@ -158,8 +158,8 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = array
             (
                 // Save gateway_type
                 function($varValue, $dc) {
-                    \Database::getInstance()->prepare("UPDATE tl_nc_message SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=?) WHERE id=?")->execute($varValue, $dc->id);
-                    \Database::getInstance()->prepare("UPDATE tl_nc_language SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=?) WHERE pid=?")->execute($varValue, $dc->id);
+                    \Contao\Database::getInstance()->prepare("UPDATE tl_nc_message SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=?) WHERE id=?")->execute($varValue, $dc->id);
+                    \Contao\Database::getInstance()->prepare("UPDATE tl_nc_language SET gateway_type=(SELECT type FROM tl_nc_gateway WHERE id=?) WHERE pid=?")->execute($varValue, $dc->id);
 
                     return $varValue;
                 }

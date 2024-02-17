@@ -10,9 +10,11 @@
 
 namespace NotificationCenter\Model;
 
+use Contao\Model;
+use Contao\System;
 use NotificationCenter\Gateway\Email;
 
-class Message extends \Model
+class Message extends Model
 {
 
     /**
@@ -46,13 +48,13 @@ class Message extends \Model
     {
         /** @var Gateway $objGatewayModel */
         if (($objGatewayModel = $this->getRelated('gateway')) === null) {
-            \System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not find gateway ID "%s".', $this->gateway), __METHOD__, TL_ERROR);
 
             return false;
         }
 
         if (null === $objGatewayModel->getGateway()) {
-            \System::log(sprintf('Could not find gateway class for gateway ID "%s".', $objGatewayModel->id), __METHOD__, TL_ERROR);
+            System::log(sprintf('Could not find gateway class for gateway ID "%s".', $objGatewayModel->id), __METHOD__, TL_ERROR);
 
             return false;
         }
@@ -64,7 +66,7 @@ class Message extends \Model
 
         if (isset($GLOBALS['TL_HOOKS']['sendNotificationMessage']) && is_array($GLOBALS['TL_HOOKS']['sendNotificationMessage'])) {
             foreach ($GLOBALS['TL_HOOKS']['sendNotificationMessage'] as $arrCallback) {
-                $blnSuccess = \System::importStatic($arrCallback[0])->{$arrCallback[1]}($this, $cpTokens, $cpLanguage, $objGatewayModel);
+                $blnSuccess = System::importStatic($arrCallback[0])->{$arrCallback[1]}($this, $cpTokens, $cpLanguage, $objGatewayModel);
 
                 if (!$blnSuccess) {
                     return false;
@@ -87,7 +89,7 @@ class Message extends \Model
 
             // return false if no language found for BC
             if ($objDraft === null) {
-                \System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $this->id), __METHOD__, TL_ERROR);
+                System::log(sprintf('Could not create draft message for e-mail (Message ID: %s)', $this->id), __METHOD__, TL_ERROR);
 
                 return false;
             }
