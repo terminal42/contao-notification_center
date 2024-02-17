@@ -67,7 +67,7 @@ class tl_nc_message extends Backend
     public function listRows($arrRow)
     {
         if (0 === count($this->arrTranslations)) {
-            $this->arrTranslations = System::getLanguages();
+            $this->arrTranslations = System::getContainer()->get('contao.intl.locales')->getLocales(null, true);;
         }
         if (0 === count($this->arrGateways)) {
             $objGateways = Database::getInstance()->execute('SELECT id,title FROM tl_nc_gateway');

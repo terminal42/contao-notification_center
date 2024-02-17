@@ -208,7 +208,7 @@ window.addEvent('domready', function() {
         }
 
         try {
-            StringUtil::parseSimpleTokens($strText, array_flip($foundTokens));
+            System::getContainer()->get('contao.string.simple_token_parser')->parse($strText, array_flip($foundTokens));
         } catch (\Exception $e) {
             $objWidget->addError($e->getMessage());
 
