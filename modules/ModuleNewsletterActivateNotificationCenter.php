@@ -187,4 +187,8 @@ class ModuleNewsletterActivateNotificationCenter extends Module
 
         $objNotification->send($arrData);
     }
+
+    protected function validateForm() {
+        throw new \BadMethodCallException('This method is not supported in this class');
+    }
 }

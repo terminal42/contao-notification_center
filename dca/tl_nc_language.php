@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = array
     'config' => array
     (
         'ptable'                      => 'tl_nc_message',
-        'dataContainer'               => 'Table',
+        'dataContainer'               => \Contao\DC_Table::class,
         'enableVersioning'            => true,
         'oncreate_callback' => array
         (

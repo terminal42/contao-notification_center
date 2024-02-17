@@ -20,7 +20,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = array
     // Config
     'config' => array
     (
-        'dataContainer'               => 'Table',
+        'dataContainer'               => \Contao\DC_Table::class,
         'enableVersioning'            => true,
         'onload_callback' => array
         (

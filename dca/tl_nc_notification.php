@@ -18,7 +18,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = array
     'config' => array
     (
         'ctable'                      => array('tl_nc_message'),
-        'dataContainer'               => 'Table',
+        'dataContainer'               => \Contao\DC_Table::class,
         'switchToEdit'                => true,
         'enableVersioning'            => true,
         'sql' => array
