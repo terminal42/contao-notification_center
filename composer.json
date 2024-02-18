@@ -30,7 +30,7 @@
         "forum": "https://community.contao.org"
     },
     "require": {
-        "php": "^7.0 || ^8.0",
+        "php": "^8.1",
         "contao/core-bundle": "^4.13",
         "contao-community-alliance/composer-plugin":"~2.4 || ~3.0",
         "codefog/contao-haste": "^5.0",
