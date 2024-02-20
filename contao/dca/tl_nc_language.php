@@ -100,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
         'language' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['mandatory' => true, 'chosen' => true, 'doNotCopy' => true, 'includeBlankOption' => true,  'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'chosen' => true, 'includeBlankOption' => true,  'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 64, 'default' => null, 'notnull' => false],
         ],
         'fallback' => [
