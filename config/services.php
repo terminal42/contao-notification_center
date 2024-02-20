@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Codefog\HasteBundle\StringParser;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
@@ -74,6 +75,7 @@ return static function (ContainerConfigurator $container): void {
             service('event_dispatcher'),
             service('request_stack'),
             service(BulkyItemStorage::class),
+            service(StringParser::class),
         ])
     ;
 

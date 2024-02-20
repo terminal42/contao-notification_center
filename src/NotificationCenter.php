@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle;
 
+use Codefog\HasteBundle\StringParser;
 use Contao\CoreBundle\Util\LocaleUtil;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -46,6 +47,7 @@ class NotificationCenter
         private EventDispatcherInterface $eventDispatcher,
         private RequestStack $requestStack,
         private BulkyItemStorage $bulkyGoodsStorage,
+        private StringParser $stringParser,
     ) {
     }
 
@@ -111,7 +113,13 @@ class NotificationCenter
 
         $collection = new TokenCollection();
 
+        $flattenedTokens = [];
+
         foreach ($rawTokens as $rawTokenName => $rawTokenValue) {
+            $this->stringParser->flatten($rawTokenValue, $rawTokenName, $flattenedTokens);
+        }
+
+        foreach ($flattenedTokens as $rawTokenName => $rawTokenValue) {
             foreach ($tokenDefinitions as $definition) {
                 if ($definition->matchesTokenName($rawTokenName)) {
                     $token = $definition->createToken($rawTokenValue, $rawTokenName);
