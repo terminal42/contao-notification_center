@@ -1,7 +1,7 @@
 # Version 2.0
 
-This is a new major version which means **it introduces BC breaks**. No extension compatible to version 1.* of the
-Notification Center will be compatible with 2.*. Moreover, some features have been removed while new ones have
+This is a new major version which means **it introduces BC breaks**. No extension compatible to version `1.*` of the
+Notification Center will be compatible with `2.*`. Moreover, some features have been removed while new ones have
 been added. Check the [UPGRADE.md](UPGRADE.md) to know how to update.
 
 ## New

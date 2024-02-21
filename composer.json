@@ -66,6 +66,5 @@
             "php-http/discovery": false
         }
     },
-    "minimum-stability": "dev",
     "prefer-stable": true
 }

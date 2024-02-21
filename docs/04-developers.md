@@ -36,7 +36,7 @@ class SomeService
 ```
 
 This will send the notification ID `42` with a "token collection" created based on your `my-notification-type-name` and
-two raw tokens `token1` and `token2`. This means, you customer can go ahead and e.g. compose an e-mail saying 
+two raw tokens `token1` and `token2`. This means, your customer can go ahead and e.g. compose an e-mail saying 
 `Hello ##firstname## ##lastname##, welcome to my message`.
 
 We'll get to the notification type in a second but let's first check some more internal concepts.
@@ -48,8 +48,8 @@ you'd go to your local post office. Hence, the actual thing that is sent, is ref
 of sending is, is your `Receipt`. As, sometimes, you are sending multiple parcels at once, there's also a `ParcelCollection`
 and the corresponding `ReceiptCollection`.
 
-Every `Parcel` has a `MessageConfig` which represents its contents. Morever, it can have stamps which are represented by
-the `StampInterface`. It can have as many stamps as needed and they represent meta data to the parcel itself.
+Every `Parcel` has a `MessageConfig` which represents its contents. Moreover, it can have stamps which are represented by
+the `StampInterface`. It can have as many stamps as needed and they represent metadata to the parcel itself.
 
 Because there is one `Receipt` per `Parcel`, you can always access the original information and inspect everything you
 need. So in our example above, `$receipts` is a `ReceiptCollection` and we can now do all kinds of operations with it:
@@ -105,11 +105,11 @@ class FormGeneratorNotificationType implements NotificationTypeInterface
     public function getTokenDefinitions(): array
     {
         return [
-            $this->factory->create(WildcardToken::DEFINITION_NAME, 'form_*', 'form.form_*'),
-            $this->factory->create(WildcardToken::DEFINITION_NAME, 'formconfig_*', 'form.formconfig_*'),
-            $this->factory->create(WildcardToken::DEFINITION_NAME, 'formlabel_*', 'form.formlabel_*'),
-            $this->factory->create(TextToken::class, 'raw_data', 'form.raw_data'),
-            $this->factory->create(TextToken::class, 'raw_data_filled', 'form.raw_data_filled'),
+            $this->factory->create(AnythinkTokenDefinition::class, 'form_*', 'form.form_*'),
+            $this->factory->create(AnythinkTokenDefinition::class, 'formconfig_*', 'form.formconfig_*'),
+            $this->factory->create(AnythinkTokenDefinition::class, 'formlabel_*', 'form.formlabel_*'),
+            $this->factory->create(TextTokenDefinition::class, 'raw_data', 'form.raw_data'),
+            $this->factory->create(TextTokenDefinition::class, 'raw_data_filled', 'form.raw_data_filled'),
         ];
     }
 }
@@ -130,30 +130,31 @@ A token definition has to implement the `TokenDefinitionInterface` and you can e
 need to create your own one. This, however, is pretty unlikely as the Notification Center already ships quite a few of
 them:
 
-* EmailToken
-* FileToken
-* HtmlToken
-* TextToken
-* WildcardToken
+* EmailTokenDefinition
+* FileTokenDefinition
+* HtmlTokenDefinition
+* TextTokenDefinition
+* AnythingTokenDefinition (basically "this token can be used anywhere")
 
 Basically, the purpose of a token definition is to describe its values. For example, in the e-mail settings for
-the recipient, we don't want anything different from `EmailToken` instances to be allowed. You cannot send an e-mail
+the recipient, we don't want anything different from `EmailTokenDefinition` instances to be allowed. You cannot send an e-mail
 to `<html><title>Foobar</title></html>` - it must be an e-mail. 
 
-In the DCA, you can then configure which token definitions are allowed:
+In the DCA, you can then configure which token definition context is required:
 
 ```php
 'recipients' => [
     'exclude' => true,
     'inputType' => 'text',
     'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true, 'mandatory' => true],
-    'nc_token_types' => [
-        WildcardToken::DEFINITION_NAME,
-        EmailToken::class,
-    ],
+    'nc_context' => TokenContext::Email,
     'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
 ],
 ```
+
+So we now have a list of token definitions and a token context "email". Someone now has to tell the Notification Center
+that for this context, all tokens of type `EmailTokenDefinition` and `AnythingTokenDefinition` should be listed. See the
+`GetTokenDefinitionClassesForContextEvent` for more details.
 
 ## Gateways
 
@@ -162,7 +163,7 @@ The Notification Center ships with a `MailerGateway` which sends a `Parcel` usin
 Hence, the basic logic looks like this:
 
 ```php
-class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\GatewayInterface
+class MailerGateway implements GatewayInterface
 {
     public const NAME = 'mailer';
     
@@ -204,7 +205,7 @@ class MailerGateway implements \Terminal42\NotificationCenterBundle\Gateway\Gate
         }
     }
     
-    private function createEmailStamp(Parcel $parcel): \Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp
+    private function createEmailStamp(Parcel $parcel): EmailStamp
     {
         // Create a stamp that contains all we need to actually send the e-mail
     }
@@ -328,7 +329,8 @@ There are four events you can use:
 
 * CreateParcelEvent
 * GetNotificationTypeForModuleConfigEvent
-* GetTokenDefinitionsEvent
+* GetTokenDefinitionsForNotificationTypeEvent
+* GetTokenDefinitionClassesForContextEvent
 * ReceiptEvent
 
 ### CreateParcelEvent
@@ -350,11 +352,17 @@ module shouldn't list notifications for a Contao form submission or an Isotope e
 This event is here for you to be able to reuse `tl_module.nc_notification` in your palette and then filter for your
 notification type.
 
-### GetTokenDefinitionsEvent
+### GetTokenDefinitionsForNotificationTypeEvent
 
 This event is here to extend the list of token definitions for a given notification type. The Notification Center itself
 uses this to add an `admin_email` token definition to all notification types for example. We're talking about the definition
 here, the value is added in the `CreateParcelEvent`.
+
+### GetTokenDefinitionClassesForContextEvent
+
+This event is here to extend the list of token definition classes for a given context. The Notification Center itself
+does not use this event. But if you introduced your own instance of `TokenDefinitionInterface` and you would want to make
+sure this is shown e.g. in the `TokenContext::Email` context, this is your event!
 
 ### ReceiptEvent
 
