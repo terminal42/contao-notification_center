@@ -9,10 +9,10 @@ use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterfac
 
 interface TokenDefinitionFactoryInterface
 {
-    public function supports(string $definitionName): bool;
+    public function supports(string $definitionClass): bool;
 
     /**
      * @throws InvalidTokenDefinitionNameException
      */
-    public function create(string $definitionName, string $tokenName, string $translationKey): TokenDefinitionInterface;
+    public function create(string $definitionClass, string $tokenName, string $translationKey): TokenDefinitionInterface;
 }

@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token\Definition;
 
-use Terminal42\NotificationCenterBundle\Exception\InvalidTokenException;
-use Terminal42\NotificationCenterBundle\Exception\InvalidTokenNameException;
-use Terminal42\NotificationCenterBundle\Token\ArrayToken;
-use Terminal42\NotificationCenterBundle\Token\StringToken;
-use Terminal42\NotificationCenterBundle\Token\TokenInterface;
+use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
+use Terminal42\NotificationCenterBundle\Token\Token;
 
 abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
     final public function __construct(private string $tokenName, private string $translationKey)
     {
-        $this->validateTokenName($this->tokenName);
     }
 
     public function getTokenName(): string
@@ -27,44 +23,17 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         return $this->translationKey;
     }
 
-    public static function createFromNameAndTranslationKey(string $tokenName, string $translationKey): static
+    public function matches(string $tokenName, mixed $value): bool
     {
-        return new static($tokenName, $translationKey);
+        if (str_ends_with($this->getTokenName(), '_*')) {
+            return (bool) preg_match('/^'.preg_quote(substr($this->getTokenName(), 0, -1), '/').'.+$/', $tokenName);
+        }
+
+        return $this->getTokenName() === $tokenName;
     }
 
-    public function matchesTokenName(string $tokenName): bool
+    public function createToken(string $tokenName, mixed $value, StampCollection $stamps = null): Token
     {
-        return $tokenName === $this->tokenName;
-    }
-
-    /**
-     * @throws InvalidTokenNameException
-     */
-    protected function validateTokenName(string $name): void
-    {
-        if (str_ends_with($name, '_*')) {
-            throw InvalidTokenNameException::becauseMustNotEndWith('_*');
-        }
-    }
-
-    protected function createTokenWithAllowedTypes(mixed $tokenValue, array $allowedTypes, string $tokenName = null): TokenInterface
-    {
-        if (null === $tokenName) {
-            $tokenName = $this->getTokenName();
-        }
-
-        if (\in_array('null', $allowedTypes, true) && null === $tokenValue) {
-            return new StringToken('', $tokenName);
-        }
-
-        if (\in_array('string', $allowedTypes, true) && \is_scalar($tokenValue)) {
-            return new StringToken((string) $tokenValue, $tokenName);
-        }
-
-        if (\in_array('array', $allowedTypes, true) && \is_array($tokenValue)) {
-            return new ArrayToken($tokenValue, $tokenName);
-        }
-
-        throw InvalidTokenException::becauseOfUnknownType(get_debug_type($tokenValue));
+        return Token::fromValue($tokenName, $value);
     }
 }

@@ -8,7 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
-class GetTokenDefinitionsEvent extends Event
+class GetTokenDefinitionsForNotificationTypeEvent extends Event
 {
     /**
      * @var array<TokenDefinitionInterface>
@@ -37,21 +37,28 @@ class GetTokenDefinitionsEvent extends Event
         return $this;
     }
 
+    public function removeTokenDefinition(TokenDefinitionInterface $token): self
+    {
+        unset($this->tokenDefinitions[$token->getTokenName()]);
+
+        return $this;
+    }
+
     /**
-     * @param array<string> $tokenDefinitionTypes
+     * @param array<class-string<TokenDefinitionInterface>> $tokenDefinitionClasses
      *
      * @return array<string, TokenDefinitionInterface>
      */
-    public function getTokenDefinitions(array $tokenDefinitionTypes = []): array
+    public function getTokenDefinitions(array $tokenDefinitionClasses = []): array
     {
-        if ([] === $tokenDefinitionTypes) {
+        if ([] === $tokenDefinitionClasses) {
             return $this->tokenDefinitions;
         }
 
         $definitions = [];
 
         foreach ($this->tokenDefinitions as $definition) {
-            if (\in_array($definition->getDefinitionName(), $tokenDefinitionTypes, true)) {
+            if (\in_array($definition::class, $tokenDefinitionClasses, true)) {
                 $definitions[$definition->getTokenName()] = $definition;
             }
         }

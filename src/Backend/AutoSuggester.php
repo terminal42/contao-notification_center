@@ -17,9 +17,11 @@ class AutoSuggester
     public function enableAutoSuggesterOnDca(string $table, string $notificationType): void
     {
         foreach ((array) $GLOBALS['TL_DCA'][$table]['fields'] as $field => $fieldConfig) {
-            if (!isset($fieldConfig['nc_token_types'])) {
+            if (!isset($fieldConfig['nc_context'])) {
                 continue;
             }
+
+            $context = (string) ($fieldConfig['nc_context'] instanceof \BackedEnum ? $fieldConfig['nc_context']->value : $fieldConfig['nc_context']);
 
             // Disable browser autocompletion based on historic values for the token fields as otherwise
             // one would get two suggestions
@@ -38,19 +40,16 @@ class AutoSuggester
             $GLOBALS['TL_MOOTOOLS'][] = sprintf(
                 "<script>document.addEventListener('DOMContentLoaded',()=>{new initContaoNotificationCenterAutoSuggester('%s', %s)});</script>",
                 'ctrl_'.$field,
-                $this->getTokenConfigForField($notificationType, $fieldConfig['nc_token_types'])
+                $this->getTokenConfigForField($notificationType, $context)
             );
         }
     }
 
-    /**
-     * @param array<string> $tokenDefinitionTypes
-     */
-    private function getTokenConfigForField(string $notificationType, array $tokenDefinitionTypes): string
+    private function getTokenConfigForField(string $notificationType, string $context): string
     {
         $tokens = [];
 
-        foreach ($this->notificationCenter->getTokenDefinitionsForNotificationType($notificationType, $tokenDefinitionTypes) as $token) {
+        foreach ($this->notificationCenter->getTokenDefinitionsForNotificationType($notificationType, $context) as $token) {
             $label = '';
 
             if (($translationKey = $token->getTranslationKey()) !== null) {

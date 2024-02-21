@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\NotificationType\Newsletter;
 
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeInterface;
-use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
+use Terminal42\NotificationCenterBundle\Token\Definition\EmailTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
-use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
+use Terminal42\NotificationCenterBundle\Token\Definition\TextTokenDefinition;
 
 class NewsletterActivateNotificationType implements NotificationTypeInterface
 {
@@ -25,9 +25,9 @@ class NewsletterActivateNotificationType implements NotificationTypeInterface
     public function getTokenDefinitions(): array
     {
         return [
-            $this->factory->create(EmailToken::DEFINITION_NAME, 'recipient_email', 'newsletter.recipient_email'),
-            $this->factory->create(TextToken::DEFINITION_NAME, 'channels', 'newsletter.channels'),
-            $this->factory->create(TextToken::DEFINITION_NAME, 'channel_ids', 'newsletter.channel_ids'),
+            $this->factory->create(EmailTokenDefinition::class, 'recipient_email', 'newsletter.recipient_email'),
+            $this->factory->create(TextTokenDefinition::class, 'channels', 'newsletter.channels'),
+            $this->factory->create(TextTokenDefinition::class, 'channel_ids', 'newsletter.channel_ids'),
         ];
     }
 }

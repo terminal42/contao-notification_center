@@ -75,7 +75,7 @@ class ProcessFormDataListener
         // Make sure we don't pass any objects as tokens
         $tokens = array_filter($tokens, static fn ($v) => !\is_object($v));
 
-        $stamps = $this->notificationCenter->createTokenAndLocaleStampsForNotification(
+        $stamps = $this->notificationCenter->createBasicStampsForNotification(
             (int) $formData['nc_notification'],
             $tokens
         );

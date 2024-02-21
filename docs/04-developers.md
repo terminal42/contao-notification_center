@@ -108,8 +108,8 @@ class FormGeneratorNotificationType implements NotificationTypeInterface
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'form_*', 'form.form_*'),
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'formconfig_*', 'form.formconfig_*'),
             $this->factory->create(WildcardToken::DEFINITION_NAME, 'formlabel_*', 'form.formlabel_*'),
-            $this->factory->create(TextToken::DEFINITION_NAME, 'raw_data', 'form.raw_data'),
-            $this->factory->create(TextToken::DEFINITION_NAME, 'raw_data_filled', 'form.raw_data_filled'),
+            $this->factory->create(TextToken::class, 'raw_data', 'form.raw_data'),
+            $this->factory->create(TextToken::class, 'raw_data_filled', 'form.raw_data_filled'),
         ];
     }
 }
@@ -149,7 +149,7 @@ In the DCA, you can then configure which token definitions are allowed:
     'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true, 'mandatory' => true],
     'nc_token_types' => [
         WildcardToken::DEFINITION_NAME,
-        EmailToken::DEFINITION_NAME,
+        EmailToken::class,
     ],
     'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
 ],

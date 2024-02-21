@@ -4,18 +4,11 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token\Definition;
 
-use Terminal42\NotificationCenterBundle\Exception\InvalidTokenException;
-use Terminal42\NotificationCenterBundle\Token\TokenInterface;
+use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
+use Terminal42\NotificationCenterBundle\Token\Token;
 
 interface TokenDefinitionInterface
 {
-    /**
-     * Returns the name of the definition. It's used e.g. in the DCA files
-     * to reference to the allowed token definitions.
-     * E.g. "email".
-     */
-    public function getDefinitionName(): string;
-
     /**
      * Returns the token name for this definition which the user can use in the
      * interface using simple tokens.
@@ -31,20 +24,17 @@ interface TokenDefinitionInterface
     public function getTranslationKey(): string;
 
     /**
-     * Should return true if the token definition is responsible for a given token name.
-     * Normally this is "$tokenName === $this->getTokenName()" but e.g. the WildcardToken
-     * definition uses "*" as placeholder etc. Anything is doable in this method.
+     * Should return true if the token definition is responsible for a given token name and value.
+     * Normally this is "$tokenName === $this->getTokenName()" or if the token name ends with "_*" a regex matching
+     * on this placeholder. But anything is doable in this method. Maybe your definition is responsible for only tokens
+     * with a given prefix?
      */
-    public function matchesTokenName(string $tokenName): bool;
+    public function matches(string $tokenName, mixed $value): bool;
 
     /**
      * This method is responsible for actually creating a concrete token (NOT the definition) from a
-     * value. E.g. turning "foobar@example.com" into a StringToken instance.
-     * By default, the tokenName is the same as defined on the token definition (also @see matchesTokenName() as this
-     * is the default case). However, in cases like the WildcardToken where the definition itself uses a placeholder, the
-     * concrete token name has to be provided. But really that is up to the token definition.
-     *
-     * @throws InvalidTokenException
+     * name and a value. E.g. turning "form_email" and "foobar@example.com" into a Token instance.
+     * Use this method to e.g. convert object values into your own parsed variant of it.
      */
-    public function createToken(mixed $value, string $tokenName = null): TokenInterface;
+    public function createToken(string $tokenName, mixed $value, StampCollection $stamps = null): Token;
 }

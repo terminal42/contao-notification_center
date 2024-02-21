@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 use Contao\DC_Table;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
-use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
-use Terminal42\NotificationCenterBundle\Token\Definition\FileToken;
-use Terminal42\NotificationCenterBundle\Token\Definition\HtmlToken;
-use Terminal42\NotificationCenterBundle\Token\Definition\TextToken;
-use Terminal42\NotificationCenterBundle\Token\Definition\WildcardToken;
+use Terminal42\NotificationCenterBundle\Token\TokenContext;
 
 /*
  * Table tl_nc_language
@@ -100,7 +96,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
         'language' => [
             'exclude' => true,
             'inputType' => 'select',
-            'eval' => ['mandatory' => true, 'chosen' => true, 'includeBlankOption' => true,  'tl_class' => 'w50'],
+            'eval' => ['mandatory' => true, 'chosen' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 64, 'default' => null, 'notnull' => false],
         ],
         'fallback' => [
@@ -113,70 +109,49 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true, 'mandatory' => true],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                EmailToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_sender_name' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                TextToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Text,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_sender_address' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                EmailToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_recipient_cc' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'w50'],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                EmailToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_recipient_bcc' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'w50'],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                EmailToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_replyTo' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'w50'],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                EmailToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_subject' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true, 'mandatory' => true],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                TextToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Text,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_mode' => [
@@ -191,33 +166,21 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
             'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'clr', 'decodeEntities' => true, 'mandatory' => true],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                TextToken::DEFINITION_NAME,
-                FileToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Text,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_html' => [
             'exclude' => true,
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'clr', 'rte' => 'tinyMCE', 'decodeEntities' => true, 'allowHtml' => true, 'mandatory' => true],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                TextToken::DEFINITION_NAME,
-                HtmlToken::DEFINITION_NAME,
-                FileToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::Html,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'attachment_tokens' => [
             'exclude' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true],
-            'nc_token_types' => [
-                WildcardToken::DEFINITION_NAME,
-                FileToken::DEFINITION_NAME,
-            ],
+            'nc_context' => TokenContext::File,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'attachments' => [

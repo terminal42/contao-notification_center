@@ -24,21 +24,21 @@ class ChainTokenDefinitionFactory implements TokenDefinitionFactoryInterface
     /**
      * @throws InvalidTokenDefinitionNameException
      */
-    public function create(string $definitionName, string $tokenName, string $translationKey): TokenDefinitionInterface
+    public function create(string $definitionClass, string $tokenName, string $translationKey): TokenDefinitionInterface
     {
         foreach ($this->factories as $factory) {
-            if ($factory->supports($definitionName)) {
-                return $factory->create($definitionName, $tokenName, $translationKey);
+            if ($factory->supports($definitionClass)) {
+                return $factory->create($definitionClass, $tokenName, $translationKey);
             }
         }
 
-        throw InvalidTokenDefinitionNameException::becauseDoesNotExist($definitionName);
+        throw InvalidTokenDefinitionNameException::becauseDoesNotExist($definitionClass);
     }
 
-    public function supports(string $definitionName): bool
+    public function supports(string $definitionClass): bool
     {
         foreach ($this->factories as $factory) {
-            if ($factory->supports($definitionName)) {
+            if ($factory->supports($definitionClass)) {
                 return true;
             }
         }

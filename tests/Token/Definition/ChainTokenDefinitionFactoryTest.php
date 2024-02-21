@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Test\Token\Definition;
 
 use PHPUnit\Framework\TestCase;
-use Terminal42\NotificationCenterBundle\Token\Definition\AbstractTokenDefinition;
-use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
+use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
+use Terminal42\NotificationCenterBundle\Token\Definition\EmailTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
-use Terminal42\NotificationCenterBundle\Token\StringToken;
-use Terminal42\NotificationCenterBundle\Token\TokenInterface;
+use Terminal42\NotificationCenterBundle\Token\Token;
 
 class ChainTokenDefinitionFactoryTest extends TestCase
 {
@@ -20,73 +19,79 @@ class ChainTokenDefinitionFactoryTest extends TestCase
     {
         $factory = new ChainTokenDefinitionFactory();
 
-        $this->assertFalse($factory->supports(EmailToken::DEFINITION_NAME));
+        $this->assertFalse($factory->supports(EmailTokenDefinition::class));
 
         $factory->addFactory(new CoreTokenDefinitionFactory());
 
-        $this->assertTrue($factory->supports(EmailToken::DEFINITION_NAME));
+        $this->assertTrue($factory->supports(EmailTokenDefinition::class));
 
-        $definition = $factory->create(EmailToken::DEFINITION_NAME, 'form_email', 'foobar');
+        $definition = $factory->create(EmailTokenDefinition::class, 'form_email', 'foobar');
 
-        $this->assertInstanceOf(EmailToken::class, $definition);
+        $this->assertInstanceOf(EmailTokenDefinition::class, $definition);
         $this->assertSame('form_email', $definition->getTokenName());
         $this->assertSame('foobar', $definition->getTranslationKey());
 
         $this->assertFalse($factory->supports('iban-token-definition'));
 
-        $factory->addFactory($this->createExampleFactoryWithDependencyInjection('form_iban', 'foobar', 'iban-validator-service-id'));
+        $exampleDefinition = $this->createExampleTokenDefinition('form_iban', 'foobar', 'iban-validator-service-id');
+        $factory->addFactory($this->createExampleFactoryWithDependencyInjection($exampleDefinition));
 
-        $this->assertTrue($factory->supports('iban-token-definition'));
+        $this->assertTrue($factory->supports($exampleDefinition::class));
 
-        $definition = $factory->create('iban-token-definition', 'form_iban', 'foobar');
+        $definition = $factory->create($exampleDefinition::class, 'form_iban', 'foobar');
 
         $this->assertSame('form_iban', $definition->getTokenName());
         $this->assertSame('foobar', $definition->getTranslationKey());
 
-        $token = $definition->createToken('CH...');
-        $this->assertSame('i-would-call-service: iban-validator-service-id and return value: CH...', $token->getParserValue());
+        $token = $definition->createToken('form_iban', 'CH...');
+        $this->assertSame('i-would-call-service: iban-validator-service-id and return value: CH...', $token->getValue());
+        $this->assertSame('parser-value', $token->getParserValue());
     }
 
-    private function createExampleFactoryWithDependencyInjection(string $tokenName, string $translationKey, string $serviceDummy): TokenDefinitionFactoryInterface
+    private function createExampleTokenDefinition(string $tokenName, string $translationKey, string $serviceDummy): TokenDefinitionInterface
     {
-        $diDefinition = new class($tokenName, $translationKey) extends AbstractTokenDefinition {
-            private string $serviceDummy;
-
-            public function setServiceDummy(string $serviceDummy): void
+        return new class($tokenName, $translationKey, $serviceDummy) implements TokenDefinitionInterface {
+            final public function __construct(private string $tokenName, private string $translationKey, private string $serviceDummy)
             {
-                $this->serviceDummy = $serviceDummy;
             }
 
-            public function getDefinitionName(): string
+            public function getTranslationKey(): string
             {
-                return 'iban-token-definition';
+                return $this->translationKey;
             }
 
-            public function createToken(mixed $value, string $tokenName = null): TokenInterface
+            public function matches(string $tokenName, mixed $value): bool
             {
-                if (null === $tokenName) {
-                    $tokenName = $this->getTokenName();
-                }
+                return true;
+            }
 
-                return new StringToken('i-would-call-service: '.$this->serviceDummy.' and return value: '.$value, $tokenName);
+            public function createToken(string $tokenName, mixed $value, StampCollection $stamps = null): Token
+            {
+                return new Token($tokenName, 'i-would-call-service: '.$this->serviceDummy.' and return value: '.$value, 'parser-value');
+            }
+
+            public function getTokenName(): string
+            {
+                return $this->tokenName;
             }
         };
+    }
 
-        $diDefinition->setServiceDummy($serviceDummy);
-
-        return new class($diDefinition) implements TokenDefinitionFactoryInterface {
-            public function __construct(private TokenDefinitionInterface $diDefinition)
+    private function createExampleFactoryWithDependencyInjection(TokenDefinitionInterface $definition): TokenDefinitionFactoryInterface
+    {
+        return new class($definition) implements TokenDefinitionFactoryInterface {
+            public function __construct(private TokenDefinitionInterface $definition)
             {
             }
 
-            public function supports(string $definitionName): bool
+            public function supports(string $definitionClass): bool
             {
-                return $definitionName === $this->diDefinition->getDefinitionName();
+                return $this->definition::class === $definitionClass;
             }
 
-            public function create(string $definitionName, string $tokenName, string $translationKey): TokenDefinitionInterface
+            public function create(string $definitionClass, string $tokenName, string $translationKey): TokenDefinitionInterface
             {
-                return $this->diDefinition;
+                return $this->definition;
             }
         };
     }

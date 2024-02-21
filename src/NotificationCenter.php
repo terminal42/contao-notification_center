@@ -14,7 +14,8 @@ use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Config\NotificationConfig;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
-use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
+use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionClassesForContextEvent;
+use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsForNotificationTypeEvent;
 use Terminal42\NotificationCenterBundle\Event\ReceiptEvent;
 use Terminal42\NotificationCenterBundle\Exception\InvalidNotificationTypeException;
 use Terminal42\NotificationCenterBundle\Exception\InvalidTokenException;
@@ -35,7 +36,9 @@ use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 use Terminal42\NotificationCenterBundle\Receipt\ReceiptCollection;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
+use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
+use Terminal42\NotificationCenterBundle\Token\TokenContext;
 
 class NotificationCenter
 {
@@ -57,11 +60,9 @@ class NotificationCenter
     }
 
     /**
-     * @param array<string> $tokenDefinitionTypes
-     *
      * @return array<TokenDefinitionInterface>
      */
-    public function getTokenDefinitionsForNotificationType(string $typeName, array $tokenDefinitionTypes = []): array
+    public function getTokenDefinitionsForNotificationType(string $typeName, string $context = ''): array
     {
         $notificationType = $this->notificationTypeRegistry->getByName($typeName);
 
@@ -69,11 +70,27 @@ class NotificationCenter
             throw InvalidNotificationTypeException::becauseTypeDoesNotExist($typeName);
         }
 
-        $event = new GetTokenDefinitionsEvent($notificationType, $notificationType->getTokenDefinitions());
+        $event = new GetTokenDefinitionsForNotificationTypeEvent($notificationType, $notificationType->getTokenDefinitions());
 
         $this->eventDispatcher->dispatch($event);
 
-        return $event->getTokenDefinitions($tokenDefinitionTypes);
+        if ('' !== $context) {
+            return $event->getTokenDefinitions($this->getValidTokenDefinitionClassesForContext($context));
+        }
+
+        return $event->getTokenDefinitions();
+    }
+
+    /**
+     * @return array<class-string<TokenDefinitionInterface>>
+     */
+    public function getValidTokenDefinitionClassesForContext(string $context): array
+    {
+        $event = new GetTokenDefinitionClassesForContextEvent($context, (array) TokenContext::tryFrom($context)?->definitions());
+
+        $this->eventDispatcher->dispatch($event);
+
+        return $event->getTokenDefinitionClasses();
     }
 
     /**
@@ -101,7 +118,7 @@ class NotificationCenter
      *
      * @throws InvalidTokenException
      */
-    public function createTokenCollectionFromArray(array $rawTokens, string $notificationTypeName): TokenCollection
+    public function createTokenCollectionFromArray(array $rawTokens, string $notificationTypeName, StampCollection $stamps = null): TokenCollection
     {
         $notificationType = $this->notificationTypeRegistry->getByName($notificationTypeName);
 
@@ -121,10 +138,13 @@ class NotificationCenter
 
         foreach ($flattenedTokens as $rawTokenName => $rawTokenValue) {
             foreach ($tokenDefinitions as $definition) {
-                if ($definition->matchesTokenName($rawTokenName)) {
-                    $token = $definition->createToken($rawTokenValue, $rawTokenName);
-                    $collection->add($token);
+                if ($definition->matches($rawTokenName, $rawTokenValue)) {
+                    $token = $definition->createToken($rawTokenName, $rawTokenValue, $stamps);
+                } else {
+                    $token = Token::fromValue($rawTokenName, $rawTokenValue);
                 }
+
+                $collection->add($token);
             }
         }
 
@@ -159,13 +179,17 @@ class NotificationCenter
             $parcel = $parcel->withStamp($stamp);
         }
 
-        // Add additional stamps
-        if (null !== ($notificationConfig = $this->configLoader->loadNotification($messageConfig->getNotification()))) {
-            $parcel = $parcel->withStamp(new NotificationConfigStamp($notificationConfig));
+        // Add potentially missing stamps
+        if (!$parcel->hasStamp(NotificationConfigStamp::class)) {
+            if (null !== ($notificationConfig = $this->configLoader->loadNotification($messageConfig->getNotification()))) {
+                $parcel = $parcel->withStamp(new NotificationConfigStamp($notificationConfig));
+            }
         }
 
-        if (null !== ($gatewayConfig = $this->configLoader->loadGateway($messageConfig->getGateway()))) {
-            $parcel = $parcel->withStamp(new GatewayConfigStamp($gatewayConfig));
+        if (!$parcel->hasStamp(GatewayConfigStamp::class)) {
+            if (null !== ($gatewayConfig = $this->configLoader->loadGateway($messageConfig->getGateway()))) {
+                $parcel = $parcel->withStamp(new GatewayConfigStamp($gatewayConfig));
+            }
         }
 
         /** @var LocaleStamp|null $localeStamp */
@@ -276,7 +300,7 @@ class NotificationCenter
      */
     public function sendNotification(int $id, TokenCollection|array $tokens, string $locale = null): ReceiptCollection
     {
-        return $this->sendNotificationWithStamps($id, $this->createTokenAndLocaleStampsForNotification($id, $tokens, $locale));
+        return $this->sendNotificationWithStamps($id, $this->createBasicStampsForNotification($id, $tokens, $locale));
     }
 
     public function sendNotificationWithStamps(int $id, StampCollection $stamps): ReceiptCollection
@@ -290,21 +314,15 @@ class NotificationCenter
         return $collection;
     }
 
-    public function createTokenAndLocaleStampsForNotification(int $id, TokenCollection|array $tokens, string $locale = null): StampCollection
+    public function createBasicStampsForNotification(int $id, TokenCollection|array $tokens, string $locale = null): StampCollection
     {
-        $stamps = new StampCollection();
+        $notificationConfig = $this->configLoader->loadNotification($id);
 
-        if (!$tokens instanceof TokenCollection) {
-            $notificationConfig = $this->configLoader->loadNotification($id);
-
-            if (!$notificationConfig instanceof NotificationConfig) {
-                throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
-            }
-
-            $tokens = $this->createTokenCollectionFromArray($tokens, $notificationConfig->getType());
+        if (!$notificationConfig instanceof NotificationConfig) {
+            throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
         }
 
-        $stamps = $stamps->with(new TokenCollectionStamp($tokens));
+        $stamps = new StampCollection([new NotificationConfigStamp($notificationConfig)]);
 
         if (null === $locale && ($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
             $stamps = $stamps
@@ -312,6 +330,10 @@ class NotificationCenter
             ;
         }
 
-        return $stamps;
+        if (!$tokens instanceof TokenCollection) {
+            $tokens = $this->createTokenCollectionFromArray($tokens, $notificationConfig->getType(), $stamps);
+        }
+
+        return $stamps->with(new TokenCollectionStamp($tokens));
     }
 }

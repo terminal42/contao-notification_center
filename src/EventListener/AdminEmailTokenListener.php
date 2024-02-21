@@ -10,9 +10,9 @@ use Contao\PageModel;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
-use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsEvent;
+use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsForNotificationTypeEvent;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
-use Terminal42\NotificationCenterBundle\Token\Definition\EmailToken;
+use Terminal42\NotificationCenterBundle\Token\Definition\EmailTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
@@ -23,7 +23,7 @@ class AdminEmailTokenListener
     }
 
     #[AsEventListener]
-    public function onGetTokenDefinitions(GetTokenDefinitionsEvent $event): void
+    public function onGetTokenDefinitions(GetTokenDefinitionsForNotificationTypeEvent $event): void
     {
         $event->addTokenDefinition($this->getTokenDefinition());
     }
@@ -46,7 +46,7 @@ class AdminEmailTokenListener
         }
 
         $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
-            $this->getTokenDefinition()->createToken($email)
+            $this->getTokenDefinition()->createToken('admin_email', $email)
         );
     }
 
@@ -76,6 +76,6 @@ class AdminEmailTokenListener
 
     private function getTokenDefinition(): TokenDefinitionInterface
     {
-        return $this->tokenDefinitionFactory->create(EmailToken::DEFINITION_NAME, 'admin_email', 'admin_email');
+        return $this->tokenDefinitionFactory->create(EmailTokenDefinition::class, 'admin_email', 'admin_email');
     }
 }

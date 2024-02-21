@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Test\Token;
 
 use PHPUnit\Framework\TestCase;
-use Terminal42\NotificationCenterBundle\Token\ArrayToken;
-use Terminal42\NotificationCenterBundle\Token\StringToken;
+use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 class TokenCollectionTest extends TestCase
@@ -14,9 +13,9 @@ class TokenCollectionTest extends TestCase
     public function testCollectionHandling(): void
     {
         $tokenCollection = new TokenCollection();
-        $tokenCollection->add(new StringToken('blue', 'form_color'));
-        $tokenCollection->addToken(new StringToken('t-shirt', 'form_product'));
-        $tokenCollection->add(new ArrayToken(['blue', 'orange'], 'form_other_color'));
+        $tokenCollection->add(Token::fromValue('form_color', 'blue'));
+        $tokenCollection->addToken(Token::fromValue('form_product', 't-shirt'));
+        $tokenCollection->add(Token::fromValue('form_other_color', ['blue', 'orange']));
 
         $this->assertTrue($tokenCollection->has('form_color'));
         $this->assertFalse($tokenCollection->has('form_i_do_not_exist'));
@@ -52,11 +51,11 @@ class TokenCollectionTest extends TestCase
     public function testMerge(): void
     {
         $tokenCollectionA = new TokenCollection();
-        $tokenCollectionA->add(new StringToken('blue', 'form_color'));
-        $tokenCollectionA->add(new StringToken('t-shirt', 'form_product'));
+        $tokenCollectionA->add(Token::fromValue('form_color', 'blue'));
+        $tokenCollectionA->add(Token::fromValue('form_product', 't-shirt'));
 
         $tokenCollectionB = new TokenCollection();
-        $tokenCollectionB->add(new StringToken('green', 'form_color'));
+        $tokenCollectionB->add(Token::fromValue('form_color', 'green'));
 
         $merged = $tokenCollectionA->merge($tokenCollectionB);
 

@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Token;
 use Ramsey\Collection\AbstractCollection;
 
 /**
- * @extends AbstractCollection<TokenInterface>
+ * @extends AbstractCollection<Token>
  */
 class TokenCollection extends AbstractCollection
 {
@@ -16,7 +16,7 @@ class TokenCollection extends AbstractCollection
         $tokens = [];
 
         foreach ($data as $token) {
-            if (!isset($token['class']) || !class_exists($token['class']) || !is_a($token['class'], TokenInterface::class, true)) {
+            if (!isset($token['class']) || !class_exists($token['class']) || !is_a($token['class'], Token::class, true)) {
                 continue;
             }
 
@@ -29,7 +29,7 @@ class TokenCollection extends AbstractCollection
     /**
      * Provides a fluent interface alternative to add() with a type hint.
      */
-    public function addToken(TokenInterface $token): self
+    public function addToken(Token $token): self
     {
         $this->add($token);
 
@@ -43,7 +43,7 @@ class TokenCollection extends AbstractCollection
     {
         $data = [];
 
-        /** @var TokenInterface $token */
+        /** @var Token $token */
         foreach ($this as $token) {
             $data[$token->getName()] = $token->getParserValue();
         }
@@ -58,7 +58,7 @@ class TokenCollection extends AbstractCollection
     {
         $data = [];
 
-        /** @var TokenInterface $token */
+        /** @var Token $token */
         foreach ($this as $token) {
             $data[$token->getName()] = $token->getValue();
         }
@@ -66,9 +66,9 @@ class TokenCollection extends AbstractCollection
         return $data;
     }
 
-    public function getByName(string $name): TokenInterface|null
+    public function getByName(string $name): Token|null
     {
-        /** @var TokenInterface $token */
+        /** @var Token $token */
         foreach ($this as $token) {
             if ($token->getName() === $name) {
                 return $token;
@@ -87,7 +87,7 @@ class TokenCollection extends AbstractCollection
     {
         $data = [];
 
-        /** @var TokenInterface $token */
+        /** @var Token $token */
         foreach ($this as $token) {
             $data[] = [
                 'class' => \get_class($token),
@@ -100,6 +100,6 @@ class TokenCollection extends AbstractCollection
 
     public function getType(): string
     {
-        return TokenInterface::class;
+        return Token::class;
     }
 }
