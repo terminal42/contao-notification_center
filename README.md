@@ -14,7 +14,7 @@ Contao developers to send notifications via their extensions.
 
 ### Documentation
 
-[Find the documentation here.](https://terminal42.github.io/contao-contao-notification_center)
+[Find the documentation here.](https://extensions.terminal42.ch/docs/notification-center/)
 
 ### Community Extensions
 
