@@ -136,7 +136,7 @@ class NotificationCenter
             $this->stringParser->flatten($rawTokenValue, $rawTokenName, $flattenedTokens);
         }
 
-        foreach ($flattenedTokens as $rawTokenName => $rawTokenValue) {
+        foreach (array_merge($flattenedTokens, $rawTokens) as $rawTokenName => $rawTokenValue) {
             foreach ($tokenDefinitions as $definition) {
                 if ($definition->matches($rawTokenName, $rawTokenValue)) {
                     $token = $definition->createToken($rawTokenName, $rawTokenValue, $stamps);
