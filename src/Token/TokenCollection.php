@@ -105,4 +105,26 @@ class TokenCollection extends AbstractCollection
     {
         return Token::class;
     }
+
+    public function hasAll(string ...$names): bool
+    {
+        foreach ($names as $name) {
+            if (!$this->has($name)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function hasAny(string ...$names): bool
+    {
+        foreach ($names as $name) {
+            if ($this->has($name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

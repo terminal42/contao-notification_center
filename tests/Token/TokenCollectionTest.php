@@ -19,6 +19,10 @@ class TokenCollectionTest extends TestCase
 
         $this->assertTrue($tokenCollection->has('form_color'));
         $this->assertFalse($tokenCollection->has('form_i_do_not_exist'));
+        $this->assertTrue($tokenCollection->hasAll('form_color', 'form_product', 'form_other_color'));
+        $this->assertFalse($tokenCollection->hasAll('form_color', 'form_product', 'form_i_do_not_exist'));
+        $this->assertTrue($tokenCollection->hasAny('form_color', 'form_i_do_not_exist'));
+        $this->assertFalse($tokenCollection->hasAny('form_i_do_not_exist'));
 
         $this->assertSame(
             [
