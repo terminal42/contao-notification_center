@@ -19,8 +19,10 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 #[AsFrontendModule('lostPasswordNotificationCenter', 'user', 'mod_lostPassword')]
 class LostPasswordController extends LostPasswordModule
 {
-    public function __construct(private NotificationCenter $notificationCenter, private Formatter $formatter)
-    {
+    public function __construct(
+        private readonly NotificationCenter $notificationCenter,
+        private readonly Formatter $formatter,
+    ) {
     }
 
     public function __invoke(ModuleModel $model, string $section): Response
@@ -38,7 +40,7 @@ class LostPasswordController extends LostPasswordModule
         // Prepare the simple tokens
         $tokens = [];
         $tokens['domain'] = Idna::decode(Environment::get('host'));
-        $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(false !== strpos(Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
+        $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(str_contains((string) Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
         $tokens['token'] = $optInToken->getIdentifier();
         $tokens['recipient_email'] = $objMember->email;
 

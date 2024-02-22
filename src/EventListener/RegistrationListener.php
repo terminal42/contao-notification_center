@@ -14,8 +14,11 @@ use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class RegistrationListener
 {
-    public function __construct(private NotificationCenter $notificationCenter, private RequestStack $requestStack, private Formatter $formatter)
-    {
+    public function __construct(
+        private readonly NotificationCenter $notificationCenter,
+        private readonly RequestStack $requestStack,
+        private readonly Formatter $formatter,
+    ) {
     }
 
     #[AsHook('activateAccount')]

@@ -37,5 +37,5 @@ interface TokenDefinitionInterface
      * name and a value. E.g. turning "form_email" and "foobar@example.com" into a Token instance.
      * Use this method to e.g. convert object values into your own parsed variant of it.
      */
-    public function createToken(string $tokenName, mixed $value, StampCollection $stamps = null): Token;
+    public function createToken(string $tokenName, mixed $value, StampCollection|null $stamps = null): Token;
 }

@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Test\Util;
 
 use Contao\CoreBundle\Filesystem\FilesystemItem;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\MimeTypeGuesserInterface;
@@ -13,11 +14,21 @@ use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 class FileUploadNormalizerTest extends TestCase
 {
-    /**
-     * @dataProvider normalizeProvider
-     */
-    public function testNormalize(array $input, array $expected, string $projectDir, MimeTypeGuesserInterface $mimeTypeGuesser, VirtualFilesystemInterface $virtualFilesystem): void
+    #[DataProvider('normalizeProvider')]
+    public function testNormalize(array $input, array $expected, string $projectDir, string|null $mimeType = null, FilesystemItem|null $filesystemItem = null): void
     {
+        if (null === $mimeType) {
+            $mimeTypeGuesser = $this->mockMimeTypeGuesserThatIsNeverCalled();
+        } else {
+            $mimeTypeGuesser = $this->mockMimeTypeGuesserThatReturnsAType($mimeType);
+        }
+
+        if (null === $filesystemItem) {
+            $virtualFilesystem = $this->mockFilesystemThatIsNeverCalled();
+        } else {
+            $virtualFilesystem = $this->mockFilesystemThatReturnsAFilesystemItem($filesystemItem);
+        }
+
         $normalizer = new FileUploadNormalizer($projectDir, $mimeTypeGuesser, $virtualFilesystem);
         $normalized = $normalizer->normalize($input);
 
@@ -30,7 +41,7 @@ class FileUploadNormalizerTest extends TestCase
         $this->assertSame($expected, $normalized);
     }
 
-    public function normalizeProvider(): \Generator
+    public static function normalizeProvider(): \Generator
     {
         yield 'Already in correct format' => [
             [
@@ -56,8 +67,8 @@ class FileUploadNormalizerTest extends TestCase
                 ]],
             ],
             '/project-dir',
-            $this->mockMimeTypeGuesserThatIsNeverCalled(),
-            $this->mockFilesystemThatIsNeverCalled(),
+            null,
+            null,
         ];
 
         yield 'Single UUID' => [
@@ -76,14 +87,14 @@ class FileUploadNormalizerTest extends TestCase
                 ]],
             ],
             '/project-dir',
-            $this->mockMimeTypeGuesserThatIsNeverCalled(),
-            $this->mockFilesystemThatReturnsAFilesystemItem(new FilesystemItem(
+            null,
+            new FilesystemItem(
                 true,
                 'path/to/name.jpg',
                 null,
                 333,
                 'image/jpeg',
-            )),
+            ),
         ];
 
         yield 'Single file path' => [
@@ -102,8 +113,8 @@ class FileUploadNormalizerTest extends TestCase
                 ]],
             ],
             '/project-dir',
-            $this->mockMimeTypeGuesserThatReturnsAType('image/jpeg'),
-            $this->mockFilesystemThatIsNeverCalled(),
+            'image/jpeg',
+            null,
         ];
 
         yield 'Array of it all' => [
@@ -190,14 +201,14 @@ class FileUploadNormalizerTest extends TestCase
                 ],
             ],
             '/project-dir',
-            $this->mockMimeTypeGuesserThatReturnsAType('image/jpeg'),
-            $this->mockFilesystemThatReturnsAFilesystemItem(new FilesystemItem(
+            'image/jpeg',
+            new FilesystemItem(
                 true,
                 'path/to/name.jpg',
                 null,
                 333,
                 'image/jpeg',
-            )),
+            ),
         ];
     }
 

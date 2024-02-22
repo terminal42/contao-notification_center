@@ -11,8 +11,10 @@ class GetNotificationTypeForModuleConfigEvent extends Event
 {
     private string|null $notificationType = null;
 
-    public function __construct(private ModuleConfig $moduleConfig, private string $field)
-    {
+    public function __construct(
+        private readonly ModuleConfig $moduleConfig,
+        private readonly string $field,
+    ) {
     }
 
     public function getField(): string

@@ -17,8 +17,15 @@ use Twig\Environment;
 
 class MessageListener
 {
-    public function __construct(private AutoSuggester $autoSuggester, private ConfigLoader $configLoader, private ContaoFramework $framework, private Connection $connection, private Security $security, private Environment $twig, private Locales $locales)
-    {
+    public function __construct(
+        private readonly AutoSuggester $autoSuggester,
+        private readonly ConfigLoader $configLoader,
+        private readonly ContaoFramework $framework,
+        private readonly Connection $connection,
+        private readonly Security $security,
+        private readonly Environment $twig,
+        private readonly Locales $locales,
+    ) {
     }
 
     #[AsCallback(table: 'tl_nc_message', target: 'list.sorting.child_record')]

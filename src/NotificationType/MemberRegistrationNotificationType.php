@@ -12,7 +12,7 @@ class MemberRegistrationNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'member_registration';
 
-    public function __construct(private TokenDefinitionFactoryInterface $factory)
+    public function __construct(private readonly TokenDefinitionFactoryInterface $factory)
     {
     }
 

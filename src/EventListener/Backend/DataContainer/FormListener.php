@@ -11,7 +11,7 @@ use Terminal42\NotificationCenterBundle\NotificationType\FormGeneratorNotificati
 
 class FormListener
 {
-    public function __construct(private NotificationCenter $notificationCenter)
+    public function __construct(private readonly NotificationCenter $notificationCenter)
     {
     }
 

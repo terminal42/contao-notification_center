@@ -19,9 +19,13 @@ use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinition
 class Terminal42NotificationCenterExtension extends Extension implements ConfigureFilesystemInterface
 {
     public const BULKY_ITEMS_VFS_NAME = 'notification_center_bulky_items_storage';
+
     public const BULKY_ITEMS_VFS_TABLE_NAME = 'tl_nc_bulky_items';
+
     public const GATEWAY_TAG = 'notification_center.gateway';
+
     public const TYPE_TAG = 'notification_center.notification_type';
+
     public const TOKEN_DEFINITION_FACTORY_TAG = 'notification_center.token_definition_factory';
 
     /**
@@ -42,9 +46,11 @@ class Terminal42NotificationCenterExtension extends Extension implements Configu
         $container->registerForAutoconfiguration(GatewayInterface::class)
             ->addTag(self::GATEWAY_TAG)
         ;
+
         $container->registerForAutoconfiguration(NotificationTypeInterface::class)
             ->addTag(self::TYPE_TAG)
         ;
+
         $container->registerForAutoconfiguration(TokenDefinitionFactoryInterface::class)
             ->addTag(self::TOKEN_DEFINITION_FACTORY_TAG)
         ;

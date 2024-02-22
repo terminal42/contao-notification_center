@@ -13,7 +13,7 @@ class MemberPersonalDataNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'member_personaldata';
 
-    public function __construct(private TokenDefinitionFactoryInterface $factory)
+    public function __construct(private readonly TokenDefinitionFactoryInterface $factory)
     {
     }
 

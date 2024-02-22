@@ -11,7 +11,7 @@ use Ramsey\Collection\AbstractCollection;
  */
 class TokenCollection extends AbstractCollection
 {
-    public static function fromArray(array $data): self
+    public static function fromSerializedArray(array $data): self
     {
         $tokens = [];
 
@@ -83,14 +83,17 @@ class TokenCollection extends AbstractCollection
         return null !== $this->getByName($name);
     }
 
-    public function toArray(): array
+    /**
+     * @return array<array{class: string, data: array}>
+     */
+    public function toSerializableArray(): array
     {
         $data = [];
 
         /** @var Token $token */
         foreach ($this as $token) {
             $data[] = [
-                'class' => \get_class($token),
+                'class' => $token::class,
                 'data' => $token->toArray(),
             ];
         }

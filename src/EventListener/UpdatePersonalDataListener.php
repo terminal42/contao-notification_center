@@ -21,8 +21,14 @@ class UpdatePersonalDataListener
 {
     private const OLD_SESSION_DATA_KEY = 'notification_center_old_data';
 
-    public function __construct(private NotificationCenter $notificationCenter, private RequestStack $requestStack, private Formatter $formatter, private ScopeMatcher $scopeMatcher, private Security $security, private Environment $twig)
-    {
+    public function __construct(
+        private readonly NotificationCenter $notificationCenter,
+        private readonly RequestStack $requestStack,
+        private readonly Formatter $formatter,
+        private readonly ScopeMatcher $scopeMatcher,
+        private readonly Security $security,
+        private readonly Environment $twig,
+    ) {
     }
 
     #[AsCallback('tl_member', 'config.onload')]
@@ -66,7 +72,8 @@ class UpdatePersonalDataListener
             $tokens['member_old_'.$k] = $this->formatter->dcaValue('tl_member', $k, $v);
             $tokens['member_old_raw_'.$k] = $v;
 
-            // Do not generate any changed_* tokens or comparisons for fields that were not submitted.
+            // Do not generate any changed_* tokens or comparisons for fields that were
+            // not submitted.
             if (!isset($data[$k])) {
                 continue;
             }
@@ -98,7 +105,7 @@ class UpdatePersonalDataListener
 
         return match ($format) {
             'text' => Html2Text::convert($html),
-            default => $html
+            default => $html,
         };
     }
 }

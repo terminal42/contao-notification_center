@@ -19,8 +19,14 @@ class LanguageListener
 {
     use GetCurrentRecordTrait;
 
-    public function __construct(private AutoSuggester $autoSuggester, private Connection $connection, private ConfigLoader $configLoader, private Locales $locales, private TranslatorInterface $translator, private Security $security)
-    {
+    public function __construct(
+        private AutoSuggester $autoSuggester,
+        private Connection $connection,
+        private ConfigLoader $configLoader,
+        private Locales $locales,
+        private TranslatorInterface $translator,
+        private Security $security,
+    ) {
     }
 
     #[AsCallback(table: 'tl_nc_language', target: 'config.onload')]
@@ -75,7 +81,7 @@ class LanguageListener
         ;
 
         if (false !== $check) {
-            throw new \Exception($this->translator->trans('ERR.unique', [$dc->field], 'contao_default'));
+            throw new \InvalidArgumentException($this->translator->trans('ERR.unique', [$dc->field], 'contao_default'));
         }
 
         return $value;

@@ -18,22 +18,31 @@ class BulkItemsStampTest extends TestCase
 
         $this->assertTrue($stamp->has('20230104/af86bc0e-55fd-4eac-886f-9f90eae9eeda'));
         $this->assertFalse($stamp->has('20221212/2b2562b5-149a-4e0a-b3fa-046080815993'));
-        $this->assertSame([
-            '20230104/af86bc0e-55fd-4eac-886f-9f90eae9eeda',
-            '20230101/f852ddd9-3e35-4ac3-af5e-cb8cb9044510',
-        ], $stamp->all());
+        $this->assertSame(
+            [
+                '20230104/af86bc0e-55fd-4eac-886f-9f90eae9eeda',
+                '20230101/f852ddd9-3e35-4ac3-af5e-cb8cb9044510',
+            ],
+            $stamp->all(),
+        );
 
         $array = $stamp->toArray();
 
-        $this->assertSame([
-            '20230104/af86bc0e-55fd-4eac-886f-9f90eae9eeda',
-            '20230101/f852ddd9-3e35-4ac3-af5e-cb8cb9044510',
-        ], $array);
+        $this->assertSame(
+            [
+                '20230104/af86bc0e-55fd-4eac-886f-9f90eae9eeda',
+                '20230101/f852ddd9-3e35-4ac3-af5e-cb8cb9044510',
+            ],
+            $array,
+        );
 
         $stamp = BulkyItemsStamp::fromArray($array);
-        $this->assertSame([
-            '20230104/af86bc0e-55fd-4eac-886f-9f90eae9eeda',
-            '20230101/f852ddd9-3e35-4ac3-af5e-cb8cb9044510',
-        ], $stamp->all());
+        $this->assertSame(
+            [
+                '20230104/af86bc0e-55fd-4eac-886f-9f90eae9eeda',
+                '20230101/f852ddd9-3e35-4ac3-af5e-cb8cb9044510',
+            ],
+            $stamp->all(),
+        );
     }
 }

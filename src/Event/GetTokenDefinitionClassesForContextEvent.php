@@ -17,8 +17,10 @@ class GetTokenDefinitionClassesForContextEvent extends Event
     /**
      * @param array<class-string<TokenDefinitionInterface>> $tokenDefinitionClasses
      */
-    public function __construct(private string $context, array $tokenDefinitionClasses = [])
-    {
+    public function __construct(
+        private readonly string $context,
+        array $tokenDefinitionClasses = [],
+    ) {
         foreach ($tokenDefinitionClasses as $class) {
             $this->addTokenDefinitionClass($class);
         }

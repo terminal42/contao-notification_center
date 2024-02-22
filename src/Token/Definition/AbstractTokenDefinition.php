@@ -9,8 +9,10 @@ use Terminal42\NotificationCenterBundle\Token\Token;
 
 abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
-    final public function __construct(private string $tokenName, private string $translationKey)
-    {
+    final public function __construct(
+        private readonly string $tokenName,
+        private readonly string $translationKey,
+    ) {
     }
 
     public function getTokenName(): string
@@ -32,7 +34,7 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         return $this->getTokenName() === $tokenName;
     }
 
-    public function createToken(string $tokenName, mixed $value, StampCollection $stamps = null): Token
+    public function createToken(string $tokenName, mixed $value, StampCollection|null $stamps = null): Token
     {
         return Token::fromValue($tokenName, $value);
     }

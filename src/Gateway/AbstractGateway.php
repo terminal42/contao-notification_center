@@ -19,10 +19,12 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 abstract class AbstractGateway implements GatewayInterface
 {
     public const SERVICE_NAME_NOTIFICATION_CENTER = 'notification_center';
+
     public const SERVICE_NAME_SIMPLE_TOKEN_PARSER = 'simple_token_parser';
+
     public const SERVICE_NAME_INSERT_TAG_PARSER = 'insert_tag_parser';
 
-    protected ContainerInterface|null $container;
+    protected ContainerInterface|null $container = null;
 
     public function setContainer(ContainerInterface $container): self
     {
@@ -47,8 +49,8 @@ abstract class AbstractGateway implements GatewayInterface
                 $parcel,
                 CouldNotDeliverParcelException::becauseOfInsufficientStamps(
                     $parcel->getStampClasses(),
-                    $this->getRequiredStampsForSending()
-                )
+                    $this->getRequiredStampsForSending(),
+                ),
             );
         }
 
@@ -83,7 +85,7 @@ abstract class AbstractGateway implements GatewayInterface
 
         return $this->getSimpleTokenParser()?->parse(
             $value,
-            $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->forSimpleTokenParser()
+            $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->forSimpleTokenParser(),
         );
     }
 

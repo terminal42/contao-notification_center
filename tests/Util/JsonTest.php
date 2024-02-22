@@ -22,6 +22,7 @@ class JsonTest extends TestCase
             ],
         ],
     ];
+
     private const ENCODED = '{"foo":"bar","other":42,"binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy"}}}';
 
     public function testEncodesNonUtf8CharactersCorrectly(): void

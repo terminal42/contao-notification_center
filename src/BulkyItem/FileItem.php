@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\BulkyItem;
 
+use Symfony\Component\Filesystem\Filesystem;
+
 class FileItem implements BulkyItemInterface
 {
     /**
      * @param resource $contents
      */
-    private function __construct(private $contents, private string $name, private string $mimeType, private int $size)
-    {
+    private function __construct(
+        private $contents,
+        private readonly string $name,
+        private readonly string $mimeType,
+        private readonly int $size,
+    ) {
     }
 
     public function getName(): string
@@ -49,19 +55,22 @@ class FileItem implements BulkyItemInterface
 
     public static function fromPath(string $path, string $name, string $mimeType, int $size): self
     {
-        if (!file_exists($path)) {
+        if (!(new Filesystem())->exists($path)) {
             throw new \InvalidArgumentException(sprintf('The file "%s" does not exist.', $path));
         }
 
         return new self(fopen($path, 'r'), $name, $mimeType, $size);
     }
 
-    public static function fromStream($resouce, string $name, string $mimeType, int $size): self
+    /**
+     * @param resource $resource
+     */
+    public static function fromStream($resource, string $name, string $mimeType, int $size): self
     {
-        if (!\is_resource($resouce)) {
+        if (!\is_resource($resource)) {
             throw new \InvalidArgumentException('$contents must be a resource.');
         }
 
-        return new self($resouce, $name, $mimeType, $size);
+        return new self($resource, $name, $mimeType, $size);
     }
 }

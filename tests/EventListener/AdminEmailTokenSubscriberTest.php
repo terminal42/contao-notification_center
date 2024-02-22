@@ -36,7 +36,7 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
         $listener = new AdminEmailTokenListener(
             $stack,
             $tokenDefinitionFactory,
-            $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch')
+            $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch'),
         );
         $listener->onCreateParcel($event);
 
@@ -59,14 +59,14 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
         $listener = new AdminEmailTokenListener(
             $stack,
             $tokenDefinitionFactory,
-            $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch')
+            $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch'),
         );
         $listener->onCreateParcel($event);
 
         $this->assertSame('foobar-config@terminal42.ch', $tokenCollection->getByName('admin_email')->getValue());
     }
 
-    private function buildRequestStack(PageModel $pageModel = null): RequestStack
+    private function buildRequestStack(PageModel|null $pageModel = null): RequestStack
     {
         $request = new Request();
         $request->attributes->set('pageModel', $pageModel);
@@ -84,7 +84,7 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
         return new CreateParcelEvent($parcel);
     }
 
-    private function mockFrameworkWithAdminEmail(string $adminEmail = null): ContaoFramework
+    private function mockFrameworkWithAdminEmail(string|null $adminEmail = null): ContaoFramework
     {
         $adapter = $this->mockAdapter(['isComplete', 'get']);
         $adapter

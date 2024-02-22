@@ -12,7 +12,7 @@ class MemberActivationNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'member_activation';
 
-    public function __construct(private TokenDefinitionFactoryInterface $factory)
+    public function __construct(private readonly TokenDefinitionFactoryInterface $factory)
     {
     }
 

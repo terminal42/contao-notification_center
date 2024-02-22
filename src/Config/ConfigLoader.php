@@ -14,7 +14,7 @@ class ConfigLoader implements ResetInterface
      */
     private array $cache = [];
 
-    public function __construct(private Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
     }
 
@@ -66,7 +66,7 @@ class ConfigLoader implements ResetInterface
         return $this->loadConfig($id, 'tl_nc_language', LanguageConfig::class);
     }
 
-    public function loadLanguageForMessageAndLocale(int $messageId, string $locale = null): LanguageConfig|null
+    public function loadLanguageForMessageAndLocale(int $messageId, string|null $locale = null): LanguageConfig|null
     {
         $query = $this->connection->createQueryBuilder()
             ->select('*')

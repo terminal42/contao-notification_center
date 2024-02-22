@@ -10,7 +10,7 @@ use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistr
 
 class NotificationListener
 {
-    public function __construct(private NotificationTypeRegistry $typeRegistry)
+    public function __construct(private readonly NotificationTypeRegistry $typeRegistry)
     {
     }
 

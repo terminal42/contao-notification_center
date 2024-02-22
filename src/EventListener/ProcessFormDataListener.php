@@ -15,13 +15,15 @@ use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 #[AsHook('processFormData')]
 class ProcessFormDataListener
 {
-    public function __construct(private NotificationCenter $notificationCenter, private FileUploadNormalizer $fileUploadNormalizer)
-    {
+    public function __construct(
+        private readonly NotificationCenter $notificationCenter,
+        private readonly FileUploadNormalizer $fileUploadNormalizer,
+    ) {
     }
 
     /**
-     * @param array<string, mixed> $submittedData
-     * @param array<string, mixed>$formData
+     * @param array<string, mixed>      $submittedData
+     * @param array<string, mixed>      $formData
      * @param array<string, mixed>|null $files
      * @param array<string, mixed>      $labels
      */
@@ -77,7 +79,7 @@ class ProcessFormDataListener
 
         $stamps = $this->notificationCenter->createBasicStampsForNotification(
             (int) $formData['nc_notification'],
-            $tokens
+            $tokens,
         );
 
         if (0 !== \count($bulkyItemVouchers)) {

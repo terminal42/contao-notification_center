@@ -13,7 +13,7 @@ class NewsletterActivateNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'newsletter_activate';
 
-    public function __construct(private TokenDefinitionFactoryInterface $factory)
+    public function __construct(private readonly TokenDefinitionFactoryInterface $factory)
     {
     }
 

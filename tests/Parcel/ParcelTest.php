@@ -9,7 +9,6 @@ use Terminal42\NotificationCenterBundle\Config\MessageConfig;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LocaleStamp;
-use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
 
 class ParcelTest extends TestCase
 {
@@ -45,7 +44,8 @@ class ParcelTest extends TestCase
         $sealed = $sealed->withStamp(new LocaleStamp('de_DE'));
         $this->assertSame('de_DE', $sealed->getStamp(LocaleStamp::class)->locale);
 
-        // The unsealed one should not have the BulkyItemsStamp now but the LocaleStamp should still be here
+        // The unsealed one should not have the BulkyItemsStamp now but the LocaleStamp
+        // should still be here
         $unsealed = $sealed->unseal();
         $this->assertFalse($unsealed->hasStamp(BulkyItemsStamp::class));
         $this->assertTrue($unsealed->hasStamp(LocaleStamp::class));
@@ -53,7 +53,7 @@ class ParcelTest extends TestCase
 
     public function testSerialize(): void
     {
-        $parcel = new Parcel(MessageConfig::fromArray(['foo' => 'bar']), new StampCollection());
+        $parcel = new Parcel(MessageConfig::fromArray(['foo' => 'bar']));
         $parcel = $parcel->withStamp(new LocaleStamp('de_CH'));
         $sealed = $parcel->seal();
         $sealed = $sealed->withStamp(new BulkyItemsStamp(['20221228/a10aed4d-abe1-498f-adfc-b2e54fbbcbde']));

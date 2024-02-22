@@ -14,8 +14,11 @@ use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class ModuleListener
 {
-    public function __construct(private ConfigLoader $configLoader, private EventDispatcherInterface $eventDispatcher, private NotificationCenter $notificationCenter)
-    {
+    public function __construct(
+        private readonly ConfigLoader $configLoader,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly NotificationCenter $notificationCenter,
+    ) {
     }
 
     #[AsCallback(table: 'tl_module', target: 'config.onload')]

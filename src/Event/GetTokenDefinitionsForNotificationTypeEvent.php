@@ -18,8 +18,10 @@ class GetTokenDefinitionsForNotificationTypeEvent extends Event
     /**
      * @param array<TokenDefinitionInterface> $tokenDefinitions
      */
-    public function __construct(private NotificationTypeInterface $notificationType, array $tokenDefinitions = [])
-    {
+    public function __construct(
+        private readonly NotificationTypeInterface $notificationType,
+        array $tokenDefinitions = [],
+    ) {
         foreach ($tokenDefinitions as $token) {
             $this->addTokenDefinition($token);
         }

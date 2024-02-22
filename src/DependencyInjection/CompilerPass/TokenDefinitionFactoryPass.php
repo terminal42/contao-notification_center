@@ -23,9 +23,9 @@ class TokenDefinitionFactoryPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds(Terminal42NotificationCenterExtension::TOKEN_DEFINITION_FACTORY_TAG);
 
         foreach (array_keys($taggedServices) as $id) {
-            // Do not add chain itself which is the whole point of this compiler pass.
-            // We can use tagged_iterator() in combination with some exclude attributes as soon was we can
-            // require symfony/dependency-injection >= 6.1
+            // Do not add chain itself which is the whole point of this compiler pass. We can
+            // use tagged_iterator() in combination with some exclude attributes as soon was
+            // we can require symfony/dependency-injection >= 6.1
             if (ChainTokenDefinitionFactory::class === $id) {
                 continue;
             }

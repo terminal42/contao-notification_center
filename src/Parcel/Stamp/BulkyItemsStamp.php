@@ -35,7 +35,7 @@ class BulkyItemsStamp implements StampInterface
         return array_values($this->vouchers);
     }
 
-    public static function fromArray(array $data): StampInterface
+    public static function fromArray(array $data): self
     {
         return new self($data);
     }

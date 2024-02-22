@@ -17,10 +17,13 @@ class MessageConfigTest extends TestCase
 
         $config = $config->withParameter('foobar2', ['nested' => true]);
 
-        $this->assertSame([
-            'foobar' => 'test',
-            'foobar2' => ['nested' => true],
-        ], $config->all());
+        $this->assertSame(
+            [
+                'foobar' => 'test',
+                'foobar2' => ['nested' => true],
+            ],
+            $config->all(),
+        );
         $this->assertNull($config->get('foo'));
     }
 }

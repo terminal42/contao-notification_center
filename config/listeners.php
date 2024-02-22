@@ -85,7 +85,6 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set(NotificationCenterProListener::class);
-
     $services->set(BackendMenuListener::class)
         ->args([
             service('assets.packages'),
@@ -103,7 +102,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(DisableDeliveryListener::class);
 
     $services->set(NotificationTypeForModuleListener::class);
-
     $services->set(ProcessFormDataListener::class)
         ->args([
             service(NotificationCenter::class),

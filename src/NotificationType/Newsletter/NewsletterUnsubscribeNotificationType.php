@@ -13,7 +13,7 @@ class NewsletterUnsubscribeNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'newsletter_unsubscribe';
 
-    public function __construct(private TokenDefinitionFactoryInterface $factory)
+    public function __construct(private readonly TokenDefinitionFactoryInterface $factory)
     {
     }
 

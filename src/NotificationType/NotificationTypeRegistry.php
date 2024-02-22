@@ -29,7 +29,7 @@ class NotificationTypeRegistry
     }
 
     /**
-     * @return array<string,NotificationTypeInterface>
+     * @return array<string, NotificationTypeInterface>
      */
     public function all(): array
     {

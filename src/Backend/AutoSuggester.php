@@ -10,8 +10,11 @@ use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 class AutoSuggester
 {
-    public function __construct(private Packages $packages, private NotificationCenter $notificationCenter, private TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly Packages $packages,
+        private readonly NotificationCenter $notificationCenter,
+        private readonly TranslatorInterface $translator,
+    ) {
     }
 
     public function enableAutoSuggesterOnDca(string $table, string $notificationType): void
@@ -23,24 +26,24 @@ class AutoSuggester
 
             $context = (string) ($fieldConfig['nc_context'] instanceof \BackedEnum ? $fieldConfig['nc_context']->value : $fieldConfig['nc_context']);
 
-            // Disable browser autocompletion based on historic values for the token fields as otherwise
-            // one would get two suggestions
+            // Disable browser autocompletion based on historic values for the token fields
+            // as otherwise one would get two suggestions
             $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['autocomplete'] = false;
 
             $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = trim($this->packages->getUrl(
                 'autosuggester.css',
-                'terminal42_notification_center'
+                'terminal42_notification_center',
             ), '/');
 
             $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = sprintf(
                 '<script src="%s"></script>',
-                $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center')
+                $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center'),
             );
 
             $GLOBALS['TL_MOOTOOLS'][] = sprintf(
                 "<script>document.addEventListener('DOMContentLoaded',()=>{new initContaoNotificationCenterAutoSuggester('%s', %s)});</script>",
                 'ctrl_'.$field,
-                $this->getTokenConfigForField($notificationType, $context)
+                $this->getTokenConfigForField($notificationType, $context),
             );
         }
     }

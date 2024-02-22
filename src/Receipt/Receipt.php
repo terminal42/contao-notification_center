@@ -11,8 +11,10 @@ final class Receipt
 {
     private CouldNotDeliverParcelException|null $exception = null;
 
-    private function __construct(private Parcel $parcel, private bool $wasDelivered)
-    {
+    private function __construct(
+        private readonly Parcel $parcel,
+        private readonly bool $wasDelivered,
+    ) {
     }
 
     public function getParcel(): Parcel

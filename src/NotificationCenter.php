@@ -43,14 +43,14 @@ use Terminal42\NotificationCenterBundle\Token\TokenContext;
 class NotificationCenter
 {
     public function __construct(
-        private Connection $connection,
-        private NotificationTypeRegistry $notificationTypeRegistry,
-        private GatewayRegistry $gatewayRegistry,
-        private ConfigLoader $configLoader,
-        private EventDispatcherInterface $eventDispatcher,
-        private RequestStack $requestStack,
-        private BulkyItemStorage $bulkyGoodsStorage,
-        private StringParser $stringParser,
+        private readonly Connection $connection,
+        private readonly NotificationTypeRegistry $notificationTypeRegistry,
+        private readonly GatewayRegistry $gatewayRegistry,
+        private readonly ConfigLoader $configLoader,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly RequestStack $requestStack,
+        private readonly BulkyItemStorage $bulkyGoodsStorage,
+        private readonly StringParser $stringParser,
     ) {
     }
 
@@ -118,7 +118,7 @@ class NotificationCenter
      *
      * @throws InvalidTokenException
      */
-    public function createTokenCollectionFromArray(array $rawTokens, string $notificationTypeName, StampCollection $stamps = null): TokenCollection
+    public function createTokenCollectionFromArray(array $rawTokens, string $notificationTypeName, StampCollection|null $stamps = null): TokenCollection
     {
         $notificationType = $this->notificationTypeRegistry->getByName($notificationTypeName);
 
@@ -199,7 +199,7 @@ class NotificationCenter
         if (
             null !== ($languageConfig = $this->configLoader->loadLanguageForMessageAndLocale(
                 $messageConfig->getId(),
-                $locale
+                $locale,
             ))
         ) {
             $parcel = $parcel->withStamp(new LanguageConfigStamp($languageConfig));
@@ -247,7 +247,7 @@ class NotificationCenter
      *
      * @throws CouldNotSealParcelException
      */
-    public function sendParcel(Parcel $parcel, string $gatewayName = null): Receipt
+    public function sendParcel(Parcel $parcel, string|null $gatewayName = null): Receipt
     {
         if (null === $gatewayName) {
             $gateway = $this->getGatewayForParcel($parcel);
@@ -258,11 +258,11 @@ class NotificationCenter
         if (null === $gateway) {
             $receipt = Receipt::createForUnsuccessfulDelivery(
                 $parcel,
-                CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel()
+                CouldNotDeliverParcelException::becauseNoGatewayWasDefinedForParcel(),
             );
 
-            // Readonly event so developers can do whatever they want with the receipt, whether it was successful
-            // or not. Use this to implement logging etc.
+            // Readonly event so developers can do whatever they want with the receipt,
+            // whether it was successful or not. Use this to implement logging etc.
             $this->eventDispatcher->dispatch(new ReceiptEvent($receipt));
 
             return $receipt;
@@ -277,14 +277,14 @@ class NotificationCenter
         }
 
         // We force serialization here in order to prevent usage errors. Developers
-        // are expected to build parcels and stamps with proper serializable data in
-        // GatewayInterface::sealParcel().
+        // are expected to build parcels and stamps with proper serializable data
+        // in GatewayInterface::sealParcel().
         $parcel = Parcel::fromSerialized($parcel->serialize());
 
         $receipt = $gateway->sendParcel($parcel);
 
-        // Readonly event so developers can do whatever they want with the receipt, whether it was successful
-        // or not. Use this to implement logging etc.
+        // Readonly event so developers can do whatever they want with the receipt,
+        // whether it was successful or not. Use this to implement logging etc.
         $this->eventDispatcher->dispatch(new ReceiptEvent($receipt));
 
         return $receipt;
@@ -298,7 +298,7 @@ class NotificationCenter
      *
      * @throws CouldNotCreateParcelException in case the notification ID does not exist
      */
-    public function sendNotification(int $id, TokenCollection|array $tokens, string $locale = null): ReceiptCollection
+    public function sendNotification(int $id, TokenCollection|array $tokens, string|null $locale = null): ReceiptCollection
     {
         return $this->sendNotificationWithStamps($id, $this->createBasicStampsForNotification($id, $tokens, $locale));
     }
@@ -314,7 +314,7 @@ class NotificationCenter
         return $collection;
     }
 
-    public function createBasicStampsForNotification(int $id, TokenCollection|array $tokens, string $locale = null): StampCollection
+    public function createBasicStampsForNotification(int $id, TokenCollection|array $tokens, string|null $locale = null): StampCollection
     {
         $notificationConfig = $this->configLoader->loadNotification($id);
 

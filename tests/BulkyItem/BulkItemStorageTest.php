@@ -33,15 +33,15 @@ class BulkItemStorageTest extends TestCase
                         $this->assertTrue(BulkyItemStorage::validateVoucherFormat($voucher));
 
                         return true;
-                    }
+                    },
                 ),
                 $this->callback(
                     function ($contents) {
                         $this->assertSame('i-am-a-png', stream_get_contents($contents));
 
                         return true;
-                    }
-                )
+                    },
+                ),
             )
         ;
         $vfs
@@ -53,7 +53,7 @@ class BulkItemStorageTest extends TestCase
                         $this->assertTrue(BulkyItemStorage::validateVoucherFormat($voucher));
 
                         return true;
-                    }
+                    },
                 ),
                 $this->callback(
                     function (array $meta) {
@@ -66,8 +66,8 @@ class BulkItemStorageTest extends TestCase
                         $this->assertSame(FileItem::class, $meta['storage_meta']['class']);
 
                         return true;
-                    }
-                )
+                    },
+                ),
             )
         ;
 
@@ -109,6 +109,7 @@ class BulkItemStorageTest extends TestCase
                 ],
             ]))
         ;
+
         $vfs
             ->expects($this->once())
             ->method('readStream')
@@ -121,11 +122,14 @@ class BulkItemStorageTest extends TestCase
 
         $this->assertInstanceOf(FileItem::class, $item);
         $this->assertSame('i-am-a-png', stream_get_contents($item->getContents()));
-        $this->assertSame([
-            'name' => 'foobar.png',
-            'type' => 'image/png',
-            'size' => 100,
-        ], $item->getMeta());
+        $this->assertSame(
+            [
+                'name' => 'foobar.png',
+                'type' => 'image/png',
+                'size' => 100,
+            ],
+            $item->getMeta(),
+        );
     }
 
     public function testPrune(): void
@@ -139,9 +143,10 @@ class BulkItemStorageTest extends TestCase
                 new FilesystemItemIterator([
                     new FilesystemItem(false, '20220101'),
                     new FilesystemItem(false, date('Ymd')),
-                ])
+                ]),
             )
         ;
+
         $vfs
             ->expects($this->once())
             ->method('deleteDirectory')
@@ -157,6 +162,9 @@ class BulkItemStorageTest extends TestCase
         return FileItem::fromStream($this->createStream(), 'foobar.png', 'image/png', 100);
     }
 
+    /**
+     * @return resource
+     */
     private function createStream()
     {
         $stream = fopen('php://temp', 'w+');

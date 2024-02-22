@@ -10,7 +10,7 @@ use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 #[AsCronJob('daily')]
 class PruneBulkyItemStorageCron
 {
-    public function __construct(private BulkyItemStorage $storage)
+    public function __construct(private readonly BulkyItemStorage $storage)
     {
     }
 

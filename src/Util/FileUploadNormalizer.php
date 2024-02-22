@@ -7,6 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Util;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use Contao\StringUtil;
 use Contao\Validator;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\MimeTypeGuesserInterface;
 use Symfony\Component\Uid\Uuid;
@@ -15,8 +16,11 @@ class FileUploadNormalizer
 {
     private const REQUIRED_KEYS = ['name', 'type', 'tmp_name', 'error', 'size', 'uploaded', 'uuid'];
 
-    public function __construct(private string $projectDir, private MimeTypeGuesserInterface $mimeTypeGuesser, private VirtualFilesystemInterface $filesStorage)
-    {
+    public function __construct(
+        private readonly string $projectDir,
+        private readonly MimeTypeGuesserInterface $mimeTypeGuesser,
+        private readonly VirtualFilesystemInterface $filesStorage,
+    ) {
     }
 
     /**
@@ -123,7 +127,7 @@ class FileUploadNormalizer
 
         $file = Path::makeAbsolute($file, $this->projectDir);
 
-        if (!file_exists($file)) {
+        if (!(new Filesystem())->exists($file)) {
             return null;
         }
 
@@ -136,7 +140,7 @@ class FileUploadNormalizer
     private function fopen(string $file)
     {
         try {
-            $handle = fopen($file, 'r');
+            $handle = @fopen($file, 'r');
         } catch (\Throwable) {
             return null;
         }

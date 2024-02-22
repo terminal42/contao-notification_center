@@ -11,7 +11,9 @@ use Terminal42\NotificationCenterBundle\Util\Json;
 final class Parcel
 {
     private StampCollection $stampsBeforeSealing;
+
     private StampCollection $stampsAfterSealing;
+
     private bool $sealed = false;
 
     public function __construct(private MessageConfig $messageConfig)

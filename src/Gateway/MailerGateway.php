@@ -29,8 +29,11 @@ class MailerGateway extends AbstractGateway
 {
     public const NAME = 'mailer';
 
-    public function __construct(private ContaoFramework $contaoFramework, private VirtualFilesystem $filesystem, private MailerInterface $mailer)
-    {
+    public function __construct(
+        private readonly ContaoFramework $contaoFramework,
+        private readonly VirtualFilesystem $filesystem,
+        private readonly MailerInterface $mailer,
+    ) {
     }
 
     public function getName(): string
@@ -50,16 +53,16 @@ class MailerGateway extends AbstractGateway
                 CouldNotDeliverParcelException::becauseOfGatewayException(
                     self::NAME,
                     0,
-                    $e
-                )
+                    $e,
+                ),
             );
         }
     }
 
     protected function doSealParcel(Parcel $parcel): Parcel
     {
-        // Copy back end attachments so that they are still there if being removed from the back end.
-        // Sealing means ensuring that the parcel has all its content.
+        // Copy back end attachments so that they are still there if being removed from
+        // the back end. Sealing means ensuring that the parcel has all its content.
         $parcel = $this->copyBackendAttachments($parcel, $parcel->getStamp(LanguageConfigStamp::class)->languageConfig);
 
         return $parcel
@@ -160,7 +163,7 @@ class MailerGateway extends AbstractGateway
                 $email->attach(
                     $item->getContents(),
                     $item->getName(),
-                    $item->getMimeType()
+                    $item->getMimeType(),
                 );
             }
         }
@@ -175,10 +178,10 @@ class MailerGateway extends AbstractGateway
         $this->contaoFramework->initialize();
 
         $template = $this->contaoFramework->createInstance(FrontendTemplate::class, [$parcel->getMessageConfig()->getString('email_template')]);
-        $template->charset = 'utf-8'; // @phpstan-ignore-line
-        $template->title = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')); // @phpstan-ignore-line
-        $template->css = ''; // @phpstan-ignore-line
-        $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html'))); // @phpstan-ignore-line
+        $template->charset = 'utf-8';
+        $template->title = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject'));
+        $template->css = '';
+        $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
 
         return $template->parse();
@@ -229,7 +232,8 @@ class MailerGateway extends AbstractGateway
 
         $vouchers = [];
 
-        // As soon as we're compatible with Contao >5.0 only, we can use the FilesystemUtil for this.
+        // As soon as we're compatible with Contao >5.0 only, we can use the
+        // FilesystemUtil for this.
         foreach ($attachments as $uuid) {
             if (!\is_string($uuid)) {
                 continue;
@@ -258,8 +262,8 @@ class MailerGateway extends AbstractGateway
                     $this->filesystem->readStream($uuidObject),
                     $item->getName(),
                     $item->getMimeType(),
-                    $item->getFileSize()
-                )
+                    $item->getFileSize(),
+                ),
             );
 
             if (null !== $voucher) {

@@ -10,8 +10,10 @@ use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 
 class GatewayListener
 {
-    public function __construct(private GatewayRegistry $gatewayRegistry, private AvailableTransports $availableTransports)
-    {
+    public function __construct(
+        private readonly GatewayRegistry $gatewayRegistry,
+        private readonly AvailableTransports $availableTransports,
+    ) {
     }
 
     /**

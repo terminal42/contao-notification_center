@@ -14,11 +14,11 @@ class TokenCollectionStamp implements StampInterface
 
     public function toArray(): array
     {
-        return $this->tokenCollection->toArray();
+        return $this->tokenCollection->toSerializableArray();
     }
 
     public static function fromArray(array $data): self
     {
-        return new self(TokenCollection::fromArray($data));
+        return new self(TokenCollection::fromSerializedArray($data));
     }
 }

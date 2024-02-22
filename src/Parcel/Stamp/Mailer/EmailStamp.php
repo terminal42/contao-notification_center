@@ -12,14 +12,23 @@ use Terminal42\NotificationCenterBundle\Util\Email as EmailUtil;
 class EmailStamp implements StampInterface
 {
     private string $fromName = '';
+
     private string $from = '';
+
     private string $to = '';
+
     private string $subject = '';
+
     private string $cc = '';
+
     private string $bcc = '';
+
     private string $replyTo = '';
+
     private string $text = '';
+
     private string $html = '';
+
     private array $attachmentVouchers = [];
 
     public function withFromName(string $fromName): self

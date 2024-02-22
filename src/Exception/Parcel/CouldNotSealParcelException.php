@@ -15,12 +15,12 @@ class CouldNotSealParcelException extends \RuntimeException implements Exception
      * @param array<class-string<T>> $provided
      * @param array<class-string<T>> $required
      */
-    public static function becauseOfInsufficientStamps(array $provided, array $required, int $code = 0, \Throwable $previous = null): self
+    public static function becauseOfInsufficientStamps(array $provided, array $required, int $code = 0, \Throwable|null $previous = null): self
     {
         return new self(sprintf(
             'The parcel did not contain all required stamps. Provided: [%s], Required: [%s].',
             implode(', ', $provided),
-            implode(', ', $required)
+            implode(', ', $required),
         ), $code, $previous);
     }
 }

@@ -16,8 +16,10 @@ use Terminal42\NotificationCenterBundle\NotificationCenter;
 #[AsHook('activateRecipient')]
 class ActivationListener
 {
-    public function __construct(private NotificationCenter $notificationCenter, private ContaoFramework $contaoFramework)
-    {
+    public function __construct(
+        private readonly NotificationCenter $notificationCenter,
+        private readonly ContaoFramework $contaoFramework,
+    ) {
     }
 
     public function __invoke(string $email, array $recipientIds, array $channelIds, Module $module): void

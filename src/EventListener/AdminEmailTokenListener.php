@@ -18,8 +18,11 @@ use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterfac
 
 class AdminEmailTokenListener
 {
-    public function __construct(private RequestStack $requestStack, private TokenDefinitionFactoryInterface $tokenDefinitionFactory, private ContaoFramework $contaoFramework)
-    {
+    public function __construct(
+        private readonly RequestStack $requestStack,
+        private readonly TokenDefinitionFactoryInterface $tokenDefinitionFactory,
+        private readonly ContaoFramework $contaoFramework,
+    ) {
     }
 
     #[AsEventListener]
@@ -46,7 +49,7 @@ class AdminEmailTokenListener
         }
 
         $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
-            $this->getTokenDefinition()->createToken('admin_email', $email)
+            $this->getTokenDefinition()->createToken('admin_email', $email),
         );
     }
 

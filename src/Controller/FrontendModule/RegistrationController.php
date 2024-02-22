@@ -22,17 +22,23 @@ use Terminal42\NotificationCenterBundle\NotificationCenter;
 #[AsFrontendModule('registrationNotificationCenter', 'user', 'member_default')]
 class RegistrationController extends ModuleRegistration
 {
-    public function __construct(private NotificationCenter $notificationCenter, private RequestStack $requestStack, private OptInInterface $optIn, private Formatter $formatter, private UrlParser $urlParser)
-    {
+    public function __construct(
+        private readonly NotificationCenter $notificationCenter,
+        private readonly RequestStack $requestStack,
+        private readonly OptInInterface $optIn,
+        private readonly Formatter $formatter,
+        private readonly UrlParser $urlParser,
+    ) {
     }
 
     public function __invoke(ModuleModel $model, string $section): Response
     {
         parent::__construct($model, $section);
 
-        // Force the Core module to send an activation e-mail which will cause sendActivationMail() to be called
-        // where we can override the core behaviour and ALWAYS send a notification for a new user, no matter if that
-        // checkbox was set or not (it's hidden in the palette for our module)
+        // Force the Core module to send an activation e-mail which will cause
+        // sendActivationMail() to be called where we can override the core behaviour and
+        // ALWAYS send a notification for a new user, no matter if that checkbox was set
+        // or not (it's hidden in the palette for our module)
         $this->reg_activate = true;
 
         return new Response($this->generate());
@@ -84,7 +90,7 @@ class RegistrationController extends ModuleRegistration
         $this->Template->message = $GLOBALS['TL_LANG']['MSC']['resendActivation'];
     }
 
-    private function sendNotification(int $memberId, OptInTokenInterface $optInToken = null): void
+    private function sendNotification(int $memberId, OptInTokenInterface|null $optInToken = null): void
     {
         if (!$this->nc_notification) {
             return;

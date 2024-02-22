@@ -20,7 +20,7 @@ use Terminal42\NotificationCenterBundle\NotificationCenter;
 #[AsFrontendModule('newsletterSubscribeNotificationCenter', 'newsletter', 'nl_default')]
 class SubscribeController extends ModuleSubscribe
 {
-    public function __construct(private NotificationCenter $notificationCenter)
+    public function __construct(private readonly NotificationCenter $notificationCenter)
     {
     }
 
@@ -72,7 +72,7 @@ class SubscribeController extends ModuleSubscribe
         $tokens = [];
         $tokens['recipient_email'] = $strEmail;
         $tokens['token'] = $optInToken->getIdentifier();
-        $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(false !== strpos(Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
+        $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(str_contains((string) Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
         $tokens['channels'] = implode(', ', $arrChannels);
         $tokens['channel_ids'] = implode(', ', $arrNew);
 

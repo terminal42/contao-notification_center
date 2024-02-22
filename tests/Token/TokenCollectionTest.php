@@ -20,29 +20,38 @@ class TokenCollectionTest extends TestCase
         $this->assertTrue($tokenCollection->has('form_color'));
         $this->assertFalse($tokenCollection->has('form_i_do_not_exist'));
 
-        $this->assertSame([
-            'form_color' => 'blue',
-            'form_product' => 't-shirt',
-            'form_other_color' => 'blue, orange',
-        ], $tokenCollection->forSimpleTokenParser());
-
-        $this->assertSame([
-            'form_color' => 'blue',
-            'form_product' => 't-shirt',
-            'form_other_color' => [
-                'blue',
-                'orange',
+        $this->assertSame(
+            [
+                'form_color' => 'blue',
+                'form_product' => 't-shirt',
+                'form_other_color' => 'blue, orange',
             ],
-        ], $tokenCollection->toKeyValue());
+            $tokenCollection->forSimpleTokenParser(),
+        );
 
-        $array = $tokenCollection->toArray();
-        $tokenCollection = TokenCollection::fromArray($array);
+        $this->assertSame(
+            [
+                'form_color' => 'blue',
+                'form_product' => 't-shirt',
+                'form_other_color' => [
+                    'blue',
+                    'orange',
+                ],
+            ],
+            $tokenCollection->toKeyValue(),
+        );
 
-        $this->assertSame([
-            'form_color' => 'blue',
-            'form_product' => 't-shirt',
-            'form_other_color' => 'blue, orange',
-        ], $tokenCollection->forSimpleTokenParser());
+        $array = $tokenCollection->toSerializableArray();
+        $tokenCollection = TokenCollection::fromSerializedArray($array);
+
+        $this->assertSame(
+            [
+                'form_color' => 'blue',
+                'form_product' => 't-shirt',
+                'form_other_color' => 'blue, orange',
+            ],
+            $tokenCollection->forSimpleTokenParser(),
+        );
 
         $this->assertSame('blue', $tokenCollection->getByName('form_color')->getParserValue());
         $this->assertNull($tokenCollection->getByName('form_i_do_not_exist'));
@@ -57,11 +66,15 @@ class TokenCollectionTest extends TestCase
         $tokenCollectionB = new TokenCollection();
         $tokenCollectionB->add(Token::fromValue('form_color', 'green'));
 
+        /** @var TokenCollection $merged */
         $merged = $tokenCollectionA->merge($tokenCollectionB);
 
-        $this->assertSame([
-            'form_color' => 'green',
-            'form_product' => 't-shirt',
-        ], $merged->forSimpleTokenParser());
+        $this->assertSame(
+            [
+                'form_color' => 'green',
+                'form_product' => 't-shirt',
+            ],
+            $merged->forSimpleTokenParser(),
+        );
     }
 }

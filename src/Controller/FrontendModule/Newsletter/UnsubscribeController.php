@@ -18,7 +18,7 @@ use Terminal42\NotificationCenterBundle\NotificationCenter;
 #[AsFrontendModule('newsletterUnsubscribeNotificationCenter', 'newsletter', 'nl_default')]
 class UnsubscribeController extends ModuleUnsubscribe
 {
-    public function __construct(private NotificationCenter $notificationCenter)
+    public function __construct(private readonly NotificationCenter $notificationCenter)
     {
     }
 
@@ -34,12 +34,12 @@ class UnsubscribeController extends ModuleUnsubscribe
         // Remove the subscriptions
         if (($objRemove = NewsletterRecipientsModel::findByEmailAndPids($strEmail, $arrRemove)) !== null) {
             while ($objRemove->next()) {
-                $strHash = md5($objRemove->email);
+                $strHash = md5((string) $objRemove->email); // @phpstan-ignore-line
 
                 // Add a deny list entry (see #4999)
-                if (null === NewsletterDenyListModel::findByHashAndPid($strHash, $objRemove->pid)) {
+                if (null === NewsletterDenyListModel::findByHashAndPid($strHash, $objRemove->pid)) { // @phpstan-ignore-line
                     $objDenyList = new NewsletterDenyListModel();
-                    $objDenyList->pid = $objRemove->pid;
+                    $objDenyList->pid = $objRemove->pid; // @phpstan-ignore-line
                     $objDenyList->hash = $strHash;
                     $objDenyList->save();
                 }

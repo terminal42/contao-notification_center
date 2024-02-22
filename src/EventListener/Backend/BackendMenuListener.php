@@ -12,7 +12,7 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 #[AsEventListener]
 class BackendMenuListener
 {
-    public function __construct(private Packages $packages)
+    public function __construct(private readonly Packages $packages)
     {
     }
 
@@ -33,7 +33,7 @@ class BackendMenuListener
 
         $GLOBALS['TL_CSS'][] = trim($this->packages->getUrl(
             'backend.css',
-            'terminal42_notification_center'
+            'terminal42_notification_center',
         ), '/');
 
         // Moves the NC after "content" (or 1 if that does not exist)

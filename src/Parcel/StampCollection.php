@@ -9,7 +9,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 final class StampCollection
 {
     /**
-     * @var array<class-string,StampInterface>
+     * @var array<class-string, StampInterface>
      */
     private array $stamps = [];
 
@@ -24,7 +24,7 @@ final class StampCollection
     }
 
     /**
-     * @return array<class-string,StampInterface>
+     * @return array<class-string, StampInterface>
      */
     public function all(): array
     {

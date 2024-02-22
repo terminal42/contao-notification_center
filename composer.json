@@ -26,19 +26,22 @@
         "php": "^8.1",
         "composer-plugin-api": "^2.0",
         "contao/core-bundle": "^4.13.17 || ^5.1.1",
-        "symfony/http-kernel": "^5.4 || ^6.0",
-        "terminal42/dcawizard": "^3.0",
-        "symfony/asset": "^5.4 || ^6.0",
         "doctrine/dbal": "^3.4",
-        "soundasleep/html2text": "^2.0",
-        "symfony/expression-language": "^5.4 || ^6.0",
         "ramsey/collection": "^1.2",
-        "symfony/uid": "^5.4 || ^6.0"
+        "soundasleep/html2text": "^2.0",
+        "symfony/asset": "^5.4 || ^6.0 || ^7.0",
+        "symfony/expression-language": "^5.4 || ^6.0 || ^7.0",
+        "symfony/filesystem": "^5.4 || ^6.0 || ^7.0",
+        "symfony/http-kernel": "^5.4 || ^6.0 || ^7.0",
+        "symfony/uid": "^5.4 || ^6.0 || ^7.0",
+        "terminal42/dcawizard": "^3.0"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
         "contao/newsletter-bundle": "^5.0",
-        "contao/test-case": "^5.1"
+        "phpunit/phpunit": "^10.0",
+        "terminal42/contao-build-tools": "dev-main",
+        "contao/test-case": "^4.9"
     },
     "autoload": {
         "psr-4": {
@@ -51,9 +54,7 @@
         }
     },
     "scripts": {
-        "cs-fixer": "@php tools/ecs/vendor/bin/ecs check config/ contao/ src/ tests/ --config tools/ecs/config.php --fix --ansi",
-        "unit-tests": "@php tools/phpunit/vendor/bin/phpunit -c tools/phpunit/phpunit.xml.dist",
-        "phpstan": "@php tools/phpstan/vendor/bin/phpstan analyse -c tools/phpstan/phpstan.neon.dist"
+        "unit-tests": "@php vendor/bin/phpunit"
     },
     "extra": {
         "contao-manager-plugin": "Terminal42\\NotificationCenterBundle\\ContaoManager\\Plugin"
@@ -63,7 +64,8 @@
             "contao-components/installer": true,
             "contao/manager-plugin": true,
             "contao-community-alliance/composer-plugin": true,
-            "php-http/discovery": false
+            "php-http/discovery": false,
+            "terminal42/contao-build-tools": true
         }
     },
     "prefer-stable": true

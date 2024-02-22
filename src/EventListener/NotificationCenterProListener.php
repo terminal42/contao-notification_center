@@ -17,7 +17,7 @@ class NotificationCenterProListener
         }
 
         $GLOBALS['TL_DCA']['tl_nc_notification']['list']['global_operations']['notification_center_pro'] = [
-            'button_callback' => [self::class, 'buttonCallback'],
+            'button_callback' => self::buttonCallback(...),
         ];
     }
 

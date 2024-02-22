@@ -20,6 +20,7 @@ return static function (ContainerConfigurator $container): void {
             service(Formatter::class),
         ])
     ;
+
     $services->set(RegistrationController::class)
         ->args([
             service(NotificationCenter::class),

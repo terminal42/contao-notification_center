@@ -6,8 +6,11 @@ namespace Terminal42\NotificationCenterBundle\Token;
 
 final class Token
 {
-    public function __construct(private string $tokenName, private mixed $tokenValue, private string $parserValue)
-    {
+    public function __construct(
+        private readonly string $tokenName,
+        private readonly mixed $tokenValue,
+        private readonly string $parserValue,
+    ) {
     }
 
     public function getName(): string

@@ -13,7 +13,7 @@ class NewsletterSubscribeNotificationType implements NotificationTypeInterface
 {
     public const NAME = 'newsletter_subscribe';
 
-    public function __construct(private TokenDefinitionFactoryInterface $factory)
+    public function __construct(private readonly TokenDefinitionFactoryInterface $factory)
     {
     }
 

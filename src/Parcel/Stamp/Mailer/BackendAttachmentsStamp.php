@@ -8,7 +8,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 
 class BackendAttachmentsStamp implements StampInterface
 {
-    public function __construct(private array $vouchers)
+    public function __construct(private readonly array $vouchers)
     {
     }
 

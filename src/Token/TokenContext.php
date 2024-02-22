@@ -13,11 +13,8 @@ use Terminal42\NotificationCenterBundle\Token\Definition\TextTokenDefinition;
 enum TokenContext: string
 {
     case Email = 'email';
-
     case Text = 'text';
-
     case Html = 'html';
-
     case File = 'file';
 
     public function definitions(): array

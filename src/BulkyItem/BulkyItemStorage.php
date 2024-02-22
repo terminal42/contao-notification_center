@@ -10,8 +10,10 @@ use Symfony\Component\Uid\Uuid;
 
 class BulkyItemStorage
 {
-    public function __construct(private VirtualFilesystemInterface $filesystem, private int $retentionPeriodInDays = 7)
-    {
+    public function __construct(
+        private readonly VirtualFilesystemInterface $filesystem,
+        private readonly int $retentionPeriodInDays = 7,
+    ) {
     }
 
     /**
@@ -26,7 +28,7 @@ class BulkyItemStorage
 
         $meta = [
             'item' => $item->getMeta(),
-            'class' => \get_class($item),
+            'class' => $item::class,
         ];
 
         $this->filesystem->setExtraMetadata($voucher, ['storage_meta' => $meta]);
@@ -71,7 +73,7 @@ class BulkyItemStorage
         /** @var BulkyItemInterface $class */
         return $class::restore(
             $stream,
-            $meta['item'] ?? []
+            $meta['item'] ?? [],
         );
     }
 

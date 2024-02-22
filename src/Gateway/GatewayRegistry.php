@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Gateway;
 class GatewayRegistry
 {
     /**
-     * @var array<string,GatewayInterface>
+     * @var array<string, GatewayInterface>
      */
     private array $gatewaysByName = [];
 
@@ -33,7 +33,7 @@ class GatewayRegistry
     }
 
     /**
-     * @return array<string,GatewayInterface>
+     * @return array<string, GatewayInterface>
      */
     public function all(): array
     {
