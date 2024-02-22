@@ -137,14 +137,18 @@ class NotificationCenter
         }
 
         foreach (array_merge($flattenedTokens, $rawTokens) as $rawTokenName => $rawTokenValue) {
+            $addedByDefinition = false;
+
             foreach ($tokenDefinitions as $definition) {
                 if ($definition->matches($rawTokenName, $rawTokenValue)) {
-                    $token = $definition->createToken($rawTokenName, $rawTokenValue, $stamps);
-                } else {
-                    $token = Token::fromValue($rawTokenName, $rawTokenValue);
+                    $collection->add($definition->createToken($rawTokenName, $rawTokenValue, $stamps));
+                    $addedByDefinition = true;
+                    break;
                 }
+            }
 
-                $collection->add($token);
+            if (!$addedByDefinition) {
+                $collection->add(Token::fromValue($rawTokenName, $rawTokenValue));
             }
         }
 
