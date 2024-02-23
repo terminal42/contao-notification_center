@@ -12,9 +12,6 @@ been added. Check the [UPGRADE.md](UPGRADE.md) to know how to update.
   anymore. It will try to fall back to the general locale first, before taking the one that is
   configured to be fallback. E.g. (`de_CH` first, then `de` and only then the fallback).
 * You can now configure `start` and `stop` publish times for messages.
-* You can now configure a publishing condition for every message which is incredibly powerful. E.g. you can
-  now only send a message if a token contains a given value. E.g. `##form_department## === 'department_a'` will
-  only send that message, if `##form_department##` contains `department_a`.
 * The "Personal data" change notification contains two new tokens: `comparison_text` and `comparison_html` which
   contain a simple table of all changes simplifying the use case of informing a member about their changes tremendously.
 * The "Subscribe (Notification Center)" front end module (for newsletters) now allows you to define two different 

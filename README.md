@@ -34,9 +34,9 @@ easy for you to require the Notification Center as a dependency.
 
 This led to the fact that the Notification Center is one of the most popular Contao extensions for many years which 
 of course is great, but it also entails a huge maintenance burden for us. Hence, we decided to provide additional 
-functionality with a separate, paid extension: **Notification Center Pro**!
+functionality with a separate, commercial extension: **Notification Center Pro**!
 
-With Notification Center pro you can level up your Notification game and benefit from a lot of additional features 
+With Notification Center Pro you can level up your Notification game and benefit from a lot of additional features 
 while also supporting the further development and maintenance of the Notification Center itself. Win-win!
 
 Here is a short list of features you can expect from Notification Center Pro:
