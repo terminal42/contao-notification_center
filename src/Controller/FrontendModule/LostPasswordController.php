@@ -50,7 +50,7 @@ class LostPasswordController extends LostPasswordModule
             $tokens['member_raw_'.$k] = $v;
         }
 
-        $receipts = $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens, $GLOBALS['objPage']->language);
+        $receipts = $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens);
 
         /** @var Receipt $receipt */
         foreach ($receipts as $receipt) {

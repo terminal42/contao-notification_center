@@ -76,7 +76,7 @@ class SubscribeController extends ModuleSubscribe
         $tokens['channels'] = implode(', ', $arrChannels);
         $tokens['channel_ids'] = implode(', ', $arrNew);
 
-        $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens, $GLOBALS['objPage']->language);
+        $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens);
 
         // Redirect to the jumpTo page
         if (($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel) {

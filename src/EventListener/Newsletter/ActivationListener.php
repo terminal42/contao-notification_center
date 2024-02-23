@@ -45,7 +45,7 @@ class ActivationListener
         $tokens['channels'] = implode(', ', $channelTitles);
         $tokens['channel_ids'] = implode(', ', $channelIds);
 
-        $this->notificationCenter->sendNotification((int) $module->nc_activation_notification, $tokens, $GLOBALS['objPage']->language);
+        $this->notificationCenter->sendNotification((int) $module->nc_activation_notification, $tokens);
 
         if ($module->nc_newsletter_activation_jumpTo) {
             $targetPage = $this->contaoFramework->getAdapter(PageModel::class)
