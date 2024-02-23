@@ -41,6 +41,8 @@ while also supporting the further development and maintenance of the Notificatio
 
 Here is a short list of features you can expect from Notification Center Pro:
 
+* Send messages only on configurable conditions
+* Super useful additional tokens such as the `formoptions_*` simple token
 * Log all the notifications sent via Notification Center!
   * Logs are kept for a configurable amount of days (`7` by default)
   * Allows to re-send notifications right from the logs and even allows to adjust certain information e.g.
