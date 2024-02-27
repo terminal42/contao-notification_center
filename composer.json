@@ -43,6 +43,9 @@
         "terminal42/contao-build-tools": "dev-main",
         "contao/test-case": "^4.9"
     },
+    "suggest": {
+        "terminal42/contao-notification-center-pro": "Turn your Notification Center 2 into a pro version and benefit from logs, various testing tools and your own Simple Tokens that can be completely customized with Twig."
+    },
     "autoload": {
         "psr-4": {
             "Terminal42\\NotificationCenterBundle\\": "src/"
