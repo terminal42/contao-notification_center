@@ -122,7 +122,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
         'email_sender_address' => [
             'exclude' => true,
             'inputType' => 'text',
-            'eval' => ['maxlength' => 255, 'mandatory' => true, 'decodeEntities' => true, 'tl_class' => 'w50'],
+            'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
             'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
