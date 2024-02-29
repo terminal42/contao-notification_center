@@ -28,10 +28,23 @@ class ActivationListener
             return;
         }
 
-        if (!$module->nc_activation_notification) {
-            return;
+        if ($module->nc_activation_notification) {
+            $this->sendNotification($email, $channelIds, $module);
         }
 
+        if ($module->nc_newsletter_activation_jumpTo) {
+            $targetPage = $this->contaoFramework->getAdapter(PageModel::class)
+                ->findByPk($module->nc_newsletter_activation_jumpTo)
+            ;
+
+            if ($targetPage instanceof PageModel) {
+                throw new RedirectResponseException($targetPage->getFrontendUrl());
+            }
+        }
+    }
+
+    private function sendNotification(string $email, array $channelIds, Module $module): void
+    {
         $this->contaoFramework->initialize();
 
         $channelModels = $this->contaoFramework->getAdapter(NewsletterChannelModel::class)
@@ -46,15 +59,5 @@ class ActivationListener
         $tokens['channel_ids'] = implode(', ', $channelIds);
 
         $this->notificationCenter->sendNotification((int) $module->nc_activation_notification, $tokens);
-
-        if ($module->nc_newsletter_activation_jumpTo) {
-            $targetPage = $this->contaoFramework->getAdapter(PageModel::class)
-                ->findByPk($module->nc_newsletter_activation_jumpTo)
-            ;
-
-            if ($targetPage instanceof PageModel) {
-                throw new RedirectResponseException($targetPage->getFrontendUrl());
-            }
-        }
     }
 }
