@@ -71,7 +71,7 @@ class UnsubscribeController extends ModuleUnsubscribe
         // Redirect to the jumpTo page
         if (($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel) {
             /** @var PageModel $objTarget */
-            $this->redirect($objTarget->getFrontendUrl());
+            $this->redirect($objTarget->getAbsoluteUrl());
         }
 
         System::getContainer()->get('request_stack')->getSession()->getFlashBag()->set('nl_removed', $GLOBALS['TL_LANG']['MSC']['nl_removed']);

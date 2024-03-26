@@ -81,7 +81,7 @@ class SubscribeController extends ModuleSubscribe
         // Redirect to the jumpTo page
         if (($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel) {
             /** @var PageModel $objTarget */
-            $this->redirect($objTarget->getFrontendUrl());
+            $this->redirect($objTarget->getAbsoluteUrl());
         }
 
         System::getContainer()->get('request_stack')->getSession()->getFlashBag()->set('nl_confirm', $GLOBALS['TL_LANG']['MSC']['nl_confirm']);

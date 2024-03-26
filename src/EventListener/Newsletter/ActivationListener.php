@@ -38,7 +38,7 @@ class ActivationListener
             ;
 
             if ($targetPage instanceof PageModel) {
-                throw new RedirectResponseException($targetPage->getFrontendUrl());
+                throw new RedirectResponseException($targetPage->getAbsoluteUrl());
             }
         }
     }
