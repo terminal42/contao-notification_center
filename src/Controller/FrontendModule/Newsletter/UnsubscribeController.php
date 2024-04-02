@@ -66,7 +66,11 @@ class UnsubscribeController extends ModuleUnsubscribe
         $tokens['channels'] = implode(', ', $arrChannels);
         $tokens['channel_ids'] = implode(', ', $arrRemove);
 
-        $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens);
+        // Make sending the notification optional so that you can use this module to NOT send any notification which is
+        // not possible in the Contao core
+        if ($this->nc_notification) {
+            $this->notificationCenter->sendNotification((int) $this->nc_notification, $tokens);
+        }
 
         // Redirect to the jumpTo page
         if (($objTarget = $this->objModel->getRelated('jumpTo')) instanceof PageModel) {
