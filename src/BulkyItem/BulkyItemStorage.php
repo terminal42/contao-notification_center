@@ -17,9 +17,10 @@ class BulkyItemStorage
     }
 
     /**
-     * Returns the voucher with which you can come back to the storage and get your bulky item back.
-     * Would probably also call this a "token" in a real world cloakroom but in order to not mess up
-     * the terminology with simple tokens etc., we're going for voucher here.
+     * Returns the voucher with which you can come back to the storage and get your
+     * bulky item back. Would probably also call this a "token" in a real world
+     * cloakroom but in order to not mess up the terminology with simple tokens etc.,
+     * we're going for voucher here.
      */
     public function store(BulkyItemInterface $item): string
     {

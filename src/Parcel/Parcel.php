@@ -123,9 +123,9 @@ final class Parcel
     }
 
     /**
-     * Will return an instance of the parcel as it was before it was sealed.
-     * This means, the stamps that were added AFTER a parcel was sealed will not
-     * be present on the new instance.
+     * Will return an instance of the parcel as it was before it was sealed. This
+     * means, the stamps that were added AFTER a parcel was sealed will not be present
+     * on the new instance.
      */
     public function unseal(): self
     {

@@ -34,7 +34,7 @@ class ActivationListener
 
         if ($module->nc_newsletter_activation_jumpTo) {
             $targetPage = $this->contaoFramework->getAdapter(PageModel::class)
-                ->findByPk($module->nc_newsletter_activation_jumpTo)
+                ->findById($module->nc_newsletter_activation_jumpTo)
             ;
 
             if ($targetPage instanceof PageModel) {

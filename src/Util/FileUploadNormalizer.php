@@ -24,8 +24,9 @@ class FileUploadNormalizer
     }
 
     /**
-     * This service helps to normalize file upload widget values. Some return an array, others just uuids, some only file
-     * paths. This method is designed to bring them all to the Contao FormUpload value style.
+     * This service helps to normalize file upload widget values. Some return an
+     * array, others just uuids, some only file paths. This method is designed to
+     * bring them all to the Contao FormUpload value style.
      *
      * @return array<string, array<array{name: string, type: string, tmp_name: string, error: int, size: int, uploaded: bool, uuid: ?string, stream: ?resource}>>
      */

@@ -112,7 +112,7 @@ class RegistrationController extends ModuleRegistration
             }
         }
 
-        $member = MemberModel::findByPk($memberId);
+        $member = MemberModel::findById($memberId);
 
         if (null !== $member) {
             foreach ($member->row() as $k => $v) {

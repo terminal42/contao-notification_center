@@ -213,10 +213,11 @@ class NotificationCenter
     }
 
     /**
-     * If you want to give third-party developers the chance to add stamps or modify your parcel using the
-     * CreateParcelEvent event, you can manually do so by calling this method. Note that the event also allows
-     * developers to disable delivery (e.g. based on day time, message settings, conditions etc.). In such a case,
-     * this method will return null.
+     * If you want to give third-party developers the chance to add stamps or modify
+     * your parcel using the CreateParcelEvent event, you can manually do so by
+     * calling this method. Note that the event also allows developers to disable
+     * delivery (e.g. based on day time, message settings, conditions etc.). In such a
+     * case, this method will return null.
      */
     public function dispatchCreateParcelEvent(Parcel $parcel): Parcel|null
     {
@@ -232,7 +233,8 @@ class NotificationCenter
     }
 
     /**
-     * Checks for a GatewayConfigStamp on the parcel and returns the matching gateway if present.
+     * Checks for a GatewayConfigStamp on the parcel and returns the matching gateway
+     * if present.
      */
     public function getGatewayForParcel(Parcel $parcel): GatewayInterface|null
     {

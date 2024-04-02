@@ -15,8 +15,9 @@ class NotificationListener
     }
 
     /**
-     * Adjust the operations to adjust the UX for 4.13 (pencil accesses messages, header.svg edits notification) and
-     * 5.x (pencil edits notification, children.svg accesses messages).
+     * Adjust the operations to adjust the UX for 4.13 (pencil accesses messages,
+     * header.svg edits notification) and 5.x (pencil edits notification, children.svg
+     * accesses messages).
      */
     #[AsCallback(table: 'tl_nc_notification', target: 'config.onload')]
     public function onLoadCallback(): void
