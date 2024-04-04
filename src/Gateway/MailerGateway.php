@@ -191,7 +191,7 @@ class MailerGateway extends AbstractGateway
         $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
 
-        return $template->parse();
+        return $this->replaceInsertTags($template->parse());
     }
 
     private function addAttachmentsFromTokens(LanguageConfig $languageConfig, Parcel $parcel, EmailStamp $emailStamp): EmailStamp
