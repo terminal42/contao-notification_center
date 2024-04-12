@@ -14,7 +14,7 @@ use Symfony\Component\Uid\Uuid;
 
 class FileUploadNormalizer
 {
-    private const REQUIRED_KEYS = ['name', 'type', 'tmp_name', 'error', 'size', 'uploaded', 'uuid'];
+    private const REQUIRED_KEYS = ['name', 'type', 'tmp_name', 'error', 'size', 'uuid'];
 
     public function __construct(
         private readonly string $projectDir,
@@ -38,6 +38,7 @@ class FileUploadNormalizer
             switch (true) {
                 case $this->hasRequiredKeys($file):
                     $file['stream'] = $this->fopen($file['tmp_name']);
+                    $file['uploaded'] ??= true;
                     $standardizedPerKey[$k][] = $file;
                     break;
                 case $this->isPhpUpload($file):
@@ -100,7 +101,7 @@ class FileUploadNormalizer
             return false;
         }
 
-        return self::REQUIRED_KEYS === array_keys($file);
+        return [] === array_diff(self::REQUIRED_KEYS, array_keys($file));
     }
 
     private function extractUuid(mixed $candidate): Uuid|null
