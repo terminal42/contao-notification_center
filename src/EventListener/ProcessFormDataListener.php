@@ -40,6 +40,15 @@ class ProcessFormDataListener
         $files = !\is_array($files) ? [] : $files; // In Contao 4.13, $files can be null
 
         foreach ($submittedData as $k => $v) {
+            // Skip the tokens that are not implodeable
+            if (\is_array($v)) {
+                foreach ($v as $vv) {
+                    if (!\is_scalar($vv)) {
+                        continue 2;
+                    }
+                }
+            }
+
             $label = isset($labels[$k]) && \is_string($labels[$k]) ? StringUtil::decodeEntities($labels[$k]) : ucfirst($k);
 
             $tokens['formlabel_'.$k] = $label;
