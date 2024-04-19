@@ -54,9 +54,10 @@
     "require-dev": {
         "contao/manager-plugin": "^2.0",
         "contao/newsletter-bundle": "^5.0",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "^9.6",
         "terminal42/contao-build-tools": "dev-main",
-        "contao/test-case": "^4.9"
+        "contao/test-case": "^5.3",
+        "league/flysystem-memory": "^3.25"
     },
     "suggest": {
         "terminal42/contao-notification-center-pro": "Turn your Notification Center 2 into a pro version and benefit from logs, various testing tools and your own Simple Tokens that can be completely customized with Twig."

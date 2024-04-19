@@ -49,14 +49,21 @@ class NotificationCenter
         private readonly ConfigLoader $configLoader,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly RequestStack $requestStack,
-        private readonly BulkyItemStorage $bulkyGoodsStorage,
+        private readonly BulkyItemStorage $bulkyItemStorage,
         private readonly StringParser $stringParser,
     ) {
     }
 
     public function getBulkyGoodsStorage(): BulkyItemStorage
     {
-        return $this->bulkyGoodsStorage;
+        trigger_deprecation('terminal42/notification_center', '2.1', 'Using "getBulkyGoodsStorage()" is deprecated, use "getBulkyItemStorage()" instead.');
+
+        return $this->bulkyItemStorage;
+    }
+
+    public function getBulkyItemStorage(): BulkyItemStorage
+    {
+        return $this->bulkyItemStorage;
     }
 
     /**

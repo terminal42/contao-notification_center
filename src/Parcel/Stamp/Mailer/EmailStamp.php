@@ -31,6 +31,8 @@ class EmailStamp implements StampInterface
 
     private array $attachmentVouchers = [];
 
+    private array $embeddedImageVouchers = [];
+
     public function withFromName(string $fromName): self
     {
         $clone = clone $this;
@@ -103,6 +105,19 @@ class EmailStamp implements StampInterface
         return $clone;
     }
 
+    public function getEmbeddedImageVouchers(): array
+    {
+        return $this->embeddedImageVouchers;
+    }
+
+    public function withEmbeddedImageVoucher(string $voucher): self
+    {
+        $clone = clone $this;
+        $clone->embeddedImageVouchers[] = $voucher;
+
+        return $clone;
+    }
+
     public function withAttachmentVoucher(string $voucher): self
     {
         $clone = clone $this;
@@ -164,6 +179,7 @@ class EmailStamp implements StampInterface
             'text' => $this->text,
             'html' => $this->html,
             'attachmentVouchers' => $this->attachmentVouchers,
+            'embeddedImageVouchers' => $this->embeddedImageVouchers,
         ];
     }
 
@@ -181,8 +197,12 @@ class EmailStamp implements StampInterface
             ->withHtml($data['html'])
         ;
 
-        foreach ($data['attachmentVouchers'] as $voucher) {
+        foreach ($data['attachmentVouchers'] ?? [] as $voucher) {
             $stamp = $stamp->withAttachmentVoucher($voucher);
+        }
+
+        foreach ($data['embeddedImageVouchers'] ?? [] as $voucher) {
+            $stamp = $stamp->withEmbeddedImageVoucher($voucher);
         }
 
         return $stamp;

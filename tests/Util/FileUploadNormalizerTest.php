@@ -6,7 +6,6 @@ namespace Terminal42\NotificationCenterBundle\Test\Util;
 
 use Contao\CoreBundle\Filesystem\FilesystemItem;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mime\MimeTypeGuesserInterface;
@@ -14,7 +13,9 @@ use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 class FileUploadNormalizerTest extends TestCase
 {
-    #[DataProvider('normalizeProvider')]
+    /**
+     * @dataProvider normalizeProvider
+     */
     public function testNormalize(array $input, array $expected, string $projectDir, string|null $mimeType = null, FilesystemItem|null $filesystemItem = null): void
     {
         if (null === $mimeType) {
@@ -41,7 +42,7 @@ class FileUploadNormalizerTest extends TestCase
         $this->assertSame($expected, $normalized);
     }
 
-    public static function normalizeProvider(): \Generator
+    public static function normalizeProvider(): iterable
     {
         yield 'Already in correct format' => [
             [

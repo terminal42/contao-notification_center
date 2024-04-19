@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Test\Token;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Token\Token;
 
 class TokenTest extends TestCase
 {
-    #[DataProvider('anythingProvider')]
+    /**
+     * @dataProvider anythingProvider
+     */
     public function testFromAnything(mixed $value, string $expectedParserValue): void
     {
         $token = Token::fromValue('token', $value);
@@ -18,14 +19,16 @@ class TokenTest extends TestCase
         $this->assertSame($expectedParserValue, $token->getParserValue());
     }
 
-    #[DataProvider('arrayProvider')]
+    /**
+     * @dataProvider arrayProvider
+     */
     public function testArrayParserFormat(array $value, string $expectedParserValue): void
     {
         $token = Token::fromValue('form_foobar', $value);
         $this->assertSame($expectedParserValue, $token->getParserValue());
     }
 
-    public static function arrayProvider(): \Generator
+    public static function arrayProvider(): iterable
     {
         yield 'Simple list array token' => [
             [
@@ -59,7 +62,7 @@ class TokenTest extends TestCase
         ];
     }
 
-    public static function anythingProvider(): \Generator
+    public static function anythingProvider(): iterable
     {
         yield [
             'foobar',

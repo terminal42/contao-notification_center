@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Reference;
+use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
 use Terminal42\NotificationCenterBundle\Gateway\AbstractGateway;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
@@ -20,6 +21,7 @@ class AbstractGatewayPass implements CompilerPassInterface
         $taggedServices = $container->findTaggedServiceIds(Terminal42NotificationCenterExtension::GATEWAY_TAG);
         $locateableServices = [
             AbstractGateway::SERVICE_NAME_NOTIFICATION_CENTER => new Reference(NotificationCenter::class),
+            AbstractGateway::SERVICE_NAME_BULKY_ITEM_STORAGE => new Reference(BulkyItemStorage::class),
             AbstractGateway::SERVICE_NAME_SIMPLE_TOKEN_PARSER => new Reference('contao.string.simple_token_parser', ContainerInterface::NULL_ON_INVALID_REFERENCE),
             AbstractGateway::SERVICE_NAME_INSERT_TAG_PARSER => new Reference('contao.insert_tag.parser', ContainerInterface::NULL_ON_INVALID_REFERENCE),
         ];
