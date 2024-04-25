@@ -20,7 +20,8 @@
     "support": {
         "issues": "https://github.com/terminal42/contao-notification_center/issues",
         "source": "https://github.com/terminal42/contao-notification_center",
-        "forum": "https://community.contao.org"
+        "forum": "https://community.contao.org",
+        "docs": "https://extensions.terminal42.ch/docs/notification-center/"
     },
     "require": {
         "php": "^8.1",
