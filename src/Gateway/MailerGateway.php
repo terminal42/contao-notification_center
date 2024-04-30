@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Gateway;
 
+use Contao\Controller;
 use Contao\CoreBundle\Filesystem\Dbafs\UnableToResolveUuidException;
 use Contao\CoreBundle\Filesystem\VirtualFilesystem;
 use Contao\CoreBundle\Framework\ContaoFramework;
@@ -191,7 +192,7 @@ class MailerGateway extends AbstractGateway
         $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
 
-        return $this->replaceInsertTags($template->parse());
+        return $this->contaoFramework->getAdapter(Controller::class)->convertRelativeUrls($this->replaceInsertTags($template->parse()));
     }
 
     private function addAttachmentsFromTokens(LanguageConfig $languageConfig, Parcel $parcel, EmailStamp $emailStamp): EmailStamp
