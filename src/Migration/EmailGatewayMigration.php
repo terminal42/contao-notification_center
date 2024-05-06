@@ -16,6 +16,12 @@ class EmailGatewayMigration extends AbstractMigration
 
     public function shouldRun(): bool
     {
+        $schemaManager = $this->connection->createSchemaManager();
+
+        if (!$schemaManager->tablesExist(['tl_nc_gateway'])) {
+            return false;
+        }
+
         return $this->connection->fetchOne("SELECT COUNT(*) FROM tl_nc_gateway WHERE type='email'") > 0;
     }
 
