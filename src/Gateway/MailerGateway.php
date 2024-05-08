@@ -32,13 +32,7 @@ class MailerGateway extends AbstractGateway
 
     public function __construct(
         private readonly ContaoFramework $contaoFramework,
-        // The VFS mounted for "files" (user uploads in the back end), used for
-        // back end attachments
         private readonly VirtualFilesystemInterface $filesStorage,
-        // The global VFS without any prefix, used to search HTML content to attach
-        // images to e-mails automatically (= supports any registered VFS, not just user
-        // uploads in the back end)
-        private readonly VirtualFilesystemInterface $virtualFilesystem,
         private readonly MailerInterface $mailer,
     ) {
     }
