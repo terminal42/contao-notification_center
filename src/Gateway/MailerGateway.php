@@ -95,7 +95,12 @@ class MailerGateway extends AbstractGateway
         $stamp = $stamp->withTo($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('recipients')));
         $stamp = $stamp->withSubject($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')));
 
-        if ('' !== ($from = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_address')))) {
+        // Automatically fall back to ##admin_email## if no sender was configured. In
+        // case this token does not exist either, it will result in the same error as not
+        // supplying a sender address at all.
+        $from = '' !== $languageConfig->getString('email_sender_address') ? $languageConfig->getString('email_sender_address') : '##admin_email##';
+
+        if ('' !== ($from = $this->replaceTokensAndInsertTags($parcel, $from))) {
             $stamp = $stamp->withFrom($from);
         }
 
