@@ -13,5 +13,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(EmailGatewayMigration::class)
         ->args([
             service('database_connection'),
-        ]);
+        ])
+    ;
 };
