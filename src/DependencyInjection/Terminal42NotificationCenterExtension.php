@@ -42,6 +42,7 @@ class Terminal42NotificationCenterExtension extends Extension implements Configu
         $loader->load('listeners.php');
         $loader->load('notification_types.php');
         $loader->load('modules.php');
+        $loader->load('migrations.php');
 
         $container->registerForAutoconfiguration(GatewayInterface::class)
             ->addTag(self::GATEWAY_TAG)
