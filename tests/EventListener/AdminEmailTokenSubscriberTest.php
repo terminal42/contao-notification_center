@@ -114,7 +114,7 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
         $stringUtilAdapter
             ->method('splitFriendlyEmail')
             ->willReturnCallback(
-                static fn(string $email): array => match ($email) {
+                static fn (string $email): array => match ($email) {
                     'Lorem Ipsum [foobar-config@terminal42.ch]' => ['Lorem Ipsum', 'foobar-config@terminal42.ch'],
                     'Dolor Sitamet [foobar@terminal42.ch]' => ['Dolor Sitamet', 'foobar@terminal42.ch'],
                     default => ['', $email],
