@@ -120,13 +120,13 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
                         'Dolor Sitamet [foobar@terminal42.ch]' => ['Dolor Sitamet', 'foobar@terminal42.ch'],
                         default => ['', $email],
                     };
-                }
+                },
             )
         ;
 
         return $this->mockContaoFramework([
             Config::class => $configAdapter,
-            StringUtil::class => $stringUtilAdapter
+            StringUtil::class => $stringUtilAdapter,
         ]);
     }
 }
