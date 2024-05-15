@@ -104,7 +104,9 @@ class MailerGateway extends AbstractGateway
             $stamp = $stamp->withFrom($from);
         }
 
-        if ('' !== ($fromName = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_name')))) {
+        $fromName = '' !== $languageConfig->getString('email_sender_name') ? $languageConfig->getString('email_sender_name') : '##admin_name##';
+
+        if ('' !== ($fromName = $this->replaceTokensAndInsertTags($parcel, $fromName))) {
             $stamp = $stamp->withFromName($fromName);
         }
 
