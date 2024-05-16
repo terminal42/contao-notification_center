@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="nc_tokens.admin_name">
         <source>Friendly name for the e-mail address of the administrator of the current page (system config or website root settings).</source>
-        <target>Friendly name for the e-mail address of the administrator of the current page (system config or website root settings).</source>
+        <target>Friendly name for the e-mail address of the administrator of the current page (system config or website root settings).</target>
       </trans-unit>
       <trans-unit id="nc_tokens.admin_email">
         <source>E-mail address of the administrator of the current page (system config or website root settings).</source>
