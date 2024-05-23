@@ -134,7 +134,6 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set(DbafsMetadataListener::class);
-
     $services->set(LogUnsuccessfulDeliveries::class)
         ->args([
             service('monolog.logger.contao.error')->nullOnInvalid(),
