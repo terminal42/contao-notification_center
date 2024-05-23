@@ -15,7 +15,7 @@ use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsForNotification
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
-use Terminal42\NotificationCenterBundle\Token\Token;
+use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
 class AdminEmailTokenListener
 {
@@ -30,8 +30,8 @@ class AdminEmailTokenListener
     public function onGetTokenDefinitions(GetTokenDefinitionsForNotificationTypeEvent $event): void
     {
         $event
-            ->addTokenDefinition($this->tokenDefinitionFactory->create(EmailTokenDefinition::class, 'admin_name', 'admin_name'))
-            ->addTokenDefinition($this->tokenDefinitionFactory->create(EmailTokenDefinition::class, 'admin_email', 'admin_email'))
+            ->addTokenDefinition($this->getTokenDefinition('admin_email'))
+            ->addTokenDefinition($this->getTokenDefinition('admin_name'))
         ;
     }
 
@@ -53,8 +53,8 @@ class AdminEmailTokenListener
         }
 
         $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection
-            ->addToken(new Token('admin_name', $email[0], $email[0]))
-            ->addToken(new Token('admin_email', $email[1], $email[1]))
+            ->addToken($this->getTokenDefinition('admin_email')->createToken('admin_email', $email[1]))
+            ->addToken($this->getTokenDefinition('admin_name')->createToken('admin_name', $email[0]))
         ;
     }
 
@@ -80,6 +80,11 @@ class AdminEmailTokenListener
         $email = $this->contaoFramework->getAdapter(Config::class)->get('adminEmail');
 
         return $email ? $this->parseFriendlyEmail($email) : null;
+    }
+
+    private function getTokenDefinition(string $token): TokenDefinitionInterface
+    {
+        return $this->tokenDefinitionFactory->create(EmailTokenDefinition::class, $token, $token);
     }
 
     private function parseFriendlyEmail(string $email): array
