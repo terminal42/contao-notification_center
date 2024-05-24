@@ -3,8 +3,12 @@
   <file datatype="php" source-language="en" target-language="de">
     <body>
       <trans-unit id="nc_tokens.admin_email">
-        <source>E-mail address of administrator of the current page (website root settings).</source>
-        <target>E-Mail-Adresse des Administrators der aktuellen Seite (Einstellungen der Rootseite).</target>
+        <source>E-mail address of the administrator of the current page (system config or website root settings).</source>
+        <target>E-Mail-Adresse des Administrators der aktuellen Seite (Systemeinstellungen oder Einstellungen der Rootseite).</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.admin_name">
+        <source>Friendly name for the e-mail address of the administrator of the current page (system config or website root settings).</source>
+        <target>Anzeigename für die E-Mail-Adresse des Administrators der aktuellen Seite (Systemeinstellungen oder Einstellungen der Rootseite).</target>
       </trans-unit>
       <trans-unit id="nc_tokens.form.form_*">
         <source>All the form fields.</source>

@@ -7,6 +7,7 @@ namespace Terminal42\NotificationCenterBundle\EventListener;
 use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
@@ -28,7 +29,10 @@ class AdminEmailTokenListener
     #[AsEventListener]
     public function onGetTokenDefinitions(GetTokenDefinitionsForNotificationTypeEvent $event): void
     {
-        $event->addTokenDefinition($this->getTokenDefinition());
+        $event
+            ->addTokenDefinition($this->getTokenDefinition('admin_email'))
+            ->addTokenDefinition($this->getTokenDefinition('admin_name'))
+        ;
     }
 
     #[AsEventListener]
@@ -48,12 +52,13 @@ class AdminEmailTokenListener
             return;
         }
 
-        $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection->add(
-            $this->getTokenDefinition()->createToken('admin_email', $email),
-        );
+        $event->getParcel()->getStamp(TokenCollectionStamp::class)->tokenCollection
+            ->addToken($this->getTokenDefinition('admin_email')->createToken('admin_email', $email[1]))
+            ->addToken($this->getTokenDefinition('admin_name')->createToken('admin_name', $email[0]))
+        ;
     }
 
-    private function getEmailFromPage(): string|null
+    private function getEmailFromPage(): array|null
     {
         if (null === ($request = $this->requestStack->getCurrentRequest())) {
             return null;
@@ -67,18 +72,23 @@ class AdminEmailTokenListener
 
         $pageModel->loadDetails();
 
-        return $pageModel->adminEmail ?: null;
+        return $pageModel->adminEmail ? $this->parseFriendlyEmail($pageModel->adminEmail) : null;
     }
 
-    private function getEmailFromConfig(): string|null
+    private function getEmailFromConfig(): array|null
     {
         $email = $this->contaoFramework->getAdapter(Config::class)->get('adminEmail');
 
-        return !\is_string($email) ? null : $email;
+        return $email ? $this->parseFriendlyEmail($email) : null;
     }
 
-    private function getTokenDefinition(): TokenDefinitionInterface
+    private function getTokenDefinition(string $token): TokenDefinitionInterface
     {
-        return $this->tokenDefinitionFactory->create(EmailTokenDefinition::class, 'admin_email', 'admin_email');
+        return $this->tokenDefinitionFactory->create(EmailTokenDefinition::class, $token, $token);
+    }
+
+    private function parseFriendlyEmail(string $email): array
+    {
+        return $this->contaoFramework->getAdapter(StringUtil::class)->splitFriendlyEmail($email);
     }
 }

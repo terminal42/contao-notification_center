@@ -7,7 +7,9 @@ namespace Terminal42\NotificationCenterBundle\Test\EventListener;
 use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Contao\TestCase\ContaoTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
@@ -20,10 +22,11 @@ use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 class AdminEmailTokenSubscriberTest extends ContaoTestCase
 {
-    public function testAddsTokenFromPageModel(): void
+    #[DataProvider('adminEmailProvider')]
+    public function testAddsAdminTokens(string $configFriendlyEmail, string $pageFriendlyEmail, string $expectedName, string $expectedEmail): void
     {
         $pageModel = $this->mockClassWithProperties(PageModel::class, [
-            'adminEmail' => 'foobar@terminal42.ch',
+            'adminEmail' => $pageFriendlyEmail,
         ]);
 
         $stack = $this->buildRequestStack($pageModel);
@@ -36,34 +39,43 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
         $listener = new AdminEmailTokenListener(
             $stack,
             $tokenDefinitionFactory,
-            $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch'),
+            $this->mockFrameworkWithAdminEmail($configFriendlyEmail),
         );
         $listener->onCreateParcel($event);
 
-        $this->assertSame('foobar@terminal42.ch', $tokenCollection->getByName('admin_email')->getValue());
+        $this->assertSame($expectedName, $tokenCollection->getByName('admin_name')->getValue());
+        $this->assertSame($expectedEmail, $tokenCollection->getByName('admin_email')->getValue());
     }
 
-    public function testAddsTokenFromConfig(): void
+    public static function adminEmailProvider(): \Generator
     {
-        $pageModel = $this->mockClassWithProperties(PageModel::class, [
-            'adminEmail' => '',
-        ]);
+        yield 'Basic admin email in config' => [
+            'foobar-config@terminal42.ch',
+            '',
+            '',
+            'foobar-config@terminal42.ch',
+        ];
 
-        $stack = $this->buildRequestStack($pageModel);
-        $tokenCollection = new TokenCollection();
+        yield 'Friendly admin email in config' => [
+            'Lorem Ipsum [foobar-config@terminal42.ch]',
+            '',
+            'Lorem Ipsum',
+            'foobar-config@terminal42.ch',
+        ];
 
-        $event = $this->buildCreateParcelEvent($tokenCollection);
+        yield 'Basic admin email in page' => [
+            'Lorem Ipsum [foobar-config@terminal42.ch]',
+            'foobar@terminal42.ch',
+            '',
+            'foobar@terminal42.ch',
+        ];
 
-        $tokenDefinitionFactory = new CoreTokenDefinitionFactory();
-
-        $listener = new AdminEmailTokenListener(
-            $stack,
-            $tokenDefinitionFactory,
-            $this->mockFrameworkWithAdminEmail('foobar-config@terminal42.ch'),
-        );
-        $listener->onCreateParcel($event);
-
-        $this->assertSame('foobar-config@terminal42.ch', $tokenCollection->getByName('admin_email')->getValue());
+        yield 'Friendly admin email in page' => [
+            'Lorem Ipsum [foobar-config@terminal42.ch]',
+            'Dolor Sitamet [foobar@terminal42.ch]',
+            'Dolor Sitamet',
+            'foobar@terminal42.ch',
+        ];
     }
 
     private function buildRequestStack(PageModel|null $pageModel = null): RequestStack
@@ -86,20 +98,33 @@ class AdminEmailTokenSubscriberTest extends ContaoTestCase
 
     private function mockFrameworkWithAdminEmail(string|null $adminEmail = null): ContaoFramework
     {
-        $adapter = $this->mockAdapter(['isComplete', 'get']);
-        $adapter
+        $configAdapter = $this->mockAdapter(['isComplete', 'get']);
+        $configAdapter
             ->method('isComplete')
             ->willReturn(true)
         ;
 
-        $adapter
+        $configAdapter
             ->method('get')
             ->with('adminEmail')
             ->willReturn($adminEmail)
         ;
 
+        $stringUtilAdapter = $this->mockAdapter(['splitFriendlyEmail']);
+        $stringUtilAdapter
+            ->method('splitFriendlyEmail')
+            ->willReturnCallback(
+                static fn (string $email): array => match ($email) {
+                    'Lorem Ipsum [foobar-config@terminal42.ch]' => ['Lorem Ipsum', 'foobar-config@terminal42.ch'],
+                    'Dolor Sitamet [foobar@terminal42.ch]' => ['Dolor Sitamet', 'foobar@terminal42.ch'],
+                    default => ['', $email],
+                },
+            )
+        ;
+
         return $this->mockContaoFramework([
-            Config::class => $adapter,
+            Config::class => $configAdapter,
+            StringUtil::class => $stringUtilAdapter,
         ]);
     }
 }
