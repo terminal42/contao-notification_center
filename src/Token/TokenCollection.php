@@ -45,7 +45,30 @@ class TokenCollection extends AbstractCollection
 
         /** @var Token $token */
         foreach ($this as $token) {
-            $data[$token->getName()] = $token->getParserValue();
+            // Replace everything that's not allowed from the beginning of a string (PHP
+            // variables cannot start with numbers for example)
+            $tokenName = preg_replace_callback(
+                '/^[^a-zA-Z_\x7f-\xff]*/',
+                static function (array $matches) {
+                    if ($matches[0]) {
+                        return str_repeat('_', \strlen($matches[0]));
+                    }
+                },
+                $token->getName()
+            );
+
+            // Then also replace all the rest (after that, numbers are allowed)
+            $tokenName = preg_replace_callback(
+                '/[^a-zA-Z0-9_\x7f-\xff]/',
+                static function (array $matches) {
+                    if ($matches[0]) {
+                        return str_repeat('_', \strlen($matches[0]));
+                    }
+                },
+                $tokenName
+            );
+
+            $data[$tokenName] = $token->getParserValue();
         }
 
         return $data;
