@@ -79,11 +79,11 @@
     },
     "config": {
         "allow-plugins": {
-            "contao-components/installer": true,
-            "contao/manager-plugin": true,
-            "contao-community-alliance/composer-plugin": true,
-            "php-http/discovery": false,
-            "terminal42/contao-build-tools": true
+            "terminal42/contao-build-tools": true,
+            "contao-components/installer": false,
+            "contao/manager-plugin": false,
+            "contao-community-alliance/composer-plugin": false,
+            "php-http/discovery": false
         },
         "sort-packages": true
     },
