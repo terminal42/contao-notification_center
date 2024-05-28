@@ -54,7 +54,7 @@ class TokenCollection extends AbstractCollection
                         return str_repeat('_', \strlen($matches[0]));
                     }
                 },
-                $token->getName()
+                $token->getName(),
             );
 
             // Then also replace all the rest (after that, numbers are allowed)
@@ -65,7 +65,7 @@ class TokenCollection extends AbstractCollection
                         return str_repeat('_', \strlen($matches[0]));
                     }
                 },
-                $tokenName
+                (string) $tokenName,
             );
 
             $data[$tokenName] = $token->getParserValue();
