@@ -52,7 +52,7 @@ $this: '.autosuggester';
     color: #8ab858;
 }
 
-html[data-color-scheme="dark"] {
+html[data-color-scheme='dark'] {
     #{$this}-box {
         background-color: #151619;
         border-color: #3a3d40;
