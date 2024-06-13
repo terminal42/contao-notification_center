@@ -52,7 +52,7 @@ class NotificationCenter
         private readonly RequestStack $requestStack,
         private readonly BulkyItemStorage $bulkyGoodsStorage,
         private readonly StringParser $stringParser,
-        private readonly ?LocaleSwitcher $localeSwitcher,
+        private readonly LocaleSwitcher|null $localeSwitcher,
     ) {
     }
 
