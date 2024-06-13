@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Translation\LocaleSwitcher;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Config\NotificationConfig;
@@ -51,6 +52,7 @@ class NotificationCenter
         private readonly RequestStack $requestStack,
         private readonly BulkyItemStorage $bulkyGoodsStorage,
         private readonly StringParser $stringParser,
+        private readonly ?LocaleSwitcher $localeSwitcher,
     ) {
     }
 
@@ -274,13 +276,7 @@ class NotificationCenter
             return $receipt;
         }
 
-        // Seal if not already sealed
-        if (!$parcel->isSealed()) {
-            $parcel = $gateway->sealParcel($parcel);
-
-            // Gateways are expected to seal but let's be very sure it is
-            $parcel = $parcel->seal();
-        }
+        $parcel = $this->sealParcel($gateway, $parcel);
 
         // We force serialization here in order to prevent usage errors. Developers
         // are expected to build parcels and stamps with proper serializable data
@@ -294,6 +290,34 @@ class NotificationCenter
         $this->eventDispatcher->dispatch(new ReceiptEvent($receipt));
 
         return $receipt;
+    }
+
+    /**
+     * Seals a parcel if not already sealed and makes sure this happens in the correct
+     * locale context if there's any locale stamp present on the parcel.
+     */
+    public function sealParcel(GatewayInterface $gateway, Parcel $parcel): Parcel
+    {
+        if ($parcel->isSealed() || null === $this->localeSwitcher) {
+            return $parcel;
+        }
+
+        /** @var LocaleStamp|null $localeStamp */
+        $localeStamp = $parcel->getStamp(LocaleStamp::class);
+        $locale = $localeStamp?->locale;
+
+        $seal = static function () use ($gateway, $parcel): Parcel {
+            $parcel = $gateway->sealParcel($parcel);
+
+            // Gateways are expected to seal but let's be very sure it is
+            return $parcel->seal();
+        };
+
+        if (null === $locale) {
+            return $seal();
+        }
+
+        return $this->localeSwitcher->runWithLocale($locale, $seal);
     }
 
     /**
