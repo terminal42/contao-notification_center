@@ -37,8 +37,8 @@ class Gateway extends Model
     {
         // We only need to build the gateway once, Model is cached by registry and Gateway does not change between messages
         if (null === $this->objGateway) {
-            $strClass = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$this->type];
-            if (!class_exists($strClass)) {
+            $strClass = $GLOBALS['NOTIFICATION_CENTER']['GATEWAY'][$this->type] ?? null;
+            if (null === $strClass || !class_exists($strClass)) {
                 \System::log(sprintf('Could not find gateway class "%s".', $strClass), __METHOD__, TL_ERROR);
 
                 return null;
