@@ -28,6 +28,8 @@ class FileUploadNormalizer
      * array, others just uuids, some only file paths. This method is designed to
      * bring them all to the Contao FormUpload value style.
      *
+     * @param array<mixed> $files
+     *
      * @return array<string, array<array{name: string, type: string, tmp_name: string, error: int, size: int, uploaded: bool, uuid: ?string, stream: ?resource}>>
      */
     public function normalize(array $files): array
@@ -61,20 +63,32 @@ class FileUploadNormalizer
         return $standardizedPerKey;
     }
 
+    /**
+     * @return array{name: string, type: string, tmp_name: string, error: 0, size: int, uploaded: true, uuid: null, stream: ?resource}
+     */
     private function fromFile(string $file): array
     {
+        $size = filesize($file);
+
+        if (!\is_int($size)) {
+            $size = 0;
+        }
+
         return [
             'name' => basename($file),
-            'type' => $this->mimeTypeGuesser->guessMimeType($file),
+            'type' => (string) $this->mimeTypeGuesser->guessMimeType($file),
             'tmp_name' => $file,
             'error' => 0,
-            'size' => false === ($size = filesize($file)) ? 0 : $size,
+            'size' => $size,
             'uploaded' => true,
             'uuid' => null,
             'stream' => $this->fopen($file),
         ];
     }
 
+    /**
+     * @return array{}|array{name: string, type: string, tmp_name: string, error: 0, size: int, uploaded: true, uuid: string, stream: ?resource}
+     */
     private function fromUuid(Uuid $uuid): array
     {
         $item = $this->filesStorage->get($uuid);
@@ -163,6 +177,11 @@ class FileUploadNormalizer
         return is_uploaded_file($file['tmp_name']);
     }
 
+    /**
+     * @param array{name: string, type: string, tmp_name: string, size: int} $file
+     *
+     * @return array{name: string, type: string, tmp_name: string, error: 0, size: int, uploaded: true, uuid: null, stream: ?resource}
+     */
     private function fromPhpUpload(array $file): array
     {
         return [

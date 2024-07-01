@@ -323,8 +323,9 @@ class NotificationCenter
     /**
      * Shortcut to send an entire set of messages that belong to the same notification.
      *
-     * @param string|null $locale The locale for the message. Passing none will try to automatically take
-     *                            the one of the current request.
+     * @param TokenCollection|array<string, mixed> $tokens
+     * @param string|null                          $locale The locale for the message. Passing none will try to automatically take
+     *                                                     the one of the current request.
      *
      * @throws CouldNotCreateParcelException in case the notification ID does not exist
      */
@@ -344,6 +345,9 @@ class NotificationCenter
         return $collection;
     }
 
+    /**
+     * @param TokenCollection|array<string, mixed> $tokens
+     */
     public function createBasicStampsForNotification(int $id, TokenCollection|array $tokens, string|null $locale = null): StampCollection
     {
         $notificationConfig = $this->configLoader->loadNotification($id);

@@ -44,6 +44,9 @@ class UpdatePersonalDataListener
         $request->getSession()->set(self::OLD_SESSION_DATA_KEY, $user->getData());
     }
 
+    /**
+     * @param array<int|string> $data
+     */
     #[AsHook('updatePersonalData')]
     public function updatePersonalData(FrontendUser $member, array $data, Module $module): void
     {
@@ -95,6 +98,9 @@ class UpdatePersonalDataListener
         $this->notificationCenter->sendNotification((int) $module->nc_notification, $tokens);
     }
 
+    /**
+     * @param array<int|string, array{before: mixed, after: mixed}> $changes
+     */
     private function renderChanges(array $changes, string $format): string
     {
         if (0 === \count($changes)) {

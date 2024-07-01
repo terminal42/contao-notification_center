@@ -7,7 +7,6 @@ namespace Terminal42\NotificationCenterBundle\EventListener;
 use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
-use Contao\StringUtil;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
@@ -16,6 +15,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\EmailTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
+use Terminal42\NotificationCenterBundle\Util\Email;
 
 class AdminEmailTokenListener
 {
@@ -58,6 +58,9 @@ class AdminEmailTokenListener
         ;
     }
 
+    /**
+     * @return array<string>|null
+     */
     private function getEmailFromPage(): array|null
     {
         if (null === ($request = $this->requestStack->getCurrentRequest())) {
@@ -72,23 +75,21 @@ class AdminEmailTokenListener
 
         $pageModel->loadDetails();
 
-        return $pageModel->adminEmail ? $this->parseFriendlyEmail($pageModel->adminEmail) : null;
+        return $pageModel->adminEmail ? Email::splitEmailAddresses($pageModel->adminEmail) : null;
     }
 
+    /**
+     * @return array<string>|null
+     */
     private function getEmailFromConfig(): array|null
     {
         $email = $this->contaoFramework->getAdapter(Config::class)->get('adminEmail');
 
-        return $email ? $this->parseFriendlyEmail($email) : null;
+        return $email ? Email::splitEmailAddresses($email) : null;
     }
 
     private function getTokenDefinition(string $token): TokenDefinitionInterface
     {
         return $this->tokenDefinitionFactory->create(EmailTokenDefinition::class, $token, $token);
-    }
-
-    private function parseFriendlyEmail(string $email): array
-    {
-        return $this->contaoFramework->getAdapter(StringUtil::class)->splitFriendlyEmail($email);
     }
 }

@@ -18,6 +18,9 @@ class TokenTest extends TestCase
         $this->assertSame($expectedParserValue, $token->getParserValue());
     }
 
+    /**
+     * @param array<mixed> $value
+     */
     #[DataProvider('arrayProvider')]
     public function testArrayParserFormat(array $value, string $expectedParserValue): void
     {

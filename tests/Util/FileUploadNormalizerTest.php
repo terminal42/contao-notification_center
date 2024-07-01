@@ -14,6 +14,10 @@ use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 class FileUploadNormalizerTest extends TestCase
 {
+    /**
+     * @param array<mixed> $input
+     * @param array<mixed> $expected
+     */
     #[DataProvider('normalizeProvider')]
     public function testNormalize(array $input, array $expected, string $projectDir, string|null $mimeType = null, FilesystemItem|null $filesystemItem = null): void
     {

@@ -11,6 +11,9 @@ use Ramsey\Collection\AbstractCollection;
  */
 class TokenCollection extends AbstractCollection
 {
+    /**
+     * @param array<array{class: string, data: array{name: string, value: mixed, parserValue: string}}> $data
+     */
     public static function fromSerializedArray(array $data): self
     {
         $tokens = [];
@@ -107,7 +110,7 @@ class TokenCollection extends AbstractCollection
     }
 
     /**
-     * @return array<array{class: string, data: array}>
+     * @return array<array{class: string, data: array{name: string, value: mixed, parserValue: string}}>
      */
     public function toSerializableArray(): array
     {

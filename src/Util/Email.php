@@ -9,6 +9,9 @@ use Contao\Validator;
 
 class Email
 {
+    /**
+     * @return array<string>
+     */
     public static function splitEmailAddresses(string $recipients): array
     {
         $split = [];

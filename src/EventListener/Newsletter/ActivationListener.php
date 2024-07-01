@@ -22,6 +22,10 @@ class ActivationListener
     ) {
     }
 
+    /**
+     * @param array<int> $recipientIds
+     * @param array<int> $channelIds
+     */
     public function __invoke(string $email, array $recipientIds, array $channelIds, Module $module): void
     {
         if (!$module instanceof ModuleSubscribe) {
@@ -43,6 +47,9 @@ class ActivationListener
         }
     }
 
+    /**
+     * @param array<int> $channelIds
+     */
     private function sendNotification(string $email, array $channelIds, Module $module): void
     {
         $this->contaoFramework->initialize();

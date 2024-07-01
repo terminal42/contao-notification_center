@@ -31,6 +31,9 @@ class SubscribeController extends ModuleSubscribe
         return new Response($this->generate());
     }
 
+    /**
+     * @param array<int> $arrNew
+     */
     protected function addRecipient($strEmail, $arrNew): void
     {
         // Remove old subscriptions that have not been activated yet
