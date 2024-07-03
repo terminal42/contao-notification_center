@@ -29,6 +29,9 @@ class UnsubscribeController extends ModuleUnsubscribe
         return new Response($this->generate());
     }
 
+    /**
+     * @param array<int> $arrRemove
+     */
     protected function removeRecipient($strEmail, $arrRemove): void
     {
         // Remove the subscriptions

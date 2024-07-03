@@ -9,6 +9,7 @@ use Terminal42\NotificationCenterBundle\Token\Definition\EmailTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\FileTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\HtmlTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\TextTokenDefinition;
+use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 
 enum TokenContext: string
 {
@@ -17,6 +18,9 @@ enum TokenContext: string
     case Html = 'html';
     case File = 'file';
 
+    /**
+     * @return array<class-string<TokenDefinitionInterface>>
+     */
     public function definitions(): array
     {
         return match ($this) {

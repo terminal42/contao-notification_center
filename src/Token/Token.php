@@ -28,6 +28,9 @@ final class Token
         return $this->parserValue;
     }
 
+    /**
+     * @return array{name: string, value: mixed, parserValue: string}
+     */
     public function toArray(): array
     {
         return [
@@ -37,6 +40,9 @@ final class Token
         ];
     }
 
+    /**
+     * @param array{name: string, value: mixed, parserValue: string} $data
+     */
     public static function fromArray(array $data): self
     {
         return new self(
@@ -55,6 +61,9 @@ final class Token
         };
     }
 
+    /**
+     * @param array<mixed> $array
+     */
     private static function flattenArray(array $array): string
     {
         $chunks = [];

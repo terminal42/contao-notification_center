@@ -65,6 +65,9 @@ final class StampCollection
         return array_keys($this->stamps);
     }
 
+    /**
+     * @return array<class-string<StampInterface>, array<mixed>>
+     */
     public function toArray(): array
     {
         $data = [];
@@ -76,6 +79,9 @@ final class StampCollection
         return $data;
     }
 
+    /**
+     * @param array<class-string<StampInterface>, array<mixed>> $data
+     */
     public static function fromArray(array $data): self
     {
         $stamps = [];

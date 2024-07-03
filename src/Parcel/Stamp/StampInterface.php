@@ -8,8 +8,13 @@ interface StampInterface
 {
     /**
      * Must return a JSON serializable array.
+     *
+     * @return array<mixed>
      */
     public function toArray(): array;
 
+    /**
+     * @param array<mixed> $data
+     */
     public static function fromArray(array $data): self;
 }

@@ -8,6 +8,9 @@ use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 
 class BulkyItemsStamp implements StampInterface
 {
+    /**
+     * @var array<string>
+     */
     private array $vouchers = [];
 
     /**
@@ -30,6 +33,9 @@ class BulkyItemsStamp implements StampInterface
         return $this->vouchers[$voucher] ?? null;
     }
 
+    /**
+     * @return array<string>
+     */
     public function toArray(): array
     {
         return array_values($this->vouchers);
@@ -40,6 +46,9 @@ class BulkyItemsStamp implements StampInterface
         return new self($data);
     }
 
+    /**
+     * @return array<string>
+     */
     public function all(): array
     {
         return $this->toArray();
