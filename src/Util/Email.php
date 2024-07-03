@@ -27,7 +27,7 @@ class Email
                 continue;
             }
 
-            $split[] = $address;
+            $split[] = $email;
         }
 
         return $split;
