@@ -26,7 +26,7 @@
     "require": {
         "php": "^8.1",
         "composer-plugin-api": "^2.0",
-        "codefog/contao-haste": "^5.0",
+        "codefog/contao-haste": "^5.2",
         "contao/core-bundle": "^4.13.17 || ^5.1.1",
         "doctrine/dbal": "^3.4",
         "doctrine/orm": "^2.19",

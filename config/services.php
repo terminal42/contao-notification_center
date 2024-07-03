@@ -17,7 +17,6 @@ use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistr
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
-use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -77,14 +76,6 @@ return static function (ContainerConfigurator $container): void {
             service(BulkyItemStorage::class),
             service(StringParser::class),
             service('translation.locale_switcher')->nullOnInvalid(),
-        ])
-    ;
-
-    $services->set(FileUploadNormalizer::class)
-        ->args([
-            param('kernel.project_dir'),
-            service('mime_types'),
-            service('contao.filesystem.virtual.files'),
         ])
     ;
 };
