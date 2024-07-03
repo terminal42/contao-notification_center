@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Codefog\HasteBundle\FileUploadNormalizer;
 use Codefog\HasteBundle\Formatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
@@ -29,7 +30,6 @@ use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
-use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
