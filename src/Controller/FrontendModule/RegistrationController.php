@@ -44,6 +44,9 @@ class RegistrationController extends ModuleRegistration
         return new Response($this->generate());
     }
 
+    /**
+     * @param array<mixed> $arrData
+     */
     protected function sendActivationMail($arrData): void
     {
         $optInToken = null;

@@ -28,6 +28,9 @@ class MessageListener
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $row
+     */
     #[AsCallback(table: 'tl_nc_message', target: 'list.sorting.child_record')]
     public function onChildRecordCallback(array $row): string
     {
