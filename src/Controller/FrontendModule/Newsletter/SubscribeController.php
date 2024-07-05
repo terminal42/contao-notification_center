@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Controller\FrontendModule\Newsletter;
 
-use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\Environment;
 use Contao\Idna;
@@ -53,10 +52,6 @@ class SubscribeController extends ModuleSubscribe
             $objRecipient->pid = $id;
             $objRecipient->tstamp = $time;
             $objRecipient->email = $strEmail;
-            $objRecipient->active = false;
-            if (version_compare(ContaoCoreBundle::getVersion(), '5.0', '<')) {
-                $objRecipient->active = '';
-            }
             $objRecipient->addedOn = $time;
             $objRecipient->save();
 
