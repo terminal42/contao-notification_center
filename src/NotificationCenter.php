@@ -298,20 +298,24 @@ class NotificationCenter
      */
     public function sealParcel(GatewayInterface $gateway, Parcel $parcel): Parcel
     {
-        if ($parcel->isSealed() || null === $this->localeSwitcher) {
-            return $parcel;
-        }
-
-        /** @var LocaleStamp|null $localeStamp */
-        $localeStamp = $parcel->getStamp(LocaleStamp::class);
-        $locale = $localeStamp?->locale;
-
         $seal = static function () use ($gateway, $parcel): Parcel {
+            if ($parcel->isSealed()) {
+                return $parcel;
+            }
+
             $parcel = $gateway->sealParcel($parcel);
 
             // Gateways are expected to seal but let's be very sure it is
             return $parcel->seal();
         };
+
+        if (null === $this->localeSwitcher) {
+            return $seal();
+        }
+
+        /** @var LocaleStamp|null $localeStamp */
+        $localeStamp = $parcel->getStamp(LocaleStamp::class);
+        $locale = $localeStamp?->locale;
 
         if (null === $locale) {
             return $seal();
