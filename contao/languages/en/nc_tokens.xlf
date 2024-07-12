@@ -30,6 +30,30 @@
         <source>All filled in form fields and their raw values.</source>
         <target>All filled in form fields and their raw values.</target>
       </trans-unit>
+      <trans-unit id="nc_tokens.member_activation.domain">
+        <source>Originating domain of the member notification.</source>
+        <target>Originating domain of the member notification.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.member_activation.activation">
+        <source>ID of the opt-in token.</source>
+        <target>ID of the opt-in token.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.member_activation.link">
+        <source>Activation link for the member registration.</source>
+        <target>Activation link for the member registration.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.member_activation.token">
+        <source>ID of the opt-in token.</source>
+        <target>ID of the opt-in token.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.member_activation.member_*">
+        <source>All the data of the member.</source>
+        <target>All the data of the member.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.member_activation.member_raw_*">
+        <source>Unformatted data of the member.</source>
+        <target>Unformatted data of the member.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
