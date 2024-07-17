@@ -158,6 +158,9 @@ class MailerGateway extends AbstractGateway
         $email = new Email();
         $emailStamp->applyToEmail($email);
 
+        // Validate the e-mail so we throw early enough
+        $email->ensureValidity();
+
         // Adjust the priority if configured to do so
         if (($priority = $parcel->getMessageConfig()->getInt('email_priority')) > 0) {
             $email = $email->priority($priority);
