@@ -52,7 +52,6 @@ class SubscribeController extends ModuleSubscribe
             $objRecipient->pid = $id;
             $objRecipient->tstamp = $time;
             $objRecipient->email = $strEmail;
-            $objRecipient->active = false;
             $objRecipient->addedOn = $time;
             $objRecipient->save();
 
