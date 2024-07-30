@@ -204,7 +204,7 @@ class MailerGateway extends AbstractGateway
         $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
         $template->parsedTokens = null === $tokenCollection ? [] : $tokenCollection->forSimpleTokenParser();
-        $template->rawTokens = null === $tokenCollection ? [] : $tokenCollection;
+        $template->rawTokens = $tokenCollection;
 
         return $this->contaoFramework->getAdapter(Controller::class)->convertRelativeUrls($this->replaceInsertTags($template->parse()));
     }
