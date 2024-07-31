@@ -24,6 +24,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\BackendAttachmentsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 class MailerGateway extends AbstractGateway
@@ -192,6 +193,7 @@ class MailerGateway extends AbstractGateway
     private function renderEmailTemplate(Parcel $parcel): string
     {
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
+        $tokenCollection = $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
 
         $this->contaoFramework->initialize();
 
@@ -201,6 +203,8 @@ class MailerGateway extends AbstractGateway
         $template->css = '';
         $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
+        $template->parsedTokens = null === $tokenCollection ? [] : $tokenCollection->forSimpleTokenParser();
+        $template->rawTokens = $tokenCollection;
 
         return $this->contaoFramework->getAdapter(Controller::class)->convertRelativeUrls($this->replaceInsertTags($template->parse()));
     }
