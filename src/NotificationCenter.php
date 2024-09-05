@@ -362,10 +362,11 @@ class NotificationCenter
 
         $stamps = new StampCollection([new NotificationConfigStamp($notificationConfig)]);
 
-        if (null === $locale && ($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
-            $stamps = $stamps
-                ->with(new LocaleStamp(LocaleUtil::formatAsLocale($request->getLocale())))
-            ;
+        if (
+            null !== $locale
+            || (($request = $this->requestStack->getCurrentRequest()) instanceof Request && $locale = $request->getLocale())
+        ) {
+            $stamps = $stamps->with(new LocaleStamp(LocaleUtil::formatAsLocale($locale)));
         }
 
         if (!$tokens instanceof TokenCollection) {
