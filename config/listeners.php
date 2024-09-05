@@ -55,7 +55,7 @@ return static function (ContainerConfigurator $container): void {
             service(ConfigLoader::class),
             service('contao.intl.locales'),
             service(TranslatorInterface::class),
-            service('security.helper'),
+            service('request_stack'),
         ])
     ;
 
@@ -65,7 +65,7 @@ return static function (ContainerConfigurator $container): void {
             service(ConfigLoader::class),
             service('contao.framework'),
             service('database_connection'),
-            service('security.helper'),
+            service('request_stack'),
             service('twig'),
             service('contao.intl.locales'),
         ])
@@ -124,7 +124,7 @@ return static function (ContainerConfigurator $container): void {
             service('request_stack'),
             service(Formatter::class),
             service('contao.routing.scope_matcher'),
-            service('security.helper'),
+            service('security_token_storage'),
             service('twig'),
         ])
     ;

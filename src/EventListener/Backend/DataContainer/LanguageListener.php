@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer;
 
-use Contao\BackendUser;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\CoreBundle\Intl\Locales;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
@@ -25,7 +25,7 @@ class LanguageListener
         private ConfigLoader $configLoader,
         private Locales $locales,
         private TranslatorInterface $translator,
-        private Security $security,
+        private RequestStack $requestStack,
     ) {
     }
 
@@ -44,8 +44,10 @@ class LanguageListener
             $GLOBALS['TL_DCA']['tl_nc_language']['palettes']['default'] = $GLOBALS['TL_DCA']['tl_nc_language']['palettes'][$gateway->getType()];
         }
 
-        if (($user = $this->security->getUser()) instanceof BackendUser) {
-            $GLOBALS['TL_DCA']['tl_nc_language']['fields']['language']['default'] = $user->language;
+        $request = $this->requestStack->getCurrentRequest();
+
+        if ($request instanceof Request) {
+            $GLOBALS['TL_DCA']['tl_nc_language']['fields']['language']['default'] = $request->getLocale();
         }
 
         if (
