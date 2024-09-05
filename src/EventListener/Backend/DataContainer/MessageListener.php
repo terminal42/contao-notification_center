@@ -10,7 +10,7 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Intl\Locales;
 use Contao\DataContainer;
 use Doctrine\DBAL\Connection;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Twig\Environment;
@@ -22,7 +22,7 @@ class MessageListener
         private readonly ConfigLoader $configLoader,
         private readonly ContaoFramework $framework,
         private readonly Connection $connection,
-        private readonly Security $security,
+        private readonly RequestStack $requestStack,
         private readonly Environment $twig,
         private readonly Locales $locales,
     ) {
@@ -39,7 +39,7 @@ class MessageListener
         }
 
         $gateway = $this->configLoader->loadGateway($message->getGateway());
-        $languageNames = $this->locales->getLocales($this->security->getUser()?->language ?? null);
+        $languageNames = $this->locales->getLocales($this->requestStack->getCurrentRequest()?->getLocale());
 
         $query = $this->connection->createQueryBuilder()
             ->select('id, language')
