@@ -124,7 +124,7 @@ return static function (ContainerConfigurator $container): void {
             service('request_stack'),
             service(Formatter::class),
             service('contao.routing.scope_matcher'),
-            service('security_token_storage'),
+            service('security.token_storage'),
             service('twig'),
         ])
     ;
