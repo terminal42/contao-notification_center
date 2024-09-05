@@ -13,7 +13,7 @@ use Contao\Module;
 use Soundasleep\Html2Text;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Twig\Environment;
 
@@ -26,7 +26,7 @@ class UpdatePersonalDataListener
         private readonly RequestStack $requestStack,
         private readonly Formatter $formatter,
         private readonly ScopeMatcher $scopeMatcher,
-        private readonly Security $security,
+        private readonly TokenStorageInterface $tokenStorage,
         private readonly Environment $twig,
     ) {
     }
@@ -35,7 +35,7 @@ class UpdatePersonalDataListener
     public function storePersonalData(): void
     {
         $request = $this->requestStack->getCurrentRequest();
-        $user = $this->security->getUser();
+        $user = $this->tokenStorage->getToken()?->getUser();
 
         if (!$request instanceof Request || !$this->scopeMatcher->isFrontendRequest($request) || !$user instanceof FrontendUser) {
             return;
