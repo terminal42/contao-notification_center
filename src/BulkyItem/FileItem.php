@@ -53,10 +53,22 @@ class FileItem implements BulkyItemInterface
         return new self($contents, $meta['name'], $meta['type'], $meta['size']);
     }
 
-    public static function fromPath(string $path, string $name, string $mimeType, int $size): self
+    public static function fromPath(string $path, string|null $name = null, string|null $mimeType = null, int|null $size = null): self
     {
         if (!(new Filesystem())->exists($path)) {
             throw new \InvalidArgumentException(\sprintf('The file "%s" does not exist.', $path));
+        }
+
+        if (null === $name) {
+            $name = basename($path);
+        }
+
+        if (null === $mimeType) {
+            $mimeType = mime_content_type($path);
+        }
+
+        if (null === $size) {
+            $size = (int) filesize($path);
         }
 
         return new self(fopen($path, 'r'), $name, $mimeType, $size);
