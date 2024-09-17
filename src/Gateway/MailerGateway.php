@@ -280,7 +280,7 @@ class MailerGateway extends AbstractGateway
                 continue;
             }
 
-            $voucher = $this->createBulkyGoodsStorageVoucher($uuidObject, $this->filesStorage);
+            $voucher = $this->createBulkyItemStorageVoucher($uuidObject, $this->filesStorage);
 
             if (null === $voucher) {
                 continue;
@@ -296,7 +296,7 @@ class MailerGateway extends AbstractGateway
         return $parcel->withStamp(new BackendAttachmentsStamp($vouchers));
     }
 
-    private function createBulkyGoodsStorageVoucher(Uuid|string $location, VirtualFilesystemInterface $filesystem): string|null
+    private function createBulkyItemStorageVoucher(Uuid|string $location, VirtualFilesystemInterface $filesystem): string|null
     {
         try {
             if (null === ($item = $filesystem->get($location))) {
@@ -327,10 +327,17 @@ class MailerGateway extends AbstractGateway
 
     private function embedImages(string $html, EmailStamp &$stamp): string
     {
+        $prefixToStrip = '';
+
+        if (method_exists($this->filesStorage, 'getPrefix')) {
+            $prefixToStrip = $this->filesStorage->getPrefix();
+        }
+
         return preg_replace_callback(
             '/<[a-z][a-z0-9]*\b[^>]*((src=|background=|url\()["\']??)(.+\.(jpe?g|png|gif|bmp|tiff?|swf))(["\' ]??(\)??))[^>]*>/Ui',
-            function ($matches) use (&$stamp) {
-                $voucher = $this->createBulkyGoodsStorageVoucher(ltrim($matches[3], '/'), $this->virtualFilesystem);
+            function ($matches) use (&$stamp, $prefixToStrip) {
+                $location = ltrim(ltrim(ltrim($matches[3], '/'), $prefixToStrip), '/');
+                $voucher = $this->createBulkyItemStorageVoucher($location, $this->filesStorage);
 
                 if (null === $voucher) {
                     return $matches[0];
