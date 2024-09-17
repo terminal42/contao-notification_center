@@ -8,6 +8,7 @@ use Codefog\HasteBundle\StringParser;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
+use Terminal42\NotificationCenterBundle\BulkyItem\FileItemFactory;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Cron\PruneBulkyItemStorageCron;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
@@ -56,6 +57,12 @@ return static function (ContainerConfigurator $container): void {
     $services->set(BulkyItemStorage::class)
         ->args([
             service('contao.filesystem.virtual.'.Terminal42NotificationCenterExtension::BULKY_ITEMS_VFS_NAME),
+        ])
+    ;
+
+    $services->set(FileItemFactory::class)
+        ->args([
+            service('mime_types'),
         ])
     ;
 
