@@ -7,7 +7,6 @@ namespace Terminal42\NotificationCenterBundle\Test\EventListener;
 use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
-use Contao\StringUtil;
 use Contao\TestCase\ContaoTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +48,7 @@ class AdminEmailTokenListenerTest extends ContaoTestCase
         $this->assertSame($expectedEmail, $tokenCollection->getByName('admin_email')->getValue());
     }
 
-    public static function adminEmailProvider(): iterable
+    public static function adminEmailProvider(): \Generator
     {
         yield 'Basic admin email in config' => [
             'foobar-config@terminal42.ch',
@@ -112,21 +111,8 @@ class AdminEmailTokenListenerTest extends ContaoTestCase
             ->willReturn($adminEmail)
         ;
 
-        $stringUtilAdapter = $this->mockAdapter(['splitFriendlyEmail']);
-        $stringUtilAdapter
-            ->method('splitFriendlyEmail')
-            ->willReturnCallback(
-                static fn (string $email): array => match ($email) {
-                    'Lorem Ipsum [foobar-config@terminal42.ch]' => ['Lorem Ipsum', 'foobar-config@terminal42.ch'],
-                    'Dolor Sitamet [foobar@terminal42.ch]' => ['Dolor Sitamet', 'foobar@terminal42.ch'],
-                    default => ['', $email],
-                },
-            )
-        ;
-
         return $this->mockContaoFramework([
             Config::class => $configAdapter,
-            StringUtil::class => $stringUtilAdapter,
         ]);
     }
 }
