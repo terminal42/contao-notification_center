@@ -24,6 +24,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\BackendAttachmentsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 class MailerGateway extends AbstractGateway
@@ -95,11 +96,18 @@ class MailerGateway extends AbstractGateway
         $stamp = $stamp->withTo($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('recipients')));
         $stamp = $stamp->withSubject($this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject')));
 
-        if ('' !== ($from = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_address')))) {
+        // Automatically fall back to ##admin_email## if no sender was configured. In
+        // case this token does not exist either, it will result in the same error as not
+        // supplying a sender address at all.
+        $from = '' !== $languageConfig->getString('email_sender_address') ? $languageConfig->getString('email_sender_address') : '##admin_email##';
+
+        if ('' !== ($from = $this->replaceTokensAndInsertTags($parcel, $from))) {
             $stamp = $stamp->withFrom($from);
         }
 
-        if ('' !== ($fromName = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_sender_name')))) {
+        $fromName = '' !== $languageConfig->getString('email_sender_name') ? $languageConfig->getString('email_sender_name') : '##admin_name##';
+
+        if ('' !== ($fromName = $this->replaceTokensAndInsertTags($parcel, $fromName))) {
             $stamp = $stamp->withFromName($fromName);
         }
 
@@ -152,6 +160,9 @@ class MailerGateway extends AbstractGateway
         $email = new Email();
         $emailStamp->applyToEmail($email);
 
+        // Validate the e-mail so we throw early enough
+        $email->ensureValidity();
+
         // Adjust the priority if configured to do so
         if (($priority = $parcel->getMessageConfig()->getInt('email_priority')) > 0) {
             $email = $email->priority($priority);
@@ -191,6 +202,7 @@ class MailerGateway extends AbstractGateway
     private function renderEmailTemplate(Parcel $parcel): string
     {
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
+        $tokenCollection = $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
 
         $this->contaoFramework->initialize();
 
@@ -200,6 +212,8 @@ class MailerGateway extends AbstractGateway
         $template->css = '';
         $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
+        $template->parsedTokens = null === $tokenCollection ? [] : $tokenCollection->forSimpleTokenParser();
+        $template->rawTokens = $tokenCollection;
 
         return $this->contaoFramework->getAdapter(Controller::class)->convertRelativeUrls($this->replaceInsertTags($template->parse()));
     }

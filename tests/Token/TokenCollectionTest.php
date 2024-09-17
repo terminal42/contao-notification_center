@@ -81,4 +81,33 @@ class TokenCollectionTest extends TestCase
             $merged->forSimpleTokenParser(),
         );
     }
+
+    public function testInvalidParserTokenNamesAreNormalized(): void
+    {
+        $tokenCollection = new TokenCollection();
+        $tokenCollection->add(Token::fromValue('invalid-because-of-dashes', 'foobar'));
+        $tokenCollection->add(Token::fromValue('123invalid_because_of_numbers_at_the_start', 'foobar'));
+        $tokenCollection->add(Token::fromValue('1234-', 'foobar'));
+
+        $this->assertSame(
+            [
+                'invalid_because_of_dashes' => 'foobar',
+                '___invalid_because_of_numbers_at_the_start' => 'foobar',
+                '_____' => 'foobar',
+            ],
+            $tokenCollection->forSimpleTokenParser(),
+        );
+
+        // Here, they should remain untouched. They are only invalid for the
+        // SimpleTokenParser, but they might be very well valid inside a JSON-API gateway
+        // or what not.
+        $this->assertSame(
+            [
+                'invalid-because-of-dashes' => 'foobar',
+                '123invalid_because_of_numbers_at_the_start' => 'foobar',
+                '1234-' => 'foobar',
+            ],
+            $tokenCollection->toKeyValue(),
+        );
+    }
 }

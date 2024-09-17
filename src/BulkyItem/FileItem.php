@@ -56,7 +56,7 @@ class FileItem implements BulkyItemInterface
     public static function fromPath(string $path, string $name, string $mimeType, int $size): self
     {
         if (!(new Filesystem())->exists($path)) {
-            throw new \InvalidArgumentException(sprintf('The file "%s" does not exist.', $path));
+            throw new \InvalidArgumentException(\sprintf('The file "%s" does not exist.', $path));
         }
 
         return new self(fopen($path, 'r'), $name, $mimeType, $size);

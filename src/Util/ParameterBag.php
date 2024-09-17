@@ -51,6 +51,9 @@ class ParameterBag
         return (bool) $this->get($key, $default);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         // Ensure encoding works even if non utf8 parameters are used.

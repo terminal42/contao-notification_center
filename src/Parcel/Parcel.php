@@ -63,6 +63,9 @@ final class Parcel
         return true;
     }
 
+    /**
+     * @return array<class-string<StampInterface>>
+     */
     public function getStampClasses(): array
     {
         return $this->stampsBeforeSealing->getClasses();
@@ -112,6 +115,9 @@ final class Parcel
         return self::fromArray(Json::utf8SafeDecode($serialized));
     }
 
+    /**
+     * @return array{messageConfig: array<string, mixed>, stampsBeforeSealing: array<class-string<StampInterface>, array<mixed>>, stampsAfterSealing: array<class-string<StampInterface>, array<mixed>>, sealed: bool}
+     */
     public function toArray(): array
     {
         return [
@@ -142,6 +148,9 @@ final class Parcel
         return $parcel;
     }
 
+    /**
+     * @param array{messageConfig: array<string, mixed>, stampsBeforeSealing: array<class-string<StampInterface>, array<mixed>>, stampsAfterSealing: array<class-string<StampInterface>, array<mixed>>, sealed: bool} $data
+     */
     public static function fromArray(array $data): self
     {
         $parcel = new self(

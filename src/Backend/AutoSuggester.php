@@ -35,12 +35,12 @@ class AutoSuggester
                 'terminal42_notification_center',
             ), '/');
 
-            $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = sprintf(
+            $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = \sprintf(
                 '<script src="%s"></script>',
                 $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center'),
             );
 
-            $GLOBALS['TL_MOOTOOLS'][] = sprintf(
+            $GLOBALS['TL_MOOTOOLS'][] = \sprintf(
                 "<script>document.addEventListener('DOMContentLoaded',()=>{new initContaoNotificationCenterAutoSuggester('%s', %s)});</script>",
                 'ctrl_'.$field,
                 $this->getTokenConfigForField($notificationType, $context),

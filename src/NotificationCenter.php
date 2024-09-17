@@ -10,6 +10,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Translation\LocaleSwitcher;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Config\NotificationConfig;
@@ -51,6 +52,7 @@ class NotificationCenter
         private readonly RequestStack $requestStack,
         private readonly BulkyItemStorage $bulkyItemStorage,
         private readonly StringParser $stringParser,
+        private readonly LocaleSwitcher|null $localeSwitcher,
     ) {
     }
 
@@ -281,13 +283,7 @@ class NotificationCenter
             return $receipt;
         }
 
-        // Seal if not already sealed
-        if (!$parcel->isSealed()) {
-            $parcel = $gateway->sealParcel($parcel);
-
-            // Gateways are expected to seal but let's be very sure it is
-            $parcel = $parcel->seal();
-        }
+        $parcel = $this->sealParcel($gateway, $parcel);
 
         // We force serialization here in order to prevent usage errors. Developers
         // are expected to build parcels and stamps with proper serializable data
@@ -304,10 +300,43 @@ class NotificationCenter
     }
 
     /**
+     * Seals a parcel if not already sealed and makes sure this happens in the correct
+     * locale context if there's any locale stamp present on the parcel.
+     */
+    public function sealParcel(GatewayInterface $gateway, Parcel $parcel): Parcel
+    {
+        $seal = static function () use ($gateway, $parcel): Parcel {
+            if ($parcel->isSealed()) {
+                return $parcel;
+            }
+
+            $parcel = $gateway->sealParcel($parcel);
+
+            // Gateways are expected to seal but let's be very sure it is
+            return $parcel->seal();
+        };
+
+        if (null === $this->localeSwitcher) {
+            return $seal();
+        }
+
+        /** @var LocaleStamp|null $localeStamp */
+        $localeStamp = $parcel->getStamp(LocaleStamp::class);
+        $locale = $localeStamp?->locale;
+
+        if (null === $locale) {
+            return $seal();
+        }
+
+        return $this->localeSwitcher->runWithLocale($locale, $seal);
+    }
+
+    /**
      * Shortcut to send an entire set of messages that belong to the same notification.
      *
-     * @param string|null $locale The locale for the message. Passing none will try to automatically take
-     *                            the one of the current request.
+     * @param TokenCollection|array<string, mixed> $tokens
+     * @param string|null                          $locale The locale for the message. Passing none will try to automatically take
+     *                                                     the one of the current request.
      *
      * @throws CouldNotCreateParcelException in case the notification ID does not exist
      */
@@ -327,6 +356,9 @@ class NotificationCenter
         return $collection;
     }
 
+    /**
+     * @param TokenCollection|array<string, mixed> $tokens
+     */
     public function createBasicStampsForNotification(int $id, TokenCollection|array $tokens, string|null $locale = null): StampCollection
     {
         $notificationConfig = $this->configLoader->loadNotification($id);
@@ -338,9 +370,11 @@ class NotificationCenter
         $stamps = new StampCollection([new NotificationConfigStamp($notificationConfig)]);
 
         if (null === $locale && ($request = $this->requestStack->getCurrentRequest()) instanceof Request) {
-            $stamps = $stamps
-                ->with(new LocaleStamp(LocaleUtil::formatAsLocale($request->getLocale())))
-            ;
+            $locale = $request->getLocale();
+        }
+
+        if ($locale) {
+            $stamps = $stamps->with(new LocaleStamp(LocaleUtil::formatAsLocale($locale)));
         }
 
         if (!$tokens instanceof TokenCollection) {

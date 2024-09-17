@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\EventListener;
 
+use Codefog\HasteBundle\FileUploadNormalizer;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Form;
 use Contao\StringUtil;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
-use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 #[AsHook('processFormData')]
 class ProcessFormDataListener

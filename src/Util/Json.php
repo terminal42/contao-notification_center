@@ -6,11 +6,17 @@ namespace Terminal42\NotificationCenterBundle\Util;
 
 class Json
 {
+    /**
+     * @param array<mixed> $data
+     */
     public static function utf8SafeEncode(array $data, int $flags = 0): string|false
     {
         return json_encode(self::recursiveBase64Encode($data), $flags);
     }
 
+    /**
+     * @return array<mixed>|false
+     */
     public static function utf8SafeDecode(string $encoded): array|false
     {
         $data = json_decode($encoded, true);
@@ -22,6 +28,11 @@ class Json
         return self::recursiveBase64Decode($data);
     }
 
+    /**
+     * @param array<mixed> $data
+     *
+     * @return array<mixed>
+     */
     private static function recursiveBase64Encode(array $data): array
     {
         foreach ($data as $k => $v) {
@@ -39,6 +50,11 @@ class Json
         return $data;
     }
 
+    /**
+     * @param array<mixed> $data
+     *
+     * @return array<mixed>
+     */
     private static function recursiveBase64Decode(array $data): array
     {
         foreach ($data as $k => $v) {

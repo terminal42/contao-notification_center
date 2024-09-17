@@ -29,6 +29,9 @@ class EmailStamp implements StampInterface
 
     private string $html = '';
 
+    /**
+     * @var array<string>
+     */
     private array $attachmentVouchers = [];
 
     private array $embeddedImageVouchers = [];
@@ -126,6 +129,9 @@ class EmailStamp implements StampInterface
         return $clone;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getAttachmentVouchers(): array
     {
         return $this->attachmentVouchers;

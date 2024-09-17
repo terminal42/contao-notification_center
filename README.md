@@ -18,8 +18,8 @@ Contao developers to send notifications via their extensions.
 
 ### Community Extensions
 
-Currently, there are no known community extensions compatible with Notification Center 2.0. Feel free to create a
-Pull Request to add yours here!
+- [KlickTipp Gateway](https://extensions.contao.org/?p=fenepedia%2Fcontao-klicktipp-gateway) by [Fenepedia](https://www.fenepedia.de)
+- [Zammad Connector](https://extensions.contao.org/?p=contaoacademy%2Fcontao-zammad-nc-api-bundle) by [Contao Academy](https://contao-academy.de/)
 
 ### Translating the Notification Center
 

@@ -7,25 +7,8 @@ on:
 permissions: read-all
 
 jobs:
-    ecs:
-        name: build-tools
-        runs-on: ubuntu-latest
-        steps:
-            - name: Setup PHP
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: 8.1
-                  coverage: none
-
-            - name: Checkout
-              uses: actions/checkout@v3
-
-            - name: Install the dependencies
-              run: |
-                  composer install --no-interaction --no-progress
-
-            - name: Run all build-tools to validate code
-              run: composer run build-tools
+    ci:
+        uses: 'terminal42/contao-build-tools/.github/workflows/build-tools.yml@main'
 
     tests:
         name: Unit tests
@@ -46,7 +29,7 @@ jobs:
 
             - name: Install the dependencies
               run: |
-                  composer install --no-interaction --no-progress
+                  composer install --no-interaction --no-progress --no-plugins
 
             - name: Run phpunit
               run: composer unit

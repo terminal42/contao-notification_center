@@ -20,13 +20,16 @@ interface BulkyItemInterface
 
     /**
      * Optional meta data to an item. Must be serializable.
+     *
+     * @return array<mixed>
      */
     public function getMeta(): array;
 
     /**
      * Restores the item from the storage.
      *
-     * @param resource $contents
+     * @param resource     $contents
+     * @param array<mixed> $meta
      */
     public static function restore($contents, array $meta): self;
 }

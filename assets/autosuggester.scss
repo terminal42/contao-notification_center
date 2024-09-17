@@ -2,11 +2,11 @@ $this: '.autosuggester';
 
 #{$this}-input-mirror {
     position: absolute !important;
+    top: 0 !important;
+    left: -9999px !important;
     overflow: auto !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
-    top: 0 !important;
-    left: -9999px !important;
 }
 
 #{$this}-box-container {
@@ -15,17 +15,17 @@ $this: '.autosuggester';
 }
 
 #{$this}-box {
-    display: none;
-    border: 1px solid #bbb;
-    background-color: #fff;
     position: relative;
     z-index: 3;
-    max-height: 150px;
+    display: none;
     width: 318px;
+    max-height: 150px;
+    margin-top: 4px;
     overflow-y: scroll;
+    background-color: #fff;
+    border: 1px solid #bbb;
     border-radius: 0 0 3px 3px;
     box-shadow: 0 3px 6px #ccc;
-    margin-top: 4px;
 }
 
 #{$this}-box-list {
@@ -52,7 +52,7 @@ $this: '.autosuggester';
     color: #8ab858;
 }
 
-html[data-color-scheme="dark"] {
+html[data-color-scheme='dark'] {
     #{$this}-box {
         background-color: #151619;
         border-color: #3a3d40;

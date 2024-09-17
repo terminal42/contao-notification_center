@@ -26,7 +26,7 @@
     "require": {
         "php": "^8.1",
         "composer-plugin-api": "^2.0",
-        "codefog/contao-haste": "^5.0",
+        "codefog/contao-haste": "^5.2",
         "contao/core-bundle": "^4.13.17 || ^5.1.1",
         "doctrine/dbal": "^3.4",
         "doctrine/orm": "^2.19",
@@ -80,11 +80,11 @@
     },
     "config": {
         "allow-plugins": {
-            "contao-components/installer": true,
-            "contao/manager-plugin": true,
-            "contao-community-alliance/composer-plugin": true,
-            "php-http/discovery": false,
-            "terminal42/contao-build-tools": true
+            "terminal42/contao-build-tools": true,
+            "contao-components/installer": false,
+            "contao/manager-plugin": false,
+            "contao-community-alliance/composer-plugin": false,
+            "php-http/discovery": false
         },
         "sort-packages": true
     },

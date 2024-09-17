@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Codefog\HasteBundle\FileUploadNormalizer;
 use Codefog\HasteBundle\Formatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
@@ -19,6 +20,7 @@ use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\Noti
 use Terminal42\NotificationCenterBundle\EventListener\DbafsMetadataListener;
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliveryListener;
 use Terminal42\NotificationCenterBundle\EventListener\DoctrineSchemaListener;
+use Terminal42\NotificationCenterBundle\EventListener\LogUnsuccessfulDeliveries;
 use Terminal42\NotificationCenterBundle\EventListener\NotificationCenterProListener;
 use Terminal42\NotificationCenterBundle\EventListener\NotificationTypeForModuleListener;
 use Terminal42\NotificationCenterBundle\EventListener\ProcessFormDataListener;
@@ -28,7 +30,6 @@ use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistry;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
-use Terminal42\NotificationCenterBundle\Util\FileUploadNormalizer;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -54,7 +55,7 @@ return static function (ContainerConfigurator $container): void {
             service(ConfigLoader::class),
             service('contao.intl.locales'),
             service(TranslatorInterface::class),
-            service('security.helper'),
+            service('request_stack'),
         ])
     ;
 
@@ -64,7 +65,7 @@ return static function (ContainerConfigurator $container): void {
             service(ConfigLoader::class),
             service('contao.framework'),
             service('database_connection'),
-            service('security.helper'),
+            service('request_stack'),
             service('twig'),
             service('contao.intl.locales'),
         ])
@@ -123,7 +124,7 @@ return static function (ContainerConfigurator $container): void {
             service('request_stack'),
             service(Formatter::class),
             service('contao.routing.scope_matcher'),
-            service('security.helper'),
+            service('security.token_storage'),
             service('twig'),
         ])
     ;
@@ -133,4 +134,9 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set(DbafsMetadataListener::class);
+    $services->set(LogUnsuccessfulDeliveries::class)
+        ->args([
+            service('monolog.logger.contao.error')->nullOnInvalid(),
+        ])
+    ;
 };
