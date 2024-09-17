@@ -34,6 +34,9 @@ class EmailStamp implements StampInterface
      */
     private array $attachmentVouchers = [];
 
+    /**
+     * @var array<string>
+     */
     private array $embeddedImageVouchers = [];
 
     public function withFromName(string $fromName): self
@@ -108,6 +111,9 @@ class EmailStamp implements StampInterface
         return $clone;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getEmbeddedImageVouchers(): array
     {
         return $this->embeddedImageVouchers;

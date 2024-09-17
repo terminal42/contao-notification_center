@@ -31,6 +31,9 @@ class TokenTest extends TestCase
         $this->assertSame($expectedParserValue, $token->getParserValue());
     }
 
+    /**
+     * @return iterable<array{0: array<mixed>, 1: string}>
+     */
     public static function arrayProvider(): iterable
     {
         yield 'Simple list array token' => [
@@ -65,6 +68,9 @@ class TokenTest extends TestCase
         ];
     }
 
+    /**
+     * @return iterable<array{0: mixed, 1: string}>
+     */
     public static function anythingProvider(): iterable
     {
         yield [

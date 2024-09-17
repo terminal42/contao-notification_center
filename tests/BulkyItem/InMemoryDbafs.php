@@ -11,8 +11,14 @@ use Symfony\Component\Uid\Uuid;
 
 class InMemoryDbafs implements DbafsInterface
 {
+    /**
+     * @var array<string, FilesystemItem>
+     */
     private array $records = [];
 
+    /**
+     * @var array<string, array<mixed>>
+     */
     private array $meta = [];
 
     public function getPathFromUuid(Uuid $uuid): string|null

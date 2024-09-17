@@ -8,6 +8,9 @@ use Contao\CoreBundle\Filesystem\VirtualFilesystem;
 
 class VirtualFilesystemCollection
 {
+    /**
+     * @param array<string, VirtualFilesystem> $vfs
+     */
     public function __construct(private array $vfs = [])
     {
     }

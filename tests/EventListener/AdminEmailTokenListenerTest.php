@@ -8,7 +8,6 @@ use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
 use Contao\TestCase\ContaoTestCase;
-use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
@@ -48,7 +47,10 @@ class AdminEmailTokenListenerTest extends ContaoTestCase
         $this->assertSame($expectedEmail, $tokenCollection->getByName('admin_email')->getValue());
     }
 
-    public static function adminEmailProvider(): \Generator
+    /**
+     * @return iterable<array{0: string, 1: string, 2: string, 3: string}>
+     */
+    public static function adminEmailProvider(): iterable
     {
         yield 'Basic admin email in config' => [
             'foobar-config@terminal42.ch',

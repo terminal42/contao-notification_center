@@ -34,6 +34,9 @@ class MailerGatewayTest extends ContaoTestCase
 {
     /**
      * @dataProvider embeddingHtmlImagesProvider
+     *
+     * @param array<string, string> $mockFiles
+     * @param array<string, string> $expectedAttachmentsContentsAndPath
      */
     public function testEmbeddingHtmlImages(string $parsedTemplateHtml, array $mockFiles, array $expectedAttachmentsContentsAndPath): void
     {
@@ -80,7 +83,7 @@ class MailerGatewayTest extends ContaoTestCase
         $parcel = $parcel->withStamp(new TokenCollectionStamp($tokenCollection));
 
         $gateway = new MailerGateway(
-            $this->createFrameWorkWithTemplate('mail_default', $parsedTemplateHtml),
+            $this->createFrameWorkWithTemplate($parsedTemplateHtml),
             $vfsCollection->get('files'),
             $mailer,
         );
@@ -93,6 +96,9 @@ class MailerGatewayTest extends ContaoTestCase
         $gateway->sendParcel($parcel);
     }
 
+    /**
+     * @return iterable<array{0: string, 1: array<string, string>, 2: array<string, string>}>
+     */
     public static function embeddingHtmlImagesProvider(): iterable
     {
         yield 'Test embeds a relative upload path' => [
@@ -135,7 +141,7 @@ class MailerGatewayTest extends ContaoTestCase
         return $vfsCollection;
     }
 
-    private function createFrameWorkWithTemplate(string $templateName, string $parsedTemplateHtml): ContaoFramework
+    private function createFrameWorkWithTemplate(string $parsedTemplateHtml): ContaoFramework
     {
         $controllerAdapter = $this->mockAdapter(['convertRelativeUrls']);
         $controllerAdapter
