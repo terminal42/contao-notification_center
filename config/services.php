@@ -62,7 +62,7 @@ return static function (ContainerConfigurator $container): void {
 
     $services->set(FileItemFactory::class)
         ->args([
-            service('mime_types'),
+            service('mime_types')->nullOnInvalid(),
         ])
     ;
 
