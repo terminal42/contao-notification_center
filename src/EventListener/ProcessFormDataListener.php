@@ -76,7 +76,7 @@ class ProcessFormDataListener
                     FileItem::fromStream($file['stream'], $file['name'], $file['type'], $file['size']) :
                     FileItem::fromPath($file['tmp_name'], $file['name'], $file['type'], $file['size']);
 
-                $vouchers[] = $this->notificationCenter->getBulkyGoodsStorage()->store($fileItem);
+                $vouchers[] = $this->notificationCenter->getBulkyItemStorage()->store($fileItem);
             }
 
             $tokens['form_'.$k] = implode(',', $vouchers);

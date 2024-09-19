@@ -6,7 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Gateway;
 
 use Contao\Controller;
 use Contao\CoreBundle\Filesystem\Dbafs\UnableToResolveUuidException;
-use Contao\CoreBundle\Filesystem\VirtualFilesystem;
+use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Util\LocaleUtil;
 use Contao\FrontendTemplate;
@@ -33,7 +33,7 @@ class MailerGateway extends AbstractGateway
 
     public function __construct(
         private readonly ContaoFramework $contaoFramework,
-        private readonly VirtualFilesystem $filesystem,
+        private readonly VirtualFilesystemInterface $filesStorage,
         private readonly MailerInterface $mailer,
     ) {
     }
@@ -143,6 +143,7 @@ class MailerGateway extends AbstractGateway
         $stamp = $stamp->withText($text);
 
         if ($html) {
+            $html = $this->embedImages($html, $stamp);
             $stamp = $stamp->withHtml($html);
         }
 
@@ -176,7 +177,7 @@ class MailerGateway extends AbstractGateway
 
         // Attachments
         foreach ($emailStamp->getAttachmentVouchers() as $voucher) {
-            $item = $this->getNotificationCenter()->getBulkyGoodsStorage()->retrieve($voucher);
+            $item = $this->getBulkyItemStorage()?->retrieve($voucher);
 
             if ($item instanceof FileItem) {
                 $email->attach(
@@ -184,6 +185,14 @@ class MailerGateway extends AbstractGateway
                     $item->getName(),
                     $item->getMimeType(),
                 );
+            }
+        }
+
+        // Embedded images
+        foreach ($emailStamp->getEmbeddedImageVouchers() as $voucher) {
+            $item = $this->getBulkyItemStorage()?->retrieve($voucher);
+            if ($item instanceof FileItem) {
+                $email->attach($item->getContents(), $this->encodeVoucherForContentId($voucher));
             }
         }
 
@@ -267,30 +276,17 @@ class MailerGateway extends AbstractGateway
 
             try {
                 $uuidObject = Uuid::isValid($uuid) ? Uuid::fromString($uuid) : Uuid::fromBinary($uuid);
-
-                if (null === ($item = $this->filesystem->get($uuidObject))) {
-                    continue;
-                }
             } catch (\InvalidArgumentException|UnableToResolveUuidException) {
                 continue;
             }
 
-            if (!$item->isFile()) {
+            $voucher = $this->createBulkyItemStorageVoucher($uuidObject, $this->filesStorage);
+
+            if (null === $voucher) {
                 continue;
             }
 
-            $voucher = $this->getNotificationCenter()?->getBulkyGoodsStorage()->store(
-                FileItem::fromStream(
-                    $this->filesystem->readStream($uuidObject),
-                    $item->getName(),
-                    $item->getMimeType(),
-                    $item->getFileSize(),
-                ),
-            );
-
-            if (null !== $voucher) {
-                $vouchers[] = $voucher;
-            }
+            $vouchers[] = $voucher;
         }
 
         if (0 === \count($vouchers)) {
@@ -298,5 +294,60 @@ class MailerGateway extends AbstractGateway
         }
 
         return $parcel->withStamp(new BackendAttachmentsStamp($vouchers));
+    }
+
+    private function createBulkyItemStorageVoucher(Uuid|string $location, VirtualFilesystemInterface $filesystem): string|null
+    {
+        try {
+            if (null === ($item = $filesystem->get($location))) {
+                return null;
+            }
+        } catch (\InvalidArgumentException|UnableToResolveUuidException) {
+            return null;
+        }
+
+        if (!$item->isFile()) {
+            return null;
+        }
+
+        return $this->getBulkyItemStorage()?->store(
+            FileItem::fromStream(
+                $filesystem->readStream($location),
+                $item->getName(),
+                $item->getMimeType(),
+                $item->getFileSize(),
+            ),
+        );
+    }
+
+    private function encodeVoucherForContentId(string $voucher): string
+    {
+        return rawurlencode($voucher);
+    }
+
+    private function embedImages(string $html, EmailStamp &$stamp): string
+    {
+        $prefixToStrip = '';
+
+        if (method_exists($this->filesStorage, 'getPrefix')) {
+            $prefixToStrip = $this->filesStorage->getPrefix();
+        }
+
+        return preg_replace_callback(
+            '/<[a-z][a-z0-9]*\b[^>]*((src=|background=|url\()["\']??)(.+\.(jpe?g|png|gif|bmp|tiff?|swf))(["\' ]??(\)??))[^>]*>/Ui',
+            function ($matches) use (&$stamp, $prefixToStrip) {
+                $location = ltrim(ltrim(ltrim($matches[3], '/'), $prefixToStrip), '/');
+                $voucher = $this->createBulkyItemStorageVoucher($location, $this->filesStorage);
+
+                if (null === $voucher) {
+                    return $matches[0];
+                }
+
+                $stamp = $stamp->withEmbeddedImageVoucher($voucher);
+
+                return str_replace($matches[3], 'cid:'.$this->encodeVoucherForContentId($voucher), $matches[0]);
+            },
+            $html,
+        );
     }
 }

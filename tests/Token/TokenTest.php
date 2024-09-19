@@ -10,7 +10,9 @@ use Terminal42\NotificationCenterBundle\Token\Token;
 
 class TokenTest extends TestCase
 {
-    #[DataProvider('anythingProvider')]
+    /**
+     * @dataProvider anythingProvider
+     */
     public function testFromAnything(mixed $value, string $expectedParserValue): void
     {
         $token = Token::fromValue('token', $value);
@@ -19,16 +21,20 @@ class TokenTest extends TestCase
     }
 
     /**
+     * @dataProvider arrayProvider
+     *
      * @param array<mixed> $value
      */
-    #[DataProvider('arrayProvider')]
     public function testArrayParserFormat(array $value, string $expectedParserValue): void
     {
         $token = Token::fromValue('form_foobar', $value);
         $this->assertSame($expectedParserValue, $token->getParserValue());
     }
 
-    public static function arrayProvider(): \Generator
+    /**
+     * @return iterable<array{0: array<mixed>, 1: string}>
+     */
+    public static function arrayProvider(): iterable
     {
         yield 'Simple list array token' => [
             [
@@ -62,7 +68,10 @@ class TokenTest extends TestCase
         ];
     }
 
-    public static function anythingProvider(): \Generator
+    /**
+     * @return iterable<array{0: mixed, 1: string}>
+     */
+    public static function anythingProvider(): iterable
     {
         yield [
             'foobar',

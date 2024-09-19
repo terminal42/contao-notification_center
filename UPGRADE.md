@@ -3,7 +3,6 @@
 * The built-in Postmark gateway has been removed.
 * The built-in queue gateway has been removed.
 * The built-in file gateway has been removed.
-* Embedding images in e-mails is not supported anymore.
 * Attachment templates are not supported anymore.
 * The configurable flattening delimiter in the e-mail notification type has been removed.
 * The configurable template in the notification type has been removed.
