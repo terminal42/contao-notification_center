@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BulkyItem;
+namespace Terminal42\NotificationCenterBundle\Test\BulkyItem;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\MimeTypes;
