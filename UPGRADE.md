@@ -16,7 +16,10 @@
   you will have to adjust your workflow. This module has been removed. However, the "Subscribe (Notification Center)"
   now has a second forward page setting. You can use this one in order to have a separate confirmation page.
 * Tokens will not be validated in the back end anymore. Basically because it's totally okay to write something
-  like `##something-not-token-related##` in your message, and you should be able to write this.
+  like `##something_not_token_related##` in your message, and you should be able to write this.
+* Tokens will be normalized! In Contao 5, having a token with e.g. a dash (`##my-token##`) is not supported in `{if`
+  statements anymore. Hence, the Notification Center 2 will normalize this to `##my_token##`. Allowed token names have
+  the same requirement as PHP variables. All invalid characters will be replaced with a `_`.
 * The `filenames` token introduced in 1.7 has been removed. It's a very specific use case which can be provided very easily
   as a third party bundle now (not easily possible before and thus part of the core in 1.7).
 * The `member_*` tokens in the `lost_password` notification type used to contain the raw database values, they are now
