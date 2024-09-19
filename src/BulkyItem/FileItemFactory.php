@@ -22,7 +22,7 @@ class FileItemFactory
     public function createFromLocalPath(string $path): FileItem
     {
         if (!(new Filesystem())->exists($path)) {
-            throw new \InvalidArgumentException(\sprintf('The file "%s" does not exist.', $path));
+            throw new InvalidFileItemException(\sprintf('The file "%s" does not exist.', $path));
         }
 
         $name = basename($path);

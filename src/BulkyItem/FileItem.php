@@ -20,13 +20,9 @@ class FileItem implements BulkyItemInterface
         private readonly string $mimeType,
         private readonly int $size,
     ) {
-        try {
-            \assert('' !== $this->name, 'Name must not be empty');
-            \assert('' !== $this->mimeType, 'Mime type must not be empty');
-            \assert($this->size >= 0, 'File size must not be smaller than 0');
-        } catch (\AssertionError $e) {
-            throw new InvalidFileItemException($e->getMessage(), $e->getCode(), $e);
-        }
+        $this->assert('' !== $this->name, 'Name must not be empty');
+        $this->assert('' !== $this->mimeType, 'Mime type must not be empty');
+        $this->assert($this->size >= 0, 'File size must not be smaller than 0');
     }
 
     public function getName(): string
@@ -87,5 +83,12 @@ class FileItem implements BulkyItemInterface
         }
 
         return new self($resource, $name, $mimeType, $size);
+    }
+
+    private function assert(bool $condition, string $message): void
+    {
+        if (!$condition) {
+            throw new InvalidFileItemException($message);
+        }
     }
 }
