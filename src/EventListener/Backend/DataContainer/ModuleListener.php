@@ -103,6 +103,7 @@ class ModuleListener
     private function handleNewsletterSubscribeModule(): void
     {
         $GLOBALS['TL_DCA']['tl_module']['palettes']['newsletterSubscribeNotificationCenter'] = $GLOBALS['TL_DCA']['tl_module']['palettes']['subscribe'];
+        $GLOBALS['TL_DCA']['tl_module']['fields']['nc_notification']['eval']['mandatory'] = true;
 
         PaletteManipulator::create()
             ->addField('nc_notification', 'email_legend', PaletteManipulator::POSITION_APPEND)
