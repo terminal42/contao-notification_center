@@ -38,6 +38,11 @@ class ConfigLoader implements ResetInterface
         return $this->loadConfig($id, 'tl_module', ModuleConfig::class);
     }
 
+    public function loadForm(int $id): FormConfig|null
+    {
+        return $this->loadConfig($id, 'tl_form', FormConfig::class);
+    }
+
     /**
      * @return array<MessageConfig>
      */
