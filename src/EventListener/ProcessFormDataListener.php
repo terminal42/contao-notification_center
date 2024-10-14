@@ -9,8 +9,10 @@ use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\Form;
 use Contao\StringUtil;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
+use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\FormConfigStamp;
 
 #[AsHook('processFormData')]
 class ProcessFormDataListener
@@ -18,6 +20,7 @@ class ProcessFormDataListener
     public function __construct(
         private readonly NotificationCenter $notificationCenter,
         private readonly FileUploadNormalizer $fileUploadNormalizer,
+        private readonly ConfigLoader $configLoader,
     ) {
     }
 
@@ -76,7 +79,7 @@ class ProcessFormDataListener
                     FileItem::fromStream($file['stream'], $file['name'], $file['type'], $file['size']) :
                     FileItem::fromPath($file['tmp_name'], $file['name'], $file['type'], $file['size']);
 
-                $vouchers[] = $this->notificationCenter->getBulkyGoodsStorage()->store($fileItem);
+                $vouchers[] = $this->notificationCenter->getBulkyItemStorage()->store($fileItem);
             }
 
             $tokens['form_'.$k] = implode(',', $vouchers);
@@ -93,6 +96,12 @@ class ProcessFormDataListener
 
         if (0 !== \count($bulkyItemVouchers)) {
             $stamps = $stamps->with(new BulkyItemsStamp($bulkyItemVouchers));
+        }
+
+        $formConfig = $this->configLoader->loadForm((int) $form->id);
+
+        if (null !== $formConfig) {
+            $stamps = $stamps->with(new FormConfigStamp($formConfig));
         }
 
         $this->notificationCenter->sendNotificationWithStamps((int) $formData['nc_notification'], $stamps);

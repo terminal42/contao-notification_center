@@ -7,6 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Gateway;
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\String\SimpleTokenParser;
 use Psr\Container\ContainerInterface;
+use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotSealParcelException;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
@@ -19,6 +20,8 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 abstract class AbstractGateway implements GatewayInterface
 {
     public const SERVICE_NAME_NOTIFICATION_CENTER = 'notification_center';
+
+    public const SERVICE_NAME_BULKY_ITEM_STORAGE = 'bulky_item_storage';
 
     public const SERVICE_NAME_SIMPLE_TOKEN_PARSER = 'simple_token_parser';
 
@@ -83,15 +86,23 @@ abstract class AbstractGateway implements GatewayInterface
             return $value;
         }
 
-        return $this->getSimpleTokenParser()?->parse(
-            $value,
-            $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->forSimpleTokenParser(),
-        );
+        if ($simpleTokenParser = $this->getSimpleTokenParser()) {
+            return $simpleTokenParser->parse(
+                $value,
+                $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->forSimpleTokenParser(),
+            );
+        }
+
+        return $value;
     }
 
     protected function replaceInsertTags(string $value): string
     {
-        return $this->getInsertTagParser()?->replaceInline($value);
+        if ($insertTagParser = $this->getInsertTagParser()) {
+            return $insertTagParser->replaceInline($value);
+        }
+
+        return $value;
     }
 
     protected function replaceTokensAndInsertTags(Parcel $parcel, string $value): string
@@ -142,5 +153,16 @@ abstract class AbstractGateway implements GatewayInterface
         $notificationCenter = $this->container->get(self::SERVICE_NAME_NOTIFICATION_CENTER);
 
         return !$notificationCenter instanceof NotificationCenter ? null : $notificationCenter;
+    }
+
+    protected function getBulkyItemStorage(): BulkyItemStorage|null
+    {
+        if (null === $this->container || !$this->container->has(self::SERVICE_NAME_BULKY_ITEM_STORAGE)) {
+            return null;
+        }
+
+        $bulkyItemStorage = $this->container->get(self::SERVICE_NAME_BULKY_ITEM_STORAGE);
+
+        return !$bulkyItemStorage instanceof BulkyItemStorage ? null : $bulkyItemStorage;
     }
 }
