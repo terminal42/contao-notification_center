@@ -29,6 +29,19 @@ class TokenCollection extends AbstractCollection
         return new self($tokens);
     }
 
+    public function replaceToken(Token $token): self
+    {
+        $existing = $this->getByName($token->getName());
+
+        if (null !== $existing) {
+            $this->remove($existing);
+        }
+
+        $this->addToken($token);
+
+        return $this;
+    }
+
     /**
      * Provides a fluent interface alternative to add() with a type hint.
      */

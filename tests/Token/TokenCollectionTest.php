@@ -61,6 +61,23 @@ class TokenCollectionTest extends TestCase
         $this->assertNull($tokenCollection->getByName('form_i_do_not_exist'));
     }
 
+    public function testReplace(): void
+    {
+        $tokenCollection = new TokenCollection();
+        $tokenCollection->addToken(Token::fromValue('test', 'foobar'));
+        $tokenCollection->addToken(Token::fromValue('test', 'foobar new'));
+
+        $this->assertCount(2, $tokenCollection);
+        $this->assertSame('foobar', $tokenCollection->getByName('test')->getValue(), 'foobar');
+
+        $tokenCollection = new TokenCollection();
+        $tokenCollection->replaceToken(Token::fromValue('test', 'foobar'));
+        $tokenCollection->replaceToken(Token::fromValue('test', 'foobar new'));
+
+        $this->assertCount(1, $tokenCollection);
+        $this->assertSame('foobar new', $tokenCollection->getByName('test')->getValue(), 'foobar');
+    }
+
     public function testMerge(): void
     {
         $tokenCollectionA = new TokenCollection();

@@ -107,6 +107,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service(NotificationCenter::class),
             service(FileUploadNormalizer::class),
+            service(ConfigLoader::class),
         ])
     ;
 
