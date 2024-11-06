@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\BulkyItem;
 
+use Contao\CoreBundle\Filesystem\ExtraMetadata;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemException;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use Symfony\Component\Uid\Uuid;
@@ -32,7 +33,7 @@ class BulkyItemStorage
             'class' => $item::class,
         ];
 
-        $this->filesystem->setExtraMetadata($voucher, ['storage_meta' => $meta]);
+        $this->filesystem->setExtraMetadata($voucher, new ExtraMetadata(['storage_meta' => $meta]));
 
         return $voucher;
     }

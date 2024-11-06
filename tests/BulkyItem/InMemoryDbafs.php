@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Test\BulkyItem;
 
 use Contao\CoreBundle\Filesystem\Dbafs\ChangeSet\ChangeSet;
 use Contao\CoreBundle\Filesystem\Dbafs\DbafsInterface;
+use Contao\CoreBundle\Filesystem\ExtraMetadata;
 use Contao\CoreBundle\Filesystem\FilesystemItem;
 use Symfony\Component\Uid\Uuid;
 
@@ -17,7 +18,7 @@ class InMemoryDbafs implements DbafsInterface
     private array $records = [];
 
     /**
-     * @var array<string, array<mixed>>
+     * @var array<string, ExtraMetadata>
      */
     private array $meta = [];
 
@@ -35,7 +36,7 @@ class InMemoryDbafs implements DbafsInterface
                 null,
                 null,
                 null,
-                $this->meta[$path] ?? [],
+                $this->meta[$path] ?? null,
             );
         }
 
@@ -47,7 +48,7 @@ class InMemoryDbafs implements DbafsInterface
         throw new \RuntimeException('Not implemented');
     }
 
-    public function setExtraMetadata(string $path, array $metadata): void
+    public function setExtraMetadata(string $path, ExtraMetadata $metadata): void
     {
         $this->meta[$path] = $metadata;
     }
