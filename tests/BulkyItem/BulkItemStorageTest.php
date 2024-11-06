@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Test\BulkyItem;
 
+use Contao\CoreBundle\Filesystem\ExtraMetadata;
 use Contao\CoreBundle\Filesystem\FilesystemItem;
 use Contao\CoreBundle\Filesystem\FilesystemItemIterator;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
@@ -56,14 +57,14 @@ class BulkItemStorageTest extends TestCase
                     },
                 ),
                 $this->callback(
-                    function (array $meta) {
+                    function (ExtraMetadata $meta) {
                         $this->assertArrayHasKey('storage_meta', $meta);
                         $this->assertSame([
                             'name' => 'foobar.png',
                             'type' => 'image/png',
                             'size' => 100,
-                        ], $meta['storage_meta']['item']);
-                        $this->assertSame(FileItem::class, $meta['storage_meta']['class']);
+                        ], $meta->get('storage_meta')['item']);
+                        $this->assertSame(FileItem::class, $meta->get('storage_meta')['class']);
 
                         return true;
                     },
@@ -98,7 +99,7 @@ class BulkItemStorageTest extends TestCase
             ->expects($this->once())
             ->method('get')
             ->with('a10aed4d-abe1-498f-adfc-b2e54fbbcbde')
-            ->willReturn(new FilesystemItem(true, 'foobar', null, null, null, [
+            ->willReturn(new FilesystemItem(true, 'foobar', null, null, null, new ExtraMetadata([
                 'storage_meta' => [
                     'item' => [
                         'name' => 'foobar.png',
@@ -107,7 +108,7 @@ class BulkItemStorageTest extends TestCase
                     ],
                     'class' => FileItem::class,
                 ],
-            ]))
+            ])))
         ;
 
         $vfs
