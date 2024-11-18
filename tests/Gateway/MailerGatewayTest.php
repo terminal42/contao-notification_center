@@ -120,6 +120,12 @@ class MailerGatewayTest extends ContaoTestCase
                 'foobar' => '/files/contaodemo/media/content-images/DSC_5276.jpg',
             ],
         ];
+
+        yield 'Test ignores a base64 encoded image' => [
+            '<html><body><p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red Dot"></p></body></html>',
+            [],
+            [],
+        ];
     }
 
     private function createVfsCollection(): VirtualFilesystemCollection
