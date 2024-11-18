@@ -26,6 +26,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\BackendAttachmentsSt
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\EmailStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
+use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 class MailerGateway extends AbstractGateway
 {
@@ -128,7 +129,7 @@ class MailerGateway extends AbstractGateway
 
         switch ($languageConfig->getString('email_mode')) {
             case 'textOnly':
-                $text = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'));
+                $text = $this->renderEmailText($parcel, $languageConfig);
                 break;
             case 'htmlAndAutoText':
                 $html = $this->renderEmailTemplate($parcel);
@@ -136,7 +137,7 @@ class MailerGateway extends AbstractGateway
                 break;
             case 'textAndHtml':
                 $html = $this->renderEmailTemplate($parcel);
-                $text = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'));
+                $text = $this->renderEmailText($parcel, $languageConfig);
                 break;
         }
 
@@ -150,6 +151,22 @@ class MailerGateway extends AbstractGateway
         $stamp = $this->addAttachmentsFromBackend($parcel, $stamp);
 
         return $this->addAttachmentsFromTokens($languageConfig, $parcel, $stamp);
+    }
+
+    private function renderEmailText(Parcel $parcel, LanguageConfig $languageConfig): string
+    {
+        $tokenCollection = $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
+
+        // No token collection available, just replace insert tags
+        if (!$tokenCollection instanceof TokenCollection) {
+            return $this->replaceInsertTags($languageConfig->getString('email_text'));
+        }
+
+        // Otherwise convert voucher tokens to public URIs
+        $tokenCollection = $this->createTokenCollectionWithPublicBulkyItemUris($tokenCollection);
+
+        // Then replace tokens and insert tags with this collection explicitly
+        return $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'), $tokenCollection);
     }
 
     private function createEmail(Parcel $parcel): Email
@@ -204,13 +221,18 @@ class MailerGateway extends AbstractGateway
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
         $tokenCollection = $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
 
+        // Convert voucher tokens to public URIs if available
+        if ($tokenCollection instanceof TokenCollection) {
+            $tokenCollection = $this->createTokenCollectionWithPublicBulkyItemUris($tokenCollection, '<br>');
+        }
+
         $this->contaoFramework->initialize();
 
         $template = $this->contaoFramework->createInstance(FrontendTemplate::class, [$parcel->getMessageConfig()->getString('email_template')]);
         $template->charset = 'utf-8';
-        $template->title = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject'));
+        $template->title = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_subject'), $tokenCollection);
         $template->css = '';
-        $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
+        $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')), $tokenCollection);
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
         $template->parsedTokens = null === $tokenCollection ? [] : $tokenCollection->forSimpleTokenParser();
         $template->rawTokens = $tokenCollection;

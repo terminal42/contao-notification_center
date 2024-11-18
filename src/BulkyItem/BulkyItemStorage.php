@@ -7,12 +7,19 @@ namespace Terminal42\NotificationCenterBundle\BulkyItem;
 use Contao\CoreBundle\Filesystem\ExtraMetadata;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemException;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
+use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Uuid;
 
 class BulkyItemStorage
 {
+    public const VOUCHER_REGEX = '^\d{8}/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$';
+
     public function __construct(
         private readonly VirtualFilesystemInterface $filesystem,
+        private readonly RouterInterface $router,
+        private readonly UriSigner $uriSigner,
         private readonly int $retentionPeriodInDays = 7,
     ) {
     }
@@ -95,12 +102,15 @@ class BulkyItemStorage
         }
     }
 
+    public function generatePublicUri(string $voucher): string
+    {
+        return $this->uriSigner->sign(
+            $this->router->generate('nc_bulky_item_download', ['voucher' => $voucher], UrlGeneratorInterface::ABSOLUTE_URL),
+        );
+    }
+
     public static function validateVoucherFormat(string $voucher): bool
     {
-        if (!preg_match('@^\d{8}/@', $voucher)) {
-            return false;
-        }
-
-        return Uuid::isValid(substr($voucher, 9));
+        return 1 === preg_match('@'.self::VOUCHER_REGEX.'@', $voucher);
     }
 }

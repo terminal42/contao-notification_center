@@ -15,8 +15,10 @@ use Contao\TestCase\ContaoTestCase;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\RouterInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\LanguageConfig;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
@@ -88,7 +90,7 @@ class MailerGatewayTest extends ContaoTestCase
             $mailer,
         );
         $container = new Container();
-        $container->set(AbstractGateway::SERVICE_NAME_BULKY_ITEM_STORAGE, new BulkyItemStorage($vfsCollection->get('bulky_item')));
+        $container->set(AbstractGateway::SERVICE_NAME_BULKY_ITEM_STORAGE, new BulkyItemStorage($vfsCollection->get('bulky_item'), $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class)));
         $container->set(AbstractGateway::SERVICE_NAME_SIMPLE_TOKEN_PARSER, new SimpleTokenParser(new ExpressionLanguage()));
         $gateway->setContainer($container);
 

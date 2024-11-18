@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\Gateway;
 
 use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\String\SimpleTokenParser;
+use Contao\StringUtil;
 use Psr\Container\ContainerInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
@@ -16,6 +17,8 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
+use Terminal42\NotificationCenterBundle\Token\Token;
+use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 abstract class AbstractGateway implements GatewayInterface
 {
@@ -80,20 +83,44 @@ abstract class AbstractGateway implements GatewayInterface
 
     abstract protected function doSendParcel(Parcel $parcel): Receipt;
 
-    protected function replaceTokens(Parcel $parcel, string $value): string
+    /**
+     * You can provide an optional TokenCollection if you want to force a certain token collection. Otherwise, they
+     * will be taken from the TokenCollectionStamp.
+     */
+    protected function replaceTokens(Parcel $parcel, string $value, TokenCollection|null $tokenCollection = null): string
     {
-        if (!$parcel->hasStamp(TokenCollectionStamp::class)) {
+        if (!$simpleTokenParser = $this->getSimpleTokenParser()) {
             return $value;
         }
 
-        if ($simpleTokenParser = $this->getSimpleTokenParser()) {
-            return $simpleTokenParser->parse(
-                $value,
-                $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->forSimpleTokenParser(),
-            );
+        $tokenCollection = $tokenCollection ?? $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
+
+        if (!$tokenCollection instanceof TokenCollection) {
+            return $value;
         }
 
-        return $value;
+        return $simpleTokenParser->parse(
+            $value,
+            $tokenCollection->forSimpleTokenParser(),
+        );
+    }
+
+    protected function createTokenCollectionWithPublicBulkyItemUris(TokenCollection $tokenCollection, string $separatorIfMultiple = "\n"): TokenCollection
+    {
+        $bulkyItemStorage = $this->getBulkyItemStorage();
+
+        if (null === $bulkyItemStorage) {
+            return $tokenCollection;
+        }
+
+        $newTokenCollection = new TokenCollection();
+
+        foreach ($tokenCollection as $token) {
+            $newToken = $this->createPublicUriToken($token, $bulkyItemStorage, $separatorIfMultiple);
+            $newTokenCollection->add($newToken ?? $token);
+        }
+
+        return $newTokenCollection;
     }
 
     protected function replaceInsertTags(string $value): string
@@ -105,9 +132,13 @@ abstract class AbstractGateway implements GatewayInterface
         return $value;
     }
 
-    protected function replaceTokensAndInsertTags(Parcel $parcel, string $value): string
+    /**
+     * You can provide an optional TokenCollection if you want to force a certain token collection. Otherwise, they
+     * will be taken from the TokenCollectionStamp.
+     */
+    protected function replaceTokensAndInsertTags(Parcel $parcel, string $value, TokenCollection|null $tokenCollection = null): string
     {
-        return $this->replaceInsertTags($this->replaceTokens($parcel, $value));
+        return $this->replaceInsertTags($this->replaceTokens($parcel, $value, $tokenCollection));
     }
 
     protected function isBulkyItemVoucher(Parcel $parcel, string $voucher): bool
@@ -164,5 +195,33 @@ abstract class AbstractGateway implements GatewayInterface
         $bulkyItemStorage = $this->container->get(self::SERVICE_NAME_BULKY_ITEM_STORAGE);
 
         return !$bulkyItemStorage instanceof BulkyItemStorage ? null : $bulkyItemStorage;
+    }
+
+    private function createPublicUriToken(Token $token, BulkyItemStorage $bulkyItemStorage, string $separatorIfMultiple = "\n"): Token|null
+    {
+        $possibleVouchers = StringUtil::trimsplit(',', $token->getParserValue());
+
+        $uris = [];
+
+        foreach ($possibleVouchers as $possibleVoucher) {
+            // Shortcut: Not a possibly bulky item voucher anyway - continue
+            if (!BulkyItemStorage::validateVoucherFormat($possibleVoucher)) {
+                return null;
+            }
+
+            if (!$publicUri = $bulkyItemStorage->generatePublicUri($possibleVoucher)) {
+                continue;
+            }
+
+            $uris[] = $publicUri;
+        }
+
+        if (empty($uris)) {
+            return null;
+        }
+
+        $tokenValue = implode($separatorIfMultiple, $uris);
+
+        return new Token($token->getName(), $tokenValue, $tokenValue);
     }
 }

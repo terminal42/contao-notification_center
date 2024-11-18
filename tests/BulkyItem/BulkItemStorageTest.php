@@ -9,6 +9,8 @@ use Contao\CoreBundle\Filesystem\FilesystemItem;
 use Contao\CoreBundle\Filesystem\FilesystemItemIterator;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\Routing\RouterInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 
@@ -72,7 +74,7 @@ class BulkItemStorageTest extends TestCase
             )
         ;
 
-        $storage = new BulkyItemStorage($vfs);
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
         $voucher = $storage->store($this->createFileItem());
 
         $this->assertTrue(BulkyItemStorage::validateVoucherFormat($voucher));
@@ -88,7 +90,7 @@ class BulkItemStorageTest extends TestCase
             ->willReturn(true)
         ;
 
-        $storage = new BulkyItemStorage($vfs);
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
         $this->assertTrue($storage->has('a10aed4d-abe1-498f-adfc-b2e54fbbcbde'));
     }
 
@@ -118,7 +120,7 @@ class BulkItemStorageTest extends TestCase
             ->willReturn($this->createStream())
         ;
 
-        $storage = new BulkyItemStorage($vfs);
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
         $item = $storage->retrieve('a10aed4d-abe1-498f-adfc-b2e54fbbcbde');
 
         $this->assertInstanceOf(FileItem::class, $item);
@@ -154,7 +156,7 @@ class BulkItemStorageTest extends TestCase
             ->with('20220101')
         ;
 
-        $storage = new BulkyItemStorage($vfs);
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
         $storage->prune();
     }
 
