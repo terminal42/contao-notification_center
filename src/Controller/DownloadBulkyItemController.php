@@ -16,8 +16,8 @@ use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 class DownloadBulkyItemController
 {
     public function __construct(
-        private UriSigner $uriSigner,
-        private BulkyItemStorage $bulkyItemStorage,
+        private readonly UriSigner $uriSigner,
+        private readonly BulkyItemStorage $bulkyItemStorage,
     ) {
     }
 

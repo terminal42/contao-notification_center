@@ -91,7 +91,7 @@ abstract class AbstractGateway implements GatewayInterface
             return $value;
         }
 
-        $tokenCollection = $tokenCollection ?? $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
+        $tokenCollection ??= $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
 
         if (!$tokenCollection instanceof TokenCollection) {
             return $value;

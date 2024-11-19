@@ -10,7 +10,7 @@ use Twig\TwigFunction;
 
 class NotificationCenterExtension extends AbstractExtension
 {
-    public function __construct(private BulkyItemStorage $bulkyItemStorage)
+    public function __construct(private readonly BulkyItemStorage $bulkyItemStorage)
     {
     }
 
