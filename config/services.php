@@ -20,6 +20,7 @@ use Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefin
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
 use Terminal42\NotificationCenterBundle\Twig\NotificationCenterExtension;
+use Terminal42\NotificationCenterBundle\Twig\NotificationCenterRuntime;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -84,7 +85,8 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(NotificationCenterExtension::class)
+    $services->set(NotificationCenterExtension::class);
+    $services->set(NotificationCenterRuntime::class)
         ->args([
             service(BulkyItemStorage::class),
         ])
