@@ -43,7 +43,7 @@ class DownloadBulkyItemController
             },
         );
 
-        $response->headers->set('Content-Type', $bulkyItem->getMimeType());
+        $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
 
         return $response;

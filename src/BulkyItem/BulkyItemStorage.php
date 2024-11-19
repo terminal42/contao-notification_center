@@ -102,10 +102,11 @@ class BulkyItemStorage
         }
     }
 
-    public function generatePublicUri(string $voucher): string
+    public function generatePublicUri(string $voucher, int|null $ttl = null): string
     {
         return $this->uriSigner->sign(
             $this->router->generate('nc_bulky_item_download', ['voucher' => $voucher], UrlGeneratorInterface::ABSOLUTE_URL),
+            time() + $ttl,
         );
     }
 

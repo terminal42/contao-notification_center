@@ -8,6 +8,7 @@ use Codefog\HasteBundle\FileUploadNormalizer;
 use Codefog\HasteBundle\Formatter;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
+use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\EventListener\AdminEmailTokenListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\BackendMenuListener;
@@ -17,6 +18,7 @@ use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\Lang
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\MessageListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\ModuleListener;
 use Terminal42\NotificationCenterBundle\EventListener\Backend\DataContainer\NotificationListener;
+use Terminal42\NotificationCenterBundle\EventListener\BulkyItemsTokenListener;
 use Terminal42\NotificationCenterBundle\EventListener\DbafsMetadataListener;
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliveryListener;
 use Terminal42\NotificationCenterBundle\EventListener\DoctrineSchemaListener;
@@ -97,6 +99,14 @@ return static function (ContainerConfigurator $container): void {
             service('request_stack'),
             service(TokenDefinitionFactoryInterface::class),
             service('contao.framework'),
+        ])
+    ;
+
+    $services->set(BulkyItemsTokenListener::class)
+        ->args([
+            service(BulkyItemStorage::class),
+            service(TokenDefinitionFactoryInterface::class),
+            service('twig'),
         ])
     ;
 

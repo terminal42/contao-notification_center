@@ -162,10 +162,7 @@ class MailerGateway extends AbstractGateway
             return $this->replaceInsertTags($languageConfig->getString('email_text'));
         }
 
-        // Otherwise convert voucher tokens to public URIs
-        $tokenCollection = $this->createTokenCollectionWithPublicBulkyItemUris($tokenCollection);
-
-        // Then replace tokens and insert tags with this collection explicitly
+        // Otherwise replace tokens and insert tags with this collection explicitly
         return $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'), $tokenCollection);
     }
 
@@ -220,11 +217,6 @@ class MailerGateway extends AbstractGateway
     {
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
         $tokenCollection = $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
-
-        // Convert voucher tokens to public URIs if available
-        if ($tokenCollection instanceof TokenCollection) {
-            $tokenCollection = $this->createTokenCollectionWithPublicBulkyItemUris($tokenCollection, '<br>');
-        }
 
         $this->contaoFramework->initialize();
 
