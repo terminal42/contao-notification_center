@@ -16,6 +16,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\StampInterface;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
+use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 abstract class AbstractGateway implements GatewayInterface
 {
@@ -80,20 +81,26 @@ abstract class AbstractGateway implements GatewayInterface
 
     abstract protected function doSendParcel(Parcel $parcel): Receipt;
 
-    protected function replaceTokens(Parcel $parcel, string $value): string
+    /**
+     * You can provide an optional TokenCollection if you want to force a certain token collection. Otherwise, they
+     * will be taken from the TokenCollectionStamp.
+     */
+    protected function replaceTokens(Parcel $parcel, string $value, TokenCollection|null $tokenCollection = null): string
     {
-        if (!$parcel->hasStamp(TokenCollectionStamp::class)) {
+        if (!$simpleTokenParser = $this->getSimpleTokenParser()) {
             return $value;
         }
 
-        if ($simpleTokenParser = $this->getSimpleTokenParser()) {
-            return $simpleTokenParser->parse(
-                $value,
-                $parcel->getStamp(TokenCollectionStamp::class)->tokenCollection->forSimpleTokenParser(),
-            );
+        $tokenCollection ??= $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
+
+        if (!$tokenCollection instanceof TokenCollection) {
+            return $value;
         }
 
-        return $value;
+        return $simpleTokenParser->parse(
+            $value,
+            $tokenCollection->forSimpleTokenParser(),
+        );
     }
 
     protected function replaceInsertTags(string $value): string
@@ -105,9 +112,13 @@ abstract class AbstractGateway implements GatewayInterface
         return $value;
     }
 
-    protected function replaceTokensAndInsertTags(Parcel $parcel, string $value): string
+    /**
+     * You can provide an optional TokenCollection if you want to force a certain token collection. Otherwise, they
+     * will be taken from the TokenCollectionStamp.
+     */
+    protected function replaceTokensAndInsertTags(Parcel $parcel, string $value, TokenCollection|null $tokenCollection = null): string
     {
-        return $this->replaceInsertTags($this->replaceTokens($parcel, $value));
+        return $this->replaceInsertTags($this->replaceTokens($parcel, $value, $tokenCollection));
     }
 
     protected function isBulkyItemVoucher(Parcel $parcel, string $voucher): bool

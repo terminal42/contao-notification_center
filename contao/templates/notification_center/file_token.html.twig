@@ -1,0 +1,13 @@
+{% if format is same as 'html' %}
+<ul>
+    {% for voucher, file in files %}
+    <li><a href="{{ notification_center_file_url(voucher) }}">{{ file.name }} ({{ file.size|format_bytes }})</a></li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if format is same as 'text' %}
+    {% for voucher, file in files %}
+    - [{{ file.name }} ({{ file.size|format_bytes }})]({{ notification_center_file_url(voucher) }})
+    {% endfor %}
+{% endif %}

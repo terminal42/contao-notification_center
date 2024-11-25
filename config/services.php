@@ -10,6 +10,7 @@ use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItemFactory;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
+use Terminal42\NotificationCenterBundle\Controller\DownloadBulkyItemController;
 use Terminal42\NotificationCenterBundle\Cron\PruneBulkyItemStorageCron;
 use Terminal42\NotificationCenterBundle\DependencyInjection\Terminal42NotificationCenterExtension;
 use Terminal42\NotificationCenterBundle\Gateway\GatewayRegistry;
@@ -18,6 +19,8 @@ use Terminal42\NotificationCenterBundle\NotificationType\NotificationTypeRegistr
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\ChainTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
+use Terminal42\NotificationCenterBundle\Twig\NotificationCenterExtension;
+use Terminal42\NotificationCenterBundle\Twig\NotificationCenterRuntime;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -29,6 +32,14 @@ return static function (ContainerConfigurator $container): void {
             service(NotificationCenter::class),
             service(TranslatorInterface::class),
         ])
+    ;
+
+    $services->set(DownloadBulkyItemController::class)
+        ->args([
+            service('uri_signer'),
+            service(BulkyItemStorage::class),
+        ])
+        ->public()
     ;
 
     $services->set(GatewayRegistry::class)
@@ -57,6 +68,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set(BulkyItemStorage::class)
         ->args([
             service('contao.filesystem.virtual.'.Terminal42NotificationCenterExtension::BULKY_ITEMS_VFS_NAME),
+            service('router'),
+            service('uri_signer'),
         ])
     ;
 
@@ -67,6 +80,13 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set(PruneBulkyItemStorageCron::class)
+        ->args([
+            service(BulkyItemStorage::class),
+        ])
+    ;
+
+    $services->set(NotificationCenterExtension::class);
+    $services->set(NotificationCenterRuntime::class)
         ->args([
             service(BulkyItemStorage::class),
         ])
