@@ -61,7 +61,7 @@ class Terminal42NotificationCenterExtension extends Extension implements Configu
         }
 
         $container->findDefinition(BulkyItemStorage::class)
-            ->setArgument(1, $config['bulky_items_storage']['retention_period'])
+            ->setArgument(3, $config['bulky_items_storage']['retention_period'])
         ;
     }
 
