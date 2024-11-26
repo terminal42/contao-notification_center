@@ -28,8 +28,8 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
     {
         return $resolver
-            ->resolve(DownloadBulkyItemController::class)
-            ->load(DownloadBulkyItemController::class)
+            ->resolve(__DIR__.'/../../config/routes.php')
+            ->load(__DIR__.'/../../config/routes.php')
         ;
     }
 }
