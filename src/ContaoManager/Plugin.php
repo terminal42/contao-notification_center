@@ -11,6 +11,7 @@ use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Terminal42\NotificationCenterBundle\Controller\DownloadBulkyItemController;
 use Terminal42\NotificationCenterBundle\Terminal42NotificationCenterBundle;
 
 class Plugin implements BundlePluginInterface, RoutingPluginInterface
@@ -27,8 +28,8 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
     {
         return $resolver
-            ->resolve(__DIR__.'/../Controller/DownloadBulkyItemController.php', 'attribute')
-            ->load(__DIR__.'/../Controller/DownloadBulkyItemController.php')
+            ->resolve(DownloadBulkyItemController::class)
+            ->load(DownloadBulkyItemController::class)
         ;
     }
 }
