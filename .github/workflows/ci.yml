@@ -31,7 +31,7 @@ jobs:
             - name: Require Contao version for tests
               run: composer require contao/core-bundle:${{ matrix.contao }}.* --dev --no-update
 
-            # Remove this once https://github.com/contao/contao/pull/7751 is merged
+            # Remove this once https://github.com/contao/contao/pull/7751 is merged and Contao 4.13.51 is released
             - name: Require TestCase version for tests
               run: composer require contao/test-case:${{ matrix.contao }}.* --dev --no-update
 
