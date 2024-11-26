@@ -32,6 +32,7 @@
         "doctrine/orm": "^2.19",
         "knplabs/knp-menu": "^3.1",
         "psr/container": "^1.0 || ^2.0",
+        "psr/log": "^2.0 || ^3.0",
         "ramsey/collection": "^1.2",
         "soundasleep/html2text": "^2.0",
         "symfony/asset": "^5.4 || ^6.0 || ^7.0",
@@ -54,8 +55,8 @@
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
-        "contao/newsletter-bundle": "^5.0",
-        "contao/test-case": "^5.3",
+        "contao/newsletter-bundle": "^4.13 || ^5.0",
+        "contao/test-case": "^4.13 || ^5.3",
         "league/flysystem-memory": "^3.25",
         "phpunit/phpunit": "^9.6",
         "symfony/expression-language": "^5.4 || ^6.0 || ^7.0",

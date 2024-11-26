@@ -8,8 +8,10 @@ use Contao\CoreBundle\Filesystem\ExtraMetadata;
 use Contao\CoreBundle\Filesystem\FilesystemItem;
 use Contao\CoreBundle\Filesystem\FilesystemItemIterator;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
+use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
 use Symfony\Component\Routing\RouterInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
@@ -74,7 +76,7 @@ class BulkItemStorageTest extends TestCase
             )
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
         $voucher = $storage->store($this->createFileItem());
 
         $this->assertTrue(BulkyItemStorage::validateVoucherFormat($voucher));
@@ -90,7 +92,7 @@ class BulkItemStorageTest extends TestCase
             ->willReturn(true)
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
         $this->assertTrue($storage->has('a10aed4d-abe1-498f-adfc-b2e54fbbcbde'));
     }
 
@@ -120,7 +122,7 @@ class BulkItemStorageTest extends TestCase
             ->willReturn($this->createStream())
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
         $item = $storage->retrieve('a10aed4d-abe1-498f-adfc-b2e54fbbcbde');
 
         $this->assertInstanceOf(FileItem::class, $item);
@@ -156,7 +158,7 @@ class BulkItemStorageTest extends TestCase
             ->with('20220101')
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class));
+        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
         $storage->prune();
     }
 
@@ -175,5 +177,15 @@ class BulkItemStorageTest extends TestCase
         rewind($stream);
 
         return $stream;
+    }
+
+    /**
+     * For compatibility with Symfony 5, 6 and 7.
+     */
+    private function mockUriSigner(): HttpFoundationUriSigner|HttpKernelUriSigner|MockObject
+    {
+        $class = class_exists(HttpFoundationUriSigner::class) ? HttpFoundationUriSigner::class : HttpKernelUriSigner::class;
+
+        return $this->createMock($class);
     }
 }
