@@ -7,7 +7,8 @@ namespace Terminal42\NotificationCenterBundle\BulkyItem;
 use Contao\CoreBundle\Filesystem\ExtraMetadata;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemException;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
-use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
+use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Uid\Uuid;
@@ -19,7 +20,7 @@ class BulkyItemStorage
     public function __construct(
         private readonly VirtualFilesystemInterface $filesystem,
         private readonly RouterInterface $router,
-        private readonly UriSigner $uriSigner,
+        private readonly HttpFoundationUriSigner|HttpKernelUriSigner $uriSigner,
         private readonly int $retentionPeriodInDays = 7,
     ) {
     }

@@ -13,11 +13,14 @@ use Contao\CoreBundle\String\SimpleTokenParser;
 use Contao\FrontendTemplate;
 use Contao\TestCase\ContaoTestCase;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
+use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
+use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Header\ParameterizedHeader;
 use Symfony\Component\Routing\RouterInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\LanguageConfig;
@@ -57,7 +60,20 @@ class MailerGatewayTest extends ContaoTestCase
                     $attachments = [];
 
                     foreach ($email->getAttachments() as $attachment) {
-                        $attachments[$attachment->getBody()] = $attachment->getName();
+                        // getName() method does not exist in Symfony 5 (Contao 4.13)
+                        // see https://github.com/symfony/symfony/commit/ebd8697c7ee8daa7011da3222ebbb6dfb5e30171
+                        if (method_exists($attachment, 'getName')) {
+                            $attachments[$attachment->getBody()] = $attachment->getName();
+                            continue;
+                        }
+
+                        $header = $attachment->getPreparedHeaders()->get('Content-Type');
+
+                        if (!$header instanceof ParameterizedHeader || !($name = $header->getParameter('name'))) {
+                            continue;
+                        }
+
+                        $attachments[$attachment->getBody()] = $name;
                     }
 
                     $expectedHtml = $parsedTemplateHtml;
@@ -90,7 +106,7 @@ class MailerGatewayTest extends ContaoTestCase
             $mailer,
         );
         $container = new Container();
-        $container->set(AbstractGateway::SERVICE_NAME_BULKY_ITEM_STORAGE, new BulkyItemStorage($vfsCollection->get('bulky_item'), $this->createMock(RouterInterface::class), $this->createMock(UriSigner::class)));
+        $container->set(AbstractGateway::SERVICE_NAME_BULKY_ITEM_STORAGE, new BulkyItemStorage($vfsCollection->get('bulky_item'), $this->createMock(RouterInterface::class), $this->mockUriSigner()));
         $container->set(AbstractGateway::SERVICE_NAME_SIMPLE_TOKEN_PARSER, new SimpleTokenParser(new ExpressionLanguage()));
         $gateway->setContainer($container);
 
@@ -164,13 +180,36 @@ class MailerGatewayTest extends ContaoTestCase
             ->willReturn($parsedTemplateHtml)
         ;
 
-        return $this->mockContaoFramework(
+        $framework = $this->mockContaoFramework(
             [
                 Controller::class => $controllerAdapter,
             ],
-            [
-                FrontendTemplate::class => $templateInstance,
-            ],
         );
+
+        // contao/test-case 4.13 does not support "$instances" on `mockContaoFramework`
+        $framework
+            ->method('createInstance')
+            ->willReturnCallback(
+                static function (string $key) use ($templateInstance): mixed {
+                    if (FrontendTemplate::class === $key) {
+                        return $templateInstance;
+                    }
+
+                    return null;
+                },
+            )
+        ;
+
+        return $framework;
+    }
+
+    /**
+     * For compatibility with Symfony 5, 6 and 7.
+     */
+    private function mockUriSigner(): HttpFoundationUriSigner|HttpKernelUriSigner|MockObject
+    {
+        $class = class_exists(HttpFoundationUriSigner::class) ? HttpFoundationUriSigner::class : HttpKernelUriSigner::class;
+
+        return $this->createMock($class);
     }
 }
