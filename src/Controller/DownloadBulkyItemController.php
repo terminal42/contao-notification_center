@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Controller;
 
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -44,6 +45,10 @@ class DownloadBulkyItemController
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            $bulkyItem->getName(),
+        ));
 
         return $response;
     }
