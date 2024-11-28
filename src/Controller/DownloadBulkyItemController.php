@@ -11,8 +11,10 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
+use Symfony\Component\Routing\Annotation\Route;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 
+#[Route('/notifications/download/{voucher}', 'nc_bulky_item_download', requirements: ['voucher' => BulkyItemStorage::VOUCHER_REGEX])]
 class DownloadBulkyItemController
 {
     public function __construct(
