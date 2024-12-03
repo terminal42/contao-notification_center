@@ -33,7 +33,7 @@ class MailerTransportMigration extends AbstractMigration
 
     public function run(): MigrationResult
     {
-        $this->connection->executeStatement("ALTER TABLE tl_nc_gateway CHANGE mailerTransport mailerTransport varchar(64) DEFAULT NULL");
+        $this->connection->executeStatement('ALTER TABLE tl_nc_gateway CHANGE mailerTransport mailerTransport varchar(64) DEFAULT NULL');
         $this->connection->executeStatement("UPDATE tl_nc_gateway SET mailerTransport = NULL WHERE mailerTransport = ''");
 
         return $this->createResult(true);
