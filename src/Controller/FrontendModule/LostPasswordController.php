@@ -6,12 +6,14 @@ namespace Terminal42\NotificationCenterBundle\Controller\FrontendModule;
 
 use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\Environment;
 use Contao\Idna;
 use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Terminal42\NotificationCenterBundle\Legacy\LostPasswordModule;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
@@ -20,6 +22,7 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 class LostPasswordController extends LostPasswordModule
 {
     public function __construct(
+        private readonly ContentUrlGenerator $contentUrlGenerator,
         private readonly NotificationCenter $notificationCenter,
         private readonly Formatter $formatter,
     ) {
@@ -40,9 +43,15 @@ class LostPasswordController extends LostPasswordModule
         // Prepare the simple tokens
         $tokens = [];
         $tokens['domain'] = Idna::decode(Environment::get('host'));
-        $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(str_contains((string) Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
         $tokens['token'] = $optInToken->getIdentifier();
         $tokens['recipient_email'] = $objMember->email;
+
+        // Generate a custom target link URL, if any
+        if ($this->nc_lost_password_jumpTo && null !== ($targetPage = PageModel::findPublishedById($this->nc_lost_password_jumpTo))) {
+            $tokens['link'] = $this->contentUrlGenerator->generate($targetPage, ['token' => $optInToken->getIdentifier()], UrlGeneratorInterface::ABSOLUTE_URL);
+        } else {
+            $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(str_contains((string) Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
+        }
 
         // Add member tokens
         foreach ($objMember->row() as $k => $v) {

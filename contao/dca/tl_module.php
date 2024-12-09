@@ -31,3 +31,11 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['nc_newsletter_activation_jumpTo'] = [
     'eval' => ['fieldType' => 'radio'],
     'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
 ];
+$GLOBALS['TL_DCA']['tl_module']['fields']['nc_lost_password_jumpTo'] = [
+    'exclude' => true,
+    'inputType' => 'pageTree',
+    'foreignKey' => 'tl_page.title',
+    'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+    'eval' => ['fieldType' => 'radio'],
+    'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
+];
