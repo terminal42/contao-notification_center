@@ -39,8 +39,8 @@
         <target>Reset password page</target>
       </trans-unit>
       <trans-unit id="tl_module.nc_lost_password_jumpTo.1">
-        <source>It allows you to configure a different page for password resets. By default, the reset link redirects to the same page. However, you can specify a different page here, enabling you to use unique content elements. Ensure you include this module again on the specified page.</source>
-        <target>It allows you to configure a different page for password resets. By default, the reset link redirects to the same page. However, you can specify a different page here, enabling you to use unique content elements. Ensure you include this module again on the specified page.</target>
+        <source>It allows you to configure a different page for password resets. By default, the reset link redirects to the same page. However, you can specify a different page here, enabling you to differentiate the contents. Ensure you include this module again on the specified page.</source>
+        <target>It allows you to configure a different page for password resets. By default, the reset link redirects to the same page. However, you can specify a different page here, enabling you to differentiate the contents. Ensure you include this module again on the specified page.</target>
       </trans-unit>
     </body>
   </file>
