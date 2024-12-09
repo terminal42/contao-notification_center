@@ -12,7 +12,6 @@ use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Terminal42\NotificationCenterBundle\Legacy\LostPasswordModule;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
