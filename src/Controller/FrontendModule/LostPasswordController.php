@@ -40,9 +40,15 @@ class LostPasswordController extends LostPasswordModule
         // Prepare the simple tokens
         $tokens = [];
         $tokens['domain'] = Idna::decode(Environment::get('host'));
-        $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(str_contains((string) Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
         $tokens['token'] = $optInToken->getIdentifier();
         $tokens['recipient_email'] = $objMember->email;
+
+        // Generate a custom target link URL, if any
+        if ($this->nc_lost_password_jumpTo && null !== ($targetPage = PageModel::findPublishedById($this->nc_lost_password_jumpTo))) {
+            $tokens['link'] = $targetPage->getAbsoluteUrl(['token' => $optInToken->getIdentifier()]);
+        } else {
+            $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(str_contains((string) Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
+        }
 
         // Add member tokens
         foreach ($objMember->row() as $k => $v) {

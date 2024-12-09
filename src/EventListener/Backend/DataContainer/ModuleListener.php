@@ -75,6 +75,7 @@ class ModuleListener
 
         PaletteManipulator::create()
             ->addField('nc_notification', 'reg_password', PaletteManipulator::POSITION_BEFORE)
+            ->addField('nc_lost_password_jumpTo', 'email_legend', PaletteManipulator::POSITION_PREPEND)
             ->removeField('reg_password')
             ->applyToPalette('lostPasswordNotificationCenter', 'tl_module')
         ;
