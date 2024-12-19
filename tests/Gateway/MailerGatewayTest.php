@@ -170,7 +170,7 @@ class MailerGatewayTest extends ContaoTestCase
         $controllerAdapter = $this->mockAdapter(['convertRelativeUrls']);
         $controllerAdapter
             ->method('convertRelativeUrls')
-            ->willReturnCallback(static fn (string $template): string => $template)
+            ->willReturnCallback(static fn (string $template): string => Controller::convertRelativeUrls($template, 'https://example.com'))
         ;
 
         $templateInstance = $this->createMock(FrontendTemplate::class);
