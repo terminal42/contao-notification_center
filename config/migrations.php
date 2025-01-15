@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Terminal42\NotificationCenterBundle\Migration\EmailGatewayMigration;
 use Terminal42\NotificationCenterBundle\Migration\MailerTransportMigration;
+use Terminal42\NotificationCenterBundle\Migration\SimpleTokenMigration;
 
 return static function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -18,6 +19,12 @@ return static function (ContainerConfigurator $container): void {
     ;
 
     $services->set(MailerTransportMigration::class)
+        ->args([
+            service('database_connection'),
+        ])
+    ;
+
+    $services->set(SimpleTokenMigration::class)
         ->args([
             service('database_connection'),
         ])
