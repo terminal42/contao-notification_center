@@ -86,12 +86,7 @@ return static function (ContainerConfigurator $container): void {
         ])
     ;
 
-    $services->set(NotificationCenterExtension::class)
-        ->args([
-            service('twig')
-        ])
-    ;
-
+    $services->set(NotificationCenterExtension::class);
     $services->set(NotificationCenterRuntime::class)
         ->args([
             service(ContaoFramework::class),
