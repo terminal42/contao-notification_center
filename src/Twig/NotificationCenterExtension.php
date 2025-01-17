@@ -24,7 +24,7 @@ class NotificationCenterExtension extends AbstractExtension
                 'format_bytes',
                 [NotificationCenterRuntime::class, 'formatBytes'],
                 ['is_safe' => ['html']],
-            )
+            ),
         ];
     }
 }
