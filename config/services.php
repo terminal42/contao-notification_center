@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Codefog\HasteBundle\StringParser;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\Backend\AutoSuggester;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
@@ -88,6 +89,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(NotificationCenterExtension::class);
     $services->set(NotificationCenterRuntime::class)
         ->args([
+            service(ContaoFramework::class),
             service(BulkyItemStorage::class),
         ])
     ;
