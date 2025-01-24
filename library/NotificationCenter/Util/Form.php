@@ -28,19 +28,19 @@ class Form
     {
         // Check if it has been saved by Contao and thus moved to its final destination already
         if (isset($file['uploaded']) && $file['uploaded'] === true) {
-            if (file_exists($file['tmp_name'])) {
+            if (file_exists($file['tmp_name'] ?? '')) {
                 return $file['tmp_name'];
             }
 
             return null;
         }
 
-        if (!is_uploaded_file($file['tmp_name'])) {
+        if (!is_uploaded_file($file['tmp_name'] ?? '')) {
 
             return null;
         }
 
-        if (Validator::isInsecurePath($file['tmp_name'])) {
+        if (Validator::isInsecurePath($file['tmp_name'] ?? '')) {
 
             return null;
         }
