@@ -11,8 +11,10 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Util\LocaleUtil;
 use Contao\FrontendTemplate;
 use Contao\StringUtil;
+use Contao\System;
 use Contao\Validator;
 use Soundasleep\Html2Text;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Uid\Uuid;
@@ -179,8 +181,12 @@ class MailerGateway extends AbstractGateway
             $item = $this->getBulkyItemStorage()?->retrieve($voucher);
 
             if ($item instanceof FileItem) {
-                $email->attach(
-                    $item->getContents(),
+                $email->attachFromPath(
+                    Path::join(
+                        System::getContainer()->getParameter('kernel.project_dir'),
+                        'var/nc_bulky_items',
+                        $voucher
+                    ),
                     $item->getName(),
                     $item->getMimeType(),
                 );
@@ -190,8 +196,16 @@ class MailerGateway extends AbstractGateway
         // Embedded images
         foreach ($emailStamp->getEmbeddedImageVouchers() as $voucher) {
             $item = $this->getBulkyItemStorage()?->retrieve($voucher);
+
             if ($item instanceof FileItem) {
-                $email->attach($item->getContents(), $this->encodeVoucherForContentId($voucher));
+                $email->attachFromPath(
+                    Path::join(
+                        System::getContainer()->getParameter('kernel.project_dir'),
+                        'var/nc_bulky_items',
+                        $voucher
+                    ),
+                    $this->encodeVoucherForContentId($voucher)
+                );
             }
         }
 
