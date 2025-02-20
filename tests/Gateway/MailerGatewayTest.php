@@ -15,6 +15,7 @@ use Contao\TestCase\ContaoTestCase;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
 use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
@@ -161,7 +162,7 @@ class MailerGatewayTest extends ContaoTestCase
             ->mount(new InMemoryFilesystemAdapter(), 'bulky_item')
         ;
 
-        $dbafsManager = new DbafsManager();
+        $dbafsManager = new DbafsManager($this->createMock(EventDispatcherInterface::class));
         $dbafsManager->register(new InMemoryDbafs(), 'files');
         $dbafsManager->register(new InMemoryDbafs(), 'bulky_item');
 
