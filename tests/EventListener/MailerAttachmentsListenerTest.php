@@ -91,8 +91,8 @@ class MailerAttachmentsListenerTest extends TestCase
         $listener($event);
 
         $this->assertCount(2, $email->getAttachments());
-        $this->assertSame('original-1.jpg', $email->getAttachments()[0]->getFilename());
-        $this->assertSame('different-filename.jpg', $email->getAttachments()[1]->getFilename());
+        $this->assertSame('image/jpg disposition: attachment filename: original-1.jpg', $email->getAttachments()[0]->asDebugString());
+        $this->assertSame('image/jpg disposition: attachment filename: different-filename.jpg', $email->getAttachments()[1]->asDebugString());
 
         // Header must have been removed now
         $this->assertFalse($email->getHeaders()->has(MailerAttachmentsListener::ATTACHMENTS_HEADER_NAME));
