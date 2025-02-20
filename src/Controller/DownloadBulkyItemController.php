@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Controller;
 
+use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 
-#[Route('/notifications/download/{voucher}', 'nc_bulky_item_download', requirements: ['voucher' => BulkyItemStorage::VOUCHER_REGEX])]
 class DownloadBulkyItemController
 {
     public function __construct(
-        private readonly UriSigner $uriSigner,
+        private readonly HttpFoundationUriSigner|HttpKernelUriSigner $uriSigner,
         private readonly BulkyItemStorage $bulkyItemStorage,
     ) {
     }
@@ -45,6 +45,10 @@ class DownloadBulkyItemController
 
         $response->headers->set('Content-Type', 'application/octet-stream');
         $response->headers->set('Cache-Control', 'no-cache, no-store, must-revalidate');
+        $response->headers->set('Content-Disposition', HeaderUtils::makeDisposition(
+            HeaderUtils::DISPOSITION_ATTACHMENT,
+            $bulkyItem->getName(),
+        ));
 
         return $response;
     }

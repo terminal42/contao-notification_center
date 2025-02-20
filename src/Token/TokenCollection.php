@@ -58,9 +58,12 @@ class TokenCollection extends AbstractCollection
     public function forSimpleTokenParser(): array
     {
         $data = [];
+        $normalized = [];
 
         /** @var Token $token */
         foreach ($this as $token) {
+            $data[$token->getName()] = $token->getParserValue();
+
             // Replace everything that's not allowed from the beginning of a string (PHP
             // variables cannot start with numbers for example)
             $tokenName = preg_replace_callback(
@@ -84,7 +87,15 @@ class TokenCollection extends AbstractCollection
                 (string) $tokenName,
             );
 
-            $data[$tokenName] = $token->getParserValue();
+            if ($tokenName !== $token->getName()) {
+                $normalized[$tokenName] = $token->getParserValue();
+            }
+        }
+
+        foreach ($normalized as $tokenName => $value) {
+            if (!isset($data[$tokenName])) {
+                $data[$tokenName] = $value;
+            }
         }
 
         return $data;

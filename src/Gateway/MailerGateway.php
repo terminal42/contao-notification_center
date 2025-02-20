@@ -131,11 +131,11 @@ class MailerGateway extends AbstractGateway
                 $text = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'));
                 break;
             case 'htmlAndAutoText':
-                $html = $this->renderEmailTemplate($parcel);
+                $html = $this->renderEmailTemplate($parcel, $stamp);
                 $text = Html2Text::convert($html);
                 break;
             case 'textAndHtml':
-                $html = $this->renderEmailTemplate($parcel);
+                $html = $this->renderEmailTemplate($parcel, $stamp);
                 $text = $this->replaceTokensAndInsertTags($parcel, $languageConfig->getString('email_text'));
                 break;
         }
@@ -143,7 +143,6 @@ class MailerGateway extends AbstractGateway
         $stamp = $stamp->withText($text);
 
         if ($html) {
-            $html = $this->embedImages($html, $stamp);
             $stamp = $stamp->withHtml($html);
         }
 
@@ -199,7 +198,7 @@ class MailerGateway extends AbstractGateway
         return $email;
     }
 
-    private function renderEmailTemplate(Parcel $parcel): string
+    private function renderEmailTemplate(Parcel $parcel, EmailStamp &$stamp): string
     {
         $languageConfig = $parcel->getStamp(LanguageConfigStamp::class)->languageConfig;
         $tokenCollection = $parcel->getStamp(TokenCollectionStamp::class)?->tokenCollection;
@@ -215,7 +214,12 @@ class MailerGateway extends AbstractGateway
         $template->parsedTokens = null === $tokenCollection ? [] : $tokenCollection->forSimpleTokenParser();
         $template->rawTokens = $tokenCollection;
 
-        return $this->contaoFramework->getAdapter(Controller::class)->convertRelativeUrls($this->replaceInsertTags($template->parse()));
+        $html = $this->replaceInsertTags($template->parse());
+
+        // Embed images before making URLs absolute
+        $html = $this->embedImages($html, $stamp);
+
+        return $this->contaoFramework->getAdapter(Controller::class)->convertRelativeUrls($html);
     }
 
     private function addAttachmentsFromTokens(LanguageConfig $languageConfig, Parcel $parcel, EmailStamp $emailStamp): EmailStamp

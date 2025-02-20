@@ -103,12 +103,16 @@ class TokenCollectionTest extends TestCase
     {
         $tokenCollection = new TokenCollection();
         $tokenCollection->add(Token::fromValue('invalid-because-of-dashes', 'foobar'));
+        $tokenCollection->add(Token::fromValue('invalid_because_of_dashes', 'foobar2'));
         $tokenCollection->add(Token::fromValue('123invalid_because_of_numbers_at_the_start', 'foobar'));
         $tokenCollection->add(Token::fromValue('1234-', 'foobar'));
 
         $this->assertSame(
             [
-                'invalid_because_of_dashes' => 'foobar',
+                'invalid-because-of-dashes' => 'foobar',
+                'invalid_because_of_dashes' => 'foobar2',
+                '123invalid_because_of_numbers_at_the_start' => 'foobar',
+                '1234-' => 'foobar',
                 '___invalid_because_of_numbers_at_the_start' => 'foobar',
                 '_____' => 'foobar',
             ],
@@ -121,6 +125,7 @@ class TokenCollectionTest extends TestCase
         $this->assertSame(
             [
                 'invalid-because-of-dashes' => 'foobar',
+                'invalid_because_of_dashes' => 'foobar2',
                 '123invalid_because_of_numbers_at_the_start' => 'foobar',
                 '1234-' => 'foobar',
             ],
