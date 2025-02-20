@@ -34,6 +34,14 @@
         <source>Allows you to configure a different redirect page after successful activation.</source>
         <target>Ermöglicht es Ihnen, eine andere Weiterleitungsseite nach erfolgreicher Aktivierung zu konfigurieren.</target>
       </trans-unit>
+      <trans-unit id="tl_module.nc_lost_password_jumpTo.0">
+        <source>Reset password page</source>
+        <target>Seite zum Zurücksetzen des Passworts</target>
+      </trans-unit>
+      <trans-unit id="tl_module.nc_lost_password_jumpTo.1">
+        <source>It allows you to configure a different page for password resets. By default, the reset link redirects to the same page. However, you can specify a different page here, enabling you to differentiate the contents. Ensure you include this module again on the specified page.</source>
+        <target>Es ermöglicht Ihnen, eine andere Seite für das Zurücksetzen des Passworts zu konfigurieren. Standardmäßig führt der Zurücksetzungslink zur gleichen Seite. Sie können jedoch hier eine andere Seite angeben, wodurch Sie unterschiedlichen Inhalt verwenden können. Stellen Sie sicher, dass Sie dieses Modul auf der angegebenen Seite erneut einfügen.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -8,6 +8,7 @@ use Contao\CoreBundle\Filesystem\Dbafs\DbafsManager;
 use Contao\CoreBundle\Filesystem\MountManager;
 use Contao\CoreBundle\Filesystem\VirtualFilesystem;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Terminal42\NotificationCenterBundle\Test\BulkyItem\InMemoryDbafs;
 use Terminal42\NotificationCenterBundle\Test\BulkyItem\VirtualFilesystemCollection;
 
@@ -20,7 +21,7 @@ trait VirtualFilesystemTestTrait
             ->mount(new InMemoryFilesystemAdapter(), 'bulky_item')
         ;
 
-        $dbafsManager = new DbafsManager();
+        $dbafsManager = new DbafsManager($this->createMock(EventDispatcherInterface::class));
         $dbafsManager->register(new InMemoryDbafs(), 'files');
         $dbafsManager->register(new InMemoryDbafs(), 'bulky_item');
 

@@ -18,7 +18,10 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Uid\Uuid;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 use Terminal42\NotificationCenterBundle\Config\LanguageConfig;
+use Terminal42\NotificationCenterBundle\EventListener\MailerAttachmentsListener;
 use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelException;
+use Terminal42\NotificationCenterBundle\Gateway\Mailer\AttachmentHeaderItem;
+use Terminal42\NotificationCenterBundle\Gateway\Mailer\BulkyItemStorageAttachmentsHeader;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
@@ -174,26 +177,24 @@ class MailerGateway extends AbstractGateway
             }
         }
 
-        // Attachments
-        foreach ($emailStamp->getAttachmentVouchers() as $voucher) {
-            $item = $this->getBulkyItemStorage()?->retrieve($voucher);
+        // Attachment header items
+        if ($email->getHeaders()->has(MailerAttachmentsListener::ATTACHMENTS_HEADER_NAME)) {
+            /** @var BulkyItemStorageAttachmentsHeader $attachments */
+            $attachments = $email->getHeaders()->get(MailerAttachmentsListener::ATTACHMENTS_HEADER_NAME);
+        } else {
+            $attachments = new BulkyItemStorageAttachmentsHeader(MailerAttachmentsListener::ATTACHMENTS_HEADER_NAME);
+        }
 
-            if ($item instanceof FileItem) {
-                $email->attach(
-                    $item->getContents(),
-                    $item->getName(),
-                    $item->getMimeType(),
-                );
-            }
+        foreach ($emailStamp->getAttachmentVouchers() as $voucher) {
+            $attachments->addAttachmentItem(new AttachmentHeaderItem($voucher));
         }
 
         // Embedded images
         foreach ($emailStamp->getEmbeddedImageVouchers() as $voucher) {
-            $item = $this->getBulkyItemStorage()?->retrieve($voucher);
-            if ($item instanceof FileItem) {
-                $email->attach($item->getContents(), $this->encodeVoucherForContentId($voucher));
-            }
+            $attachments->addAttachmentItem(new AttachmentHeaderItem($voucher, $this->encodeVoucherForContentId($voucher)));
         }
+
+        $email->getHeaders()->add($attachments);
 
         return $email;
     }
