@@ -15,9 +15,12 @@ use Contao\TestCase\ContaoTestCase;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
 use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
+use Symfony\Component\Mailer\Envelope;
+use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Header\ParameterizedHeader;
@@ -25,6 +28,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\LanguageConfig;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
+use Terminal42\NotificationCenterBundle\EventListener\MailerAttachmentsListener;
 use Terminal42\NotificationCenterBundle\Gateway\AbstractGateway;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
@@ -50,13 +54,19 @@ class MailerGatewayTest extends ContaoTestCase
         foreach ($mockFiles as $path => $contents) {
             $vfsCollection->get('files')->write($path, $contents);
         }
+        $bulkyItemStorage = new BulkyItemStorage($vfsCollection->get('bulky_item'), $this->createMock(RouterInterface::class), $this->mockUriSigner());
+
+        $mailerAttachmentsListener = new MailerAttachmentsListener($bulkyItemStorage);
 
         $mailer = $this->createMock(MailerInterface::class);
         $mailer
             ->expects($this->once())
             ->method('send')
             ->with($this->callback(
-                static function (Email $email) use ($parsedTemplateHtml, $expectedAttachmentsContentsAndPath): bool {
+                function (Email $email) use ($parsedTemplateHtml, $expectedAttachmentsContentsAndPath, $mailerAttachmentsListener): bool {
+                    // Call our own listener to ensure the attachments are added (queued -> false)
+                    $messageEvent = new MessageEvent($email, $this->createMock(Envelope::class), 'foobar', false);
+                    $mailerAttachmentsListener($messageEvent);
                     $attachments = [];
 
                     foreach ($email->getAttachments() as $attachment) {
@@ -68,7 +78,6 @@ class MailerGatewayTest extends ContaoTestCase
                         }
 
                         $header = $attachment->getPreparedHeaders()->get('Content-Type');
-
                         if (!$header instanceof ParameterizedHeader || !($name = $header->getParameter('name'))) {
                             continue;
                         }
@@ -106,7 +115,7 @@ class MailerGatewayTest extends ContaoTestCase
             $mailer,
         );
         $container = new Container();
-        $container->set(AbstractGateway::SERVICE_NAME_BULKY_ITEM_STORAGE, new BulkyItemStorage($vfsCollection->get('bulky_item'), $this->createMock(RouterInterface::class), $this->mockUriSigner()));
+        $container->set(AbstractGateway::SERVICE_NAME_BULKY_ITEM_STORAGE, $bulkyItemStorage);
         $container->set(AbstractGateway::SERVICE_NAME_SIMPLE_TOKEN_PARSER, new SimpleTokenParser(new ExpressionLanguage()));
         $gateway->setContainer($container);
 
@@ -153,7 +162,7 @@ class MailerGatewayTest extends ContaoTestCase
             ->mount(new InMemoryFilesystemAdapter(), 'bulky_item')
         ;
 
-        $dbafsManager = new DbafsManager();
+        $dbafsManager = new DbafsManager($this->createMock(EventDispatcherInterface::class));
         $dbafsManager->register(new InMemoryDbafs(), 'files');
         $dbafsManager->register(new InMemoryDbafs(), 'bulky_item');
 
