@@ -7,8 +7,8 @@ namespace Terminal42\NotificationCenterBundle\Gateway\Mailer;
 class AttachmentHeaderItem
 {
     public function __construct(
-        private string $voucher,
-        private string|null $filename = null,
+        private readonly string $voucher,
+        private readonly string|null $filename = null,
     ) {
     }
 
@@ -22,6 +22,9 @@ class AttachmentHeaderItem
         return $this->filename;
     }
 
+    /**
+     * @return array{voucher:string, filename:string}
+     */
     public function toArray(): array
     {
         return [
@@ -30,6 +33,9 @@ class AttachmentHeaderItem
         ];
     }
 
+    /**
+     * @param array{voucher:string, filename:string} $data
+     */
     public static function fromArray(array $data): self
     {
         return new self($data['voucher'], $data['filename']);
