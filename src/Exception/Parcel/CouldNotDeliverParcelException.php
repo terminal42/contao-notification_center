@@ -29,6 +29,11 @@ class CouldNotDeliverParcelException extends \RuntimeException implements Except
         return new self('No gateway was defined for the parcel.', $code, $previous);
     }
 
+    public static function becauseParcelCouldNotBeSealed(CouldNotSealParcelException $exception): self
+    {
+        return new self('Parcel could not be sealed: '.$exception->getMessage(), $exception->getCode(), $exception);
+    }
+
     public static function becauseOfGatewayException(string $gatewayType, int $code = 0, \Throwable|null $exception = null): self
     {
         return new self(\sprintf(

@@ -259,8 +259,6 @@ class NotificationCenter
     /**
      * @param string|null $gatewayName you can an either provide a gateway name directly or stick a GatewayConfigStamp
      *                                 on your parcel
-     *
-     * @throws CouldNotSealParcelException
      */
     public function sendParcel(Parcel $parcel, string|null $gatewayName = null): Receipt
     {
@@ -283,7 +281,20 @@ class NotificationCenter
             return $receipt;
         }
 
-        $parcel = $this->sealParcel($gateway, $parcel);
+        try {
+            $parcel = $this->sealParcel($gateway, $parcel);
+        } catch (CouldNotSealParcelException $exception) {
+            $receipt = Receipt::createForUnsuccessfulDelivery(
+                $parcel,
+                CouldNotDeliverParcelException::becauseParcelCouldNotBeSealed($exception),
+            );
+
+            // Readonly event so developers can do whatever they want with the receipt,
+            // whether it was successful or not. Use this to implement logging etc.
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt));
+
+            return $receipt;
+        }
 
         // We force serialization here in order to prevent usage errors. Developers
         // are expected to build parcels and stamps with proper serializable data
@@ -302,6 +313,8 @@ class NotificationCenter
     /**
      * Seals a parcel if not already sealed and makes sure this happens in the correct
      * locale context if there's any locale stamp present on the parcel.
+     *
+     * @throws CouldNotSealParcelException
      */
     public function sealParcel(GatewayInterface $gateway, Parcel $parcel): Parcel
     {
@@ -310,10 +323,14 @@ class NotificationCenter
                 return $parcel;
             }
 
-            $parcel = $gateway->sealParcel($parcel);
+            try {
+                $parcel = $gateway->sealParcel($parcel);
 
-            // Gateways are expected to seal but let's be very sure it is
-            return $parcel->seal();
+                // Gateways are expected to seal but let's be very sure it is
+                return $parcel->seal();
+            } catch (\Throwable $exception) {
+                throw new CouldNotSealParcelException($exception->getMessage(), $exception->getCode(), $exception);
+            }
         };
 
         if (null === $this->localeSwitcher) {
