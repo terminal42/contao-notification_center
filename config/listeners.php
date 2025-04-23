@@ -23,6 +23,7 @@ use Terminal42\NotificationCenterBundle\EventListener\DbafsMetadataListener;
 use Terminal42\NotificationCenterBundle\EventListener\DisableDeliveryListener;
 use Terminal42\NotificationCenterBundle\EventListener\DoctrineSchemaListener;
 use Terminal42\NotificationCenterBundle\EventListener\LogUnsuccessfulDeliveries;
+use Terminal42\NotificationCenterBundle\EventListener\MailerAsynchronousReceiptUpdateListener;
 use Terminal42\NotificationCenterBundle\EventListener\MailerAttachmentsListener;
 use Terminal42\NotificationCenterBundle\EventListener\NotificationCenterProListener;
 use Terminal42\NotificationCenterBundle\EventListener\NotificationTypeForModuleListener;
@@ -155,6 +156,12 @@ return static function (ContainerConfigurator $container): void {
     $services->set(MailerAttachmentsListener::class)
         ->args([
             service(BulkyItemStorage::class),
+        ])
+    ;
+
+    $services->set(MailerAsynchronousReceiptUpdateListener::class)
+        ->args([
+            service(NotificationCenter::class),
         ])
     ;
 };
