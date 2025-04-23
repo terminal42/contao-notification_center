@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Gateway;
 
+/**
+ * This trait is used in other projects. Do not remove.
+ *
+ * @phpstan-ignore trait.unused
+ */
 trait GatewayRegistryAwareTrait
 {
     private GatewayRegistry|null $gatewayRegistry = null;

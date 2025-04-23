@@ -14,6 +14,7 @@ trait GetCurrentRecordTrait
     private function getCurrentRecord(DataContainer $dataContainer): array
     {
         // Contao 4.13 compat
+        // @phpstan-ignore function.alreadyNarrowedType
         if (!method_exists($dataContainer, 'getCurrentRecord')) {
             return $this->queryRecord($dataContainer->table, (int) $dataContainer->id);
         }
