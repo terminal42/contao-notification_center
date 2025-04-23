@@ -19,7 +19,7 @@ class AsynchronousDeliveryStamp implements StampInterface
         return ['identifier' => $this->identifier];
     }
 
-    public static function fromArray(array $data): StampInterface
+    public static function fromArray(array $data): self
     {
         return new self($data['identifier']);
     }

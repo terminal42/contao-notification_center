@@ -12,7 +12,6 @@ class AsynchronousDeliveryStampTest extends TestCase
     public function testConstructorWithValidIdentifier(): void
     {
         $stamp = new AsynchronousDeliveryStamp('valid_identifier');
-        $this->assertInstanceOf(AsynchronousDeliveryStamp::class, $stamp);
         $this->assertSame('valid_identifier', $stamp->identifier);
     }
 
@@ -35,14 +34,12 @@ class AsynchronousDeliveryStampTest extends TestCase
     {
         $data = ['identifier' => 'array_id'];
         $stamp = AsynchronousDeliveryStamp::fromArray($data);
-        $this->assertInstanceOf(AsynchronousDeliveryStamp::class, $stamp);
         $this->assertSame('array_id', $stamp->identifier);
     }
 
     public function testCreateWithRandomId(): void
     {
         $stamp = AsynchronousDeliveryStamp::createWithRandomId();
-        $this->assertInstanceOf(AsynchronousDeliveryStamp::class, $stamp);
         $this->assertSame(64, \strlen($stamp->identifier));
         $this->assertMatchesRegularExpression('/^[a-f0-9]{64}$/', $stamp->identifier);
     }
