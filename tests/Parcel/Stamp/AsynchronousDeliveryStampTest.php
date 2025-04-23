@@ -18,7 +18,7 @@ class AsynchronousDeliveryStampTest extends TestCase
     public function testConstructorWithInvalidIdentifier(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('The identifier length must not exceed 64 characters.');
+        $this->expectExceptionMessage('The identifier length must be between 1 and 64 characters.');
 
         $longIdentifier = str_repeat('a', 65); // 65 characters
         new AsynchronousDeliveryStamp($longIdentifier);
