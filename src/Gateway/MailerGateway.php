@@ -307,7 +307,7 @@ class MailerGateway extends AbstractGateway
             if (null === ($item = $filesystem->get($location))) {
                 return null;
             }
-        } catch (\InvalidArgumentException|UnableToResolveUuidException) {
+        } catch (\Throwable) {
             return null;
         }
 

@@ -80,7 +80,6 @@ class BulkyItemStorage
             return null;
         }
 
-        /** @var BulkyItemInterface $class */
         return $class::restore(
             $stream,
             $meta['item'] ?? [],
