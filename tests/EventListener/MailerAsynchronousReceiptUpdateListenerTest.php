@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Test\EventListener;
 
+use Composer\InstalledVersions;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mailer\Event\FailedMessageEvent;
 use Symfony\Component\Mailer\Event\SentMessageEvent;
@@ -17,6 +18,13 @@ use Terminal42\NotificationCenterBundle\Receipt\AsynchronousReceipt;
 
 class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        if (version_compare(InstalledVersions::getVersion('contao/core-bundle'), '5.0.0', '<')) {
+            $this->markTestSkipped('Asynchronous mailer updates are only supported as of Contao 5. In Contao 4.13 they are always synchronous anyway.');
+        }
+    }
+
     public function testOnSentMessageWithValidEmail(): void
     {
         $notificationCenter = $this->createMock(NotificationCenter::class);
