@@ -166,6 +166,11 @@ class ConfigLoader implements ResetInterface
         }
     }
 
+    /**
+     * @param array<mixed> $parameters
+     *
+     * @return array<mixed>
+     */
     private function cleanParameters(array $parameters, string $table): array
     {
         $cleanedParameters = [];
