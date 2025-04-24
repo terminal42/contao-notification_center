@@ -187,7 +187,7 @@ class ConfigLoader implements ResetInterface
                 }
             }
         } catch (\Exception) {
-            // noop
+            $cleanedParameters = $parameters;
         }
 
         return $cleanedParameters;
