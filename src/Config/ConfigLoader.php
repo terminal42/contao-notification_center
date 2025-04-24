@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Config;
 
+use Contao\DcaLoader;
+use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Symfony\Contracts\Service\ResetInterface;
 
@@ -58,6 +60,8 @@ class ConfigLoader implements ResetInterface
         ;
 
         foreach ($query->fetchAllAssociative() as $row) {
+            $row = $this->cleanParameters($row, 'tl_nc_message');
+
             $this->cache['tl_nc_message'][$row['id']] = $row;
 
             $messages[] = MessageConfig::fromArray($row);
@@ -101,6 +105,8 @@ class ConfigLoader implements ResetInterface
         if (false === $parameters) {
             return null;
         }
+
+        $parameters = $this->cleanParameters($parameters, 'tl_nc_language');
 
         return LanguageConfig::fromArray($parameters);
     }
@@ -152,9 +158,38 @@ class ConfigLoader implements ResetInterface
                 return $this->cache[$table][$id] = null;
             }
 
+            $parameters = $this->cleanParameters($parameters, $table);
+
             return $this->cache[$table][$id] = $parameters;
         } catch (\Exception) {
             return $this->cache[$table][$id] = null;
         }
+    }
+
+    /**
+     * @param array<mixed> $parameters
+     *
+     * @return array<mixed>
+     */
+    private function cleanParameters(array $parameters, string $table): array
+    {
+        $cleanedParameters = [];
+
+        try {
+            $dcaLoader = new DcaLoader($table);
+            $dcaLoader->load();
+
+            foreach ($parameters as $field => $parameter) {
+                $cleanedParameters[$field] = $parameter;
+
+                if (($GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['decodeEntities'] ?? false) && \is_string($parameter)) {
+                    $cleanedParameters[$field] = StringUtil::decodeEntities($parameter);
+                }
+            }
+        } catch (\Exception) {
+            $cleanedParameters = $parameters;
+        }
+
+        return $cleanedParameters;
     }
 }
