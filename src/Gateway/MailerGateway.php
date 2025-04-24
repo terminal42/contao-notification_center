@@ -23,6 +23,7 @@ use Terminal42\NotificationCenterBundle\Exception\Parcel\CouldNotDeliverParcelEx
 use Terminal42\NotificationCenterBundle\Gateway\Mailer\AttachmentHeaderItem;
 use Terminal42\NotificationCenterBundle\Gateway\Mailer\BulkyItemStorageAttachmentsHeader;
 use Terminal42\NotificationCenterBundle\Parcel\Parcel;
+use Terminal42\NotificationCenterBundle\Parcel\Stamp\AsynchronousDeliveryStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\GatewayConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LanguageConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\Mailer\BackendAttachmentsStamp;
@@ -33,6 +34,8 @@ use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 class MailerGateway extends AbstractGateway
 {
     public const NAME = 'mailer';
+
+    public const MESSAGE_IDENTIFIER_HEADER = 'Notification-Center-Parcel-ID';
 
     public function __construct(
         private readonly ContaoFramework $contaoFramework,
@@ -72,6 +75,7 @@ class MailerGateway extends AbstractGateway
 
         return $parcel
             ->seal()
+            ->withStamp(AsynchronousDeliveryStamp::createWithRandomId())
             ->withStamp($this->createEmailStamp($parcel))
         ;
     }
@@ -175,6 +179,11 @@ class MailerGateway extends AbstractGateway
             if (null !== ($transport = $gatewayConfigStamp->gatewayConfig->get('mailerTransport'))) {
                 $email->getHeaders()->addTextHeader('X-Transport', $transport);
             }
+        }
+
+        // Add the async delivery stamp
+        if (null !== ($asyncDeliveryStamp = $parcel->getStamp(AsynchronousDeliveryStamp::class))) {
+            $email->getHeaders()->addTextHeader(self::MESSAGE_IDENTIFIER_HEADER, $asyncDeliveryStamp->identifier);
         }
 
         // Attachment header items

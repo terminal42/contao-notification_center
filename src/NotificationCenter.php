@@ -14,6 +14,7 @@ use Symfony\Component\Translation\LocaleSwitcher;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\Config\ConfigLoader;
 use Terminal42\NotificationCenterBundle\Config\NotificationConfig;
+use Terminal42\NotificationCenterBundle\Event\AsynchronousReceiptEvent;
 use Terminal42\NotificationCenterBundle\Event\CreateParcelEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionClassesForContextEvent;
 use Terminal42\NotificationCenterBundle\Event\GetTokenDefinitionsForNotificationTypeEvent;
@@ -34,6 +35,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\LocaleStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\NotificationConfigStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
+use Terminal42\NotificationCenterBundle\Receipt\AsynchronousReceipt;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 use Terminal42\NotificationCenterBundle\Receipt\ReceiptCollection;
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
@@ -399,5 +401,10 @@ class NotificationCenter
         }
 
         return $stamps->with(new TokenCollectionStamp($tokens));
+    }
+
+    public function informAboutAsynchronousReceipt(AsynchronousReceipt $receipt): void
+    {
+        $this->eventDispatcher->dispatch(new AsynchronousReceiptEvent($receipt));
     }
 }
