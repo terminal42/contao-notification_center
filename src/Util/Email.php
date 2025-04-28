@@ -12,7 +12,7 @@ class Email
     /**
      * @return array<string>
      */
-    public static function splitEmailAddresses(string $recipients): array
+    public static function splitEmailAddresses(string $recipients, bool $keepFriendly = false): array
     {
         $split = [];
 
@@ -21,13 +21,17 @@ class Email
                 continue;
             }
 
-            [, $email] = StringUtil::splitFriendlyEmail($address);
+            [$name, $email] = StringUtil::splitFriendlyEmail($address);
 
             if ('' === $email || !Validator::isEmail($email)) {
                 continue;
             }
 
-            $split[] = $email;
+            if ('' !== $name && $keepFriendly) {
+                $split[] = \sprintf('%s <%s>', $name, $email);
+            } else {
+                $split[] = $email;
+            }
         }
 
         return $split;
