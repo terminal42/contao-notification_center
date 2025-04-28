@@ -150,7 +150,7 @@ class EmailStamp implements StampInterface
         }
 
         if ($this->to) {
-            $email->to(...EmailUtil::splitEmailAddresses($this->to));
+            $email->to(...EmailUtil::splitEmailAddresses($this->to, true));
         }
 
         if ($this->subject) {
@@ -158,11 +158,11 @@ class EmailStamp implements StampInterface
         }
 
         if ($this->cc) {
-            $email->cc(...EmailUtil::splitEmailAddresses($this->cc));
+            $email->cc(...EmailUtil::splitEmailAddresses($this->cc, true));
         }
 
         if ($this->bcc) {
-            $email->bcc(...EmailUtil::splitEmailAddresses($this->bcc));
+            $email->bcc(...EmailUtil::splitEmailAddresses($this->bcc, true));
         }
 
         if ($this->replyTo) {
