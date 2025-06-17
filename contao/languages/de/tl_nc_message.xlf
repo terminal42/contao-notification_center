@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="tl_nc_message.publish_legend">
         <source>Publish settings</source>
-        <target>Veröffentlingungs-Einstellungen</target>
+        <target>Veröffentlichungseinstellungen</target>
       </trans-unit>
       <trans-unit id="tl_nc_message.email_priority_options.1">
         <source>very high</source>
