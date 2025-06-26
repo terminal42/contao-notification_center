@@ -17,6 +17,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
             'keys' => [
                 'id' => 'primary',
                 'pid' => 'index',
+                'sorting' => 'index',
             ],
         ],
     ],
@@ -25,7 +26,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
     'list' => [
         'sorting' => [
             'mode' => 4,
-            'fields' => ['title'],
+            'fields' => ['sorting'],
             'flag' => 1,
             'panelLayout' => 'filter;search,limit',
             'headerFields' => ['title', 'type'],
@@ -96,6 +97,9 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
             'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'tstamp' => [
+            'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
+        ],
+        'sorting' => [
             'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'title' => [

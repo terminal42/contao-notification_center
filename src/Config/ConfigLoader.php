@@ -57,6 +57,7 @@ class ConfigLoader implements ResetInterface
             ->from('tl_nc_message')
             ->where('pid = :pid')
             ->setParameter('pid', $notificationId)
+            ->orderBy('sorting')
         ;
 
         foreach ($query->fetchAllAssociative() as $row) {
