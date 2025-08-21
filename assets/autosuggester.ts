@@ -23,11 +23,11 @@ class ContaoNotificationCenterAutoSuggester {
     boxListItemsVisibleIndexes: number[] = [];
     boxVisible: boolean;
 
-    currentListItemIndex: number|null;
+    currentListItemIndex: number | null;
 
     filterText: string;
 
-    input: HTMLInputElement|HTMLTextAreaElement;
+    input: HTMLInputElement | HTMLTextAreaElement;
     inputMirror: HTMLElement;
     inputMirrorCaret: HTMLElement;
 
@@ -37,9 +37,11 @@ class ContaoNotificationCenterAutoSuggester {
 
     tokens: ContaoNotificationCenterAutoSuggesterToken[];
 
-    constructor(input: HTMLElement|string, tokens: ContaoNotificationCenterAutoSuggesterToken[]) {
-        this.input = ((typeof input === 'string') ? document.getElementById(input) : input) as HTMLInputElement|HTMLTextAreaElement;
-        this.tokens = tokens.map(token => ({ name: `##${token.name}##`, label: token.label }));
+    constructor(input: HTMLElement | string, tokens: ContaoNotificationCenterAutoSuggesterToken[]) {
+        this.input = (typeof input === 'string' ? document.getElementById(input) : input) as
+            | HTMLInputElement
+            | HTMLTextAreaElement;
+        this.tokens = tokens.map((token) => ({ name: `##${token.name}##`, label: token.label }));
         this.tinyMCEInstance = false;
         this.rgxp = new RegExp('[^ |\n]+$', 'i');
 
@@ -82,7 +84,8 @@ class ContaoNotificationCenterAutoSuggester {
         this.tokens.forEach((token, index) => {
             this.boxListItems[index] = document.createElement('li');
             this.boxListItems[index].className = this.cssClassBoxListItem;
-            this.boxListItems[index].innerHTML = `<div class="${this.cssClassBoxListItemValue}">${token.name}</div><div class="${this.cssClassBoxListItemContent}">${token.label}</div>`;
+            this.boxListItems[index].innerHTML =
+                `<div class="${this.cssClassBoxListItemValue}">${token.name}</div><div class="${this.cssClassBoxListItemContent}">${token.label}</div>`;
 
             this.boxList.appendChild(this.boxListItems[index]);
 
@@ -109,10 +112,31 @@ class ContaoNotificationCenterAutoSuggester {
         this.inputMirrorCaret.innerHTML = '&nbsp;';
 
         // Clone all styles of an input
-        const properties = ['box-sizing', 'font-family', 'font-size', 'font-style', 'font-variant', 'font-weight', 'height', 'letter-spacing', 'line-height', 'max-height', 'min-height', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'text-decoration', 'text-indent', 'text-transform', 'width', 'word-spacing'];
+        const properties = [
+            'box-sizing',
+            'font-family',
+            'font-size',
+            'font-style',
+            'font-variant',
+            'font-weight',
+            'height',
+            'letter-spacing',
+            'line-height',
+            'max-height',
+            'min-height',
+            'padding-bottom',
+            'padding-left',
+            'padding-right',
+            'padding-top',
+            'text-decoration',
+            'text-indent',
+            'text-transform',
+            'width',
+            'word-spacing',
+        ];
         const styles = window.getComputedStyle(this.input);
 
-        properties.forEach(property => this.inputMirror.style[property] = styles[property]);
+        properties.forEach((property) => (this.inputMirror.style[property] = styles[property]));
 
         // Add the elements to DOM
         this.inputMirror.appendChild(this.inputMirrorCaret);
@@ -146,12 +170,12 @@ class ContaoNotificationCenterAutoSuggester {
             }
         }
 
-        this.boxListItems.forEach(item => {
+        this.boxListItems.forEach((item) => {
             // Highlight the list item
             item.addEventListener('mouseenter', (e: any) => this.highlightItem(this.boxListItems.indexOf(e.target)));
 
             // Select the list item
-            item.addEventListener('click', e => {
+            item.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.selectItem();
             });
@@ -167,12 +191,14 @@ class ContaoNotificationCenterAutoSuggester {
         }
 
         let index, value, chunks;
-        let position = {left: 0, top: 0};
+        let position = { left: 0, top: 0 };
 
         // Detect the box position in tinyMCE
         if (this.tinyMCEInstance) {
             position.left = this.tinyMCEInstance.selection.getRng().getClientRects()[0].left;
-            position.top = this.tinyMCEInstance.selection.getNode().getClientRects()[0].top + this.tinyMCEInstance.selection.getNode().getClientRects()[0].height;
+            position.top =
+                this.tinyMCEInstance.selection.getNode().getClientRects()[0].top +
+                this.tinyMCEInstance.selection.getNode().getClientRects()[0].height;
         } else if (this.inputMirror) {
             // Detect the box position for regular textarea
             index = this.input.selectionStart;
@@ -193,7 +219,7 @@ class ContaoNotificationCenterAutoSuggester {
         }
 
         // Make all list items visible
-        this.boxListItems.forEach(item => item.classList.remove('invisible'));
+        this.boxListItems.forEach((item) => item.classList.remove('invisible'));
 
         // Set the box container position
         if (this.tinyMCEInstance) {
@@ -220,7 +246,7 @@ class ContaoNotificationCenterAutoSuggester {
         this.boxVisible = false;
 
         // Remove the highlight from all items
-        this.boxListItems.forEach(item => item.classList.remove(this.cssClassBoxListItemActive));
+        this.boxListItems.forEach((item) => item.classList.remove(this.cssClassBoxListItemActive));
     }
 
     /**
@@ -240,7 +266,11 @@ class ContaoNotificationCenterAutoSuggester {
             index = selection.startOffset;
 
             // Fix the wrong index calculation
-            if (value && index === selection.startContainer.length && selection.startContainer.textContent.length !== value.length) {
+            if (
+                value &&
+                index === selection.startContainer.length &&
+                selection.startContainer.textContent.length !== value.length
+            ) {
                 index = index + (value.length - selection.startContainer.textContent.length);
             }
         } else {
@@ -339,7 +369,7 @@ class ContaoNotificationCenterAutoSuggester {
 
         // Adjust the scroll position
         if (highBottom >= visibleBottom) {
-            this.box.scrollTo(0, ((highBottom - maxHeight > 0) ? (highBottom - maxHeight) : 0));
+            this.box.scrollTo(0, highBottom - maxHeight > 0 ? highBottom - maxHeight : 0);
         } else if (highTop < visibleTop) {
             this.box.scrollTo(0, highTop);
         }
@@ -399,7 +429,7 @@ class ContaoNotificationCenterAutoSuggester {
     /**
      * Get the position of an element
      */
-    getPosition(el: HTMLElement, relative: HTMLElement|null = null): any {
+    getPosition(el: HTMLElement, relative: HTMLElement | null = null): any {
         const position = el.getBoundingClientRect();
         let top = position.top + window.scrollY;
         let left = position.left + window.scrollX;
@@ -411,7 +441,7 @@ class ContaoNotificationCenterAutoSuggester {
             left -= relativePosition.left;
         }
 
-        return {top, left};
+        return { top, left };
     }
 
     /**
@@ -423,4 +453,7 @@ class ContaoNotificationCenterAutoSuggester {
     }
 }
 
-window.initContaoNotificationCenterAutoSuggester = (input: HTMLElement|string, tokens: ContaoNotificationCenterAutoSuggesterToken[]) => new ContaoNotificationCenterAutoSuggester(input, tokens);
+window.initContaoNotificationCenterAutoSuggester = (
+    input: HTMLElement | string,
+    tokens: ContaoNotificationCenterAutoSuggesterToken[],
+) => new ContaoNotificationCenterAutoSuggester(input, tokens);
