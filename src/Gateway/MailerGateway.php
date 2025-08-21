@@ -139,7 +139,7 @@ class MailerGateway extends AbstractGateway
                 break;
             case 'htmlAndAutoText':
                 $html = $this->renderEmailTemplate($parcel, $stamp);
-                $text = Html2Text::convert($html);
+                $text = Html2Text::convert($html, ['ignore_errors' => true]);
                 break;
             case 'textAndHtml':
                 $html = $this->renderEmailTemplate($parcel, $stamp);
