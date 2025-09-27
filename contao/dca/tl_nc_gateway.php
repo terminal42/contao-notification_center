@@ -42,6 +42,7 @@ $GLOBALS['TL_DCA']['tl_nc_gateway'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_gateway']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.svg',
+                'primary' => true,
             ],
             'copy' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_gateway']['copy'],

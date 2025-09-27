@@ -49,6 +49,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_message']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.svg',
+                'primary' => true,
             ],
             'copy' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_message']['copy'],
@@ -71,6 +72,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_message']['toggle'],
                 'href' => 'act=toggle&amp;field=published',
                 'icon' => 'visible.svg',
+                'primary' => true,
             ],
             'show' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_message']['show'],
