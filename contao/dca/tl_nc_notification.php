@@ -43,11 +43,13 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.svg',
+                'primary' => true,
             ],
             'children' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['children'],
                 'href' => 'table=tl_nc_message',
                 'icon' => 'children.svg',
+                'primary' => true,
             ],
             'copy' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['copy'],

@@ -48,6 +48,7 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_language']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.svg',
+                'primary' => true,
             ],
             'copy' => [
                 'label' => &$GLOBALS['TL_LANG']['tl_nc_language']['copy'],
