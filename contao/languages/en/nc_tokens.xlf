@@ -30,6 +30,14 @@
         <source>All filled in form fields and their raw values.</source>
         <target>All filled in form fields and their raw values.</target>
       </trans-unit>
+      <trans-unit id="nc_tokens.form.html_data">
+        <source>All the form fields and their raw values with html line breaks.</source>
+        <target>All the form fields and their raw values with html line breaks.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.form.html_data_filled">
+        <source>All filled in form fields and their raw values with html line breaks.</source>
+        <target>All filled in form fields and their raw values with html line breaks.</target>
+      </trans-unit>
       <trans-unit id="nc_tokens.member_activation.domain">
         <source>Originating domain of the member notification.</source>
         <target>Originating domain of the member notification.</target>
