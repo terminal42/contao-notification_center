@@ -30,8 +30,8 @@ class FormGeneratorNotificationType implements NotificationTypeInterface
             $this->factory->create(AnythingTokenDefinition::class, 'formlabel_*', 'form.formlabel_*'),
             $this->factory->create(TextTokenDefinition::class, 'raw_data', 'form.raw_data'),
             $this->factory->create(TextTokenDefinition::class, 'raw_data_filled', 'form.raw_data_filled'),
-            $this->factory->create(HtmlTokenDefinition::class, 'raw_data', 'form.raw_data'),
-            $this->factory->create(HtmlTokenDefinition::class, 'raw_data_filled', 'form.raw_data_filled'),
+            $this->factory->create(HtmlTokenDefinition::class, 'html_data', 'form.html_data'),
+            $this->factory->create(HtmlTokenDefinition::class, 'html_data_filled', 'form.html_data_filled'),
         ];
     }
 }
