@@ -70,6 +70,8 @@ class ProcessFormDataListener
 
         $tokens['raw_data'] = implode("\n", $rawData);
         $tokens['raw_data_filled'] = implode("\n", $rawDataFilled);
+        $tokens['html_data'] = implode('<br>', $rawData);
+        $tokens['html_data_filled'] = implode('<br>', $rawDataFilled);
 
         foreach ($this->fileUploadNormalizer->normalize($files) as $k => $files) {
             $vouchers = [];

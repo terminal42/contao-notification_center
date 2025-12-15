@@ -6,6 +6,7 @@ namespace Terminal42\NotificationCenterBundle\NotificationType;
 
 use Terminal42\NotificationCenterBundle\Token\Definition\AnythingTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinitionFactoryInterface;
+use Terminal42\NotificationCenterBundle\Token\Definition\HtmlTokenDefinition;
 use Terminal42\NotificationCenterBundle\Token\Definition\TextTokenDefinition;
 
 class FormGeneratorNotificationType implements NotificationTypeInterface
@@ -29,6 +30,8 @@ class FormGeneratorNotificationType implements NotificationTypeInterface
             $this->factory->create(AnythingTokenDefinition::class, 'formlabel_*', 'form.formlabel_*'),
             $this->factory->create(TextTokenDefinition::class, 'raw_data', 'form.raw_data'),
             $this->factory->create(TextTokenDefinition::class, 'raw_data_filled', 'form.raw_data_filled'),
+            $this->factory->create(HtmlTokenDefinition::class, 'html_data', 'form.html_data'),
+            $this->factory->create(HtmlTokenDefinition::class, 'html_data_filled', 'form.html_data_filled'),
         ];
     }
 }
