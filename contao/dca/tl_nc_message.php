@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
 
@@ -25,9 +26,9 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
     // List
     'list' => [
         'sorting' => [
-            'mode' => 4,
+            'mode' => DataContainer::MODE_PARENT,
             'fields' => ['sorting'],
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;search,limit',
             'headerFields' => ['title', 'type'],
             'disableGrouping' => true,

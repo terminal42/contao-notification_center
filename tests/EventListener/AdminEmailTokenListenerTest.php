@@ -85,10 +85,8 @@ class AdminEmailTokenListenerTest extends ContaoTestCase
     {
         $request = new Request();
         $request->attributes->set('pageModel', $pageModel);
-        $stack = new RequestStack();
-        $stack->push($request);
 
-        return $stack;
+        return new RequestStack([$request]);
     }
 
     private function buildCreateParcelEvent(TokenCollection $tokenCollection): CreateParcelEvent
