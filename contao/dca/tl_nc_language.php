@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Contao\DataContainer;
 use Contao\DC_Table;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
 use Terminal42\NotificationCenterBundle\Token\TokenContext;
@@ -27,9 +28,9 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
     // List
     'list' => [
         'sorting' => [
-            'mode' => 1,
+            'mode' => DataContainer::MODE_SORTED,
             'fields' => ['language'],
-            'flag' => 1,
+            'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
         ],
         'label' => [
             'fields' => ['language', 'fallback'],

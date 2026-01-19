@@ -13,17 +13,20 @@ class Configuration implements ConfigurationInterface
     {
         $treeBuilder = new TreeBuilder('terminal42_notification_center');
 
+        /*
+         * @phpstan-ignore-next-line
+         */
         $treeBuilder->getRootNode()
             ->children()
-            ->arrayNode('bulky_items_storage')
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->integerNode('retention_period')
-            ->info('The number of days for which bulky items are kept in storage.')
-            ->min(1)
-            ->defaultValue(7)
-            ->end()
-            ->end()
+                ->arrayNode('bulky_items_storage')
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->integerNode('retention_period')
+                        ->info('The number of days for which bulky items are kept in storage.')
+                        ->min(1)
+                        ->defaultValue(7)
+                    ->end()
+                ->end()
             ->end()
         ;
 

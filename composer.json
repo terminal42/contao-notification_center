@@ -28,7 +28,7 @@
         "composer-plugin-api": "^2.0",
         "codefog/contao-haste": "^5.2",
         "contao/core-bundle": "^4.13.50 || ~5.3.14 || ^5.4.4",
-        "doctrine/dbal": "^3.4",
+        "doctrine/dbal": "^3.4 || ^4.3",
         "doctrine/orm": "^2.19 || ^3.0",
         "knplabs/knp-menu": "^3.1",
         "psr/container": "^1.0 || ^2.0",
@@ -59,7 +59,7 @@
         "contao/newsletter-bundle": "^4.13 || ^5.0",
         "contao/test-case": "^4.13 || ^5.3",
         "league/flysystem-memory": "^3.25",
-        "phpunit/phpunit": "^9.6",
+        "phpunit/phpunit": "^9.6 || ^11.5",
         "symfony/expression-language": "^5.4 || ^6.0 || ^7.0",
         "terminal42/contao-build-tools": "dev-main"
     },
