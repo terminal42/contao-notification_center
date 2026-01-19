@@ -39,7 +39,7 @@ jobs:
               run: composer require "contao/core-bundle:${{ matrix.contao }}.*" --dev --no-update
 
             - name: Require TestCase version for tests
-              run: composer require contao/test-case="${{ matrix.contao }}.*" --dev --no-update
+              run: composer require "contao/test-case:${{ matrix.contao }}.*" --dev --no-update
 
             - name: Install the dependencies
               run: |
