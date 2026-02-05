@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LocaleStamp;
 use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
 
-class StampCollectionTest extends TestCase
+final class StampCollectionTest extends TestCase
 {
     public function testBasics(): void
     {

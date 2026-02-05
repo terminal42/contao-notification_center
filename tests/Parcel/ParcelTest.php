@@ -10,7 +10,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Parcel;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\LocaleStamp;
 
-class ParcelTest extends TestCase
+final class ParcelTest extends TestCase
 {
     public function testMessageConfigAndSealed(): void
     {

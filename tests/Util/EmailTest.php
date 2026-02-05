@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Test\Util;
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Util\Email;
 
-class EmailTest extends TestCase
+final class EmailTest extends TestCase
 {
     public function testSplitEmailAddressesWithoutFriendlyName(): void
     {

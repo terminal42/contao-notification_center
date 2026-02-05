@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 use Terminal42\NotificationCenterBundle\Exception\BulkyItem\InvalidFileItemException;
 
-class FileItemTest extends TestCase
+final class FileItemTest extends TestCase
 {
     public function testCannotCreateEmptyNameFileItem(): void
     {

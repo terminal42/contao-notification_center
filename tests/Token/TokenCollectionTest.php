@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
-class TokenCollectionTest extends TestCase
+final class TokenCollectionTest extends TestCase
 {
     public function testCollectionHandling(): void
     {
@@ -58,7 +58,7 @@ class TokenCollectionTest extends TestCase
         );
 
         $this->assertSame('blue', $tokenCollection->getByName('form_color')->getParserValue());
-        $this->assertNull($tokenCollection->getByName('form_i_do_not_exist'));
+        $this->assertNotInstanceOf(Token::class, $tokenCollection->getByName('form_i_do_not_exist'));
     }
 
     public function testReplace(): void
