@@ -16,7 +16,7 @@ use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Receipt\AsynchronousReceipt;
 
-class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
+final class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -46,7 +46,14 @@ class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
         $notificationCenter
             ->expects($this->once())
             ->method('informAboutAsynchronousReceipt')
-            ->with($this->callback(static fn (AsynchronousReceipt $receipt) => $receipt->getIdentifier() === $identifier && true === $receipt->wasDelivered()))
+            ->with($this->callback(
+                function (AsynchronousReceipt $receipt) use ($identifier): bool {
+                    $this->assertSame($identifier, $receipt->getIdentifier());
+                    $this->assertTrue($receipt->wasDelivered());
+
+                    return true;
+                },
+            ))
         ;
 
         $listener->onSentMessage($event);
@@ -67,9 +74,14 @@ class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
         $notificationCenter
             ->expects($this->once())
             ->method('informAboutAsynchronousReceipt')
-            ->with($this->callback(static fn (AsynchronousReceipt $receipt) => $receipt->getIdentifier() === $identifier
-                    && false === $receipt->wasDelivered()
-                    && $exception === $receipt->getException(),
+            ->with($this->callback(
+                function (AsynchronousReceipt $receipt) use ($identifier, $exception): bool {
+                    $this->assertSame($identifier, $receipt->getIdentifier());
+                    $this->assertFalse($receipt->wasDelivered());
+                    $this->assertSame($receipt->getException(), $exception);
+
+                    return true;
+                },
             ))
         ;
 

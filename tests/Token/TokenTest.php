@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Token\Token;
 
-class TokenTest extends TestCase
+final class TokenTest extends TestCase
 {
     /**
      * @dataProvider anythingProvider

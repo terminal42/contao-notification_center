@@ -39,7 +39,7 @@ use Terminal42\NotificationCenterBundle\Test\BulkyItem\VirtualFilesystemCollecti
 use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
-class MailerGatewayTest extends ContaoTestCase
+final class MailerGatewayTest extends ContaoTestCase
 {
     /**
      * @dataProvider embeddingHtmlImagesProvider
@@ -90,8 +90,9 @@ class MailerGatewayTest extends ContaoTestCase
                     foreach ($expectedAttachmentsContentsAndPath as $content => $path) {
                         $expectedHtml = str_replace($path, 'cid:'.$attachments[$content], $expectedHtml);
                     }
+                    $this->assertSame($email->getHtmlBody(), $expectedHtml);
 
-                    return $expectedHtml === $email->getHtmlBody();
+                    return true;
                 },
             ))
         ;

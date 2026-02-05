@@ -15,7 +15,7 @@ use Terminal42\NotificationCenterBundle\EventListener\MailerAttachmentsListener;
 use Terminal42\NotificationCenterBundle\Gateway\Mailer\AttachmentHeaderItem;
 use Terminal42\NotificationCenterBundle\Gateway\Mailer\BulkyItemStorageAttachmentsHeader;
 
-class MailerAttachmentsListenerTest extends TestCase
+final class MailerAttachmentsListenerTest extends TestCase
 {
     public function testInvokeWithQueuedMessageDoesNothing(): void
     {
@@ -24,9 +24,7 @@ class MailerAttachmentsListenerTest extends TestCase
             ->expects($this->never())
             ->method('getHeaders')
         ;
-
-        $bulkyItemStorage = $this->createMock(BulkyItemStorage::class);
-        $listener = new MailerAttachmentsListener($bulkyItemStorage);
+        $listener = new MailerAttachmentsListener($this->createMock(BulkyItemStorage::class));
 
         $event = new MessageEvent($message, $this->createMock(Envelope::class), 'transport', true);
 
@@ -40,9 +38,7 @@ class MailerAttachmentsListenerTest extends TestCase
             ->expects($this->never())
             ->method('getHeaders')
         ;
-
-        $bulkyItemStorage = $this->createMock(BulkyItemStorage::class);
-        $listener = new MailerAttachmentsListener($bulkyItemStorage);
+        $listener = new MailerAttachmentsListener($this->createMock(BulkyItemStorage::class));
 
         $event = new MessageEvent($message, $this->createMock(Envelope::class), 'transport', false); // not queued
 

@@ -20,7 +20,7 @@ use Terminal42\NotificationCenterBundle\Token\Token;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 use Twig\Environment;
 
-class BulkyItemsTokenListenerTest extends TestCase
+final class BulkyItemsTokenListenerTest extends TestCase
 {
     public function testOnGetTokenDefinitions(): void
     {
@@ -56,7 +56,7 @@ class BulkyItemsTokenListenerTest extends TestCase
 
         $listener->onCreateParcel($event);
 
-        $this->addToAssertionCount(1); // Ensure no exceptions or errors
+        $this->addToAssertionCount(1);
     }
 
     public function testOnCreateParcelProcessesTokens(): void
@@ -77,7 +77,7 @@ class BulkyItemsTokenListenerTest extends TestCase
         $twig
             ->method('render')
             ->willReturnCallback(
-                function (string $template, array $context) {
+                function (string $template, array $context): string {
                     $this->assertSame('@Contao/notification_center/file_token.html.twig', $template);
 
                     return match ($context['format']) {

@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Test\Util;
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Util\Json;
 
-class JsonTest extends TestCase
+final class JsonTest extends TestCase
 {
     private const ARRAY_WITH_BINARY_DATA = [
         'foo' => 'bar',
