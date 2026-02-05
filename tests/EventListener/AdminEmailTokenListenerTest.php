@@ -18,7 +18,7 @@ use Terminal42\NotificationCenterBundle\Parcel\Stamp\TokenCollectionStamp;
 use Terminal42\NotificationCenterBundle\Token\Definition\Factory\CoreTokenDefinitionFactory;
 use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
-class AdminEmailTokenListenerTest extends ContaoTestCase
+final class AdminEmailTokenListenerTest extends ContaoTestCase
 {
     /**
      * @dataProvider adminEmailProvider

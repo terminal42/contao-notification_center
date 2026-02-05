@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Test\Token\Definition;
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Token\Definition\TextTokenDefinition;
 
-class TextTokenTest extends TestCase
+final class TextTokenTest extends TestCase
 {
     public function testBasicTokenInteraction(): void
     {

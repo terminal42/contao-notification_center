@@ -9,7 +9,7 @@ use Symfony\Component\Mime\MimeTypes;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItemFactory;
 use Terminal42\NotificationCenterBundle\Test\VirtualFilesystemTestTrait;
 
-class FileItemFactoryTest extends TestCase
+final class FileItemFactoryTest extends TestCase
 {
     use VirtualFilesystemTestTrait;
 

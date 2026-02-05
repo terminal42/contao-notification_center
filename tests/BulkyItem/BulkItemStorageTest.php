@@ -16,7 +16,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
 
-class BulkItemStorageTest extends TestCase
+final class BulkItemStorageTest extends TestCase
 {
     public function testValidVoucherFormat(): void
     {
@@ -34,7 +34,7 @@ class BulkItemStorageTest extends TestCase
             ->method('writeStream')
             ->with(
                 $this->callback(
-                    function (string $voucher) {
+                    function (string $voucher): bool {
                         $this->assertTrue(BulkyItemStorage::validateVoucherFormat($voucher));
 
                         return true;
@@ -54,7 +54,7 @@ class BulkItemStorageTest extends TestCase
             ->method('setExtraMetadata')
             ->with(
                 $this->callback(
-                    function (string $voucher) {
+                    function (string $voucher): bool {
                         $this->assertTrue(BulkyItemStorage::validateVoucherFormat($voucher));
 
                         return true;

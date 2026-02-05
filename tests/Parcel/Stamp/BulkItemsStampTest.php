@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Test\Parcel\Stamp;
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Parcel\Stamp\BulkyItemsStamp;
 
-class BulkItemsStampTest extends TestCase
+final class BulkItemsStampTest extends TestCase
 {
     public function testStampHandling(): void
     {

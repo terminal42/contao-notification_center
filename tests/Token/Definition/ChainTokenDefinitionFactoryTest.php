@@ -13,7 +13,7 @@ use Terminal42\NotificationCenterBundle\Token\Definition\Factory\TokenDefinition
 use Terminal42\NotificationCenterBundle\Token\Definition\TokenDefinitionInterface;
 use Terminal42\NotificationCenterBundle\Token\Token;
 
-class ChainTokenDefinitionFactoryTest extends TestCase
+final class ChainTokenDefinitionFactoryTest extends TestCase
 {
     public function testFactoryWorksAsExpected(): void
     {

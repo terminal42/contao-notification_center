@@ -7,7 +7,7 @@ namespace Terminal42\NotificationCenterBundle\Test\Config;
 use PHPUnit\Framework\TestCase;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
 
-class MessageConfigTest extends TestCase
+final class MessageConfigTest extends TestCase
 {
     public function testInteraction(): void
     {
