@@ -1,13 +1,14 @@
 {
-  "autosuggester.css": "/bundles/terminal42notificationcenter/autosuggester.f5be80e8.css",
-  "autosuggester.js": "/bundles/terminal42notificationcenter/autosuggester.127d5ab8.js",
+  "autosuggester.css": "/bundles/terminal42notificationcenter/autosuggester.f6693aac.css",
+  "autosuggester.js": "/bundles/terminal42notificationcenter/autosuggester.f90e0b3c.js",
   "legacy/autosuggester.css": "/bundles/terminal42notificationcenter/legacy/autosuggester.f5be80e8.css",
   "legacy/autosuggester.js": "/bundles/terminal42notificationcenter/legacy/autosuggester.8b356cab.js",
   "backend.css": "/bundles/terminal42notificationcenter/backend.023485eb.css",
   "images/award.svg": "/bundles/terminal42notificationcenter/images/award.8c4060af.svg",
   "images/bell.svg": "/bundles/terminal42notificationcenter/images/bell.49b754b0.svg",
+  "autosuggester.f6693aac.css.map": "/bundles/terminal42notificationcenter/autosuggester.f6693aac.css.map",
+  "autosuggester.f90e0b3c.js.map": "/bundles/terminal42notificationcenter/autosuggester.f90e0b3c.js.map",
   "autosuggester.f5be80e8.css.map": "/bundles/terminal42notificationcenter/legacy/autosuggester.f5be80e8.css.map",
-  "autosuggester.127d5ab8.js.map": "/bundles/terminal42notificationcenter/autosuggester.127d5ab8.js.map",
   "autosuggester.8b356cab.js.map": "/bundles/terminal42notificationcenter/legacy/autosuggester.8b356cab.js.map",
   "backend.023485eb.css.map": "/bundles/terminal42notificationcenter/backend.023485eb.css.map"
 }
