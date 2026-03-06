@@ -490,17 +490,19 @@ class ContaoNotificationCenterAutoSuggester {
 }
 
 function initAutoSuggesters(): void {
-    document.querySelectorAll<HTMLScriptElement>('script[data-notification-center-auto-suggester]').forEach((script) => {
-        const { input, tokens } = JSON.parse(script.textContent);
-        const inputEl = document.getElementById(input);
+    document
+        .querySelectorAll<HTMLScriptElement>('script[data-notification-center-auto-suggester]')
+        .forEach((script) => {
+            const { input, tokens } = JSON.parse(script.textContent);
+            const inputEl = document.getElementById(input);
 
-        if (!inputEl || inputEl.dataset.autosuggesterId) {
-            return; // Not found or already initialized
-        }
+            if (!inputEl || inputEl.dataset.autosuggesterId) {
+                return; // Not found or already initialized
+            }
 
-        new ContaoNotificationCenterAutoSuggester(inputEl, tokens);
-        inputEl.dataset.autosuggesterId = 'initialized';
-    });
+            new ContaoNotificationCenterAutoSuggester(inputEl, tokens);
+            inputEl.dataset.autosuggesterId = 'initialized';
+        });
 }
 
 document.addEventListener('DOMContentLoaded', initAutoSuggesters);
