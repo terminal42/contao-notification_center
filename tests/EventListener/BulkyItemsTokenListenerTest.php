@@ -31,11 +31,11 @@ final class BulkyItemsTokenListenerTest extends TestCase
             ->willReturnCallback(static fn (string $definitionClass, string $tokenName, string $translationKey) => new $definitionClass($tokenName, $translationKey))
         ;
 
-        $event = new GetTokenDefinitionsForNotificationTypeEvent($this->createMock(NotificationTypeInterface::class));
+        $event = new GetTokenDefinitionsForNotificationTypeEvent($this->createStub(NotificationTypeInterface::class));
         $listener = new BulkyItemsTokenListener(
-            $this->createMock(BulkyItemStorage::class),
+            $this->createStub(BulkyItemStorage::class),
             $tokenDefinitionFactory,
-            $this->createMock(Environment::class),
+            $this->createStub(Environment::class),
         );
 
         $listener->onGetTokenDefinitions($event);
@@ -49,9 +49,9 @@ final class BulkyItemsTokenListenerTest extends TestCase
         $event = new CreateParcelEvent($parcel);
 
         $listener = new BulkyItemsTokenListener(
-            $this->createMock(BulkyItemStorage::class),
-            $this->createMock(TokenDefinitionFactoryInterface::class),
-            $this->createMock(Environment::class),
+            $this->createStub(BulkyItemStorage::class),
+            $this->createStub(TokenDefinitionFactoryInterface::class),
+            $this->createStub(Environment::class),
         );
 
         $listener->onCreateParcel($event);
@@ -64,7 +64,7 @@ final class BulkyItemsTokenListenerTest extends TestCase
         $bulkyItemStorage = $this->createMock(BulkyItemStorage::class);
         $bulkyItemStorage
             ->method('retrieve')
-            ->willReturn($this->createMock(BulkyItemInterface::class))
+            ->willReturn($this->createStub(BulkyItemInterface::class))
         ;
 
         $tokenDefinitionFactory = $this->createMock(TokenDefinitionFactoryInterface::class);

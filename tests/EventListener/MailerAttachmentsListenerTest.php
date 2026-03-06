@@ -24,9 +24,9 @@ final class MailerAttachmentsListenerTest extends TestCase
             ->expects($this->never())
             ->method('getHeaders')
         ;
-        $listener = new MailerAttachmentsListener($this->createMock(BulkyItemStorage::class));
+        $listener = new MailerAttachmentsListener($this->createStub(BulkyItemStorage::class));
 
-        $event = new MessageEvent($message, $this->createMock(Envelope::class), 'transport', true);
+        $event = new MessageEvent($message, $this->createStub(Envelope::class), 'transport', true);
 
         $listener($event);
     }
@@ -38,9 +38,9 @@ final class MailerAttachmentsListenerTest extends TestCase
             ->expects($this->never())
             ->method('getHeaders')
         ;
-        $listener = new MailerAttachmentsListener($this->createMock(BulkyItemStorage::class));
+        $listener = new MailerAttachmentsListener($this->createStub(BulkyItemStorage::class));
 
-        $event = new MessageEvent($message, $this->createMock(Envelope::class), 'transport', false); // not queued
+        $event = new MessageEvent($message, $this->createStub(Envelope::class), 'transport', false); // not queued
 
         $listener($event);
     }
@@ -57,7 +57,7 @@ final class MailerAttachmentsListenerTest extends TestCase
 
         $listener = new MailerAttachmentsListener($bulkyItemStorage);
 
-        $event = new MessageEvent($email, $this->createMock(Envelope::class), 'transport', false); // not queued
+        $event = new MessageEvent($email, $this->createStub(Envelope::class), 'transport', false); // not queued
 
         $listener($event);
     }
@@ -82,7 +82,7 @@ final class MailerAttachmentsListenerTest extends TestCase
 
         $listener = new MailerAttachmentsListener($bulkyItemStorage);
 
-        $event = new MessageEvent($email, $this->createMock(Envelope::class), 'transport', false); // not queued
+        $event = new MessageEvent($email, $this->createStub(Envelope::class), 'transport', false); // not queued
 
         $listener($event);
 

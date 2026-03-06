@@ -32,6 +32,7 @@ final class FileItemFactoryTest extends TestCase
         $item = $vfs->get('media/name.jpg');
 
         $factory = new FileItemFactory(new MimeTypes());
+        $this->assertInstanceOf(\Contao\CoreBundle\Filesystem\FilesystemItem::class, $item);
         $item = $factory->createFromVfsFilesystemItem($item, $vfs);
         $this->assertSame('name.jpg', $item->getName());
         $this->assertSame('image/jpeg', $item->getMimeType());
