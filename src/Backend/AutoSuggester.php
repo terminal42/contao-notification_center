@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Backend;
 
+use Contao\CoreBundle\ContaoCoreBundle;
 use Symfony\Component\Asset\Packages;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
@@ -30,25 +31,49 @@ class AutoSuggester
             // as otherwise one would get two suggestions
             $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['autocomplete'] = false;
 
-            $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = trim($this->packages->getUrl(
-                'autosuggester.css',
-                'terminal42_notification_center',
-            ), '/');
-
-            $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = \sprintf(
-                '<script src="%s"></script>',
-                $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center'),
-            );
-
-            $GLOBALS['TL_MOOTOOLS'][] = \sprintf(
-                "<script>document.addEventListener('DOMContentLoaded',()=>{new initContaoNotificationCenterAutoSuggester('%s', %s)});</script>",
-                'ctrl_'.$field,
-                $this->getTokenConfigForField($notificationType, $context),
-            );
+            if (version_compare(ContaoCoreBundle::getVersion(), '5.7', '>=')) {
+                $this->addAssets($field, $notificationType, $context);
+            } else {
+                $this->addLegacyAssets($field, $notificationType, $context);
+            }
         }
     }
 
-    private function getTokenConfigForField(string $notificationType, string $context): string
+    private function addAssets(string $field, string $notificationType, string $context): void
+    {
+        $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.css','terminal42_notification_center');
+        $GLOBALS['TL_JAVASCRIPT']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.js','terminal42_notification_center');
+
+        $GLOBALS['TL_MOOTOOLS'][] = \sprintf(
+            '<script type="application/json" data-notification-center-auto-suggester>%s</script>',
+            json_encode([
+                'field' => sprintf('ctrl_%s', $field),
+                'tokens' => $this->getTokenConfigForField($notificationType, $context),
+            ]),
+        );
+    }
+
+    // TODO: drop with support for Contao < 5.7
+    private function addLegacyAssets(string $field, string $notificationType, string $context): void
+    {
+        $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = trim($this->packages->getUrl(
+            'legacy/autosuggester.css',
+            'terminal42_notification_center',
+        ), '/');
+
+        $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = \sprintf(
+            '<script src="%s"></script>',
+            $this->packages->getUrl('legacy/autosuggester.js', 'terminal42_notification_center'),
+        );
+
+        $GLOBALS['TL_MOOTOOLS'][] = \sprintf(
+            "<script>document.addEventListener('DOMContentLoaded',()=>{new initContaoNotificationCenterAutoSuggester('%s', %s)});</script>",
+            'ctrl_'.$field,
+            json_encode($this->getTokenConfigForField($notificationType, $context)),
+        );
+    }
+
+    private function getTokenConfigForField(string $notificationType, string $context): array
     {
         $tokens = [];
 
@@ -71,6 +96,6 @@ class AutoSuggester
             ];
         }
 
-        return json_encode($tokens);
+        return $tokens;
     }
 }
