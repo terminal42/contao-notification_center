@@ -73,6 +73,9 @@ class AutoSuggester
         );
     }
 
+    /**
+     * @return array<array<string, string>>
+     */
     private function getTokenConfigForField(string $notificationType, string $context): array
     {
         $tokens = [];
