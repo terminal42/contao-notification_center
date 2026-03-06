@@ -38,9 +38,9 @@ class ContaoNotificationCenterAutoSuggester {
     tokens: ContaoNotificationCenterAutoSuggesterToken[];
 
     // Bound references so we can cleanly remove them later
-    private readonly boundHideBox: () => void;
-    private readonly boundKeyUp: (e: KeyboardEvent) => void;
-    private readonly boundKeyDown: (e: KeyboardEvent) => void;
+    private boundHideBox: () => void;
+    private boundKeyUp: (e: KeyboardEvent) => void;
+    private boundKeyDown: (e: KeyboardEvent) => void;
 
     constructor(input: HTMLElement | string, tokens: ContaoNotificationCenterAutoSuggesterToken[]) {
         this.input = (typeof input === 'string' ? document.getElementById(input) : input) as
@@ -124,16 +124,34 @@ class ContaoNotificationCenterAutoSuggester {
         this.inputMirrorCaret.className = this.cssClassInputMirrorCaret;
         this.inputMirrorCaret.innerHTML = '&nbsp;';
 
+        // Clone all styles of an input
         const properties = [
-            'box-sizing', 'font-family', 'font-size', 'font-style', 'font-variant',
-            'font-weight', 'height', 'letter-spacing', 'line-height', 'max-height',
-            'min-height', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top',
-            'text-decoration', 'text-indent', 'text-transform', 'width', 'word-spacing',
+            'box-sizing',
+            'font-family',
+            'font-size',
+            'font-style',
+            'font-variant',
+            'font-weight',
+            'height',
+            'letter-spacing',
+            'line-height',
+            'max-height',
+            'min-height',
+            'padding-bottom',
+            'padding-left',
+            'padding-right',
+            'padding-top',
+            'text-decoration',
+            'text-indent',
+            'text-transform',
+            'width',
+            'word-spacing',
         ];
         const styles = window.getComputedStyle(this.input);
 
         properties.forEach((property) => (this.inputMirror.style[property] = styles[property]));
 
+        // Add the elements to DOM
         this.inputMirror.appendChild(this.inputMirrorCaret);
         this.input.insertAdjacentElement('afterend', this.inputMirror);
     }
@@ -142,25 +160,34 @@ class ContaoNotificationCenterAutoSuggester {
      * Register the events
      */
     registerEvents(): void {
+        // Add the regular events
         if (!this.tinyMCEInstance) {
             this.input.addEventListener('keyup', this.boundKeyUp);
             this.input.addEventListener('keydown', this.boundKeyDown);
         }
 
+        // Add the events to tinyMCE
         if (this.tinyMCEInstance) {
             if (typeof this.tinyMCEInstance.on === 'function') {
                 this.tinyMCEInstance.on('keyUp', this.boundKeyUp);
+
+                // Fix an issue with the "enter" key
                 this.tinyMCEInstance.off('keyDown');
                 this.tinyMCEInstance.on('keyDown', this.boundKeyDown);
             } else {
                 this.tinyMCEInstance.onKeyUp.add((_editor: any, event: KeyboardEvent) => this.boundKeyUp(event));
+
+                // Fix an issue with the "enter" key
                 this.tinyMCEInstance.onKeyDown.listeners = [];
                 this.tinyMCEInstance.onKeyDown.add((_editor: any, event: KeyboardEvent) => this.boundKeyDown(event));
             }
         }
 
         this.boxListItems.forEach((item) => {
+            // Highlight the list item
             item.addEventListener('mouseenter', (e: any) => this.highlightItem(this.boxListItems.indexOf(e.target)));
+
+            // Select the list item
             item.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.selectItem();
@@ -183,6 +210,9 @@ class ContaoNotificationCenterAutoSuggester {
             this.input.removeEventListener('keyup', this.boundKeyUp);
             this.input.removeEventListener('keydown', this.boundKeyDown);
         }
+
+        // Allow re-initialization after Turbo navigation
+        delete this.input.dataset.autosuggesterId;
     }
 
     /**
@@ -196,16 +226,19 @@ class ContaoNotificationCenterAutoSuggester {
         let index, value, chunks;
         let position = { left: 0, top: 0 };
 
+        // Detect the box position in tinyMCE
         if (this.tinyMCEInstance) {
             position.left = this.tinyMCEInstance.selection.getRng().getClientRects()[0].left;
             position.top =
                 this.tinyMCEInstance.selection.getNode().getClientRects()[0].top +
                 this.tinyMCEInstance.selection.getNode().getClientRects()[0].height;
         } else if (this.inputMirror) {
+            // Detect the box position for regular textarea
             index = this.input.selectionStart;
             value = this.input.value;
             chunks = [value.substring(0, index), value.substring(index, value.length)];
 
+            // Inject the fake marker at the right position
             this.inputMirror.innerHTML = '';
             this.inputMirror.appendChild(document.createTextNode(chunks[0]));
             this.inputMirror.appendChild(this.inputMirrorCaret);
@@ -214,11 +247,14 @@ class ContaoNotificationCenterAutoSuggester {
             position = this.getPosition(this.inputMirrorCaret, this.inputMirror);
             position.top += this.inputMirrorCaret.getBoundingClientRect().height;
         } else {
+            // Detect the box position for regular input
             position.top = this.input.getBoundingClientRect().height;
         }
 
+        // Make all list items visible
         this.boxListItems.forEach((item) => item.classList.remove('invisible'));
 
+        // Set the box container position
         if (this.tinyMCEInstance) {
             this.setPosition(this.boxContainer, this.getPosition(document.getElementById(`${this.input.id}_ifr`)));
         } else {
@@ -242,6 +278,7 @@ class ContaoNotificationCenterAutoSuggester {
         this.box.style.display = 'none';
         this.boxVisible = false;
 
+        // Remove the highlight from all items
         this.boxListItems.forEach((item) => item.classList.remove(this.cssClassBoxListItemActive));
 
         // Defensively clean up in case hideBox was called before the body click fired
@@ -258,11 +295,13 @@ class ContaoNotificationCenterAutoSuggester {
 
         let value, index, selection, match;
 
+        // Get the current caret index
         if (this.tinyMCEInstance) {
             selection = this.tinyMCEInstance.selection.getRng();
             value = selection.startContainer.wholeText;
             index = selection.startOffset;
 
+            // Fix the wrong index calculation
             if (
                 value &&
                 index === selection.startContainer.length &&
@@ -285,6 +324,7 @@ class ContaoNotificationCenterAutoSuggester {
         value = value.slice(0, index);
         match = this.rgxp.exec(value);
 
+        // Open the box if there is an opening tag
         if (match) {
             this.showBox();
             this.filterText = match[0];
@@ -306,20 +346,25 @@ class ContaoNotificationCenterAutoSuggester {
         const index = this.boxListItemsVisibleIndexes.indexOf(this.currentListItemIndex);
 
         switch (event.key) {
+            // Close the box
             case 'Escape':
                 this.hideBox();
                 break;
 
+            // Insert the token
             case 'Enter':
                 if (this.currentListItemIndex === null) {
                     return;
                 }
+
                 event.preventDefault();
                 this.selectItem();
                 break;
 
+            // Highlight the previous item
             case 'ArrowUp':
                 event.preventDefault();
+
                 if (index === -1) {
                     this.highlightItem(this.boxListItemsVisibleIndexes.length - 1);
                 } else if (index > 0) {
@@ -327,8 +372,10 @@ class ContaoNotificationCenterAutoSuggester {
                 }
                 break;
 
+            // Highlight the next item
             case 'ArrowDown':
                 event.preventDefault();
+
                 if (index === -1) {
                     this.highlightItem(this.boxListItemsVisibleIndexes[0]);
                 } else if (index < this.boxListItemsVisibleIndexes.length - 1) {
@@ -348,6 +395,7 @@ class ContaoNotificationCenterAutoSuggester {
         const highTop = this.getPosition(this.boxListItems[index], this.box).top + visibleTop;
         const highBottom = highTop + this.boxListItems[index].getBoundingClientRect().height;
 
+        // Remove the highlight from the current item
         if (this.currentListItemIndex !== null) {
             this.boxListItems[this.currentListItemIndex].classList.remove(this.cssClassBoxListItemActive);
         }
@@ -355,6 +403,7 @@ class ContaoNotificationCenterAutoSuggester {
         this.boxListItems[index].classList.add(this.cssClassBoxListItemActive);
         this.currentListItemIndex = index;
 
+        // Adjust the scroll position
         if (highBottom >= visibleBottom) {
             this.box.scrollTo(0, highBottom - maxHeight > 0 ? highBottom - maxHeight : 0);
         } else if (highTop < visibleTop) {
@@ -369,6 +418,7 @@ class ContaoNotificationCenterAutoSuggester {
         let value, index, indexNew;
         let insert = this.tokens[this.currentListItemIndex]['name'];
 
+        // Replace the filter text if any
         if (this.filterText.length > 0) {
             insert = insert.substring(this.filterText.length, insert.length);
         }
@@ -396,11 +446,13 @@ class ContaoNotificationCenterAutoSuggester {
         this.boxListItems.forEach((item, index) => {
             if (rgxp.test(this.tokens[index]['name'])) {
                 this.boxListItems[index].classList.remove('invisible');
+
                 if (!this.boxListItemsVisibleIndexes.includes(index)) {
                     this.boxListItemsVisibleIndexes.push(index);
                 }
             } else {
                 this.boxListItems[index].classList.add('invisible');
+
                 if (this.boxListItemsVisibleIndexes.includes(index)) {
                     this.boxListItemsVisibleIndexes.splice(this.boxListItemsVisibleIndexes.indexOf(index), 1);
                 }
@@ -420,6 +472,7 @@ class ContaoNotificationCenterAutoSuggester {
 
         if (relative !== null) {
             const relativePosition = this.getPosition(relative);
+
             top -= relativePosition.top;
             left -= relativePosition.left;
         }

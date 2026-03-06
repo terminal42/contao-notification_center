@@ -47,7 +47,7 @@ class AutoSuggester
         $GLOBALS['TL_MOOTOOLS'][] = \sprintf(
             '<script type="application/json" data-notification-center-auto-suggester>%s</script>',
             json_encode([
-                'field' => sprintf('ctrl_%s', $field),
+                'input' => sprintf('ctrl_%s', $field),
                 'tokens' => $this->getTokenConfigForField($notificationType, $context),
             ]),
         );
