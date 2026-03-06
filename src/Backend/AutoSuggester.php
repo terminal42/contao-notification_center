@@ -41,13 +41,13 @@ class AutoSuggester
 
     private function addAssets(string $field, string $notificationType, string $context): void
     {
-        $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.css','terminal42_notification_center');
-        $GLOBALS['TL_JAVASCRIPT']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.js','terminal42_notification_center');
+        $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.css', 'terminal42_notification_center');
+        $GLOBALS['TL_JAVASCRIPT']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center');
 
         $GLOBALS['TL_MOOTOOLS'][] = \sprintf(
             '<script type="application/json" data-notification-center-auto-suggester>%s</script>',
             json_encode([
-                'input' => sprintf('ctrl_%s', $field),
+                'input' => \sprintf('ctrl_%s', $field),
                 'tokens' => $this->getTokenConfigForField($notificationType, $context),
             ]),
         );
