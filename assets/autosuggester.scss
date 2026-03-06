@@ -25,7 +25,7 @@ $this: '.autosuggester';
     background-color: var(--content-bg);
     border: 1px solid var(--content-border);
     border-radius: var(--border-radius);
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, .1);
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
 }
 
 #{$this}-box-list {
@@ -42,12 +42,19 @@ $this: '.autosuggester';
 
 #{$this}-box-list-item-value {
     margin-bottom: 3px;
-    font: 300 .75rem/1.25 SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    font:
+        300 0.75rem/1.25 SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        'Liberation Mono',
+        'Courier New',
+        monospace;
 }
 
 #{$this}-box-list-item-content {
     color: var(--info);
-    font-size: .75rem;
+    font-size: 0.75rem;
 }
 
 #{$this}-box-list-item-active {
