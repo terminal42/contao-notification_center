@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Test\BulkyItem;
 
+use Contao\CoreBundle\Filesystem\FilesystemItem;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mime\MimeTypes;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItemFactory;
@@ -32,6 +33,7 @@ final class FileItemFactoryTest extends TestCase
         $item = $vfs->get('media/name.jpg');
 
         $factory = new FileItemFactory(new MimeTypes());
+        $this->assertInstanceOf(FilesystemItem::class, $item);
         $item = $factory->createFromVfsFilesystemItem($item, $vfs);
         $this->assertSame('name.jpg', $item->getName());
         $this->assertSame('image/jpeg', $item->getMimeType());

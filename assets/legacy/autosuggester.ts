@@ -37,11 +37,6 @@ class ContaoNotificationCenterAutoSuggester {
 
     tokens: ContaoNotificationCenterAutoSuggesterToken[];
 
-    // Bound references so we can cleanly remove them later
-    private boundHideBox: () => void;
-    private boundKeyUp: (e: KeyboardEvent) => void;
-    private boundKeyDown: (e: KeyboardEvent) => void;
-
     constructor(input: HTMLElement | string, tokens: ContaoNotificationCenterAutoSuggesterToken[]) {
         this.input = (typeof input === 'string' ? document.getElementById(input) : input) as
             | HTMLInputElement
@@ -49,10 +44,6 @@ class ContaoNotificationCenterAutoSuggester {
         this.tokens = tokens.map((token) => ({ name: `##${token.name}##`, label: token.label }));
         this.tinyMCEInstance = false;
         this.rgxp = new RegExp('[^ |\n]+$', 'i');
-
-        this.boundHideBox = () => this.hideBox();
-        this.boundKeyUp = (e: KeyboardEvent) => this.onKeyUpEvent(e);
-        this.boundKeyDown = (e: KeyboardEvent) => this.onKeyDownEvent(e);
 
         // Turn off the default autocomplete feature
         this.input.autocomplete = 'off';
@@ -79,10 +70,6 @@ class ContaoNotificationCenterAutoSuggester {
      * Create the box elements
      */
     createBoxElements(): void {
-        // Remove any stale box left over from a previous Turbo visit
-        const staleBox = document.getElementById(`${this.input.id}-autosuggester`);
-        staleBox?.parentElement?.remove();
-
         this.boxContainer = document.createElement('div');
         this.boxContainer.className = this.cssClassBoxContainer;
 
@@ -162,24 +149,24 @@ class ContaoNotificationCenterAutoSuggester {
     registerEvents(): void {
         // Add the regular events
         if (!this.tinyMCEInstance) {
-            this.input.addEventListener('keyup', this.boundKeyUp);
-            this.input.addEventListener('keydown', this.boundKeyDown);
+            this.input.addEventListener('keyup', (e: KeyboardEvent) => this.onKeyUpEvent(e));
+            this.input.addEventListener('keydown', (e: KeyboardEvent) => this.onKeyDownEvent(e));
         }
 
         // Add the events to tinyMCE
         if (this.tinyMCEInstance) {
             if (typeof this.tinyMCEInstance.on === 'function') {
-                this.tinyMCEInstance.on('keyUp', this.boundKeyUp);
+                this.tinyMCEInstance.on('keyUp', (e: KeyboardEvent) => this.onKeyUpEvent(e));
 
                 // Fix an issue with the "enter" key
                 this.tinyMCEInstance.off('keyDown');
-                this.tinyMCEInstance.on('keyDown', this.boundKeyDown);
+                this.tinyMCEInstance.on('keyDown', (e: KeyboardEvent) => this.onKeyDownEvent(e));
             } else {
-                this.tinyMCEInstance.onKeyUp.add((_editor: any, event: KeyboardEvent) => this.boundKeyUp(event));
+                this.tinyMCEInstance.onKeyUp.add((editor, event: KeyboardEvent) => this.onKeyUpEvent(event));
 
                 // Fix an issue with the "enter" key
                 this.tinyMCEInstance.onKeyDown.listeners = [];
-                this.tinyMCEInstance.onKeyDown.add((_editor: any, event: KeyboardEvent) => this.boundKeyDown(event));
+                this.tinyMCEInstance.onKeyDown.add((editor, event: KeyboardEvent) => this.onKeyDownEvent(event));
             }
         }
 
@@ -193,26 +180,6 @@ class ContaoNotificationCenterAutoSuggester {
                 this.selectItem();
             });
         });
-
-        // Clean up when Turbo is about to replace the page
-        document.addEventListener('turbo:before-cache', () => this.destroy(), { once: true });
-    }
-
-    /**
-     * Tear down DOM nodes and event listeners before Turbo caches/replaces the page
-     */
-    destroy(): void {
-        this.hideBox();
-        this.boxContainer?.remove();
-        this.inputMirror?.remove();
-
-        if (!this.tinyMCEInstance) {
-            this.input.removeEventListener('keyup', this.boundKeyUp);
-            this.input.removeEventListener('keydown', this.boundKeyDown);
-        }
-
-        // Allow re-initialization after Turbo navigation
-        delete this.input.dataset.autosuggesterId;
     }
 
     /**
@@ -267,8 +234,8 @@ class ContaoNotificationCenterAutoSuggester {
         this.box.scrollTo(0, 0);
         this.boxVisible = true;
 
-        // Use { once: true } so this never accumulates duplicate listeners
-        document.body.addEventListener('click', this.boundHideBox, { once: true });
+        // Hide the box if we toggle
+        document.body.addEventListener('click', () => this.hideBox());
     }
 
     /**
@@ -280,9 +247,6 @@ class ContaoNotificationCenterAutoSuggester {
 
         // Remove the highlight from all items
         this.boxListItems.forEach((item) => item.classList.remove(this.cssClassBoxListItemActive));
-
-        // Defensively clean up in case hideBox was called before the body click fired
-        document.body.removeEventListener('click', this.boundHideBox);
     }
 
     /**
@@ -336,7 +300,7 @@ class ContaoNotificationCenterAutoSuggester {
     }
 
     /**
-     * On the key down event
+     * On the key up event
      */
     onKeyDownEvent(event: KeyboardEvent): void {
         if (!this.boxVisible) {
@@ -489,22 +453,7 @@ class ContaoNotificationCenterAutoSuggester {
     }
 }
 
-function initAutoSuggesters(): void {
-    document
-        .querySelectorAll<HTMLScriptElement>('script[data-notification-center-auto-suggester]')
-        .forEach((script) => {
-            const { input, tokens } = JSON.parse(script.textContent);
-            const inputEl = document.getElementById(input);
-
-            if (!inputEl || inputEl.dataset.autosuggesterId) {
-                return; // Not found or already initialized
-            }
-
-            new ContaoNotificationCenterAutoSuggester(inputEl, tokens);
-            inputEl.dataset.autosuggesterId = 'initialized';
-        });
-}
-
-document.addEventListener('DOMContentLoaded', initAutoSuggesters);
-document.addEventListener('turbo:load', initAutoSuggesters);
-document.addEventListener('turbo:render', initAutoSuggesters);
+window.initContaoNotificationCenterAutoSuggester = (
+    input: HTMLElement | string,
+    tokens: ContaoNotificationCenterAutoSuggesterToken[],
+) => new ContaoNotificationCenterAutoSuggester(input, tokens);
