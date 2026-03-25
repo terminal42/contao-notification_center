@@ -1,5 +1,5 @@
 parameters:
-	excludePaths:
-		- src/Legacy/LostPasswordModule.php
-	ignoreErrors:
-		- '#Symfony\\Component\\HttpKernel\\UriSigner#'
+    excludePaths:
+        - src/Legacy/LostPasswordModule.php
+    ignoreErrors:
+        - '#Symfony\\Component\\HttpKernel\\UriSigner#'
