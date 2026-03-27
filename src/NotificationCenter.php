@@ -383,7 +383,7 @@ class NotificationCenter
         $notificationConfig = $this->configLoader->loadNotification($id);
 
         if (!$notificationConfig instanceof NotificationConfig) {
-            throw CouldNotCreateParcelException::becauseOfNonExistentMessage($id);
+            throw CouldNotCreateParcelException::becauseOfNonExistentNotification($id);
         }
 
         $stamps = new StampCollection([new NotificationConfigStamp($notificationConfig)]);
