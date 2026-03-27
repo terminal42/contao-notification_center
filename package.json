@@ -1,22 +1,17 @@
 {
-  "dependencies": {
-    "@hotwired/stimulus": "^3.2.2"
-  },
-  "devDependencies": {
-    "@terminal42/contao-build-tools": "./vendor/terminal42/contao-build-tools/webpack",
-    "ts-loader": "^9.0.0",
-    "typescript": "^4.8.3"
-  },
-  "license": "UNLICENSED",
-  "private": true,
-  "scripts": {
-    "dev-server": "encore dev-server",
-    "dev": "encore dev",
-    "watch": "encore dev --watch",
-    "build": "encore production --progress"
-  },
-  "browserslist": [
-    "defaults"
-  ],
-  "packageManager": "yarn@1.22.22+sha256.c17d3797fb9a9115bf375e31bfd30058cac6bc9c3b8807a3d8cb2094794b51ca"
+    "license": "LGPL-3.0-or-later",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@hotwired/stimulus": "^3.2.2"
+    },
+    "devDependencies": {
+        "@terminal42/contao-build-tools": "./vendor/terminal42/contao-build-tools/webpack"
+    },
+    "packageManager": "yarn@1.22.22+sha256.c17d3797fb9a9115bf375e31bfd30058cac6bc9c3b8807a3d8cb2094794b51ca"
 }
