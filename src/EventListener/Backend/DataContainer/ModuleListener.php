@@ -23,7 +23,7 @@ class ModuleListener
     #[AsCallback(table: 'tl_module', target: 'fields.nc_notification.attributes')]
     public function onAttributesCallback(array $attributes, DataContainer $dc): array
     {
-        if ($dc->getCurrentRecord()['type'] === 'newsletterSubscribeNotificationCenter') {
+        if ('newsletterSubscribeNotificationCenter' === $dc->getCurrentRecord()['type']) {
             $attributes['mandatory'] = true;
         }
 
