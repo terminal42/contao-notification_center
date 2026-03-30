@@ -1,69 +1,79 @@
-$this: '.autosuggester';
-
-#{$this}-input-mirror {
-    position: absolute !important;
-    top: 0 !important;
-    left: -9999px !important;
-    overflow: auto !important;
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
-}
-
-#{$this}-box-container {
-    position: absolute;
-    z-index: 9;
-}
-
-#{$this}-box {
-    position: relative;
-    z-index: 3;
-    display: none;
-    width: 318px;
-    max-height: 150px;
-    margin-top: 4px;
-    overflow-y: scroll;
-    background-color: #fff;
-    border: 1px solid #bbb;
-    border-radius: 0 0 3px 3px;
-    box-shadow: 0 3px 6px #ccc;
-}
-
-#{$this}-box-list {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-
-#{$this}-box-list-item {
-    padding: 8px;
-    border-bottom: 1px solid #eaeaea;
-}
-
-#{$this}-box-list-item-value {
-    font-weight: bold;
-}
-
-#{$this}-box-list-item-active {
-    background-color: #f5f5f5;
-    cursor: pointer;
-}
-
-#{$this}-box-list-item-active #{$this}-box-list-item-value {
-    color: #8ab858;
-}
-
-html[data-color-scheme='dark'] {
-    #{$this}-box {
-        background-color: #151619;
-        border-color: #3a3d40;
-        box-shadow: 0 3px 6px #3a3d40;
+.autosuggester {
+    &-input-mirror {
+        position: absolute !important;
+        top: 0 !important;
+        left: -9999px !important;
+        overflow: auto !important;
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
     }
 
-    #{$this}-box-list-item {
-        border-color: #3a3d40;
+    &-box-container {
+        position: absolute;
+        z-index: 9;
     }
 
-    #{$this}-box-list-item-active {
-        background-color: #272930;
+    &-box {
+        position: relative;
+        z-index: 3;
+        display: none;
+        max-width: 400px;
+        max-height: 250px;
+        margin-top: 3px;
+        overflow-y: scroll;
+        background-color: var(--content-bg, #fff);
+        border: 1px solid var(--content-border, #bbb);
+        border-radius: var(--border-radius, 0 0 3px 3px);
+        box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+
+        &-list {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        &-list-item {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--content-border, #eaeaea);
+            line-height: 1.2;
+        }
+
+        &-list-item-value {
+            margin-bottom: 3px;
+            font:
+                300 0.75rem/1.25 SFMono-Regular,
+                Menlo,
+                Monaco,
+                Consolas,
+                'Liberation Mono',
+                'Courier New',
+                monospace;
+        }
+
+        &-list-item-content {
+            color: var(--info, #8ab858);
+            font-size: 0.75rem;
+        }
+
+        &-list-item-active {
+            background-color: var(--hover-row, #f5f5f5);
+            cursor: pointer;
+        }
+    }
+
+    html[data-color-scheme='dark'] & {
+        &-box {
+            background-color: var(--content-bg, #151619);
+            border-color: #3a3d40;
+            box-shadow: 0 3px 6px #3a3d40;
+
+            &-list-item {
+                border-color: #3a3d40;
+            }
+
+            &-list-item-active {
+                background-color: #272930;
+            }
+        }
     }
 }

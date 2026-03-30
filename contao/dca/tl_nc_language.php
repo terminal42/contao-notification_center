@@ -28,8 +28,9 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
     // List
     'list' => [
         'sorting' => [
-            'mode' => DataContainer::MODE_SORTED,
+            'mode' => DataContainer::MODE_PARENT,
             'fields' => ['language'],
+            'headerFields' => ['title', 'gateway', 'published'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
         ],
         'label' => [

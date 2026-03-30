@@ -1,7 +1,10 @@
 {
-  "autosuggester.css": "/bundles/terminal42notificationcenter/autosuggester.5be275fe.css",
-  "autosuggester.js": "/bundles/terminal42notificationcenter/autosuggester.e24c0e3a.js",
-  "backend.css": "/bundles/terminal42notificationcenter/backend.78d87277.css",
-  "images/award.svg": "/bundles/terminal42notificationcenter/images/award.4fba1465.svg",
-  "images/bell.svg": "/bundles/terminal42notificationcenter/images/bell.0d8579b5.svg"
+  "autosuggester.css": "/bundles/terminal42notificationcenter/autosuggester.1896a185.css",
+  "autosuggester.js": "/bundles/terminal42notificationcenter/autosuggester.4dabb3ea.js",
+  "backend.css": "/bundles/terminal42notificationcenter/backend.023485eb.css",
+  "images/award.svg": "/bundles/terminal42notificationcenter/images/award.8c4060af.svg",
+  "images/bell.svg": "/bundles/terminal42notificationcenter/images/bell.49b754b0.svg",
+  "autosuggester.1896a185.css.map": "/bundles/terminal42notificationcenter/autosuggester.1896a185.css.map",
+  "autosuggester.4dabb3ea.js.map": "/bundles/terminal42notificationcenter/autosuggester.4dabb3ea.js.map",
+  "backend.023485eb.css.map": "/bundles/terminal42notificationcenter/backend.023485eb.css.map"
 }

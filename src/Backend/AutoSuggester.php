@@ -27,28 +27,23 @@ class AutoSuggester
             $context = (string) ($fieldConfig['nc_context'] instanceof \BackedEnum ? $fieldConfig['nc_context']->value : $fieldConfig['nc_context']);
 
             // Disable browser autocompletion based on historic values for the token fields
-            // as otherwise one would get two suggestions
+            // as well as password manager tools
             $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['autocomplete'] = false;
+            $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['data-1p-ignore'] = 'true';
+            $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['data-lpignore'] = 'true';
+            $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['data-bwignore'] = 'true';
+            $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['data-controller'] = 'terminal42--autosuggester';
+            $GLOBALS['TL_DCA'][$table]['fields'][$field]['eval']['data-terminal42--autosuggester-tokens-value'] = json_encode($this->getTokenConfigForField($notificationType, $context));
 
-            $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = trim($this->packages->getUrl(
-                'autosuggester.css',
-                'terminal42_notification_center',
-            ), '/');
-
-            $GLOBALS['TL_MOOTOOLS']['notification_center_autosuggester_js'] = \sprintf(
-                '<script src="%s"></script>',
-                $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center'),
-            );
-
-            $GLOBALS['TL_MOOTOOLS'][] = \sprintf(
-                "<script>document.addEventListener('DOMContentLoaded',()=>{new initContaoNotificationCenterAutoSuggester('%s', %s)});</script>",
-                'ctrl_'.$field,
-                $this->getTokenConfigForField($notificationType, $context),
-            );
+            $GLOBALS['TL_CSS']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.css', 'terminal42_notification_center');
+            $GLOBALS['TL_JAVASCRIPT']['notification_center_autosuggester_css'] = $this->packages->getUrl('autosuggester.js', 'terminal42_notification_center');
         }
     }
 
-    private function getTokenConfigForField(string $notificationType, string $context): string
+    /**
+     * @return array<array<string, string>>
+     */
+    private function getTokenConfigForField(string $notificationType, string $context): array
     {
         $tokens = [];
 
@@ -71,6 +66,6 @@ class AutoSuggester
             ];
         }
 
-        return json_encode($tokens);
+        return $tokens;
     }
 }
