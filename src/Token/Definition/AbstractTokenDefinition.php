@@ -12,7 +12,7 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
     final public function __construct(
         private readonly string $tokenName,
-        private readonly string|TranslatableInterface $translationKey,
+        private readonly TranslatableInterface|string $translationKey,
     ) {
     }
 
@@ -21,7 +21,7 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         return $this->tokenName;
     }
 
-    public function getTranslationKey(): string|TranslatableInterface
+    public function getTranslationKey(): TranslatableInterface|string
     {
         return $this->translationKey;
     }
