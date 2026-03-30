@@ -11,6 +11,7 @@ use Twig\TwigFunction;
 
 class NotificationCenterExtension extends AbstractExtension
 {
+    #[\Override]
     public function getFunctions(): array
     {
         return [
@@ -18,6 +19,7 @@ class NotificationCenterExtension extends AbstractExtension
         ];
     }
 
+    #[\Override]
     public function getFilters(): array
     {
         // This class only exists in Contao 5 and provides the format_bytes filter.

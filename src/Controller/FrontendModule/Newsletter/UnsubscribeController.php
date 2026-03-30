@@ -32,6 +32,7 @@ class UnsubscribeController extends ModuleUnsubscribe
     /**
      * @param array<int> $arrRemove
      */
+    #[\Override]
     protected function removeRecipient($strEmail, $arrRemove): void
     {
         // Remove the subscriptions

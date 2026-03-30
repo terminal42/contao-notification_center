@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token;
 
-final class Token
+final readonly class Token
 {
     public function __construct(
-        private readonly string $tokenName,
-        private readonly mixed $tokenValue,
-        private readonly string $parserValue,
+        private string $tokenName,
+        private mixed $tokenValue,
+        private string $parserValue,
     ) {
     }
 

@@ -24,7 +24,7 @@
         "docs": "https://extensions.terminal42.ch/docs/notification-center/"
     },
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "composer-plugin-api": "^2.0",
         "codefog/contao-haste": "^5.2",
         "contao/core-bundle": "^5.3.14 || ^5.4.4",

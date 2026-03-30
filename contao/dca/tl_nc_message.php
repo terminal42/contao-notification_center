@@ -43,7 +43,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
     'palettes' => [
         '__selector__' => ['gateway'],
         'default' => '{title_legend},title,gateway;{publish_legend},published,start,stop',
-        MailerGateway::NAME => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:hide},email_priority,email_template;{publish_legend},published,start,stop',
+        MailerGateway::NAME => '{title_legend},title,gateway;{languages_legend},languages;{expert_legend:collapsed},email_priority,email_template;{publish_legend},published,start,stop',
     ],
 
     // Fields
