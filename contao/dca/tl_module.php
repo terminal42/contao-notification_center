@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 $GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'nc_registration_auto_activate';
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['nc_registration_auto_activate'] = 'reg_jumpTo,nc_activation_notification';
 

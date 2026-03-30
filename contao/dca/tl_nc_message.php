@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
