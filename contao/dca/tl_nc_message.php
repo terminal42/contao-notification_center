@@ -28,6 +28,7 @@ $GLOBALS['TL_DCA']['tl_nc_message'] = [
             'fields' => ['sorting'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;search,limit',
+            'defaultSearchField' => 'title',
             'headerFields' => ['title', 'type'],
             'disableGrouping' => true,
         ],

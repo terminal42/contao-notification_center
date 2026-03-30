@@ -25,6 +25,7 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
             'fields' => ['type', 'title'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;search,limit',
+            'defaultSearchField' => 'title',
         ],
         'label' => [
             'fields' => ['title'],
