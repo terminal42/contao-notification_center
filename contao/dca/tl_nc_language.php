@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Terminal42\NotificationCenterBundle\Gateway\MailerGateway;
@@ -30,44 +28,14 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
         'sorting' => [
             'mode' => DataContainer::MODE_PARENT,
             'fields' => ['language'],
+            'panelLayout' => 'filter;search,limit',
+            'defaultSearchField' => 'email_subject',
             'headerFields' => ['title', 'gateway', 'published'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
         ],
         'label' => [
             'fields' => ['language', 'fallback'],
             'format' => '%s <span style="color:#b3b3b3; padding-left:3px;">[%s]</span>',
-        ],
-        'global_operations' => [
-            'all' => [
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"',
-            ],
-        ],
-        'operations' => [
-            'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_language']['edit'],
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-                'primary' => true,
-            ],
-            'copy' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_language']['copy'],
-                'href' => 'act=copy',
-                'icon' => 'copy.svg',
-            ],
-            'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_language']['delete'],
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if(!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null).'\'))return false;Backend.getScrollOffset()"',
-            ],
-            'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_language']['show'],
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
         ],
     ],
 
@@ -97,68 +65,68 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
             'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'language' => [
-            'exclude' => true,
+            'filter' => true,
             'inputType' => 'select',
             'eval' => ['mandatory' => true, 'chosen' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 64, 'default' => null, 'notnull' => false],
         ],
         'fallback' => [
-            'exclude' => true,
+            'filter' => true,
             'inputType' => 'checkbox',
             'eval' => ['doNotCopy' => true, 'tl_class' => 'w50 m12'],
             'sql' => ['type' => 'boolean', 'default' => false],
         ],
         'recipients' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true, 'mandatory' => true],
             'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_sender_name' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'nc_context' => TokenContext::Text,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_sender_address' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'],
             'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_recipient_cc' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'w50'],
             'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_recipient_bcc' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'w50'],
             'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_replyTo' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['decodeEntities' => true, 'tl_class' => 'w50'],
             'nc_context' => TokenContext::Email,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_subject' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true, 'mandatory' => true],
             'nc_context' => TokenContext::Text,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'email_mode' => [
-            'exclude' => true,
+            'filter' => true,
             'inputType' => 'radio',
             'options' => ['textOnly', 'htmlAndAutoText', 'textAndHtml'],
             'reference' => &$GLOBALS['TL_LANG']['tl_nc_language']['email_mode'],
@@ -166,28 +134,26 @@ $GLOBALS['TL_DCA']['tl_nc_language'] = [
             'sql' => ['type' => 'string', 'length' => 16, 'default' => 'textOnly'],
         ],
         'email_text' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'clr', 'decodeEntities' => true, 'mandatory' => true],
             'nc_context' => TokenContext::Text,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'email_html' => [
-            'exclude' => true,
+            'search' => true,
             'inputType' => 'textarea',
             'eval' => ['tl_class' => 'clr', 'rte' => 'tinyMCE', 'decodeEntities' => true, 'allowHtml' => true, 'mandatory' => true],
             'nc_context' => TokenContext::Html,
             'sql' => ['type' => 'text', 'default' => null, 'notnull' => false],
         ],
         'attachment_tokens' => [
-            'exclude' => true,
             'inputType' => 'text',
             'eval' => ['tl_class' => 'long clr', 'decodeEntities' => true],
             'nc_context' => TokenContext::File,
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'attachments' => [
-            'exclude' => true,
             'inputType' => 'fileTree',
             'eval' => ['multiple' => true, 'fieldType' => 'checkbox', 'files' => true, 'filesOnly' => true, 'tl_class' => 'clr'],
             'sql' => ['type' => 'blob', 'length' => 65535, 'default' => null, 'notnull' => false],

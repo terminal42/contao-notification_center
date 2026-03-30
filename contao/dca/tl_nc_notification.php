@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Contao\DataContainer;
 use Contao\DC_Table;
 
@@ -27,47 +25,10 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
             'fields' => ['type', 'title'],
             'flag' => DataContainer::SORT_INITIAL_LETTER_ASC,
             'panelLayout' => 'filter;search,limit',
+            'defaultSearchField' => 'title',
         ],
         'label' => [
             'fields' => ['title'],
-        ],
-        'global_operations' => [
-            'all' => [
-                'label' => &$GLOBALS['TL_LANG']['MSC']['all'],
-                'href' => 'act=select',
-                'class' => 'header_edit_all',
-                'attributes' => 'onclick="Backend.getScrollOffset()" accesskey="e"',
-            ],
-        ],
-        'operations' => [
-            'edit' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['edit'],
-                'href' => 'act=edit',
-                'icon' => 'edit.svg',
-                'primary' => true,
-            ],
-            'children' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['children'],
-                'href' => 'table=tl_nc_message',
-                'icon' => 'children.svg',
-                'primary' => true,
-            ],
-            'copy' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['copy'],
-                'href' => 'act=copy',
-                'icon' => 'copy.svg',
-            ],
-            'delete' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['delete'],
-                'href' => 'act=delete',
-                'icon' => 'delete.svg',
-                'attributes' => 'onclick="if(!confirm(\''.($GLOBALS['TL_LANG']['MSC']['deleteConfirm'] ?? null).'\'))return false;Backend.getScrollOffset()"',
-            ],
-            'show' => [
-                'label' => &$GLOBALS['TL_LANG']['tl_nc_notification']['show'],
-                'href' => 'act=show',
-                'icon' => 'show.svg',
-            ],
         ],
     ],
 
@@ -86,14 +47,12 @@ $GLOBALS['TL_DCA']['tl_nc_notification'] = [
             'sql' => ['type' => 'integer', 'default' => 0, 'unsigned' => true],
         ],
         'title' => [
-            'exclude' => true,
             'search' => true,
             'inputType' => 'text',
             'eval' => ['mandatory' => true, 'maxlength' => 255, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 255, 'default' => null, 'notnull' => false],
         ],
         'type' => [
-            'exclude' => true,
             'filter' => true,
             'inputType' => 'select',
             'reference' => &$GLOBALS['TL_LANG']['tl_nc_notification']['type'],

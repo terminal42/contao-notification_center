@@ -54,7 +54,7 @@ class NotificationCenter
         private readonly RequestStack $requestStack,
         private readonly BulkyItemStorage $bulkyItemStorage,
         private readonly StringParser $stringParser,
-        private readonly LocaleSwitcher|null $localeSwitcher,
+        private readonly LocaleSwitcher $localeSwitcher,
     ) {
     }
 
@@ -334,10 +334,6 @@ class NotificationCenter
                 throw new CouldNotSealParcelException($exception->getMessage(), $exception->getCode(), $exception);
             }
         };
-
-        if (null === $this->localeSwitcher) {
-            return $seal();
-        }
 
         /** @var LocaleStamp|null $localeStamp */
         $localeStamp = $parcel->getStamp(LocaleStamp::class);

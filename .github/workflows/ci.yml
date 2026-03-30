@@ -11,22 +11,18 @@ jobs:
         uses: 'terminal42/contao-build-tools/.github/workflows/build-tools.yml@main'
 
     tests:
-        name: Unit tests (PHP ${{ matrix.php }} / Contao ${{ matrix.contao }})
+        name: 'Unit tests (PHP ${{ matrix.php }}, Composer Flags: ${{ matrix.composer }})'
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:
-                php: [ '8.1', '8.2', '8.3', '8.4', '8.5' ]
-                contao: [ '4.13', '5.3', '5.6' ]
-                exclude:
-                    - php: 8.1
-                      contao: 5.6
+                php: [ '8.3', '8.4', '8.5' ]
+                composer: [ '--prefer-stable', '--prefer-lowest' ]
         steps:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
-                  extensions: dom, fileinfo, filter, gd, hash, intl, json, mbstring, mysqli, pcre, pdo_mysql, zlib
                   coverage: none
 
             - name: Checkout
@@ -35,15 +31,8 @@ jobs:
                   show-progress: false
                   persist-credentials: false
 
-            - name: Require Contao version for tests
-              run: composer require "contao/core-bundle:${{ matrix.contao }}.*" --dev --no-update
-
-            - name: Require TestCase version for tests
-              run: composer require "contao/test-case:${{ matrix.contao }}.*" --dev --no-update
-
             - name: Install the dependencies
-              run: |
-                  composer install --no-interaction --no-progress --no-plugins
+              run: composer update --no-interaction ${{ matrix.composer }}
 
             - name: Run phpunit
               run: composer unit

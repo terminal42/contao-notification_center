@@ -9,11 +9,11 @@ use Contao\System;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Twig\Extension\RuntimeExtensionInterface;
 
-final class NotificationCenterRuntime implements RuntimeExtensionInterface
+final readonly class NotificationCenterRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
-        private readonly ContaoFramework $framework,
-        private readonly BulkyItemStorage $bulkyItemStorage,
+        private ContaoFramework $framework,
+        private BulkyItemStorage $bulkyItemStorage,
     ) {
     }
 

@@ -34,6 +34,7 @@ class SubscribeController extends ModuleSubscribe
     /**
      * @param array<int> $arrNew
      */
+    #[\Override]
     protected function addRecipient($strEmail, $arrNew): void
     {
         // Remove old subscriptions that have not been activated yet

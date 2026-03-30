@@ -85,6 +85,7 @@ final class AdminEmailTokenListenerTest extends ContaoTestCase
     {
         $request = new Request();
         $request->attributes->set('pageModel', $pageModel);
+
         $stack = new RequestStack();
         $stack->push($request);
 

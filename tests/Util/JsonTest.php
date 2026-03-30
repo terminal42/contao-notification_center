@@ -9,7 +9,7 @@ use Terminal42\NotificationCenterBundle\Util\Json;
 
 final class JsonTest extends TestCase
 {
-    private const ARRAY_WITH_BINARY_DATA = [
+    private const array ARRAY_WITH_BINARY_DATA = [
         'foo' => 'bar',
         'other' => 42,
         'binary' => "b\xE4r",
@@ -23,7 +23,7 @@ final class JsonTest extends TestCase
         ],
     ];
 
-    private const ENCODED = '{"foo":"bar","other":42,"binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy"}}}';
+    private const string ENCODED = '{"foo":"bar","other":42,"binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy","nested":{"foo":"bar","binary":"base64:\/\/YuRy"}}}';
 
     public function testEncodesNonUtf8CharactersCorrectly(): void
     {
