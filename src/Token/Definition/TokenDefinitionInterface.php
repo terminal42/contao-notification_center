@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token\Definition;
 
+use Symfony\Contracts\Translation\TranslatableInterface;
 use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
 use Terminal42\NotificationCenterBundle\Token\Token;
 
@@ -22,7 +23,7 @@ interface TokenDefinitionInterface
      * will search for the translation key "nc_tokens.form.foobar" in the
      * "contao_nc_tokens" domain.
      */
-    public function getTranslationKey(): string;
+    public function getTranslationKey(): string|TranslatableInterface;
 
     /**
      * Should return true if the token definition is responsible for a given token

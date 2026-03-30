@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\NotificationCenterBundle\Token\Definition;
 
+use Symfony\Contracts\Translation\TranslatableInterface;
 use Terminal42\NotificationCenterBundle\Parcel\StampCollection;
 use Terminal42\NotificationCenterBundle\Token\Token;
 
@@ -11,7 +12,7 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
 {
     final public function __construct(
         private readonly string $tokenName,
-        private readonly string $translationKey,
+        private readonly string|TranslatableInterface $translationKey,
     ) {
     }
 
@@ -20,7 +21,7 @@ abstract class AbstractTokenDefinition implements TokenDefinitionInterface
         return $this->tokenName;
     }
 
-    public function getTranslationKey(): string
+    public function getTranslationKey(): string|TranslatableInterface
     {
         return $this->translationKey;
     }
