@@ -20,6 +20,10 @@ class ModuleListener
     ) {
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     * @return array<string, mixed>
+     */
     #[AsCallback(table: 'tl_module', target: 'fields.nc_notification.attributes')]
     public function onAttributesCallback(array $attributes, DataContainer $dc): array
     {
