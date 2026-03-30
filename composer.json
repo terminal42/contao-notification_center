@@ -49,6 +49,7 @@
         "symfony/routing": "^6.4 || ^7.4",
         "symfony/security-core": "^6.4 || ^7.4",
         "symfony/service-contracts": "^3.0",
+        "symfony/translation": "^6.4 || ^7.4",
         "symfony/translation-contracts": "^3.0",
         "symfony/uid": "^6.4 || ^7.4",
         "terminal42/dcawizard": "^3.0 || ^4.0",
