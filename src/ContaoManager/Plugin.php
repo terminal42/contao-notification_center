@@ -9,6 +9,7 @@ use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
+use Contao\NewsletterBundle\ContaoNewsletterBundle;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Terminal42\NotificationCenterBundle\Terminal42NotificationCenterBundle;
@@ -20,7 +21,7 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
         return [
             (new BundleConfig(Terminal42NotificationCenterBundle::class))
                 ->setReplace(['notification_center'])
-                ->setLoadAfter([ContaoCoreBundle::class]),
+                ->setLoadAfter([ContaoCoreBundle::class, ContaoNewsletterBundle::class]),
         ];
     }
 
