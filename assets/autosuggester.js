@@ -55,6 +55,7 @@ application.register(
                 if (window.tinyMCE) {
                     try {
                         this.tinyMCEInstance = window.tinyMCE.get(this.element.id);
+                        // eslint-disable-next-line no-unused-vars
                     } catch (err) {
                         // ignore error
                     }
