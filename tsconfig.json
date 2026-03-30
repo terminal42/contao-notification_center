@@ -1,3 +1,0 @@
-{
-    "include": ["assets/**/*.ts", "src/**/*.d.ts"]
-}
