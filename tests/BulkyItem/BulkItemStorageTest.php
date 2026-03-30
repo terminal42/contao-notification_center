@@ -76,7 +76,7 @@ final class BulkItemStorageTest extends TestCase
             )
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
+        $storage = new BulkyItemStorage($vfs, $this->createStub(RouterInterface::class), $this->mockUriSigner());
         $voucher = $storage->store($this->createFileItem());
 
         $this->assertTrue(BulkyItemStorage::validateVoucherFormat($voucher));
@@ -92,7 +92,7 @@ final class BulkItemStorageTest extends TestCase
             ->willReturn(true)
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
+        $storage = new BulkyItemStorage($vfs, $this->createStub(RouterInterface::class), $this->mockUriSigner());
         $this->assertTrue($storage->has('a10aed4d-abe1-498f-adfc-b2e54fbbcbde'));
     }
 
@@ -122,7 +122,7 @@ final class BulkItemStorageTest extends TestCase
             ->willReturn($this->createStream())
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
+        $storage = new BulkyItemStorage($vfs, $this->createStub(RouterInterface::class), $this->mockUriSigner());
         $item = $storage->retrieve('a10aed4d-abe1-498f-adfc-b2e54fbbcbde');
 
         $this->assertInstanceOf(FileItem::class, $item);
@@ -158,7 +158,7 @@ final class BulkItemStorageTest extends TestCase
             ->with('20220101')
         ;
 
-        $storage = new BulkyItemStorage($vfs, $this->createMock(RouterInterface::class), $this->mockUriSigner());
+        $storage = new BulkyItemStorage($vfs, $this->createStub(RouterInterface::class), $this->mockUriSigner());
         $storage->prune();
     }
 
