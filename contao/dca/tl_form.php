@@ -16,7 +16,6 @@ PaletteManipulator::create()
  * Fields
  */
 $GLOBALS['TL_DCA']['tl_form']['fields']['nc_notification'] = [
-    'exclude' => true,
     'filter' => true,
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr w50'],
