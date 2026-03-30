@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Terminal42\NotificationCenterBundle\Backend;
 
 use Symfony\Component\Asset\Packages;
+use Symfony\Contracts\Translation\TranslatableInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 
@@ -48,9 +49,11 @@ class AutoSuggester
         $tokens = [];
 
         foreach ($this->notificationCenter->getTokenDefinitionsForNotificationType($notificationType, $context) as $token) {
-            $label = '';
+            $translationKey = $token->getTranslationKey();
 
-            if (($translationKey = $token->getTranslationKey()) !== null) {
+            if ($translationKey instanceof TranslatableInterface) {
+                $label = $translationKey->trans($this->translator);
+            } else {
                 $translationKey = 'nc_tokens.'.$translationKey;
                 $label = $this->translator->trans($translationKey, [], 'contao_nc_tokens');
 
