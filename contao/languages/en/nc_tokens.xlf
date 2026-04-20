@@ -14,6 +14,10 @@
         <source>All the form fields.</source>
         <target>All the form fields.</target>
       </trans-unit>
+      <trans-unit id="nc_tokens.form.file_*">
+        <source>File paths for upload form fields.</source>
+        <target>File paths for upload form fields.</target>
+      </trans-unit>
       <trans-unit id="nc_tokens.form.formlabel_*">
         <source>All the form field labels.</source>
         <target>All the form field labels.</target>

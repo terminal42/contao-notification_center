@@ -26,6 +26,7 @@ class FormGeneratorNotificationType implements NotificationTypeInterface
     {
         return [
             $this->factory->create(AnythingTokenDefinition::class, 'form_*', 'form.form_*'),
+            $this->factory->create(AnythingTokenDefinition::class, 'file_*', 'form.file_*'),
             $this->factory->create(AnythingTokenDefinition::class, 'formconfig_*', 'form.formconfig_*'),
             $this->factory->create(AnythingTokenDefinition::class, 'formlabel_*', 'form.formlabel_*'),
             $this->factory->create(TextTokenDefinition::class, 'raw_data', 'form.raw_data'),
