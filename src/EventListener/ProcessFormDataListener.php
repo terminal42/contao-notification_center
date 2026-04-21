@@ -74,6 +74,7 @@ class ProcessFormDataListener
         $tokens['html_data_filled'] = implode('<br>', $rawDataFilled);
 
         foreach ($this->fileUploadNormalizer->normalize($files) as $k => $files) {
+            $paths = [];
             $vouchers = [];
 
             foreach ($files as $file) {
@@ -82,9 +83,11 @@ class ProcessFormDataListener
                     FileItem::fromPath($file['tmp_name'], $file['name'], $file['type'], $file['size']);
 
                 $vouchers[] = $this->notificationCenter->getBulkyItemStorage()->store($fileItem);
+                $paths[] = $file['tmp_name'];
             }
 
             $tokens['form_'.$k] = implode(',', $vouchers);
+            $tokens['file_'.$k] = implode(',', $paths);
             $bulkyItemVouchers = array_merge($bulkyItemVouchers, $vouchers);
         }
 
