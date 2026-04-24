@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
-use Symfony\Component\HttpKernel\UriSigner as HttpKernelUriSigner;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Event\MessageEvent;
 use Symfony\Component\Mailer\MailerInterface;
@@ -216,9 +215,9 @@ final class MailerGatewayTest extends ContaoTestCase
     /**
      * For compatibility with Symfony 5, 6 and 7.
      */
-    private function mockUriSigner(): HttpFoundationUriSigner|HttpKernelUriSigner|MockObject
+    private function mockUriSigner(): HttpFoundationUriSigner|MockObject
     {
-        $class = class_exists(HttpFoundationUriSigner::class) ? HttpFoundationUriSigner::class : HttpKernelUriSigner::class;
+        $class = class_exists(HttpFoundationUriSigner::class) ? HttpFoundationUriSigner::class : HttpFoundationUriSigner::class;
 
         return $this->createMock($class);
     }

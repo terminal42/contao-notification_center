@@ -104,7 +104,7 @@ return static function (ContainerConfigurator $container): void {
             service('request_stack'),
             service(BulkyItemStorage::class),
             service(StringParser::class),
-            service('translation.locale_switcher')->nullOnInvalid(),
+            service('translation.locale_switcher'),
         ])
     ;
 };

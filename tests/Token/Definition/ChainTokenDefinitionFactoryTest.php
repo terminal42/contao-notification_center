@@ -50,11 +50,11 @@ final class ChainTokenDefinitionFactoryTest extends TestCase
 
     private function createExampleTokenDefinition(string $tokenName, string $translationKey, string $serviceDummy): TokenDefinitionInterface
     {
-        return new class($tokenName, $translationKey, $serviceDummy) implements TokenDefinitionInterface {
+        return new readonly class($tokenName, $translationKey, $serviceDummy) implements TokenDefinitionInterface {
             final public function __construct(
-                private readonly string $tokenName,
-                private readonly string $translationKey,
-                private readonly string $serviceDummy,
+                private string $tokenName,
+                private string $translationKey,
+                private string $serviceDummy,
             ) {
             }
 
@@ -82,8 +82,8 @@ final class ChainTokenDefinitionFactoryTest extends TestCase
 
     private function createExampleFactoryWithDependencyInjection(TokenDefinitionInterface $definition): TokenDefinitionFactoryInterface
     {
-        return new class($definition) implements TokenDefinitionFactoryInterface {
-            public function __construct(private readonly TokenDefinitionInterface $definition)
+        return new readonly class($definition) implements TokenDefinitionFactoryInterface {
+            public function __construct(private TokenDefinitionInterface $definition)
             {
             }
 

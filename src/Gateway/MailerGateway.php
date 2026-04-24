@@ -80,6 +80,7 @@ class MailerGateway extends AbstractGateway
         ;
     }
 
+    #[\Override]
     protected function getRequiredStampsForSealing(): array
     {
         return [
@@ -87,6 +88,7 @@ class MailerGateway extends AbstractGateway
         ];
     }
 
+    #[\Override]
     protected function getRequiredStampsForSending(): array
     {
         return [

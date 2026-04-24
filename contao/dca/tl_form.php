@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 /*
@@ -16,7 +14,6 @@ PaletteManipulator::create()
  * Fields
  */
 $GLOBALS['TL_DCA']['tl_form']['fields']['nc_notification'] = [
-    'exclude' => true,
     'filter' => true,
     'inputType' => 'select',
     'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'clr w50'],

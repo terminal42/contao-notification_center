@@ -17,6 +17,7 @@ class Terminal42NotificationCenterBundle extends Bundle
         $container->addCompilerPass(new AbstractGatewayPass());
     }
 
+    #[\Override]
     public function getPath(): string
     {
         return \dirname(__DIR__);

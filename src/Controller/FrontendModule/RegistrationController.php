@@ -47,6 +47,7 @@ class RegistrationController extends ModuleRegistration
     /**
      * @param array<mixed> $arrData
      */
+    #[\Override]
     protected function sendActivationMail($arrData): void
     {
         $optInToken = null;
@@ -62,6 +63,7 @@ class RegistrationController extends ModuleRegistration
     /**
      * Re-send the activation mail.
      */
+    #[\Override]
     protected function resendActivationMail(MemberModel $objMember): void
     {
         if (!$objMember->disable) {

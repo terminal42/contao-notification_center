@@ -19,7 +19,7 @@ use Twig\Environment;
 
 class UpdatePersonalDataListener
 {
-    private const OLD_SESSION_DATA_KEY = 'notification_center_old_data';
+    private const string OLD_SESSION_DATA_KEY = 'notification_center_old_data';
 
     public function __construct(
         private readonly NotificationCenter $notificationCenter,

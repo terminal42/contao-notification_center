@@ -8,16 +8,16 @@ use Codefog\HasteBundle\Formatter;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsFrontendModule;
 use Contao\Environment;
 use Contao\Idna;
+use Contao\ModuleLostPassword;
 use Contao\ModuleModel;
 use Contao\PageModel;
 use Contao\System;
 use Symfony\Component\HttpFoundation\Response;
-use Terminal42\NotificationCenterBundle\Legacy\LostPasswordModule;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 use Terminal42\NotificationCenterBundle\Receipt\Receipt;
 
 #[AsFrontendModule('lostPasswordNotificationCenter', 'user', 'mod_lostPassword')]
-class LostPasswordController extends LostPasswordModule
+class LostPasswordController extends ModuleLostPassword
 {
     public function __construct(
         private readonly NotificationCenter $notificationCenter,
@@ -32,6 +32,7 @@ class LostPasswordController extends LostPasswordModule
         return new Response($this->generate());
     }
 
+    #[\Override]
     protected function sendPasswordLink($objMember): void
     {
         $optIn = System::getContainer()->get('contao.opt_in');
