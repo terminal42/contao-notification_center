@@ -3,8 +3,8 @@
   <file datatype="php" source-language="en" target-language="en">
     <body>
       <trans-unit id="tl_nc_language.tableLabel">
-        <source>Notification Language</source>
-        <target>Notification Language</target>
+        <source>Notification language</source>
+        <target>Notification language</target>
       </trans-unit>
       <trans-unit id="tl_nc_language.language.0">
         <source>Language</source>

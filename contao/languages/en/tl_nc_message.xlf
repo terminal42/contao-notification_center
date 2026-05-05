@@ -3,8 +3,8 @@
   <file datatype="php" source-language="en" target-language="en">
     <body>
       <trans-unit id="tl_nc_message.tableLabel">
-        <source>Notification Message</source>
-        <target>Notification Message</target>
+        <source>Notification message</source>
+        <target>Notification message</target>
       </trans-unit>
       <trans-unit id="tl_nc_message.title.0">
         <source>Title</source>
