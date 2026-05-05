@@ -2,6 +2,10 @@
 <xliff version="1.2">
   <file datatype="php" source-language="en" target-language="en">
     <body>
+      <trans-unit id="tl_nc_language.tableLabel">
+        <source>Notification language</source>
+        <target>Notification language</target>
+      </trans-unit>
       <trans-unit id="tl_nc_language.language.0">
         <source>Language</source>
         <target>Language</target>
