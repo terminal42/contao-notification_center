@@ -12,21 +12,30 @@ use Contao\NewsletterDenyListModel;
 use Contao\NewsletterRecipientsModel;
 use Contao\PageModel;
 use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 #[AsFrontendModule('newsletterUnsubscribeNotificationCenter', 'newsletter', 'nl_default')]
 class UnsubscribeController extends ModuleUnsubscribe
 {
+    private Request|null $request = null;
+
     public function __construct(private readonly NotificationCenter $notificationCenter)
     {
     }
 
-    public function __invoke(ModuleModel $model, string $section): Response
+    public function __invoke(Request $request, ModuleModel $model, string $section): Response
     {
         parent::__construct($model, $section);
 
-        return new Response($this->generate());
+        $this->request = $request;
+
+        $content = $this->generate();
+
+        $this->request = null;
+
+        return new Response($content);
     }
 
     /**
@@ -67,6 +76,7 @@ class UnsubscribeController extends ModuleUnsubscribe
         // Prepare the simple tokens
         $tokens = [];
         $tokens['recipient_email'] = $strEmail;
+        $tokens['domain'] = $this->request?->getHost() ?? '';
         $tokens['channels'] = implode(', ', $arrChannels);
         $tokens['channel_ids'] = implode(', ', $arrRemove);
 

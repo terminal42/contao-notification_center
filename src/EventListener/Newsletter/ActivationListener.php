@@ -11,6 +11,7 @@ use Contao\Module;
 use Contao\ModuleSubscribe;
 use Contao\NewsletterChannelModel;
 use Contao\PageModel;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 #[AsHook('activateRecipient')]
@@ -19,6 +20,7 @@ class ActivationListener
     public function __construct(
         private readonly NotificationCenter $notificationCenter,
         private readonly ContaoFramework $contaoFramework,
+        private readonly RequestStack $requestStack,
     ) {
     }
 
@@ -62,6 +64,7 @@ class ActivationListener
         // Prepare the simple tokens
         $tokens = [];
         $tokens['recipient_email'] = $email;
+        $tokens['domain'] = $this->requestStack->getCurrentRequest()?->getHost() ?? '';
         $tokens['channels'] = implode(', ', $channelTitles);
         $tokens['channel_ids'] = implode(', ', $channelIds);
 

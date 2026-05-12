@@ -51,6 +51,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service(NotificationCenter::class),
             service('contao.framework'),
+            service('request_stack'),
         ])
     ;
 };
