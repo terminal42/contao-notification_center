@@ -14,21 +14,30 @@ use Contao\NewsletterDenyListModel;
 use Contao\NewsletterRecipientsModel;
 use Contao\PageModel;
 use Contao\System;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
 
 #[AsFrontendModule('newsletterSubscribeNotificationCenter', 'newsletter', 'nl_default')]
 class SubscribeController extends ModuleSubscribe
 {
+    private Request|null $request = null;
+
     public function __construct(private readonly NotificationCenter $notificationCenter)
     {
     }
 
-    public function __invoke(ModuleModel $model, string $section): Response
+    public function __invoke(Request $request, ModuleModel $model, string $section): Response
     {
         parent::__construct($model, $section);
 
-        return new Response($this->generate());
+        $this->request = $request;
+
+        $content = $this->generate();
+
+        $this->request = null;
+
+        return new Response($content);
     }
 
     /**
@@ -76,6 +85,7 @@ class SubscribeController extends ModuleSubscribe
         $tokens['recipient_email'] = $strEmail;
         $tokens['token'] = $optInToken->getIdentifier();
         $tokens['link'] = Idna::decode(Environment::get('url')).Environment::get('requestUri').(str_contains((string) Environment::get('requestUri'), '?') ? '&' : '?').'token='.$optInToken->getIdentifier();
+        $tokens['domain'] = $this->request?->getHost() ?? '';
         $tokens['channels'] = implode(', ', $arrChannels);
         $tokens['channel_ids'] = implode(', ', $arrNew);
 

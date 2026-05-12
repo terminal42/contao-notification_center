@@ -28,6 +28,7 @@ class NewsletterSubscribeNotificationType implements NotificationTypeInterface
             $this->factory->create(EmailTokenDefinition::class, 'recipient_email', 'newsletter.recipient_email'),
             $this->factory->create(TextTokenDefinition::class, 'link', 'newsletter.link'),
             $this->factory->create(TextTokenDefinition::class, 'token', 'newsletter.token'),
+            $this->factory->create(TextTokenDefinition::class, 'domain', 'newsletter.domain'),
             $this->factory->create(TextTokenDefinition::class, 'channels', 'newsletter.channels'),
             $this->factory->create(TextTokenDefinition::class, 'channel_ids', 'newsletter.channel_ids'),
         ];

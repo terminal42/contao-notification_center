@@ -66,6 +66,30 @@
         <source>Unformatted data of the member.</source>
         <target>Unformatierte Daten des Mitglieds.</target>
       </trans-unit>
+      <trans-unit id="nc_tokens.newsletter.recipient_email">
+        <source>E-mail of the newsletter recipient.</source>
+        <target>E-Mail Adresse des Newsletter-Empfängers.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.newsletter.link">
+        <source>Activation link for the newsletter.</source>
+        <target>Aktivierungslink für die Newsletter-Anmeldung.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.newsletter.token">
+        <source>Activation token, if you want to build the activation link yourself.</source>
+        <target>Aktivierungs-Token, um die Aktivierungs-URL selber zu bauen.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.newsletter.domain">
+        <source>Domain where the newsletter form was subscribed to.</source>
+        <target>Domain unter welcher die Newsletter-Anmeldung vorgenommen wurde.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.newsletter.channels">
+        <source>Comma-separated list of the subscribed newsletter channels.</source>
+        <target>Komma-getrennte Liste der angemeldeten Newsletter-Kanäle.</target>
+      </trans-unit>
+      <trans-unit id="nc_tokens.newsletter.channel_ids">
+        <source>Comma-separated list of the subscribed newsletter channel IDs.</source>
+        <target>Komma-getrennte Liste der IDs angemeldeten Newsletter-Kanäle.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
