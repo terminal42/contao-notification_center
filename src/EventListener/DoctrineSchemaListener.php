@@ -14,6 +14,10 @@ class DoctrineSchemaListener
 {
     public function __invoke(GenerateSchemaEventArgs $event): void
     {
+        if ($event->getSchema()->hasTable(Terminal42NotificationCenterExtension::BULKY_ITEMS_VFS_TABLE_NAME)) {
+            return;
+        }
+
         $table = $event->getSchema()->createTable(Terminal42NotificationCenterExtension::BULKY_ITEMS_VFS_TABLE_NAME);
 
         // Defaults needed for DBAFS
