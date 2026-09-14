@@ -56,11 +56,14 @@ class RegistrationController extends ModuleRegistration
 
         // If opt-in is enabled, create the opt-in token and thus the ##link## simple token
         if ($this->nc_registration_auto_activate) {
+            // TODO: inject the parameter once we drop support for Contao 5.3
             if ($this->parameterBag->has('contao.registration.expiration')) {
                 $removeOn = new \DateTime('+'.$this->parameterBag->get('contao.registration.expiration').' days');
             } else {
                 $removeOn = null;
             }
+
+            // @phpstan-ignore arguments.count
             $optInToken = $this->optIn->create('reg', $arrData['email'], ['tl_member' => [$arrData['id']]], $removeOn);
         }
 
