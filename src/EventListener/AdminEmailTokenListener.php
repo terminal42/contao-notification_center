@@ -44,9 +44,7 @@ class AdminEmailTokenListener
 
         $email = $this->getEmailFromPage();
 
-        if (null === $email) {
-            $email = $this->getEmailFromConfig();
-        }
+        $email ??= $this->getEmailFromConfig();
 
         if (null === $email) {
             return;

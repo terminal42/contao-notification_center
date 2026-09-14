@@ -93,9 +93,7 @@ class TokenCollection extends AbstractCollection
         }
 
         foreach ($normalized as $tokenName => $value) {
-            if (!isset($data[$tokenName])) {
-                $data[$tokenName] = $value;
-            }
+            $data[$tokenName] ??= $value;
         }
 
         return $data;

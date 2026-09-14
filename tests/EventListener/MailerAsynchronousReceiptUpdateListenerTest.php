@@ -46,14 +46,12 @@ final class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
         $notificationCenter
             ->expects($this->once())
             ->method('informAboutAsynchronousReceipt')
-            ->with($this->callback(
-                function (AsynchronousReceipt $receipt) use ($identifier): bool {
+            ->willReturnCallback(
+                function (AsynchronousReceipt $receipt) use ($identifier): void {
                     $this->assertSame($identifier, $receipt->getIdentifier());
                     $this->assertTrue($receipt->wasDelivered());
-
-                    return true;
                 },
-            ))
+            )
         ;
 
         $listener->onSentMessage($event);
@@ -74,15 +72,13 @@ final class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
         $notificationCenter
             ->expects($this->once())
             ->method('informAboutAsynchronousReceipt')
-            ->with($this->callback(
-                function (AsynchronousReceipt $receipt) use ($identifier, $exception): bool {
+            ->willReturnCallback(
+                function (AsynchronousReceipt $receipt) use ($identifier, $exception): void {
                     $this->assertSame($identifier, $receipt->getIdentifier());
                     $this->assertFalse($receipt->wasDelivered());
                     $this->assertSame($receipt->getException(), $exception);
-
-                    return true;
                 },
-            ))
+            )
         ;
 
         $listener->onFailedMessage($event);

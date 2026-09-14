@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\String\UnicodeString;
 use Symfony\Component\HttpFoundation\UriSigner as HttpFoundationUriSigner;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\String\UnicodeString;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 
 class DownloadBulkyItemController
