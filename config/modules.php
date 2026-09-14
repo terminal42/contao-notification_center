@@ -6,6 +6,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Codefog\HasteBundle\Formatter;
 use Codefog\HasteBundle\UrlParser;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Terminal42\NotificationCenterBundle\Controller\FrontendModule\LostPasswordController;
 use Terminal42\NotificationCenterBundle\Controller\FrontendModule\RegistrationController;
 use Terminal42\NotificationCenterBundle\NotificationCenter;
@@ -28,6 +29,7 @@ return static function (ContainerConfigurator $container): void {
             service('contao.opt_in'),
             service(Formatter::class),
             service(UrlParser::class),
+            service(ParameterBagInterface::class),
         ])
     ;
 };
