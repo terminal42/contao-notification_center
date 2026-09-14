@@ -142,9 +142,7 @@ class ConfigLoader implements ResetInterface
             return $this->cache[$table][$id];
         }
 
-        if (!isset($this->cache[$table])) {
-            $this->cache[$table] = [];
-        }
+        $this->cache[$table] ??= [];
 
         try {
             $parameters = $this->connection->createQueryBuilder()

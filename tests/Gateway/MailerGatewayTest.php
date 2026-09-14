@@ -61,8 +61,8 @@ final class MailerGatewayTest extends ContaoTestCase
         $mailer
             ->expects($this->once())
             ->method('send')
-            ->with($this->callback(
-                function (Email $email) use ($parsedTemplateHtml, $expectedAttachmentsContentsAndPath, $mailerAttachmentsListener): bool {
+            ->willReturnCallback(
+                function (Email $email) use ($parsedTemplateHtml, $expectedAttachmentsContentsAndPath, $mailerAttachmentsListener): void {
                     // Call our own listener to ensure the attachments are added (queued -> false)
                     $messageEvent = new MessageEvent($email, $this->createStub(Envelope::class), 'foobar', false);
                     $mailerAttachmentsListener($messageEvent);
@@ -90,10 +90,8 @@ final class MailerGatewayTest extends ContaoTestCase
                         $expectedHtml = str_replace($path, 'cid:'.$attachments[$content], $expectedHtml);
                     }
                     $this->assertSame($email->getHtmlBody(), $expectedHtml);
-
-                    return true;
                 },
-            ))
+            )
         ;
 
         $tokenCollection = new TokenCollection();
