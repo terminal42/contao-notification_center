@@ -13,7 +13,7 @@ use Contao\CoreBundle\String\SimpleTokenParser;
 use Contao\FrontendTemplate;
 use Contao\TestCase\ContaoTestCase;
 use League\Flysystem\InMemory\InMemoryFilesystemAdapter;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
@@ -41,11 +41,10 @@ use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 final class MailerGatewayTest extends ContaoTestCase
 {
     /**
-     * @dataProvider embeddingHtmlImagesProvider
-     *
      * @param array<string, string> $mockFiles
      * @param array<string, string> $expectedAttachmentsContentsAndPath
      */
+    #[DataProvider('embeddingHtmlImagesProvider')]
     public function testEmbeddingHtmlImages(string $parsedTemplateHtml, array $mockFiles, array $expectedAttachmentsContentsAndPath): void
     {
         $vfsCollection = $this->createVfsCollection();
@@ -53,7 +52,7 @@ final class MailerGatewayTest extends ContaoTestCase
         foreach ($mockFiles as $path => $contents) {
             $vfsCollection->get('files')->write($path, $contents);
         }
-        $bulkyItemStorage = new BulkyItemStorage($vfsCollection->get('bulky_item'), $this->createStub(RouterInterface::class), $this->mockUriSigner());
+        $bulkyItemStorage = new BulkyItemStorage($vfsCollection->get('bulky_item'), $this->createStub(RouterInterface::class), $this->createStub(HttpFoundationUriSigner::class));
 
         $mailerAttachmentsListener = new MailerAttachmentsListener($bulkyItemStorage);
 
@@ -174,7 +173,7 @@ final class MailerGatewayTest extends ContaoTestCase
 
     private function createFrameWorkWithTemplate(string $parsedTemplateHtml): ContaoFramework
     {
-        $controllerAdapter = $this->mockAdapter(['convertRelativeUrls']);
+        $controllerAdapter = $this->createAdapterStub(['convertRelativeUrls']);
         $controllerAdapter
             ->method('convertRelativeUrls')
             ->willReturnCallback(static fn (string $template): string => Controller::convertRelativeUrls($template, 'https://example.com'))
@@ -187,36 +186,9 @@ final class MailerGatewayTest extends ContaoTestCase
             ->willReturn($parsedTemplateHtml)
         ;
 
-        $framework = $this->mockContaoFramework(
-            [
-                Controller::class => $controllerAdapter,
-            ],
+        return $this->createContaoFrameworkStub(
+            [Controller::class => $controllerAdapter],
+            [FrontendTemplate::class => $templateInstance],
         );
-
-        // contao/test-case 4.13 does not support "$instances" on `mockContaoFramework`
-        $framework
-            ->method('createInstance')
-            ->willReturnCallback(
-                static function (string $key) use ($templateInstance): mixed {
-                    if (FrontendTemplate::class === $key) {
-                        return $templateInstance;
-                    }
-
-                    return null;
-                },
-            )
-        ;
-
-        return $framework;
-    }
-
-    /**
-     * For compatibility with Symfony 5, 6 and 7.
-     */
-    private function mockUriSigner(): HttpFoundationUriSigner|MockObject
-    {
-        $class = class_exists(HttpFoundationUriSigner::class) ? HttpFoundationUriSigner::class : HttpFoundationUriSigner::class;
-
-        return $this->createMock($class);
     }
 }

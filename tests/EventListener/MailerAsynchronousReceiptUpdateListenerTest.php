@@ -117,7 +117,7 @@ final class MailerAsynchronousReceiptUpdateListenerTest extends TestCase
 
         $email = new Email(); // No header added
 
-        $sentMessage = $this->createMock(SentMessage::class);
+        $sentMessage = $this->createStub(SentMessage::class);
         $sentMessage
             ->method('getOriginalMessage')
             ->willReturn($email)
