@@ -59,9 +59,9 @@
     "require-dev": {
         "contao/manager-plugin": "^2.0",
         "contao/newsletter-bundle": "^4.13 || ^5.0",
-        "contao/test-case": "^5.3",
+        "contao/test-case": "^5.7",
         "league/flysystem-memory": "^3.25",
-        "phpunit/phpunit": "^9.6 || ^11.5",
+        "phpunit/phpunit": "^12.5.22",
         "symfony/expression-language": "^6.4 || ^7.4",
         "terminal42/contao-build-tools": "dev-main"
     },

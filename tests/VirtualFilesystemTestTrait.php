@@ -21,7 +21,7 @@ trait VirtualFilesystemTestTrait
             ->mount(new InMemoryFilesystemAdapter(), 'bulky_item')
         ;
 
-        $dbafsManager = new DbafsManager($this->createMock(EventDispatcherInterface::class));
+        $dbafsManager = new DbafsManager($this->createStub(EventDispatcherInterface::class));
         $dbafsManager->register(new InMemoryDbafs(), 'files');
         $dbafsManager->register(new InMemoryDbafs(), 'bulky_item');
 

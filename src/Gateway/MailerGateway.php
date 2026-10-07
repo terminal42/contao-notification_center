@@ -223,7 +223,7 @@ class MailerGateway extends AbstractGateway
         $template->css = '';
         $template->body = $this->replaceTokensAndInsertTags($parcel, StringUtil::restoreBasicEntities($languageConfig->getString('email_html')));
         $template->language = LocaleUtil::formatAsLanguageTag($languageConfig->getString('language'));
-        $template->parsedTokens = null === $tokenCollection ? [] : $tokenCollection->forSimpleTokenParser();
+        $template->parsedTokens = $tokenCollection?->forSimpleTokenParser() ?? [];
         $template->rawTokens = $tokenCollection;
         $template->parcel = $parcel;
         $template->languageConfig = $languageConfig;

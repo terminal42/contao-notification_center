@@ -61,13 +61,13 @@ final class BulkyItemsTokenListenerTest extends TestCase
 
     public function testOnCreateParcelProcessesTokens(): void
     {
-        $bulkyItemStorage = $this->createMock(BulkyItemStorage::class);
+        $bulkyItemStorage = $this->createStub(BulkyItemStorage::class);
         $bulkyItemStorage
             ->method('retrieve')
             ->willReturn($this->createStub(BulkyItemInterface::class))
         ;
 
-        $tokenDefinitionFactory = $this->createMock(TokenDefinitionFactoryInterface::class);
+        $tokenDefinitionFactory = $this->createStub(TokenDefinitionFactoryInterface::class);
         $tokenDefinitionFactory
             ->method('create')
             ->willReturnCallback(static fn (string $definitionClass, string $tokenName, string $translationKey) => new $definitionClass($tokenName, $translationKey))
@@ -75,6 +75,7 @@ final class BulkyItemsTokenListenerTest extends TestCase
 
         $twig = $this->createMock(Environment::class);
         $twig
+            ->expects($this->exactly(2))
             ->method('render')
             ->willReturnCallback(
                 function (string $template, array $context): string {

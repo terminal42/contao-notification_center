@@ -10,9 +10,7 @@ use Terminal42\NotificationCenterBundle\Token\Token;
 
 final class TokenTest extends TestCase
 {
-    /**
-     * @dataProvider anythingProvider
-     */
+    #[DataProvider('anythingProvider')]
     public function testFromAnything(mixed $value, string $expectedParserValue): void
     {
         $token = Token::fromValue('token', $value);
@@ -21,10 +19,9 @@ final class TokenTest extends TestCase
     }
 
     /**
-     * @dataProvider arrayProvider
-     *
      * @param array<mixed> $value
      */
+    #[DataProvider('arrayProvider')]
     public function testArrayParserFormat(array $value, string $expectedParserValue): void
     {
         $token = Token::fromValue('form_foobar', $value);

@@ -8,6 +8,7 @@ use Contao\Config;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
 use Contao\TestCase\ContaoTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Terminal42\NotificationCenterBundle\Config\MessageConfig;
@@ -20,12 +21,10 @@ use Terminal42\NotificationCenterBundle\Token\TokenCollection;
 
 final class AdminEmailTokenListenerTest extends ContaoTestCase
 {
-    /**
-     * @dataProvider adminEmailProvider
-     */
+    #[DataProvider('adminEmailProvider')]
     public function testAddsAdminTokens(string $configFriendlyEmail, string $pageFriendlyEmail, string $expectedName, string $expectedEmail): void
     {
-        $pageModel = $this->mockClassWithProperties(PageModel::class, [
+        $pageModel = $this->createClassWithPropertiesStub(PageModel::class, [
             'adminEmail' => $pageFriendlyEmail,
         ]);
 
@@ -102,7 +101,7 @@ final class AdminEmailTokenListenerTest extends ContaoTestCase
 
     private function mockFrameworkWithAdminEmail(string|null $adminEmail = null): ContaoFramework
     {
-        $configAdapter = $this->mockAdapter(['isComplete', 'get']);
+        $configAdapter = $this->createAdapterStub(['isComplete', 'get']);
         $configAdapter
             ->method('isComplete')
             ->willReturn(true)
@@ -110,11 +109,10 @@ final class AdminEmailTokenListenerTest extends ContaoTestCase
 
         $configAdapter
             ->method('get')
-            ->with('adminEmail')
-            ->willReturn($adminEmail)
+            ->willReturnMap([['adminEmail', $adminEmail]])
         ;
 
-        return $this->mockContaoFramework([
+        return $this->createContaoFrameworkStub([
             Config::class => $configAdapter,
         ]);
     }
