@@ -105,7 +105,7 @@ class BulkyItemStorage
     {
         return $this->uriSigner->sign(
             $this->router->generate('nc_bulky_item_download', ['voucher' => $voucher], UrlGeneratorInterface::ABSOLUTE_URL),
-            time() + $ttl,
+            time() + ($ttl ?? $this->retentionPeriodInDays * 86400),
         );
     }
 

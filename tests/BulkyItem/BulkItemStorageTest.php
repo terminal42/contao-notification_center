@@ -8,8 +8,10 @@ use Contao\CoreBundle\Filesystem\ExtraMetadata;
 use Contao\CoreBundle\Filesystem\FilesystemItem;
 use Contao\CoreBundle\Filesystem\FilesystemItemIterator;
 use Contao\CoreBundle\Filesystem\VirtualFilesystemInterface;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\UriSigner;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Terminal42\NotificationCenterBundle\BulkyItem\BulkyItemStorage;
 use Terminal42\NotificationCenterBundle\BulkyItem\FileItem;
@@ -158,6 +160,34 @@ final class BulkItemStorageTest extends TestCase
 
         $storage = new BulkyItemStorage($vfs, $this->createStub(RouterInterface::class), $this->createStub(UriSigner::class));
         $storage->prune();
+    }
+
+    #[TestWith([null, 7, 604800])]
+    #[TestWith([null, 3, 259200])]
+    #[TestWith([604800, 3, 604800])]
+    #[TestWith([0, 7, 0])]
+    #[TestWith([-1, 7, -1])]
+    public function testGeneratePublicUri(int|null $ttl, int $retentionPeriodInDays, int $expectedTtl): void
+    {
+        $voucher = '20221228/a10aed4d-abe1-498f-adfc-b2e54fbbcbde';
+        $router = $this->createMock(RouterInterface::class);
+        $router
+            ->expects($this->once())
+            ->method('generate')
+            ->with('nc_bulky_item_download', ['voucher' => $voucher], UrlGeneratorInterface::ABSOLUTE_URL)
+            ->willReturn('https://example.com/notifications/download/'.$voucher)
+        ;
+
+        $signer = new UriSigner('secret');
+        $storage = new BulkyItemStorage($this->createStub(VirtualFilesystemInterface::class), $router, $signer, $retentionPeriodInDays);
+        $before = time();
+        $uri = null === $ttl ? $storage->generatePublicUri($voucher) : $storage->generatePublicUri($voucher, $ttl);
+        parse_str(parse_url($uri, PHP_URL_QUERY), $query);
+
+        $this->assertArrayHasKey('_expiration', $query);
+        $this->assertGreaterThanOrEqual($before + $expectedTtl, (int) $query['_expiration']);
+        $this->assertLessThanOrEqual(time() + $expectedTtl, (int) $query['_expiration']);
+        $this->assertSame($expectedTtl > 0, $signer->check($uri));
     }
 
     private function createFileItem(): FileItem
