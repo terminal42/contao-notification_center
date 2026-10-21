@@ -103,9 +103,11 @@ class BulkyItemStorage
 
     public function generatePublicUri(string $voucher, int|null $ttl = null): string
     {
+        $retentionPeriodInSeconds = $this->retentionPeriodInDays * 86400;
+
         return $this->uriSigner->sign(
             $this->router->generate('nc_bulky_item_download', ['voucher' => $voucher], UrlGeneratorInterface::ABSOLUTE_URL),
-            time() + $ttl,
+            time() + min($ttl ?? $retentionPeriodInSeconds, $retentionPeriodInSeconds),
         );
     }
 
