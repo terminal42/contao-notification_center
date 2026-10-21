@@ -164,7 +164,8 @@ final class BulkItemStorageTest extends TestCase
 
     #[TestWith([null, 7, 604800])]
     #[TestWith([null, 3, 259200])]
-    #[TestWith([604800, 3, 604800])]
+    #[TestWith([864000, 7, 604800])]
+    #[TestWith([86400, 7, 86400])]
     #[TestWith([0, 7, 0])]
     #[TestWith([-1, 7, -1])]
     public function testGeneratePublicUri(int|null $ttl, int $retentionPeriodInDays, int $expectedTtl): void
