@@ -104,6 +104,20 @@ class ConfigLoader implements ResetInterface
         $parameters = $query->fetchAssociative();
 
         if (false === $parameters) {
+            // Use the sole language as an implicit fallback, but never choose between multiple languages
+            $languages = $this->connection->createQueryBuilder()
+                ->select('*')
+                ->from('tl_nc_language')
+                ->where('pid = :pid')
+                ->setParameter('pid', $messageId)
+                ->setMaxResults(2)
+                ->fetchAllAssociative()
+            ;
+
+            $parameters = 1 === \count($languages) ? $languages[0] : false;
+        }
+
+        if (false === $parameters) {
             return null;
         }
 
